@@ -570,7 +570,7 @@
 
     <array name="sport_prescription_four">
         <item>冠心病</item>
-        <!--        <item>高血压</item>-->
+        <item>高血压</item>
         <item>合并神经病变</item>
         <item>合并视网膜病变</item>
         <item>合并肾病</item>
