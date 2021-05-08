@@ -27,6 +27,7 @@ import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.BloodPressureAddActivity;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.BloodPressureListActivity;
+import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.utils.SPUtils;
 import com.vice.bloodpressure.view.LineChartInViewPager;
 import com.vice.bloodpressure.view.NewMarkerView;
@@ -108,6 +109,8 @@ public class XueYaFragment extends BaseEventBusFragment {
 
     @Override
     protected void init(View view) {
+
+        tvTime.setText(DataUtils.currentDateString("MM-dd HH:mm"));
         getScope();
         getData();
     }

@@ -31,6 +31,7 @@ android {
                 OPPO_APPSECRET: "OP-91f24bf3f35b4e0daffeb0625e100f1f"
         ]
         multiDexEnabled true
+//        useLibrary 'org.apache.http.legacy'
     }
 
 
@@ -127,7 +128,9 @@ dependencies {
     //Exoplayer内核
     implementation 'com.google.android.exoplayer:exoplayer:2.12.0'
     //音频播放
-    implementation 'com.lzx:StarrySkyX:2.4.4'
+//    implementation 'com.lzx:StarrySkyX:2.4.4'
+//    implementation 'com.lzx:StarrySkyX:2.4.5'
+    implementation 'com.github.EspoirX:StarrySky:v2.6.3'
     //Banner
     implementation 'com.youth.banner:banner:2.1.0'
     //Kotlin

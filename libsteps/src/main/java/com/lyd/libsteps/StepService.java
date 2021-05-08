@@ -54,6 +54,10 @@ public class StepService extends Service {
             NotificationChannel channel = new NotificationChannel("channelId", "channelName", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
             startForeground(111, notification);
+            //            stopForeground(true);
+            //
+            //            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            //            manager.cancel(111);
         }
         if (null != intent) {
             mIsSeparate = intent.getBooleanExtra(INTENT_ALARM_0_SEPARATE, false);

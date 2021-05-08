@@ -3,6 +3,7 @@ package com.vice.bloodpressure.ui.activity.smarteducation;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
-import com.lzx.starrysky.provider.SongInfo;
+import com.lzx.starrysky.SongInfo;
 import com.lzx.starrysky.StarrySky;
 import com.lzx.starrysky.utils.TimerTaskManager;
 import com.vice.bloodpressure.R;
@@ -132,7 +133,7 @@ public class SmartEducationClassDetailAudioActivity extends BaseHandlerActivity 
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                StarrySky.with().seekTo(seekBar.getProgress());
+                StarrySky.with().seekTo(seekBar.getProgress(),true);
             }
         });
 
@@ -272,6 +273,7 @@ public class SmartEducationClassDetailAudioActivity extends BaseHandlerActivity 
                 toSubmitEndTime(3);
                 break;
             case R.id.img_audio:
+                Log.i("yys", "===img_audio");
                 seekBar.setEnabled(true);
                 clickCount = clickCount + 1;
                 AnimationDrawable am = (AnimationDrawable) imgAudio.getBackground();
@@ -285,7 +287,7 @@ public class SmartEducationClassDetailAudioActivity extends BaseHandlerActivity 
                     info.setSongUrl(audioUrl);
                     StarrySky.with().playMusicByInfo(info);
                     //开始更新进度
-                    taskManager.startToUpdateProgress();
+                    taskManager.startToUpdateProgress(1000);
                 } else {
                     am.stop();
                     am.selectDrawable(0);

@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.lzx.starrysky.SongInfo;
 import com.lzx.starrysky.StarrySky;
-import com.lzx.starrysky.provider.SongInfo;
 import com.lzx.starrysky.utils.TimerTaskManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
@@ -129,7 +129,7 @@ public class PatientEducationAudioActivity extends BaseHandlerActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                StarrySky.with().seekTo(seekBar.getProgress());
+                StarrySky.with().seekTo(seekBar.getProgress(),true);
             }
         });
 
@@ -155,7 +155,7 @@ public class PatientEducationAudioActivity extends BaseHandlerActivity {
             info.setSongUrl(audioUrl);
             StarrySky.with().playMusicByInfo(info);
             //开始更新进度
-            taskManager.startToUpdateProgress();
+            taskManager.startToUpdateProgress(1000);
         } else {
             am.stop();
             am.selectDrawable(0);

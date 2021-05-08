@@ -67,7 +67,7 @@
         <!--筛选栏以及数据页-->
         <LinearLayout
             android:id="@+id/ll_have_data"
-            style="@style/hh_fi_wr"
+            style="@style/hh_fi_fi"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
             android:orientation="vertical">
@@ -150,15 +150,25 @@
             <!--数据页 -->
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/srl_goods_list"
-                style="@style/hh_fi_fi">
+                style="@style/hh_fi_fi"
+                android:visibility="visible">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_goods_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                 </androidx.recyclerview.widget.RecyclerView>
+
+
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            <ImageView
+                android:id="@+id/iv_no_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/shopping_cart_no_data_bg"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
         <!--空页面-->
@@ -195,9 +205,9 @@
 
         <LinearLayout
             style="@style/hh_wr_wr"
-            android:layout_marginBottom="@dimen/dp_8"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp_8"
             android:orientation="horizontal">
 
 

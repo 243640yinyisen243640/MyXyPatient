@@ -209,6 +209,8 @@ public class MallProductListActivity extends AppCompatActivity implements View.O
                 .subscribe(new Consumer<List<MallHomeProductBean>>() {
                     @Override
                     public void accept(List<MallHomeProductBean> mallHomeProductBean) throws Exception {
+                        mallProductListBinding.ivNoData.setVisibility(View.GONE);
+                        mallProductListBinding.srlGoodsList.setVisibility(View.VISIBLE);
                         list = mallHomeProductBean;
                         mallProductListBinding.rvGoodsList.setLayoutManager(new LinearLayoutManager(MallProductListActivity.this));
                         adapter = new MallProductListAdapter(list);
@@ -218,6 +220,8 @@ public class MallProductListActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onError(ErrorInfo error) throws Exception {
                         ToastUtils.showShort("没有该商品");
+                        mallProductListBinding.ivNoData.setVisibility(View.VISIBLE);
+                        mallProductListBinding.srlGoodsList.setVisibility(View.GONE);
                     }
                 });
     }

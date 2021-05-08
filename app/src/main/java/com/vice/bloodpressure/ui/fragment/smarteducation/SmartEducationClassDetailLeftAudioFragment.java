@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.lzx.starrysky.provider.SongInfo;
+import com.lzx.starrysky.SongInfo;
 import com.lzx.starrysky.StarrySky;
 import com.lzx.starrysky.utils.TimerTaskManager;
 import com.vice.bloodpressure.R;
@@ -130,7 +130,7 @@ public class SmartEducationClassDetailLeftAudioFragment extends BaseFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                StarrySky.with().seekTo(seekBar.getProgress());
+                StarrySky.with().seekTo(seekBar.getProgress(),true);
             }
         });
 
@@ -152,8 +152,8 @@ public class SmartEducationClassDetailLeftAudioFragment extends BaseFragment {
             info.setSongUrl(audioUrl);
             StarrySky.with().playMusicByInfo(info);
             //开始更新进度
-            taskManager.startToUpdateProgress();
-
+//            taskManager.startToUpdateProgress();
+            taskManager.startToUpdateProgress(1000);
         } else {
             am.stop();
             am.selectDrawable(0);

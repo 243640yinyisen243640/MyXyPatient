@@ -29,6 +29,7 @@ import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.BloodSugarAddActivity;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.BloodSugarListActivity;
+import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.view.LineChartInViewPager;
 import com.vice.bloodpressure.view.NewMarkerView;
 import com.wei.android.lib.colorview.view.ColorTextView;
@@ -133,6 +134,7 @@ public class XueTangFragment extends BaseEventBusFragment {
 
     @Override
     protected void init(View view) {
+        tvTime.setText(DataUtils.currentDateString("MM-dd HH:mm"));
         getScope();
         getData();
     }

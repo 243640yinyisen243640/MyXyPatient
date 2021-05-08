@@ -32,7 +32,6 @@ import com.fm.openinstall.OpenInstall;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lzx.starrysky.StarrySky;
-import com.lzx.starrysky.StarrySkyConfig;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
@@ -110,9 +109,10 @@ public class App extends BaseApplication implements RongIMClient.ConnectionStatu
 
 
     private void initAudio() {
-        StarrySkyConfig config = new StarrySkyConfig().newBuilder()
-                .build();
-        StarrySky.init(this, config, null);
+//        StarrySkyConfig config = new StarrySkyConfig().newBuilder()
+//                .build();
+//        StarrySky.init(this, config, null);
+        StarrySky.init(this).apply();
     }
 
 

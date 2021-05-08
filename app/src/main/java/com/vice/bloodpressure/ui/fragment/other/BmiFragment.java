@@ -19,6 +19,7 @@ import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.BmiAddActivity;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.BmiListActivity;
+import com.vice.bloodpressure.utils.DataUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +71,7 @@ public class BmiFragment extends BaseEventBusFragment {
 
     @Override
     protected void init(View view) {
+        tvTime.setText(DataUtils.currentDateString("MM-dd HH:mm"));
         setBmiTarget();
         getBmiData();
     }
