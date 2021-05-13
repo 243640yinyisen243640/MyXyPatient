@@ -55,7 +55,7 @@
         android:id="@+id/tv_jump"
         style="@style/text_gray_12_w_w"
         android:layout_gravity="right"
-        android:padding="@dimen/dp_10"
+        android:padding="@dimen/dp_15"
         android:text="跳过"
         android:textColor="@color/main_home" />
 

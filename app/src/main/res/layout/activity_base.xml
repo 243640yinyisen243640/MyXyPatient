@@ -43,6 +43,8 @@
                 style="@style/text_white_16_w_w"
                 android:background="@drawable/more_bac"
                 android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="保存"
                 android:visibility="gone" />
 

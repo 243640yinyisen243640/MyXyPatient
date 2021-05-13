@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_privacy_protect_bg_refuse"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/privacy_protect_warm_tips"
+        android:textColor="@color/black_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_dpp_service_agreement"
+        style="@style/text_black_14_f_w"
+        android:layout_marginTop="15dp"
+        android:text="@string/privacy_protect_hint" />
+
+    <TextView
+        android:id="@+id/tv_dpp_agree"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_privacy_protect_bg_agree"
+        android:gravity="center"
+        android:text="@string/privacy_protect_agree"
+        android:textColor="@color/black_text"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_dpp_disagree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/privacy_protect_disagree"
+        android:textSize="16sp" />
+
+</LinearLayout>

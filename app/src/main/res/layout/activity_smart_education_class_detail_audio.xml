@@ -91,30 +91,36 @@
             tl:tl_textUnselectColor="@color/gray_text"
             tl:tl_textsize="15sp" />
 
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_content"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        </androidx.viewpager.widget.ViewPager>
+            </androidx.viewpager.widget.ViewPager>
 
-        <com.wei.android.lib.colorview.view.ColorTextView
-            android:id="@+id/tv_have_learn"
-            style="@style/text_white_16_w_w"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="@dimen/dp_14"
-            android:paddingLeft="60dp"
-            android:paddingTop="@dimen/dp_16"
-            android:paddingRight="60dp"
-            android:paddingBottom="@dimen/dp_16"
-            android:text="我已学完"
-            android:textColor="@color/color_666"
-            app:backgroundColorNormal="@color/smart_education_class_bt_bg"
-            app:cornerRadiusNormal="26dp">
+            <com.wei.android.lib.colorview.view.ColorTextView
+                android:id="@+id/tv_have_learn"
+                style="@style/text_white_16_w_w"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:paddingLeft="60dp"
+                android:paddingTop="@dimen/dp_16"
+                android:paddingRight="60dp"
+                android:paddingBottom="@dimen/dp_16"
+                android:text="我已学完"
+                android:textColor="@color/color_666"
+                app:backgroundColorNormal="@color/smart_education_class_bt_bg"
+                app:cornerRadiusNormal="26dp">
 
 
-        </com.wei.android.lib.colorview.view.ColorTextView>
+            </com.wei.android.lib.colorview.view.ColorTextView>
+        </FrameLayout>
+
+
+
     </LinearLayout>
 
 

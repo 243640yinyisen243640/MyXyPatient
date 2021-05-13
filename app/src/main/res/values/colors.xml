@@ -133,4 +133,6 @@
     <color name="bp_value_low">#7EBF54</color>
     <!--血糖列表 end-->
 
+    <color name="defaultTransparent">#00000000</color>
+
 </resources>

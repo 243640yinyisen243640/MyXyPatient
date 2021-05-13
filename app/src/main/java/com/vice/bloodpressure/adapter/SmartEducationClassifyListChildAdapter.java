@@ -3,6 +3,7 @@ package com.vice.bloodpressure.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -75,6 +76,7 @@ public class SmartEducationClassifyListChildAdapter extends CommonAdapter<SmartE
                 bundle.putString("from", status + "");
                 bundle.putInt("type", type);
                 bundle.putInt("readTime", readtime);
+                Log.i("yys", "status======" + status);
                 Intent intent = null;
                 switch (type) {
                     case 1:

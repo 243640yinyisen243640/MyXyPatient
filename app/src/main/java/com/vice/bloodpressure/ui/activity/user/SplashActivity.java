@@ -1,11 +1,21 @@
 package com.vice.bloodpressure.ui.activity.user;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.SPStaticUtils;
@@ -13,13 +23,20 @@ import com.fm.openinstall.OpenInstall;
 import com.fm.openinstall.listener.AppWakeUpAdapter;
 import com.fm.openinstall.model.AppData;
 import com.gyf.immersionbar.ImmersionBar;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.libsteps.StepService;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseActivity;
+import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
 import com.vice.bloodpressure.bean.ImeiGetBean;
-import com.lyd.baselib.bean.LoginBean;
+import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.ui.activity.MainActivity;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.utils.ScreenUtils;
+import com.vice.bloodpressure.utils.SharedPreferencesUtilsApp;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 描述: 启动页
@@ -27,6 +44,16 @@ import com.lyd.baselib.utils.SharedPreferencesUtils;
  * 创建日期: 2019/3/25 15:06
  */
 public class SplashActivity extends BaseActivity {
+    /**
+     * 隐私政策弹出框
+     */
+    private Dialog protectDialog;
+    private String spanColor = "#FFC600";//隐私政策span颜色值
+    /**
+     * 是否同意隐私政策，1是，0或空为否
+     */
+    private String isAgreePricacyProtect;
+
     private static final String TAG = "LYD";
     AppWakeUpAdapter wakeUpAdapter = new AppWakeUpAdapter() {
         @Override
@@ -50,12 +77,20 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //将window的背景图设置为空
         getWindow().setBackgroundDrawable(null);
+        initValues();
         hideTitleBar();
         initStatusBar();
         setSplash();
         //获取唤醒参数
         OpenInstall.getWakeUp(getIntent(), wakeUpAdapter);
         initStepService();
+    }
+
+    private void initValues() {
+        Map<String, String> map = new HashMap<>();
+        map.put(ConstantParam.IS_AGREE_PRIVACY_PROTECT, "0");
+        SharedPreferencesUtilsApp.getInfo(getPageContext(), map);
+        isAgreePricacyProtect = map.get(ConstantParam.IS_AGREE_PRIVACY_PROTECT);
     }
 
     /**
@@ -99,23 +134,132 @@ public class SplashActivity extends BaseActivity {
      * 设置启动页
      */
     private void setSplash() {
-        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
-        if (user != null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!"1".equals(isAgreePricacyProtect)) {
+                    showPrivacyProtectDialog();
+                } else {
+                    LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+                    if (user != null) {
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    } else {
+                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        finish();
+                    }
+
                 }
-            }, 1500);
-        } else {
-            new Handler().postDelayed(new Runnable() {
+            }
+        }, 1000);
+
+        //        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        //        if (user != null) {
+        //            new Handler().postDelayed(new Runnable() {
+        //                @Override
+        //                public void run() {
+        //                    //                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        //                    //                    finish();
+        //                    showPrivacyProtectDialog();
+        //                }
+        //            }, 1500);
+        //        } else {
+        //            new Handler().postDelayed(new Runnable() {
+        //                @Override
+        //                public void run() {
+        //                    //                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        //                    //                    finish();
+        //                    showPrivacyProtectDialog();
+        //                }
+        //            }, 1500);
+        //        }
+    }
+
+    /**
+     * 隐私权限提示
+     */
+    private void showPrivacyProtectDialog() {
+        if (protectDialog == null) {
+            protectDialog = new Dialog(getPageContext(), R.style.HuaHanSoft_Dialog_Base);
+            View view = View.inflate(getPageContext(), R.layout.dialog_privacy_protect, null);
+            protectDialog.setContentView(view);
+            WindowManager.LayoutParams attributes = protectDialog.getWindow().getAttributes();
+            attributes.width = 4 * ScreenUtils.screenWidth(getPageContext()) / 5;
+            protectDialog.getWindow().setAttributes(attributes);
+            protectDialog.setCancelable(false);
+
+            TextView serviceAgreementTextView = view.findViewById(R.id.tv_dpp_service_agreement);
+            TextView disagreeTextView = view.findViewById(R.id.tv_dpp_disagree);
+            TextView agressTextView = view.findViewById(R.id.tv_dpp_agree);
+
+            String privacyProtectHint = getString(R.string.privacy_protect_hint);
+            SpannableString ss = new SpannableString(privacyProtectHint);
+
+            ss.setSpan(new UnderLineClickSpan() {
                 @Override
-                public void run() {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
+                public void onClick(View widget) {
+                    jumpToUserPrivacy();
                 }
-            }, 1500);
+            }, privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            //            ss.setSpan(new UnderLineClickSpan() {
+            //                @Override
+            //                public void onClick(View widget) {
+            //                    jumpToUserAgreement();
+            //                }
+            //            }, privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //            ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            serviceAgreementTextView.setText(ss);
+            serviceAgreementTextView.setHighlightColor(Color.TRANSPARENT);
+            serviceAgreementTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+            disagreeTextView.setOnClickListener(v -> {
+                protectDialog.dismiss();
+                finish();
+            });
+            agressTextView.setOnClickListener(v -> {
+                protectDialog.dismiss();
+                SharedPreferencesUtilsApp.saveInfo(getPageContext(), ConstantParam.IS_AGREE_PRIVACY_PROTECT, "1");
+
+                isAgreePricacyProtect = "1";
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                finish();
+            });
+        }
+        if (!protectDialog.isShowing()) {
+            protectDialog.show();
+        }
+    }
+
+    /**
+     * 页面跳转-用户政策
+     */
+    private void jumpToUserPrivacy() {
+        Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+        intent.putExtra("title", "用户服务协议");
+        intent.putExtra("url", "file:///android_asset/user_protocol.html");
+        startActivity(intent);
+    }
+
+    /**
+     * 页面跳转-服务协议
+     */
+    private void jumpToUserAgreement() {
+        //        Intent intent = new Intent(getPageContext(), WebViewHelperActivity.class);
+        //        intent.putExtra("title", getString(R.string.privacy_appointment));
+        //        intent.putExtra("explainId", "62");
+        //        startActivity(intent);
+    }
+
+    private abstract class UnderLineClickSpan extends ClickableSpan {
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(ds.linkColor);
+            ds.setUnderlineText(false);
+            ds.clearShadowLayer();
         }
     }
 

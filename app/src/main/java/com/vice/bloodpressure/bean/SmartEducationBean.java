@@ -90,6 +90,9 @@ public class SmartEducationBean {
         private String links;
         private int readtime;
         private String introduc;
+        /**
+         *1:待学习 2：学习中
+         */
         private int status;
         private String weblink;
         private String duration;

@@ -5,19 +5,25 @@
     android:layout_height="180dp">
 
     <!--左边-->
-    <RelativeLayout
+    <LinearLayout
         style="@style/hh_fi_fi"
         android:layout_weight="1"
         android:background="@drawable/white_fragment_back"
-        android:padding="@dimen/dp_10">
+        android:orientation="vertical">
 
 
         <!--BMI 测量记录-->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="10dp">
 
-            <LinearLayout style="@style/hh_wr_wr">
+            <LinearLayout
+                style="@style/hh_wr_wr"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -38,11 +44,12 @@
                 android:id="@+id/tv_test_record"
                 style="@style/text_white_12_w_w"
                 android:layout_alignParentRight="true"
+                android:padding="10dp"
                 android:text="测量记录 >"
                 android:textColor="@color/main_home" />
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <!--展示数据页-->
         <LinearLayout
@@ -54,7 +61,9 @@
             <!--偏瘦 正常 偏胖 肥胖-->
             <LinearLayout
                 style="@style/hh_fi_wr"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
                 <com.wei.android.lib.colorview.view.ColorTextView
                     android:layout_width="8dp"
@@ -203,7 +212,7 @@
         </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <!--右边-->
     <RelativeLayout

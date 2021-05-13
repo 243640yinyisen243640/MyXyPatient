@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.activity.smarteducation;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -117,6 +118,7 @@ public class SmartEducationClassDetailTextActivity extends BaseHandlerActivity {
     private void setIsShowBottomButton() {
         int readTime = getIntent().getExtras().getInt("readTime", 0);
         String from = getIntent().getExtras().getString("from");
+        Log.i("yys", "文本===from" + from);
         switch (from) {
             case "1":
             case "2":

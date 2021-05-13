@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,8 @@ public class SystemMsgListActivity extends BaseHandlerActivity {
     SmartRefreshLayout srlList;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
+    //    @BindView(R.id.tv_save)
+    //    TextView tvSave;
 
     //分页开始
     private SystemMessageAdapter adapter;
@@ -66,6 +69,8 @@ public class SystemMsgListActivity extends BaseHandlerActivity {
     @Override
     protected View addContentLayout() {
         View layout = getLayoutInflater().inflate(R.layout.activity_system_msg_list, contentLayout, false);
+        TextView read = getTvSave();
+        read.setText("一键已读");
         return layout;
     }
 

@@ -17,8 +17,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.bean.HomeBloodSugarListBean;
+import com.vice.bloodpressure.imp.CallBack;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.HealthRecordBloodSugarListActivity;
-import com.vice.bloodpressure.view.BloodSugarDialog;
+import com.vice.bloodpressure.view.BloodSugarDialogHome;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,10 +28,12 @@ import java.util.List;
 
 public class HomeBloodSugarAdapter extends BaseQuickAdapter<HomeBloodSugarListBean.InfoBean, BaseViewHolder> {
     private Context context;
+    private CallBack callback;
 
-    public HomeBloodSugarAdapter(@Nullable List<HomeBloodSugarListBean.InfoBean> data, Context context) {
+    public HomeBloodSugarAdapter(@Nullable List<HomeBloodSugarListBean.InfoBean> data, Context context, CallBack callback) {
         super(R.layout.item_home_blood_sugar, data);
         this.context = context;
+        this.callback = callback;
     }
 
     @Override
@@ -164,7 +167,7 @@ public class HomeBloodSugarAdapter extends BaseQuickAdapter<HomeBloodSugarListBe
                 } else {
                     String timeMd = ymdStrFormatToMdStr(time);
                     //没有数据 点击添加
-                    Dialog dialog = new BloodSugarDialog(context, R.style.bloodDialog, typePosition, timeMd);
+                    Dialog dialog = new BloodSugarDialogHome(callback, listStr, context, R.style.bloodDialog, typePosition, timeMd);
                     dialog.show();
                 }
             }

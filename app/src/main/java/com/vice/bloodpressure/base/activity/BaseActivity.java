@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -268,20 +270,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-//    /**
-//     * 重写 getResource 方法，防止系统字体影响
-//     * 禁止app字体大小跟随系统字体大小调节
-//     */
-//    @Override
-//    public Resources getResources() {
-//        Resources resources = super.getResources();
-//        if (resources != null && resources.getConfiguration().fontScale != 1.0f) {
-//            Configuration configuration = resources.getConfiguration();
-//            configuration.setToDefaults();
-//            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-//        }
-//        return resources;
-//    }
+    /**
+     * 重写 getResource 方法，防止系统字体影响
+     * 禁止app字体大小跟随系统字体大小调节
+     */
+    @Override
+    public Resources getResources() {
+        Resources resources = super.getResources();
+        if (resources != null && resources.getConfiguration().fontScale != 1.0f) {
+            Configuration configuration = resources.getConfiguration();
+            configuration.setToDefaults();
+            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        }
+        return resources;
+    }
 
 
 }

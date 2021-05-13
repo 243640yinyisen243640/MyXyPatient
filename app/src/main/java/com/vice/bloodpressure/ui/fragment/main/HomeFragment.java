@@ -72,6 +72,7 @@ import com.vice.bloodpressure.bean.LabelBean;
 import com.vice.bloodpressure.bean.NewsListBean;
 import com.vice.bloodpressure.bean.ShopTitleBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.imp.CallBack;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.food.FoodHomeActivity;
@@ -294,6 +295,8 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
     private int remainingKcal;
     private double weight;
     private int reduceProgress;
+
+    private HomeBloodSugarAdapter bloodSugarAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -1300,7 +1303,19 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 List<HomeBloodSugarListBean.InfoBean> bloodSugarList = homeBloodSugarListBean.getInfo();
                 if (bloodSugarList != null && bloodSugarList.size() > 0) {
                     rvHomeBloodSugarList.setLayoutManager(new LinearLayoutManager(getPageContext()));
-                    rvHomeBloodSugarList.setAdapter(new HomeBloodSugarAdapter(bloodSugarList, getPageContext()));
+                    bloodSugarAdapter = new HomeBloodSugarAdapter(bloodSugarList, getPageContext(), new CallBack() {
+                        @Override
+                        public void callBack() {
+                            HomeFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    bloodSugarAdapter.notifyDataSetChanged();
+                                }
+                            });
+
+                        }
+                    });
+                    rvHomeBloodSugarList.setAdapter(bloodSugarAdapter);
                 }
                 break;
             case GET_SPORT_SUCCESS:

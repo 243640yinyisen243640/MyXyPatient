@@ -185,9 +185,11 @@ public class SmartEducationClassDetailAudioActivity extends BaseHandlerActivity 
     private void setIsShowBottomButton() {
         int readTime = getIntent().getExtras().getInt("readTime", 0);
         String from = getIntent().getExtras().getString("from");
+        Log.i("yys", "===from" + from);
         switch (from) {
             case "1":
             case "2":
+                Log.i("yys", "音频===from" + from);
                 tvHaveLearn.setVisibility(View.VISIBLE);
                 Observable.interval(0, 1, TimeUnit.SECONDS)
                         .take(readTime + 1)
@@ -202,6 +204,7 @@ public class SmartEducationClassDetailAudioActivity extends BaseHandlerActivity 
 
                             @Override
                             public void onNext(Long remindTime) {
+                                Log.i("yys", "1111音频===from" + from);
                                 SpanUtils.with(tvHaveLearn)
                                         .append("我已学完").setForegroundColor(ColorUtils.getColor(R.color.white_text))
                                         .append("(" + remindTime + "s)").setForegroundColor(ColorUtils.getColor(R.color.color_666))
