@@ -793,7 +793,7 @@
         <item name="android:layout_marginRight">36dp</item>
     </style>
     <!--dialog基本style开始-->
-    <style name="HuaHanSoft.Dialog.Base" parent="@android:style/Theme.Dialog">
+    <style name="Dialog.Base" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item><!-- 边框 -->
         <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
         <item name="android:windowIsTranslucent">true</item><!--是否半透明-->

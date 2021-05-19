@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.CountDownTimer;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -44,6 +45,12 @@ import java.util.Map;
  * 创建日期: 2019/3/25 15:06
  */
 public class SplashActivity extends BaseActivity {
+    private long countDownTime = 3000;//单位毫秒
+    /**
+     * 倒计时
+     */
+    private CountDownTimer timer;
+
     /**
      * 隐私政策弹出框
      */
@@ -84,6 +91,14 @@ public class SplashActivity extends BaseActivity {
         //获取唤醒参数
         OpenInstall.getWakeUp(getIntent(), wakeUpAdapter);
         initStepService();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+//            setSplash();
+        }
     }
 
     private void initValues() {
@@ -134,12 +149,37 @@ public class SplashActivity extends BaseActivity {
      * 设置启动页
      */
     private void setSplash() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!"1".equals(isAgreePricacyProtect)) {
-                    showPrivacyProtectDialog();
-                } else {
+        //        new Handler().postDelayed(new Runnable() {
+        //            @Override
+        //            public void run() {
+        //                if (!"1".equals(isAgreePricacyProtect)) {
+        //                    showPrivacyProtectDialog();
+        //                } else {
+        //                    LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        //                    if (user != null) {
+        //                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        //                        finish();
+        //                    } else {
+        //                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+        //                        finish();
+        //                    }
+        //
+        //                }
+        //            }
+        //        }, 1000);
+
+
+
+        if ("1".equals(isAgreePricacyProtect)) {
+            Log.i("yys", "111isAgreePricacyProtect===" + isAgreePricacyProtect);
+            timer = new CountDownTimer(countDownTime, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
                     LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
                     if (user != null) {
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
@@ -148,31 +188,13 @@ public class SplashActivity extends BaseActivity {
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         finish();
                     }
-
                 }
-            }
-        }, 1000);
-
-        //        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
-        //        if (user != null) {
-        //            new Handler().postDelayed(new Runnable() {
-        //                @Override
-        //                public void run() {
-        //                    //                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-        //                    //                    finish();
-        //                    showPrivacyProtectDialog();
-        //                }
-        //            }, 1500);
-        //        } else {
-        //            new Handler().postDelayed(new Runnable() {
-        //                @Override
-        //                public void run() {
-        //                    //                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-        //                    //                    finish();
-        //                    showPrivacyProtectDialog();
-        //                }
-        //            }, 1500);
-        //        }
+            };
+            timer.start();
+        } else {
+            Log.i("yys", "000isAgreePricacyProtect===" + isAgreePricacyProtect);
+            showPrivacyProtectDialog();
+        }
     }
 
     /**
@@ -180,11 +202,13 @@ public class SplashActivity extends BaseActivity {
      */
     private void showPrivacyProtectDialog() {
         if (protectDialog == null) {
-            protectDialog = new Dialog(getPageContext(), R.style.HuaHanSoft_Dialog_Base);
+            protectDialog = new Dialog(getPageContext(), R.style.Dialog_Base);
             View view = View.inflate(getPageContext(), R.layout.dialog_privacy_protect, null);
             protectDialog.setContentView(view);
             WindowManager.LayoutParams attributes = protectDialog.getWindow().getAttributes();
             attributes.width = 4 * ScreenUtils.screenWidth(getPageContext()) / 5;
+
+            attributes.height = ScreenUtils.dip2px(getPageContext(), 430);
             protectDialog.getWindow().setAttributes(attributes);
             protectDialog.setCancelable(false);
 
@@ -202,15 +226,6 @@ public class SplashActivity extends BaseActivity {
                 }
             }, privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            //            ss.setSpan(new UnderLineClickSpan() {
-            //                @Override
-            //                public void onClick(View widget) {
-            //                    jumpToUserAgreement();
-            //                }
-            //            }, privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //            ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             serviceAgreementTextView.setText(ss);
             serviceAgreementTextView.setHighlightColor(Color.TRANSPARENT);
             serviceAgreementTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -222,13 +237,10 @@ public class SplashActivity extends BaseActivity {
             agressTextView.setOnClickListener(v -> {
                 protectDialog.dismiss();
                 SharedPreferencesUtilsApp.saveInfo(getPageContext(), ConstantParam.IS_AGREE_PRIVACY_PROTECT, "1");
-
                 isAgreePricacyProtect = "1";
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                startActivity(new Intent(getPageContext(), LoginActivity.class));
                 finish();
             });
-        }
-        if (!protectDialog.isShowing()) {
             protectDialog.show();
         }
     }
@@ -243,15 +255,6 @@ public class SplashActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    /**
-     * 页面跳转-服务协议
-     */
-    private void jumpToUserAgreement() {
-        //        Intent intent = new Intent(getPageContext(), WebViewHelperActivity.class);
-        //        intent.putExtra("title", getString(R.string.privacy_appointment));
-        //        intent.putExtra("explainId", "62");
-        //        startActivity(intent);
-    }
 
     private abstract class UnderLineClickSpan extends ClickableSpan {
         @Override
