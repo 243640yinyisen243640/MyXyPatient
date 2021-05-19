@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.vice.bloodpressure">
+
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" /> <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -353,6 +354,10 @@
         <activity android:name=".ui.activity.smartmakepolicy.MyTreatPlanDetailFollowUpActivity" /> <!-- 药品库 药品详情 -->
         <!-- 药品库 搜素结果 -->
         <activity android:name=".ui.activity.medicinestore.MedicineSearchResultListActivity" /> <!-- 融云开始 -->
+
+        <activity
+            android:name=".base.activity.WebHelperActivity"
+            android:screenOrientation="portrait" />
         <!-- 7.0适配开始 -->
         <provider
             android:name="androidx.core.content.FileProvider"

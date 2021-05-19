@@ -1,6 +1,7 @@
 package com.vice.bloodpressure.ui.fragment.other;
 
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -172,4 +173,9 @@ public class FollowUpVisitFragment extends BaseLazyFragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFollowUpList();
+    }
 }

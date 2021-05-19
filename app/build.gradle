@@ -180,4 +180,5 @@ dependencies {
     //vivo依赖
     implementation "com.aliyun.ams:alicloud-android-third-push-vivo:$aliCloudVersion"
     //阿里推送 End
+    api 'pub.devrel:easypermissions:2.0.1'
 }

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -58,7 +59,7 @@ import com.vice.bloodpressure.adapter.HomeEightModuleAdapter;
 import com.vice.bloodpressure.adapter.HomeRecycleAdapter;
 import com.vice.bloodpressure.adapter.HomeTwoGoodsAdapter;
 import com.vice.bloodpressure.adapter.ImageAdapter;
-import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
+import com.vice.bloodpressure.base.activity.WebHelperActivity;
 import com.vice.bloodpressure.base.fragment.BaseEventBusFragment;
 import com.vice.bloodpressure.bean.BannerBean;
 import com.vice.bloodpressure.bean.DietPlanAddSuccessBean;
@@ -1167,9 +1168,10 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                         .addBannerLifecycleObserver(this)
                         .setIndicator(new CircleIndicator(getPageContext())).setOnBannerListener((data, position) -> {
                     if (!TextUtils.isEmpty(bannerList.get(position).getLink())) {
-                        Intent intentBanner = new Intent(getPageContext(), BaseWebViewActivity.class);
+                        Intent intentBanner = new Intent(getPageContext(), WebHelperActivity.class);
                         intentBanner.putExtra("title", bannerList.get(position).getTitle());
                         intentBanner.putExtra("url", bannerList.get(position).getLink());
+//                        intentBanner.putExtra("url","https://jinshuju.net/f/vW6hQA");
                         startActivity(intentBanner);
                     }
                 });
@@ -1202,8 +1204,9 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 startActivity(intent);
                 break;
             case GET_INDEX_EDUCATION:
+                Log.i("yys", "GET_INDEX_EDUCATION=====");
                 flHomeEducationHave.setVisibility(View.VISIBLE);
-                flHomeEducationHave.setVisibility(View.GONE);
+                flHomeEducationEmpty.setVisibility(View.GONE);
                 indexEducationBean = (IndexEducationBean) msg.obj;
                 Glide.with(Utils.getApp()).load(indexEducationBean.getSeriesimg()).into(imgHomeSmartEducationBankPic);
                 String seriename = indexEducationBean.getSeriename();

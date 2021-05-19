@@ -130,10 +130,10 @@ public class SmartEducationClassDetailVideoActivity extends BaseHandlerActivity 
     private void setIsShowBottomButton() {
         int readTime = getIntent().getExtras().getInt("readTime", 0);
         String from = getIntent().getExtras().getString("from");
-        Log.i("yys", "===from" + from);
         switch (from) {
             case "1":
             case "2":
+                Log.i("yys", "视频===from" + from);
                 tvHaveLearn.setVisibility(View.VISIBLE);
                 Observable.interval(0, 1, TimeUnit.SECONDS)
                         .take(readTime + 1)
