@@ -11,9 +11,9 @@ import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.lyd.baselib.BuildConfig;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.ui.activity.user.LoginActivity;
 import com.vice.bloodpressure.utils.SPUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -209,7 +209,8 @@ public class XyUrl {
     //头像上传
     public final static String UPLOAD_PHOTO_PIC = HOST_URL + "/index/myinfo/imgtipc";
     //版本更新
-    public final static String GET_UPDATE = HOST_URL + "/port/Doctor/getVersion";
+    //    public final static String GET_UPDATE = HOST_URL + "/port/Doctor/getVersion";
+    public final static String GET_UPDATE = HOST_URL + "/port/appversion/getPatVersion";
     //个人中心结束
 
     //智能决策开始

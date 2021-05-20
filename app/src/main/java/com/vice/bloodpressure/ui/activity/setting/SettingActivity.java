@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.activity.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.lyd.baselib.bean.LoginBean;
@@ -90,7 +92,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivity(new Intent(getPageContext(), SugarTimeResetActivity.class));
                 break;
             case R.id.bt_exit:
-                toExit();
+                String deviceID = DeviceUtils.getUniqueDeviceId();
+                String macdeviceID = DeviceUtils.getMacAddress();
+                Log.i("yys", "deviceID==" + deviceID);
+                Log.i("yys", "macdeviceID==" + macdeviceID);
+                //                toExit();
                 break;
         }
     }

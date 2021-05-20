@@ -208,7 +208,7 @@ public class SplashActivity extends BaseActivity {
             WindowManager.LayoutParams attributes = protectDialog.getWindow().getAttributes();
             attributes.width = 4 * ScreenUtils.screenWidth(getPageContext()) / 5;
 
-            attributes.height = ScreenUtils.dip2px(getPageContext(), 430);
+            attributes.height = ScreenUtils.dip2px(getPageContext(), 480);
             protectDialog.getWindow().setAttributes(attributes);
             protectDialog.setCancelable(false);
 

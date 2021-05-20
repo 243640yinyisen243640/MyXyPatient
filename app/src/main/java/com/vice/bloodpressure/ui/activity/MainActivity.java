@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -151,6 +152,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     private AppCompatTextView tvUpdateUpdate;
     //关闭按钮(点击取消)
     private AppCompatImageView ivUpdateClose;
+    private LinearLayout closeLinearLayout;
     //更新网址
     private String updateUrl;
     //下载的apk文件
@@ -256,6 +258,11 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
      * @param data
      */
     private void showUpdatePopup(UpdateBean data) {
+        if ("1".equals(data.getIs_force())) {
+            closeLinearLayout.setVisibility(View.GONE);
+        } else {
+            closeLinearLayout.setVisibility(View.VISIBLE);
+        }
         //更新判断
         if (isHaveUpdate) {
             toShowUpdateDialog(data);
@@ -294,6 +301,9 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         tvUpdateSize.setText(apkSize);
         tvUpdateContent.setText(updateContent);
         tvUpdateContent.setVisibility(updateContent == null ? View.GONE : View.VISIBLE);
+        updatePopup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        updatePopup.setBackPressEnable(false);
+        updatePopup.setAllowDismissWhenTouchOutside(false);
         updatePopup.showPopupWindow();
     }
 
@@ -398,6 +408,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         pbUpdateProgress = updatePopup.findViewById(R.id.pb_update_progress);
         tvUpdateUpdate = updatePopup.findViewById(R.id.tv_update_update);
         ivUpdateClose = updatePopup.findViewById(R.id.iv_update_close);
+        closeLinearLayout = updatePopup.findViewById(R.id.ll_update_cancel);
         tvUpdateUpdate.setOnClickListener(this);
         ivUpdateClose.setOnClickListener(this);
     }
@@ -424,7 +435,11 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
      * 获取更新
      */
     private void getUpdate() {
+        Log.i("yys", "getUpdate===");
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
+        map.put("version_code", AppUtils.getAppVersionCode());
+        map.put("access_token", loginBean.getToken());
         XyUrl.okPost(XyUrl.GET_UPDATE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
@@ -438,6 +453,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             @Override
             public void onError(int error, String errorMsg) {
 
+                Log.i("yys", "error==" + error + "errorMsg==" + errorMsg);
             }
         });
     }

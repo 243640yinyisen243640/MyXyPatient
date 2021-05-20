@@ -41,6 +41,7 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.umeng.commonsdk.UMConfigure;
 import com.vice.bloodpressure.base.BaseApplication;
 import com.vice.bloodpressure.bean.CheckAdviceBean;
 import com.vice.bloodpressure.bean.im.ImWarningMessage;
@@ -105,13 +106,25 @@ public class App extends BaseApplication implements RongIMClient.ConnectionStatu
         initBugly();
         initAliPush();
         initAudio();
+        initUmeng();
+    }
+
+
+    private void initUmeng() {
+        /**
+         * 注意: 即使您已经在AndroidManifest.xml中配置过appkey和channel值，也需要在App代码中调
+         * 用初始化接口（如需要使用AndroidManifest.xml中配置好的appkey和channel值，
+         * UMConfigure.init调用中appkey和channel参数请置为null）。
+         */
+        UMConfigure.init(this, "5d64a0be4ca3579c70000b20", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+        UMConfigure.setLogEnabled(true);
     }
 
 
     private void initAudio() {
-//        StarrySkyConfig config = new StarrySkyConfig().newBuilder()
-//                .build();
-//        StarrySky.init(this, config, null);
+        //        StarrySkyConfig config = new StarrySkyConfig().newBuilder()
+        //                .build();
+        //        StarrySky.init(this, config, null);
         StarrySky.init(this).apply();
     }
 
