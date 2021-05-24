@@ -435,7 +435,6 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
      * 获取更新
      */
     private void getUpdate() {
-        Log.i("yys", "getUpdate===");
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("version_code", AppUtils.getAppVersionCode());

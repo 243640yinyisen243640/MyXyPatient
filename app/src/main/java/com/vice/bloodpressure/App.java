@@ -117,7 +117,9 @@ public class App extends BaseApplication implements RongIMClient.ConnectionStatu
          * UMConfigure.init调用中appkey和channel参数请置为null）。
          */
         UMConfigure.init(this, "5d64a0be4ca3579c70000b20", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
-        UMConfigure.setLogEnabled(true);
+        //        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        // 支持在子进程中统计自定义事件
+        UMConfigure.setProcessEvent(true);
     }
 
 

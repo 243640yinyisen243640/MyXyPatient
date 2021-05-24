@@ -2,7 +2,6 @@ package com.vice.bloodpressure.ui.activity.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -13,11 +12,11 @@ import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseActivity;
 import com.vice.bloodpressure.net.OkHttpCallBack;
@@ -92,11 +91,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivity(new Intent(getPageContext(), SugarTimeResetActivity.class));
                 break;
             case R.id.bt_exit:
-                String deviceID = DeviceUtils.getUniqueDeviceId();
-                String macdeviceID = DeviceUtils.getMacAddress();
-                Log.i("yys", "deviceID==" + deviceID);
-                Log.i("yys", "macdeviceID==" + macdeviceID);
+                //                String deviceID = DeviceUtils.getUniqueDeviceId();
+                //                String macdeviceID = DeviceUtils.getMacAddress();
+                //                Log.i("yys", "deviceID==" + deviceID);
+                //                Log.i("yys", "macdeviceID==" + macdeviceID);
                 //                toExit();
+                Map<String, Object> music = new HashMap<String, Object>();
+                music.put("phone", "15295201816");
+                //上下文   事件ID   map
+                MobclickAgent.onEventObject(this, "userName", music);
                 break;
         }
     }

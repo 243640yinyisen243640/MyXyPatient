@@ -389,3 +389,12 @@
 
 -keep class androidx.recyclerview.widget.**{*;}
 -keep class androidx.viewpager2.widget.**{*;}
+
+
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

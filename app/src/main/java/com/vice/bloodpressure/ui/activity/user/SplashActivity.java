@@ -83,6 +83,8 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //将window的背景图设置为空
+//        MobclickAgent.setDebugMode( true );
+//        UMConfigure.setLogEnabled(true);
         getWindow().setBackgroundDrawable(null);
         initValues();
         hideTitleBar();
