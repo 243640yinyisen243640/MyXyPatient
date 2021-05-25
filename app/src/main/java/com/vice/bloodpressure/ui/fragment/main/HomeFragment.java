@@ -53,6 +53,7 @@ import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.umeng.analytics.MobclickAgent;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.HomeBloodSugarAdapter;
 import com.vice.bloodpressure.adapter.HomeEightModuleAdapter;
@@ -119,6 +120,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -1163,21 +1165,46 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 break;
             case GET_BANNER_LIST:
                 bannerList = (List<BannerBean>) msg.obj;
+                for (int i = 0; i < bannerList.size(); i++) {
+                    bannerList.get(i).setBannerID((i + 1) + "");
+                }
                 ImageAdapter adapter = new ImageAdapter(bannerList);
                 banner.setAdapter(adapter)
                         .addBannerLifecycleObserver(this)
                         .setIndicator(new CircleIndicator(getPageContext())).setOnBannerListener((data, position) -> {
                     if (!TextUtils.isEmpty(bannerList.get(position).getLink())) {
+
+                        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
+                        StringBuilder stringBuilderGoods = new StringBuilder();
+                        stringBuilderGoods.append(user.getNickname()).append("+").append(user.getUsername());
+
+                        StringBuilder eventIDBuilder = new StringBuilder();
+                        eventIDBuilder.append("banner").append("_0").append(bannerList.get(position).getBannerID());
+
+                        Log.i("yys", "eventIDBuilder==" + eventIDBuilder.toString());
+                        Map<String, Object> activity_1 = new HashMap<String, Object>();
+                        activity_1.put("nametel", stringBuilderGoods);
+                        //上下文   事件ID   map
+                        MobclickAgent.onEventObject(Utils.getApp(), eventIDBuilder.toString(), activity_1);
                         Intent intentBanner = new Intent(getPageContext(), WebHelperActivity.class);
                         intentBanner.putExtra("title", bannerList.get(position).getTitle());
                         intentBanner.putExtra("url", bannerList.get(position).getLink());
-//                        intentBanner.putExtra("url","https://jinshuju.net/f/vW6hQA");
+                        //                        intentBanner.putExtra("url","https://jinshuju.net/f/vW6hQA");
                         startActivity(intentBanner);
                     }
                 });
                 break;
             case GET_TWO_GOOD:
                 List<GoodsRecommendBean> list = (List<GoodsRecommendBean>) msg.obj;
+
+                for (int i = 0; i < list.size(); i++) {
+                    list.get(i).setActivityID((i + 1) + "");
+                }
+                //                if (list.size() > 2) {
+                //                    list.get(0).setActivityID("1");
+                //                    list.get(1).setActivityID("2");
+                //                }
+
                 setTwoGoods(list);
                 break;
             case GET_KNOWLEDGE_LIST:

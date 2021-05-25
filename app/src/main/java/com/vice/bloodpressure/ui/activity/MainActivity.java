@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -40,12 +41,17 @@ import com.lyd.baselib.constant.BaseConstantParam;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
+import com.lyd.modulemall.ui.activity.ProductDetailActivity;
 import com.lyd.modulemall.ui.fragment.MallHomeFragment;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
+import com.vice.bloodpressure.base.activity.WebHelperActivity;
+import com.vice.bloodpressure.bean.AdverInfo;
 import com.vice.bloodpressure.bean.MyDoctorBean;
 import com.vice.bloodpressure.bean.RongUserBean;
 import com.vice.bloodpressure.bean.RongYunBean;
@@ -62,10 +68,15 @@ import com.vice.bloodpressure.ui.fragment.main.OutOfHospitalFragment;
 import com.vice.bloodpressure.ui.fragment.main.RegistrationFragment;
 import com.vice.bloodpressure.ui.fragment.main.UserFragment;
 import com.vice.bloodpressure.utils.DialogUtils;
+import com.vice.bloodpressure.utils.ImgViewUtils;
 import com.vice.bloodpressure.utils.NotificationUtils;
+import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.UpdateUtils;
 import com.vice.bloodpressure.view.NumberProgressBar;
+import com.vice.bloodpressure.view.popu.AdvertisementPop;
+import com.vice.bloodpressure.view.popu.GoodsDetailsPop;
 import com.vice.bloodpressure.view.popu.HomeGuidePopup;
+import com.vice.bloodpressure.view.popu.NoNeedPop;
 import com.vice.bloodpressure.view.popu.UpdatePopup;
 import com.wei.android.lib.colorview.view.ColorTextView;
 import com.xiaomi.mipush.sdk.Constants;
@@ -74,6 +85,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -83,6 +95,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import razerdp.basepopup.BasePopupWindow;
+import retrofit2.Call;
 
 /**
  * 描述:
@@ -169,6 +182,23 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     private static final String APP_ID = "wxbedc85b967f57dc8";
     // IWXAPI 是第三方app和微信通信的openApi接口
     private IWXAPI api;
+
+    private AdvertisementPop advertisementPop;
+    private GoodsDetailsPop goodsDetailsPop;
+    private NoNeedPop noNeedPop;
+
+    private ImageView backgroudImageView;
+    private ImageView closeImageView;
+
+    private ImageView backgroudGoodsImageView;
+    private ImageView closeGoodsImageView;
+
+    private ImageView backgroudNoNeedImageView;
+    private TextView sureTextView;
+    private TextView closeTextView;
+
+
+    private AdverInfo adverInfo;
 
     @Override
     protected View addContentLayout() {
@@ -270,10 +300,16 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 @Override
                 public void onDismiss() {
                     showGuidePopup();
+                    getAdver("1");
+                    getAdver("2");
+                    getAdver("3");
                 }
             });
         } else {
             showGuidePopup();
+            //            getAdver("1");
+            //            getAdver("2");
+            //            getAdver("3");
         }
     }
 
@@ -411,6 +447,34 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         closeLinearLayout = updatePopup.findViewById(R.id.ll_update_cancel);
         tvUpdateUpdate.setOnClickListener(this);
         ivUpdateClose.setOnClickListener(this);
+
+        advertisementPop = new AdvertisementPop(this);
+        backgroudImageView = advertisementPop.findViewById(R.id.iv_main_adver);
+        closeImageView = advertisementPop.findViewById(R.id.iv_adver_close);
+        backgroudImageView.setOnClickListener(this);
+        closeImageView.setOnClickListener(this);
+        int width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 80);
+        int hight = width / 5 * 4;
+        LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(width, hight);
+        ll.gravity = Gravity.CENTER;
+        backgroudImageView.setLayoutParams(ll);
+
+        goodsDetailsPop = new GoodsDetailsPop(this);
+        backgroudGoodsImageView = goodsDetailsPop.findViewById(R.id.iv_main_goods);
+        closeGoodsImageView = goodsDetailsPop.findViewById(R.id.iv_goods_close);
+        backgroudGoodsImageView.setLayoutParams(ll);
+        backgroudGoodsImageView.setOnClickListener(this);
+        closeGoodsImageView.setOnClickListener(this);
+
+        noNeedPop = new NoNeedPop(this);
+        backgroudNoNeedImageView = noNeedPop.findViewById(R.id.iv_main_no_need);
+        closeTextView = noNeedPop.findViewById(R.id.tv_main_no_need_cancle);
+        sureTextView = noNeedPop.findViewById(R.id.tv_main_no_need_sure);
+        LinearLayout noNeed = noNeedPop.findViewById(R.id.ll_main_no_need);
+        backgroudNoNeedImageView.setLayoutParams(ll);
+        noNeed.setLayoutParams(ll);
+        closeTextView.setOnClickListener(this);
+        sureTextView.setOnClickListener(this);
     }
 
 
@@ -451,9 +515,39 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
 
             @Override
             public void onError(int error, String errorMsg) {
-
-                Log.i("yys", "error==" + error + "errorMsg==" + errorMsg);
+                getAdver("1");
+                getAdver("2");
+                getAdver("3");
             }
+        });
+    }
+
+    /**
+     * 获取广告
+     * type:1：外部链接
+     * 2：商品链接
+     * 3：不跳转
+     */
+    private void getAdver(String type) {
+        LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        Call<String> requestCall = DataManager.getAdver(userLogin.getToken(), type, (call, response) -> {
+            if (response.code == 200) {
+                adverInfo = (AdverInfo) response.object;
+                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, adverInfo.getImg_url(), backgroudImageView);
+                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, adverInfo.getImg_url(), backgroudGoodsImageView);
+                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, adverInfo.getImg_url(), backgroudNoNeedImageView);
+
+                if ("1".equals(type)) {
+                    advertisementPop.showPopupWindow();
+                } else if ("2".equals(type)) {
+                    goodsDetailsPop.showPopupWindow();
+                } else {
+                    noNeedPop.showPopupWindow();
+                }
+
+            }
+        }, (call, t) -> {
+
         });
     }
 
@@ -505,6 +599,10 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
 
     @Override
     public void onClick(View view) {
+        Intent intent;
+        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        StringBuilder stringBuilderGoods = new StringBuilder();
+        stringBuilderGoods.append(user.getNickname()).append("+").append(user.getUsername());
         switch (view.getId()) {
             //更新升级按钮
             case R.id.tv_update_update:
@@ -528,6 +626,55 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             //关闭按钮
             case R.id.iv_update_close:
                 updatePopup.dismiss();
+                break;
+            case R.id.iv_main_adver:
+                Map<String, Object> alerExternal = new HashMap<String, Object>();
+                alerExternal.put("nametel", stringBuilderGoods);
+                //上下文   事件ID   map
+                MobclickAgent.onEventObject(this, "alert_external", alerExternal);
+                intent = new Intent(getPageContext(), WebHelperActivity.class);
+                intent.putExtra("title", adverInfo.getTitle());
+                intent.putExtra("url", adverInfo.getUrl());
+                startActivity(intent);
+                break;
+            case R.id.iv_adver_close:
+                Map<String, Object> alertExternalX = new HashMap<String, Object>();
+                alertExternalX.put("nametel", stringBuilderGoods);
+                //上下文   事件ID   map
+                MobclickAgent.onEventObject(this, "alert_external_x", alertExternalX);
+                advertisementPop.dismiss();
+                break;
+            case R.id.iv_main_goods:
+                Map<String, Object> alertPoduct = new HashMap<String, Object>();
+                alertPoduct.put("nametel", stringBuilderGoods);
+                //上下文   事件ID   map
+                MobclickAgent.onEventObject(this, "alert_external", alertPoduct);
+                intent = new Intent(getPageContext(), ProductDetailActivity.class);
+                intent.putExtra("goods_id", adverInfo.getGoods_id());
+                startActivity(intent);
+                break;
+            case R.id.iv_goods_close:
+                Map<String, Object> alertProductX = new HashMap<String, Object>();
+                alertProductX.put("nametel", stringBuilderGoods);
+                //上下文   事件ID   map
+                MobclickAgent.onEventObject(this, "alert_product_x", alertProductX);
+                goodsDetailsPop.dismiss();
+                break;
+            case R.id.tv_main_no_need_cancle:
+                Map<String, Object> alertNoX = new HashMap<String, Object>();
+                alertNoX.put("nametel", stringBuilderGoods);
+                //上下文   事件ID   map
+                MobclickAgent.onEventObject(this, "alert_no_x", alertNoX);
+                noNeedPop.dismiss();
+                break;
+            case R.id.tv_main_no_need_sure:
+                Map<String, Object> alerNo = new HashMap<String, Object>();
+                alerNo.put("nametel", stringBuilderGoods);
+                //上下文   事件ID   map
+                MobclickAgent.onEventObject(this, "alert_no", alerNo);
+                noNeedPop.dismiss();
+                break;
+            default:
                 break;
         }
     }

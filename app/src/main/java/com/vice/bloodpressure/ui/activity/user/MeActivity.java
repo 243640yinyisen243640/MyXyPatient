@@ -253,6 +253,7 @@ public class MeActivity extends BaseHandlerActivity {
         XyUrl.okPostSave(XyUrl.PERSONAL_SAVE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String msg) {
+
                 ToastUtils.showShort(msg);
             }
 
@@ -349,7 +350,7 @@ public class MeActivity extends BaseHandlerActivity {
                 }
                 String birthday = TimeUtils.millis2String(user.getBirthtime() * 1000L, TimeFormatUtils.getDefaultFormat());
                 tvBirthday.setText(birthday);
-                tvName.setText(user.getPetname());
+                tvName.setText(user.getNickname());
                 break;
             case CHANGE_IMG_HEAD:
                 String headUrl = (String) msg.obj;

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_main_no_need"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_img_main_adver" />
+
+    <LinearLayout
+        android:id="@+id/ll_main_no_need"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_main_no_need_cancle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_bg_gray"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/main_cancle"
+            android:textColor="@color/black_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_main_no_need_sure"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_bg_green"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/sure"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

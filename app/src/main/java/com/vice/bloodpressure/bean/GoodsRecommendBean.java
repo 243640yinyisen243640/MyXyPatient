@@ -4,6 +4,15 @@ public class GoodsRecommendBean {
     private String imgurl;
     private String weburl;
     private String name;
+    private String activityID;
+
+    public String getActivityID() {
+        return activityID;
+    }
+
+    public void setActivityID(String activityID) {
+        this.activityID = activityID;
+    }
 
     public String getImgurl() {
         return imgurl;

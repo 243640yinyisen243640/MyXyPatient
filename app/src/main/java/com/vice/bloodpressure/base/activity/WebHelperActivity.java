@@ -27,6 +27,7 @@ public class WebHelperActivity extends XYSoftUIBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         topViewManager().titleTextView().setText(getIntent().getStringExtra("title"));
+        topViewManager().backTextView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.back_green, 0, 0, 0);
         containerView().addView(initView());
         url = getIntent().getStringExtra("url");
         if (!TextUtils.isEmpty(url)) {

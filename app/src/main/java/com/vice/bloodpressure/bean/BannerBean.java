@@ -11,6 +11,15 @@ public class BannerBean {
     private String title;
     private String imgurl;
     private String link;
+    private String bannerID;
+
+    public String getBannerID() {
+        return bannerID;
+    }
+
+    public void setBannerID(String bannerID) {
+        this.bannerID = bannerID;
+    }
 
     public String getTitle() {
         return title;

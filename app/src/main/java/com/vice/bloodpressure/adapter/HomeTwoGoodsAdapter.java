@@ -14,12 +14,17 @@ import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
+import com.umeng.analytics.MobclickAgent;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
 import com.vice.bloodpressure.bean.GoodsRecommendBean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeTwoGoodsAdapter extends BaseQuickAdapter<GoodsRecommendBean, BaseViewHolder> {
     public HomeTwoGoodsAdapter(@Nullable List<GoodsRecommendBean> data) {
@@ -47,6 +52,20 @@ public class HomeTwoGoodsAdapter extends BaseQuickAdapter<GoodsRecommendBean, Ba
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(goodsRecommendBean.getWeburl())) {
+
+                    LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
+                    StringBuilder stringBuilderGoods = new StringBuilder();
+                    stringBuilderGoods.append(user.getNickname()).append("+").append(user.getUsername());
+
+
+                    StringBuilder eventIDBuilder = new StringBuilder();
+                    eventIDBuilder.append("activity").append("_").append(goodsRecommendBean.getActivityID());
+
+                    Map<String, Object> activity_1 = new HashMap<String, Object>();
+                    activity_1.put("nametel", stringBuilderGoods);
+                    //上下文   事件ID   map
+                    MobclickAgent.onEventObject(Utils.getApp(), eventIDBuilder.toString(), activity_1);
+
                     Intent intent = new Intent(Utils.getApp(), BaseWebViewActivity.class);
                     intent.putExtra("title", goodsRecommendBean.getName());
                     intent.putExtra("url", goodsRecommendBean.getWeburl());
