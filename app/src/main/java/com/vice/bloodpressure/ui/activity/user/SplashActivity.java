@@ -27,6 +27,7 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.libsteps.StepService;
+import com.umeng.commonsdk.UMConfigure;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseActivity;
 import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
@@ -84,7 +85,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //将window的背景图设置为空
 //        MobclickAgent.setDebugMode( true );
-//        UMConfigure.setLogEnabled(true);
+        UMConfigure.setLogEnabled(true);
         getWindow().setBackgroundDrawable(null);
         initValues();
         hideTitleBar();

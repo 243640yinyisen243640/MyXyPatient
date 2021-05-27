@@ -627,49 +627,58 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             case R.id.iv_update_close:
                 updatePopup.dismiss();
                 break;
+            //外部链接 点击图片
             case R.id.iv_main_adver:
                 Map<String, Object> alerExternal = new HashMap<String, Object>();
-                alerExternal.put("nametel", stringBuilderGoods);
+                alerExternal.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_external", alerExternal);
+                advertisementPop.dismiss();
+
                 intent = new Intent(getPageContext(), WebHelperActivity.class);
                 intent.putExtra("title", adverInfo.getTitle());
                 intent.putExtra("url", adverInfo.getUrl());
                 startActivity(intent);
                 break;
+            //外部链接 点击关闭
             case R.id.iv_adver_close:
                 Map<String, Object> alertExternalX = new HashMap<String, Object>();
-                alertExternalX.put("nametel", stringBuilderGoods);
+                alertExternalX.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_external_x", alertExternalX);
                 advertisementPop.dismiss();
                 break;
+            //商品 点击图片
             case R.id.iv_main_goods:
                 Map<String, Object> alertPoduct = new HashMap<String, Object>();
-                alertPoduct.put("nametel", stringBuilderGoods);
+                alertPoduct.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map
-                MobclickAgent.onEventObject(this, "alert_external", alertPoduct);
+                MobclickAgent.onEventObject(this, "alert_product", alertPoduct);
+                goodsDetailsPop.dismiss();
                 intent = new Intent(getPageContext(), ProductDetailActivity.class);
                 intent.putExtra("goods_id", adverInfo.getGoods_id());
                 startActivity(intent);
                 break;
+            //商品 点击关闭
             case R.id.iv_goods_close:
                 Map<String, Object> alertProductX = new HashMap<String, Object>();
-                alertProductX.put("nametel", stringBuilderGoods);
+                alertProductX.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_product_x", alertProductX);
                 goodsDetailsPop.dismiss();
                 break;
+            //无链接 取消
             case R.id.tv_main_no_need_cancle:
                 Map<String, Object> alertNoX = new HashMap<String, Object>();
-                alertNoX.put("nametel", stringBuilderGoods);
+                alertNoX.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_no_x", alertNoX);
                 noNeedPop.dismiss();
                 break;
+            //无链接 确定
             case R.id.tv_main_no_need_sure:
                 Map<String, Object> alerNo = new HashMap<String, Object>();
-                alerNo.put("nametel", stringBuilderGoods);
+                alerNo.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_no", alerNo);
                 noNeedPop.dismiss();

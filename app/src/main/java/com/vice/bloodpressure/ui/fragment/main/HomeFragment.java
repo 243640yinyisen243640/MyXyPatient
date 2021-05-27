@@ -1173,7 +1173,6 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                         .addBannerLifecycleObserver(this)
                         .setIndicator(new CircleIndicator(getPageContext())).setOnBannerListener((data, position) -> {
                     if (!TextUtils.isEmpty(bannerList.get(position).getLink())) {
-
                         LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
                         StringBuilder stringBuilderGoods = new StringBuilder();
                         stringBuilderGoods.append(user.getNickname()).append("+").append(user.getUsername());
@@ -1181,11 +1180,11 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                         StringBuilder eventIDBuilder = new StringBuilder();
                         eventIDBuilder.append("banner").append("_0").append(bannerList.get(position).getBannerID());
 
-                        Log.i("yys", "eventIDBuilder==" + eventIDBuilder.toString());
-                        Map<String, Object> activity_1 = new HashMap<String, Object>();
-                        activity_1.put("nametel", stringBuilderGoods);
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        map.put("nametel", stringBuilderGoods.toString());
                         //上下文   事件ID   map
-                        MobclickAgent.onEventObject(Utils.getApp(), eventIDBuilder.toString(), activity_1);
+                        MobclickAgent.onEventObject(getPageContext(), eventIDBuilder.toString(), map);
+                        Log.i("yys", "eventIDBuilder==" + eventIDBuilder.toString() + "    map==" + map);
                         Intent intentBanner = new Intent(getPageContext(), WebHelperActivity.class);
                         intentBanner.putExtra("title", bannerList.get(position).getTitle());
                         intentBanner.putExtra("url", bannerList.get(position).getLink());
@@ -1200,11 +1199,6 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 for (int i = 0; i < list.size(); i++) {
                     list.get(i).setActivityID((i + 1) + "");
                 }
-                //                if (list.size() > 2) {
-                //                    list.get(0).setActivityID("1");
-                //                    list.get(1).setActivityID("2");
-                //                }
-
                 setTwoGoods(list);
                 break;
             case GET_KNOWLEDGE_LIST:
@@ -1231,7 +1225,6 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 startActivity(intent);
                 break;
             case GET_INDEX_EDUCATION:
-                Log.i("yys", "GET_INDEX_EDUCATION=====");
                 flHomeEducationHave.setVisibility(View.VISIBLE);
                 flHomeEducationEmpty.setVisibility(View.GONE);
                 indexEducationBean = (IndexEducationBean) msg.obj;

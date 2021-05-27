@@ -61,10 +61,10 @@ public class HomeTwoGoodsAdapter extends BaseQuickAdapter<GoodsRecommendBean, Ba
                     StringBuilder eventIDBuilder = new StringBuilder();
                     eventIDBuilder.append("activity").append("_").append(goodsRecommendBean.getActivityID());
 
-                    Map<String, Object> activity_1 = new HashMap<String, Object>();
-                    activity_1.put("nametel", stringBuilderGoods);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("nametel", stringBuilderGoods.toString());
                     //上下文   事件ID   map
-                    MobclickAgent.onEventObject(Utils.getApp(), eventIDBuilder.toString(), activity_1);
+                    MobclickAgent.onEventObject(Utils.getApp(), eventIDBuilder.toString(), map);
 
                     Intent intent = new Intent(Utils.getApp(), BaseWebViewActivity.class);
                     intent.putExtra("title", goodsRecommendBean.getName());

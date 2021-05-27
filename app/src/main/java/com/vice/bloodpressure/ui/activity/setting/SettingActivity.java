@@ -91,12 +91,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_exit:
                 toExit();
-                //                LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
-                //                String token = loginBean.getToken();
-                //                Log.i("yys", "token===" + token);
-                //
-                //                //                toExit();
-
+                //                                Map<String, Object> music = new HashMap<String, Object>();
+                //                                music.put("phone1", "15295201816");
+                //                                //上下文   事件ID   map
+                //                                MobclickAgent.onEventObject(this, "UserNameText", music);
                 break;
         }
     }
