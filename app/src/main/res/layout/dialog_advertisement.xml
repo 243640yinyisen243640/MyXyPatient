@@ -9,8 +9,7 @@
         android:id="@+id/iv_main_adver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_mall_home_activity" />
+        android:src="@drawable/default_img_main_adver" />
 
     <ImageView
         android:id="@+id/iv_adver_close"

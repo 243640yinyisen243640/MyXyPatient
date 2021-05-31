@@ -14,8 +14,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.luwei.checkhelper.CheckHelper;
 import com.luwei.checkhelper.MultiCheckHelper;
 import com.lyd.baselib.base.activity.BaseViewBindingActivity;
+import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.constant.BaseConstantParam;
 import com.lyd.baselib.utils.MoneyUtils;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.TurnsUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
@@ -67,7 +69,10 @@ public class ShoppingCartActivity extends BaseViewBindingActivity<ActivityShoppi
     }
 
     private void getShoppingCartList() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+
         HashMap map = new HashMap<>();
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.GET_SHOPPING_CART_LIST)
                 .addAll(map)
                 .asResponse(ShoppingCartListBean.class)
@@ -187,10 +192,12 @@ public class ShoppingCartActivity extends BaseViewBindingActivity<ActivityShoppi
     }
 
     private void toEditShoppingCart(String type, int cart_id) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("cart_id", cart_id);
         map.put("type", type);
         map.put("num", "1");
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.EDIT_SHOPPING_CART_PRODUCT_COUNT)
                 .addAll(map)
                 .asResponse(String.class)
@@ -280,7 +287,10 @@ public class ShoppingCartActivity extends BaseViewBindingActivity<ActivityShoppi
     }
 
     private void toDelNormalProduct(String cartId) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+
         HashMap map = new HashMap<>();
+        map.put("access_token", loginBean.getToken());
         if (TextUtils.isEmpty(cartId)) {
             cartIds = "";
             getCartIdsFromCartIdsHashMap();
@@ -330,8 +340,10 @@ public class ShoppingCartActivity extends BaseViewBindingActivity<ActivityShoppi
         if (labelIds.length() > 0) {
             labelIds = labelIds.substring(0, labelIds.length() - 1);
         }
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("cart_ids", labelIds);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.DEL_SHOPPING_CART_PRODUCT)
                 .addAll(map)
                 .asResponse(String.class)

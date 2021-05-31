@@ -22,7 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.DisableDisplayDpiChangeUtils;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.TurnsUtils;
 import com.lyd.baselib.utils.engine.GlideImageEngine;
 import com.lyd.modulemall.R;
@@ -86,6 +88,7 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
         OnClickUtils.init(this);
         initStatusBar();
         productId = getIntent().getIntExtra("goods_id", 1);
+
         //获取商品详情
         getProductDetail();
         //获取商品规格
@@ -105,8 +108,10 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
      * 获取商品详情
      */
     private void getProductDetail() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("goods_id", productId);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.GET_PRODUCT_DETAIL)
                 .addAll(map)
                 .asResponse(ProductDetailBean.class)
@@ -199,8 +204,10 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
      * 获取商品规格
      */
     private void getProductSku() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("goods_id", productId);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.GET_PRODUCT_SKU)
                 .addAll(map)
                 .asResponse(ProductSkuBean.class)
@@ -337,10 +344,12 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
      * @param count
      */
     private void addToCart(String skuId, int count) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("goods_id", productId);
         map.put("goods_sku_id", skuId);
         map.put("num", count);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.ADD_TO_SHOPPING_CART)
                 .addAll(map)
                 .asResponse(String.class)
@@ -462,9 +471,11 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
     }
 
     private void toFavo() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("goods_id", productId);
         map.put("collect_type", collect_type);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.EDIT_GOODS_COLLECTION)
                 .addAll(map)
                 .asResponse(ProductCollectBean.class)
@@ -482,18 +493,18 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
                 });
     }
 
-//    /**
-//     * 重写 getResource 方法，防止系统字体影响
-//     * 禁止app字体大小跟随系统字体大小调节
-//     */
-//    @Override
-//    public Resources getResources() {
-//        Resources resources = super.getResources();
-//        if (resources != null && resources.getConfiguration().fontScale != 1.0f) {
-//            Configuration configuration = resources.getConfiguration();
-//            configuration.setToDefaults();
-//            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-//        }
-//        return resources;
-//    }
+    //    /**
+    //     * 重写 getResource 方法，防止系统字体影响
+    //     * 禁止app字体大小跟随系统字体大小调节
+    //     */
+    //    @Override
+    //    public Resources getResources() {
+    //        Resources resources = super.getResources();
+    //        if (resources != null && resources.getConfiguration().fontScale != 1.0f) {
+    //            Configuration configuration = resources.getConfiguration();
+    //            configuration.setToDefaults();
+    //            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+    //        }
+    //        return resources;
+    //    }
 }

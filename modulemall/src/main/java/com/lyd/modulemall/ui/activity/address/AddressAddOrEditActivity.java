@@ -2,11 +2,14 @@ package com.lyd.modulemall.ui.activity.address;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.base.activity.BaseViewBindingActivity;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.lyd.modulemall.R;
@@ -68,8 +71,11 @@ public class AddressAddOrEditActivity extends BaseViewBindingActivity<ActivityAd
      *
      */
     private void getAddressDetail() {
+        Log.i("yys", "===getAddressDetail");
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("id", id);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.GET_ADDRESS_DETAIL)
                 .addAll(map)
                 .asResponse(ShoppingAddressDetailBean.class)
@@ -102,7 +108,6 @@ public class AddressAddOrEditActivity extends BaseViewBindingActivity<ActivityAd
                 }, new OnError() {
                     @Override
                     public void onError(ErrorInfo error) throws Exception {
-
                     }
                 });
 
@@ -141,8 +146,11 @@ public class AddressAddOrEditActivity extends BaseViewBindingActivity<ActivityAd
      * 删除
      */
     private void toDel() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+
         HashMap map = new HashMap<>();
         map.put("id", id);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.DEL_ADDRESS)
                 .addAll(map)
                 .asResponse(String.class)
@@ -201,8 +209,10 @@ public class AddressAddOrEditActivity extends BaseViewBindingActivity<ActivityAd
         } else {
             isDefault = "2";
         }
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("id", id);
+        map.put("access_token", loginBean.getToken());
         map.put("receiver_name", personName);
         map.put("receiver_mobile", tel);
         map.put("receiver_address", addressDetail);

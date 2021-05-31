@@ -20,6 +20,8 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.luwei.checkhelper.CheckHelper;
 import com.luwei.checkhelper.SingleCheckHelper;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.modulemall.R;
 import com.lyd.modulemall.adapter.BottomSelectAddressAdapter;
 import com.lyd.modulemall.bean.AddressBean;
@@ -90,9 +92,12 @@ public class BottomAddressSelectPopup extends BasePopupWindow implements View.On
      *
      */
     private void getAddressList() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(context, SharedPreferencesUtils.USER_INFO);
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("type", type);
         map.put("adcode", adCode);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.GET_AREAS)
                 .addAll(map)
                 .asResponseList(AddressBean.class)

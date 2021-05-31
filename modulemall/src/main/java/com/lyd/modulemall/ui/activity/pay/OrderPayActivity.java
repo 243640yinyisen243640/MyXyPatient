@@ -16,8 +16,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.luwei.checkhelper.CheckHelper;
 import com.luwei.checkhelper.SingleCheckHelper;
 import com.lyd.baselib.base.activity.BaseViewBindingActivity;
+import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.constant.BaseConstantParam;
 import com.lyd.baselib.utils.MoneyUtils;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.BindEventBus;
 import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.lyd.modulemall.R;
@@ -144,11 +146,14 @@ public class OrderPayActivity extends BaseViewBindingActivity<ActivityOrderPayBi
      * 生成订单
      */
     private void toCreateOrder() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+
         HashMap map = new HashMap<>();
         String url = "";
         if (type.equals("1")) {
             url = MallUrl.CREATE_ORDER;
             map.put("id", addressId);
+            map.put("access_token", loginBean.getToken());
             map.put("order_tag", getIntent().getExtras().getString("order_tag"));
             if ("cart".equals(order_tag)) {
                 //购物车下单
@@ -211,10 +216,12 @@ public class OrderPayActivity extends BaseViewBindingActivity<ActivityOrderPayBi
      * 使用阿里支付
      */
     private void toUseAliPay() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("order_id", order_id);
         map.put("pay_type", payType);
         map.put("type", type);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.ORDER_PAY)
                 .addAll(map)
                 .asResponse(AliPayBean.class)
@@ -251,10 +258,12 @@ public class OrderPayActivity extends BaseViewBindingActivity<ActivityOrderPayBi
      * 使用微信支付
      */
     private void toUseWeChatPay() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("order_id", order_id);
         map.put("pay_type", payType);
         map.put("type", type);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.ORDER_PAY)
                 .addAll(map)
                 .asResponse(WeChatPayBean.class)

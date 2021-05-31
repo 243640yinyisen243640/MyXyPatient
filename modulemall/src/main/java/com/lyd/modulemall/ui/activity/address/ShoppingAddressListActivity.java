@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lyd.baselib.base.activity.BaseViewBindingActivity;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.BindEventBus;
 import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.lyd.modulemall.R;
@@ -51,7 +53,9 @@ public class ShoppingAddressListActivity extends BaseViewBindingActivity<Activit
      *
      */
     private void getAddressList() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap<String, Object> map = new HashMap<>();
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.GET_ADDRESS_LIST)
                 .addAll(map)
                 .asResponseList(ShoppingAddressListBean.class)
@@ -97,8 +101,10 @@ public class ShoppingAddressListActivity extends BaseViewBindingActivity<Activit
     }
 
     private void toDoDel(int id) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("id", id);
+        map.put("access_token", loginBean.getToken());
         RxHttp.postForm(MallUrl.DEL_ADDRESS)
                 .addAll(map)
                 .asResponse(String.class)

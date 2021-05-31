@@ -33,6 +33,7 @@ import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.SPStaticUtils;
 import com.blankj.utilcode.util.Utils;
+import com.bumptech.glide.Glide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.imuxuan.floatingview.FloatingView;
 import com.lyd.baselib.BuildConfig;
@@ -50,7 +51,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
-import com.vice.bloodpressure.base.activity.WebHelperActivity;
+import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
 import com.vice.bloodpressure.bean.AdverInfo;
 import com.vice.bloodpressure.bean.MyDoctorBean;
 import com.vice.bloodpressure.bean.RongUserBean;
@@ -68,7 +69,6 @@ import com.vice.bloodpressure.ui.fragment.main.OutOfHospitalFragment;
 import com.vice.bloodpressure.ui.fragment.main.RegistrationFragment;
 import com.vice.bloodpressure.ui.fragment.main.UserFragment;
 import com.vice.bloodpressure.utils.DialogUtils;
-import com.vice.bloodpressure.utils.ImgViewUtils;
 import com.vice.bloodpressure.utils.NotificationUtils;
 import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.UpdateUtils;
@@ -195,10 +195,12 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
 
     private ImageView backgroudNoNeedImageView;
     private TextView sureTextView;
-    private TextView closeTextView;
+    private ImageView noNeedcloseImageView;
 
 
-    private AdverInfo adverInfo;
+    private AdverInfo outadverInfo;
+    private AdverInfo goodsAdverInfo;
+    private AdverInfo noadverInfo;
 
     @Override
     protected View addContentLayout() {
@@ -300,16 +302,13 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 @Override
                 public void onDismiss() {
                     showGuidePopup();
-                    getAdver("1");
-                    getAdver("2");
-                    getAdver("3");
+                    //                    getAdver("3");
                 }
             });
         } else {
             showGuidePopup();
-            //            getAdver("1");
-            //            getAdver("2");
             //            getAdver("3");
+            getGoods();
         }
     }
 
@@ -453,7 +452,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         closeImageView = advertisementPop.findViewById(R.id.iv_adver_close);
         backgroudImageView.setOnClickListener(this);
         closeImageView.setOnClickListener(this);
-        int width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 80);
+        int width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 40);
         int hight = width / 5 * 4;
         LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(width, hight);
         ll.gravity = Gravity.CENTER;
@@ -468,13 +467,10 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
 
         noNeedPop = new NoNeedPop(this);
         backgroudNoNeedImageView = noNeedPop.findViewById(R.id.iv_main_no_need);
-        closeTextView = noNeedPop.findViewById(R.id.tv_main_no_need_cancle);
-        sureTextView = noNeedPop.findViewById(R.id.tv_main_no_need_sure);
-        LinearLayout noNeed = noNeedPop.findViewById(R.id.ll_main_no_need);
+        noNeedcloseImageView = noNeedPop.findViewById(R.id.iv_main_no_need_close);
         backgroudNoNeedImageView.setLayoutParams(ll);
-        noNeed.setLayoutParams(ll);
-        closeTextView.setOnClickListener(this);
-        sureTextView.setOnClickListener(this);
+        backgroudNoNeedImageView.setOnClickListener(this);
+        noNeedcloseImageView.setOnClickListener(this);
     }
 
 
@@ -503,6 +499,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         HashMap map = new HashMap<>();
         map.put("version_code", AppUtils.getAppVersionCode());
         map.put("access_token", loginBean.getToken());
+        map.put("version", ConstantParam.SERVER_VERSION);
         XyUrl.okPost(XyUrl.GET_UPDATE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
@@ -515,9 +512,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
 
             @Override
             public void onError(int error, String errorMsg) {
-                getAdver("1");
-                getAdver("2");
-                getAdver("3");
+                getGoods();
             }
         });
     }
@@ -527,27 +522,68 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
      * type:1：外部链接
      * 2：商品链接
      * 3：不跳转
+     * 3-1-2    显示 2—1—3
      */
-    private void getAdver(String type) {
+    private void getAdver() {
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
-        Call<String> requestCall = DataManager.getAdver(userLogin.getToken(), type, (call, response) -> {
+        Call<String> requestCall = DataManager.getAdver(userLogin.getToken(), "3", (call, response) -> {
             if (response.code == 200) {
-                adverInfo = (AdverInfo) response.object;
-                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, adverInfo.getImg_url(), backgroudImageView);
-                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, adverInfo.getImg_url(), backgroudGoodsImageView);
-                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, adverInfo.getImg_url(), backgroudNoNeedImageView);
+                noadverInfo = (AdverInfo) response.object;
 
-                if ("1".equals(type)) {
-                    advertisementPop.showPopupWindow();
-                } else if ("2".equals(type)) {
-                    goodsDetailsPop.showPopupWindow();
-                } else {
-                    noNeedPop.showPopupWindow();
-                }
+                Glide.with(getPageContext()).asBitmap().load(noadverInfo.getImg_url()).centerInside().into(backgroudNoNeedImageView);
+                //                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, noadverInfo.getImg_url(), backgroudNoNeedImageView);
+
+                noNeedPop.showPopupWindow();
 
             }
         }, (call, t) -> {
+        });
+    }
 
+    /**
+     * 获取外部链接
+     */
+    private void getOut() {
+        LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        Call<String> requestCall = DataManager.getAdver(userLogin.getToken(), "1", (call, response) -> {
+            if (response.code == 200) {
+                outadverInfo = (AdverInfo) response.object;
+                Glide.with(getPageContext()).asBitmap().load(outadverInfo.getImg_url()).centerInside().into(backgroudImageView);
+
+                //                                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, outadverInfo.getImg_url(), backgroudImageView);
+                advertisementPop.showPopupWindow();
+                getAdver();
+
+            } else {
+                getAdver();
+
+            }
+        }, (call, t) -> {
+            getAdver();
+        });
+    }
+
+    /**
+     * 获取商品的弹窗
+     */
+    private void getGoods() {
+        LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        Call<String> requestCall = DataManager.getAdver(userLogin.getToken(), "2", (call, response) -> {
+            if (response.code == 200) {
+                goodsAdverInfo = (AdverInfo) response.object;
+
+                Glide.with(getPageContext()).asBitmap().load(goodsAdverInfo.getImg_url()).centerInside().into(backgroudGoodsImageView);
+
+                //                                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, goodsAdverInfo.getImg_url(), backgroudGoodsImageView);
+
+                goodsDetailsPop.showPopupWindow();
+                getOut();
+
+            } else {
+                getOut();
+            }
+        }, (call, t) -> {
+            getOut();
         });
     }
 
@@ -635,9 +671,9 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 MobclickAgent.onEventObject(this, "alert_external", alerExternal);
                 advertisementPop.dismiss();
 
-                intent = new Intent(getPageContext(), WebHelperActivity.class);
-                intent.putExtra("title", adverInfo.getTitle());
-                intent.putExtra("url", adverInfo.getUrl());
+                intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+                intent.putExtra("title", outadverInfo.getTitle());
+                intent.putExtra("url", outadverInfo.getUrl());
                 startActivity(intent);
                 break;
             //外部链接 点击关闭
@@ -656,7 +692,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 MobclickAgent.onEventObject(this, "alert_product", alertPoduct);
                 goodsDetailsPop.dismiss();
                 intent = new Intent(getPageContext(), ProductDetailActivity.class);
-                intent.putExtra("goods_id", adverInfo.getGoods_id());
+
+                intent.putExtra("goods_id", goodsAdverInfo.getGoods_id());
                 startActivity(intent);
                 break;
             //商品 点击关闭
@@ -668,7 +705,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 goodsDetailsPop.dismiss();
                 break;
             //无链接 取消
-            case R.id.tv_main_no_need_cancle:
+            case R.id.iv_main_no_need_close:
                 Map<String, Object> alertNoX = new HashMap<String, Object>();
                 alertNoX.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map
@@ -676,7 +713,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 noNeedPop.dismiss();
                 break;
             //无链接 确定
-            case R.id.tv_main_no_need_sure:
+            case R.id.iv_main_no_need:
                 Map<String, Object> alerNo = new HashMap<String, Object>();
                 alerNo.put("nametel", stringBuilderGoods.toString());
                 //上下文   事件ID   map

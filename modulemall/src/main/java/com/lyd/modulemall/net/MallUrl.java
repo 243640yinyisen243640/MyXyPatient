@@ -16,7 +16,7 @@ public class MallUrl {
     //正式地址
     private final static String DOMAIN = "http://port.xiyuns.cn";
     //测试地址
-    private final static String DOMAIN_TEST = "http://d.xiyuns.cn";
+    private final static String DOMAIN_TEST = "http://dt.xiyuns.cn";
     //设置为默认域名
     @DefaultDomain()
     public static String HOST_URL = EXTERNAL_RELEASE ? DOMAIN : DOMAIN_TEST;

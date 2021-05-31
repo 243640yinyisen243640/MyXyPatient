@@ -17,7 +17,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.luwei.checkhelper.CheckHelper;
 import com.luwei.checkhelper.SingleCheckHelper;
 import com.lyd.baselib.base.activity.BaseViewBindingActivity;
+import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.MoneyUtils;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.TurnsUtils;
 import com.lyd.modulemall.R;
 import com.lyd.modulemall.adapter.BottomSingleChoiceChooseCouponAdapter;
@@ -103,8 +105,10 @@ public class ConfirmOrderActivity extends BaseViewBindingActivity<ActivityConfir
 
 
     private void getConfirmDetail() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
         map.put("order_tag", order_tag);
+        map.put("access_token", loginBean.getToken());
         if ("cart".equals(order_tag)) {
             //购物车下单
             map.put("cart_ids", cart_ids);

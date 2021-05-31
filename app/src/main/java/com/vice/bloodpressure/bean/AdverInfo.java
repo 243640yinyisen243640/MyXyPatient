@@ -15,7 +15,7 @@ public class AdverInfo {
     /**
      * 商品id，type=2时跳转商品详情
      */
-    private String goods_id;
+    private int goods_id;
     /**
      * 跳转地址，type=1时跳转
      */
@@ -61,11 +61,11 @@ public class AdverInfo {
         this.rate = rate;
     }
 
-    public String getGoods_id() {
+    public int getGoods_id() {
         return goods_id;
     }
 
-    public void setGoods_id(String goods_id) {
+    public void setGoods_id(int goods_id) {
         this.goods_id = goods_id;
     }
 
