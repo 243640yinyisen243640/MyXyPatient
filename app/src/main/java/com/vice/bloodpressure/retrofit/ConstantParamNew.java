@@ -4,6 +4,6 @@ public class ConstantParamNew {
     /**
      * ip地址
      */
-    public static final String IP = "http://dt.xiyuns.cn/";
+    public static final String IP = "http://port.xiyuns.cn/";
 
 }

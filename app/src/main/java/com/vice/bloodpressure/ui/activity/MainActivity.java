@@ -662,6 +662,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             //关闭按钮
             case R.id.iv_update_close:
                 updatePopup.dismiss();
+                getGoods();
                 break;
             //外部链接 点击图片
             case R.id.iv_main_adver:

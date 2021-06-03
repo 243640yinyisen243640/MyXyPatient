@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,7 @@ public class BaseWebViewActivity extends BaseActivity {
 
     private void setTvMore() {
         String type = getIntent().getStringExtra("type");
-        if (!TextUtils.isEmpty(type)){
+        if (!TextUtils.isEmpty(type)) {
             switch (type) {
                 case "homeProfession":
                 case "homeWeight":
@@ -111,7 +112,7 @@ public class BaseWebViewActivity extends BaseActivity {
                     }
                 }
             });
-        }else{
+        } else {
             hideTvSave();
         }
     }

@@ -9,7 +9,7 @@ import com.lyd.baselib.BuildConfig;
  * 创建日期: 2019/9/19 13:58
  */
 public class ConstantParam {
-    public static final String SERVER_VERSION = "210409";
+    public static final String SERVER_VERSION = "210601";
     private static final boolean EXTERNAL_RELEASE = BuildConfig.ENVIRONMENT;
     private static final String IM_KEY_RELEASE = "x18ywvqfxbd8c";
     private static final String IM_KEY_DEBUG = "e0x9wycfe4jxq";

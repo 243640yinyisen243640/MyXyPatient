@@ -1,6 +1,7 @@
 package com.vice.bloodpressure;
 
 import com.vice.bloodpressure.bean.AdverInfo;
+import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.retrofit.BaseNetworkUtils;
 import com.vice.bloodpressure.retrofit.HHSoftBaseResponse;
 
@@ -14,6 +15,7 @@ public class DataManager {
         HashMap<String, String> map = new HashMap<>();
         map.put("type", type);
         map.put("access_token", accessToken);
+        map.put("version", ConstantParam.SERVER_VERSION);
         return BaseNetworkUtils.getRequest(false, BaseNetworkUtils.JSON_OBJECT, AdverInfo.class, "port/advertising/getBulletAdv", map, successCallBack, failureCallBack);
     }
 }
