@@ -7,11 +7,14 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -43,6 +46,8 @@ public class BloodSugarDialog extends Dialog {
     private String day;
     private Button btnSave;
 
+    private FrameLayout all;
+
 
     public BloodSugarDialog(Context context, int themeResId, int position, String day) {
         super(context, themeResId);
@@ -72,7 +77,9 @@ public class BloodSugarDialog extends Dialog {
         btnSave = view.findViewById(R.id.dialog_saveButton);
         etBlood = view.findViewById(R.id.bloodEdit);
         LinearLayout llTime = view.findViewById(R.id.timeLin);
-        LinearLayout all = view.findViewById(R.id.ll_blood_show);
+        all = view.findViewById(R.id.ll_blood_show);
+        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        all.setLayoutParams(rl);
         etBlood.addTextChangedListener(new TextWatcherForBloodSugarAdd(etBlood).setDigits(40));
         llTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +130,7 @@ public class BloodSugarDialog extends Dialog {
                 .setType(new boolean[]{false, false, false, true, true, false})
                 .setSubmitColor(ContextCompat.getColor(context, R.color.blue))
                 .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
+                .setDecorView(all)
                 .build();
         timePickerView.show();
     }

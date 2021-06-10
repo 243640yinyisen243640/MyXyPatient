@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="350dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_blood_show"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/ll_blood_show"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="30dp"
+        android:paddingTop="50dp"
+        android:paddingEnd="30dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -103,8 +106,11 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="30dp"
+        android:paddingTop="50dp"
+        android:paddingEnd="30dp"
+        android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:src="@drawable/sugerblood" />
 
-
-</RelativeLayout>
+</FrameLayout>

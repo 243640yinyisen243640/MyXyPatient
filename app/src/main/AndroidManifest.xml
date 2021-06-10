@@ -360,11 +360,11 @@
             android:name=".base.activity.WebHelperActivity"
             android:screenOrientation="portrait" />
 
+        <!--首页选择时间-->
         <activity
             android:name=".ui.activity.home.ChooseTimeActivity"
             android:screenOrientation="portrait"
-
-            android:theme="@style/user_business_filter"/>
+            android:theme="@style/user_business_filter" />
         <!-- 7.0适配开始 -->
         <provider
             android:name="androidx.core.content.FileProvider"

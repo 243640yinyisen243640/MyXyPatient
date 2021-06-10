@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -40,17 +41,23 @@ public class ChooseTimeActivity extends AppCompatActivity implements View.OnClic
     private Button btnSave;
     private int position;
 
+    private Context context;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int height = ScreenUtils.dip2px(ChooseTimeActivity.this, 100);
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        context = this;
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.dip2px(getPageContext(), 500));
         getWindow().setGravity(Gravity.CENTER);
         this.setFinishOnTouchOutside(false);
 
         initView();
         initListener();
+    }
+
+    private Context getPageContext() {
+        return context;
     }
 
     private void initListener() {
@@ -61,7 +68,7 @@ public class ChooseTimeActivity extends AppCompatActivity implements View.OnClic
 
 
     private void initView() {
-        View view = View.inflate(ChooseTimeActivity.this, R.layout.dialog_bloodsuger, null);
+        View view = View.inflate(getPageContext(), R.layout.dialog_bloodsuger, null);
         setContentView(view);
         tvTime = view.findViewById(R.id.timeTextView);
         btnSave = view.findViewById(R.id.dialog_saveButton);
@@ -92,7 +99,7 @@ public class ChooseTimeActivity extends AppCompatActivity implements View.OnClic
         Calendar endDate = Calendar.getInstance();
         int currentYear = currentDate.get(Calendar.YEAR);
         startDate.set(currentYear - 120, 0, 1, 0, 0);
-        TimePickerView timePickerView = new TimePickerBuilder(ChooseTimeActivity.this, (date, v) -> {
+        TimePickerView timePickerView = new TimePickerBuilder(getPageContext(), (date, v) -> {
             String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_H_M);
             tvTime.setText(content);
             if (!TextUtils.isEmpty(etBlood.getText().toString().trim())) {
@@ -100,8 +107,8 @@ public class ChooseTimeActivity extends AppCompatActivity implements View.OnClic
             }
         }).setDate(currentDate).setRangDate(startDate, endDate)
                 .setType(new boolean[]{false, false, false, true, true, false})
-                .setSubmitColor(ContextCompat.getColor(ChooseTimeActivity.this, R.color.blue))
-                .setCancelColor(ContextCompat.getColor(ChooseTimeActivity.this, R.color.black_text))
+                .setSubmitColor(ContextCompat.getColor(getPageContext(), R.color.blue))
+                .setCancelColor(ContextCompat.getColor(getPageContext(), R.color.black_text))
                 .build();
         timePickerView.show();
     }

@@ -7,16 +7,18 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.azhon.appupdate.utils.DensityUtil;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.ColorUtils;
@@ -49,7 +51,7 @@ public class BloodSugarDialogHome extends Dialog {
     private List<String> listStr;
     private CallBack callBack;
     private Button btnSave;
-    private LinearLayout all;
+    private FrameLayout all;
 
     public BloodSugarDialogHome(CallBack callBack, List<String> listStr, Context context, int themeResId, int position, String day) {
         super(context, themeResId);
@@ -69,10 +71,12 @@ public class BloodSugarDialogHome extends Dialog {
         setContentView(view);
         Window win = getWindow();
         WindowManager.LayoutParams lp = win.getAttributes();
-        lp.gravity = Gravity.TOP;
-        lp.height = DensityUtil.dip2px(context, 350);
-        lp.width = DensityUtil.dip2px(context, 300);
-        win.setAttributes(lp);
+        lp.gravity = Gravity.CENTER;
+        //        lp.height = DensityUtil.dip2px(context, 350);
+        lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        //        lp.width = DensityUtil.dip2px(context, 300);
+        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        win.setAttributes(lp);//这是什么呀
     }
 
 
@@ -82,8 +86,8 @@ public class BloodSugarDialogHome extends Dialog {
         etBlood = view.findViewById(R.id.bloodEdit);
         LinearLayout llTime = view.findViewById(R.id.timeLin);
         all = view.findViewById(R.id.ll_blood_show);
-        //        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.dip2px(context, 350));
-        //        all.setLayoutParams(rl);
+        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        all.setLayoutParams(rl);
         etBlood.addTextChangedListener(new TextWatcherForBloodSugarAdd(etBlood).setDigits(40));
         llTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,17 +138,17 @@ public class BloodSugarDialogHome extends Dialog {
                 .setType(new boolean[]{false, false, false, true, true, false})
                 .setSubmitColor(ContextCompat.getColor(context, R.color.blue))
                 .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
-//                .isDialog(true)
-//                .setDecorView(all)
+                //                .isDialog(true)
+                .setDecorView(all)
                 .build();
-//        //设置dialog弹出位置
-//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-//        params.leftMargin = 0;
-//        params.rightMargin = 0;
-//        ViewGroup contentContainer = timePickerView.getDialogContainerLayout();
-//        contentContainer.setLayoutParams(params);
-//        timePickerView.getDialog().getWindow().setGravity(Gravity.BOTTOM);//可以改成Bottom
-//        timePickerView.getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        //        //设置dialog弹出位置
+        //        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        //        params.leftMargin = 0;
+        //        params.rightMargin = 0;
+        //        ViewGroup contentContainer = timePickerView.getDialogContainerLayout();
+        //        contentContainer.setLayoutParams(params);
+        //        timePickerView.getDialog().getWindow().setGravity(Gravity.BOTTOM);//可以改成Bottom
+        //        timePickerView.getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         timePickerView.show();
 
     }

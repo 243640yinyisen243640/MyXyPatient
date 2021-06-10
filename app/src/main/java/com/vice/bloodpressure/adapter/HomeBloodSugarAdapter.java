@@ -169,6 +169,8 @@ public class HomeBloodSugarAdapter extends BaseQuickAdapter<HomeBloodSugarListBe
                     //没有数据 点击添加
                     Dialog dialog = new BloodSugarDialogHome(callback, listStr, context, R.style.bloodDialog, typePosition, timeMd);
                     dialog.show();
+//                    Intent intent = new Intent(context, ChooseTimeActivity.class);
+//                    context.startActivity(intent);
                 }
             }
         });
