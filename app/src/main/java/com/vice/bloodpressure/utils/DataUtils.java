@@ -1,5 +1,7 @@
 package com.vice.bloodpressure.utils;
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,5 +44,17 @@ public class DataUtils {
         } catch (Exception e) {
         }
         return date;
+    }
+    /**
+     * 把一个Date对象转换成相应格式的字符串
+     *
+     * @param date      时间
+     * @param outFormat 输出的格式
+     * @return 返回转换的字符串
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String convertDateToString(Date date, String outFormat) {
+        SimpleDateFormat format = new SimpleDateFormat(outFormat);
+        return format.format(date);
     }
 }

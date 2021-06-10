@@ -88,7 +88,7 @@
             android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:padding="@dimen/dp_10"
-            app:backgroundColorNormal="@color/white"
+            app:backgroundColorNormal="#26FFA000"
             app:cornerRadiusNormal="3dp">
 
             <TextView
@@ -105,7 +105,7 @@
             android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:padding="@dimen/dp_10"
-            app:backgroundColorNormal="@color/color_ed"
+            app:backgroundColorNormal="#26FFA000"
             app:cornerRadiusNormal="3dp">
 
             <TextView
@@ -122,7 +122,7 @@
             android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:padding="@dimen/dp_10"
-            app:backgroundColorNormal="@color/color_ed"
+            app:backgroundColorNormal="#26FFA000"
             app:cornerRadiusNormal="3dp">
 
             <TextView

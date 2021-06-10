@@ -302,12 +302,10 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 @Override
                 public void onDismiss() {
                     showGuidePopup();
-                    //                    getAdver("3");
                 }
             });
         } else {
             showGuidePopup();
-            //            getAdver("3");
             getGoods();
         }
     }
@@ -452,8 +450,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         closeImageView = advertisementPop.findViewById(R.id.iv_adver_close);
         backgroudImageView.setOnClickListener(this);
         closeImageView.setOnClickListener(this);
-        int width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 40);
-        int hight = width / 5 * 4;
+        int width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 80);
+        int hight = width / 4 * 5;
         LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(width, hight);
         ll.gravity = Gravity.CENTER;
         backgroudImageView.setLayoutParams(ll);

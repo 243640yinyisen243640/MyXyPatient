@@ -14,7 +14,8 @@ public class MallUrl {
     //环境
     private final static boolean EXTERNAL_RELEASE = BuildConfig.ENVIRONMENT;
     //正式地址
-    private final static String DOMAIN = "http://port.xiyuns.cn";
+//    private final static String DOMAIN = "http://port.xiyuns.cn";
+    private final static String DOMAIN = "http://alb.xiyuns.cn";
     //测试地址
     private final static String DOMAIN_TEST = "http://dt.xiyuns.cn";
     //设置为默认域名

@@ -232,4 +232,25 @@ public class DialogUtils {
     public interface DialogInputCallBack {
         void execEvent(String text);
     }
+
+
+    /**
+     * 本项目使用
+     *
+     * @param context
+     * @param tip      不传，不现实title
+     * @param msg
+     * @param negative 左边文字
+     * @param positive 右边文字
+     * @param callback
+     */
+    public static void showOperDialog(Context context, String tip, String msg, String negative, String positive, CommonDialog.SingleButtonCallback callback) {
+        CommonDialog commonDialog = new CommonDialog(context);
+        commonDialog.setTitle(R.string.tip);
+        commonDialog.setMessage(msg);
+        commonDialog.setNegative(negative);
+        commonDialog.setPositive(positive);
+        commonDialog.onAny(callback);
+        commonDialog.show();
+    }
 }

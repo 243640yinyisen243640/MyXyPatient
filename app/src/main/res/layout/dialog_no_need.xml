@@ -9,6 +9,7 @@
         android:id="@+id/iv_main_no_need"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
         android:src="@drawable/default_img_main_adver" />
 
     <ImageView

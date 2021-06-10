@@ -12,10 +12,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
@@ -23,6 +26,7 @@ import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.GifSizeFilter;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
@@ -31,10 +35,10 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.AddImageAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.lyd.baselib.utils.GifSizeFilter;
-import com.vice.bloodpressure.utils.PickerUtils;
+import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.view.popu.SlideFromBottomPopup;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -46,6 +50,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -199,15 +204,36 @@ public class CheckAddActivity extends BaseHandlerActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_enter_time_check:
-                PickerUtils.showTimeHm(CheckAddActivity.this, new PickerUtils.TimePickerCallBack() {
-                    @Override
-                    public void execEvent(String content) {
-                        tvCheck.setText(content);
-                    }
-                });
+//                PickerUtils.showTimeHm(CheckAddActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvCheck.setText(content);
+//                    }
+//                });
+                showTimeWindow();
                 break;
         }
     }
+    /**
+     * 选择生日
+     */
+    private void showTimeWindow() {
+        Calendar currentDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        startDate.set(currentYear - 120, 0, 1, 0, 0);
+        TimePickerView timePickerView = new TimePickerBuilder(getPageContext(), (date, v) -> {
+            String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_Y_M_D_H_M);
+            tvCheck.setText(content);
+        }).setDate(currentDate).setRangDate(startDate, endDate)
+                .setType(new boolean[]{true, true, true, true, true, false})
+                .setSubmitColor(ContextCompat.getColor(getPageContext(), R.color.blue))
+                .setCancelColor(ContextCompat.getColor(getPageContext(), R.color.black_text))
+                .build();
+        timePickerView.show();
+    }
+
 
 
     private void selectPhoto(int selectMax) {

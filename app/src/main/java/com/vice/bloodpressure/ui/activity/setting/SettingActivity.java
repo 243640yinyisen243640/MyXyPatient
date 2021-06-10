@@ -6,9 +6,13 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ConvertUtils;
@@ -18,16 +22,19 @@ import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseActivity;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.user.AccountAndSafetyActivity;
 import com.vice.bloodpressure.ui.activity.user.LoginActivity;
-import com.vice.bloodpressure.utils.DialogUtils;
+import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.utils.SPUtils;
+import com.vice.bloodpressure.view.popu.OutLoginPopup;
 import com.wei.android.lib.colorview.helper.ColorTextViewHelper;
 import com.wei.android.lib.colorview.view.ColorButton;
 import com.wei.android.lib.colorview.view.ColorTextView;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,10 +98,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_exit:
                 toExit();
-                //                                Map<String, Object> music = new HashMap<String, Object>();
-                //                                music.put("phone1", "15295201816");
-                //                                //上下文   事件ID   map
-                //                                MobclickAgent.onEventObject(this, "UserNameText", music);
+                //                Intent intent = new Intent(getPageContext(), ChooseTimeActivity.class);
+                //                startActivity(intent);
+
                 break;
         }
     }
@@ -104,21 +110,50 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void showLogOut() {
+
+        OutLoginPopup outLoginPopup = new OutLoginPopup(this);
+        TextView title = outLoginPopup.findViewById(R.id.tv_oper_hint);
+        TextView cancle = outLoginPopup.findViewById(R.id.tv_oper_cancel);
+        TextView sure = outLoginPopup.findViewById(R.id.tv_oper_sure);
+        TextView content = outLoginPopup.findViewById(R.id.tv_oper_content);
+        title.setText(getString(R.string.cancle_title_tips));
+        cancle.setText(getString(R.string.cancle_title_refuse));
+        sure.setText(getString(R.string.cancle_title_sure));
         LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String nickname = user.getUsername();
         String message = "您正在删除账号: " + nickname + "此操作将让您失去本账号";
-        DialogUtils.getInstance().showCommonDialog(getPageContext(), "风险提示", message,
-                "注销账号", "我再想想", new DialogUtils.DialogCallBack() {
-                    @Override
-                    public void execEvent() {
-                        toLogOut();
-                    }
-                }, new DialogUtils.DialogCallBack() {
-                    @Override
-                    public void execEvent() {
+        content.setText(message);
 
-                    }
-                });
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                outLoginPopup.dismiss();
+            }
+        });
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toLogOut();
+            }
+        });
+        outLoginPopup.setAllowDismissWhenTouchOutside(false);
+        outLoginPopup.showPopupWindow();
+
+        //        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        //        String nickname = user.getUsername();
+        //        String message = "您正在删除账号: " + nickname + "此操作将让您失去本账号";
+        //        DialogUtils.getInstance().showCommonDialog(getPageContext(), "风险提示", message,
+        //                "注销账号", "我再想想", new DialogUtils.DialogCallBack() {
+        //                    @Override
+        //                    public void execEvent() {
+        //                        toLogOut();
+        //                    }
+        //                }, new DialogUtils.DialogCallBack() {
+        //                    @Override
+        //                    public void execEvent() {
+        //
+        //                    }
+        //                });
     }
 
 
@@ -150,30 +185,73 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      * 退出登录 提示
      */
     private void toExit() {
-        RongIM.getInstance().logout();
-        DialogUtils.getInstance().showDialog(getPageContext(), "提示", "确定要退出登录?", true, () -> {
-            CloudPushService pushService = PushServiceFactory.getCloudPushService();
-            pushService.unbindAccount(new CommonCallback() {
-                @Override
-                public void onSuccess(String s) {
-
-                }
-
-                @Override
-                public void onFailed(String s, String s1) {
-
-                }
-            });
-            ToastUtils.showShort("请登陆");
-            //SPStaticUtils.clear();
-            SharedPreferencesUtils.clear();
-            SPUtils.clear();
-            ActivityUtils.finishAllActivities();
-            Intent intent = new Intent(Utils.getApp(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Utils.getApp().startActivity(intent);
+        OutLoginPopup outLoginPopup = new OutLoginPopup(this);
+        TextView cancle = outLoginPopup.findViewById(R.id.tv_oper_cancel);
+        TextView sure = outLoginPopup.findViewById(R.id.tv_oper_sure);
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                outLoginPopup.dismiss();
+            }
         });
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                                RongIM.getInstance().logout();
+                                CloudPushService pushService = PushServiceFactory.getCloudPushService();
+                                pushService.unbindAccount(new CommonCallback() {
+                                    @Override
+                                    public void onSuccess(String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onFailed(String s, String s1) {
+
+                                    }
+                                });
+                                ToastUtils.showShort("请登陆");
+                                //SPStaticUtils.clear();
+                                SharedPreferencesUtils.clear();
+                                SPUtils.clear();
+                                ActivityUtils.finishAllActivities();
+                                Intent intent = new Intent(Utils.getApp(), LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Utils.getApp().startActivity(intent);
+            }
+        });
+        outLoginPopup.setAllowDismissWhenTouchOutside(false);
+        outLoginPopup.showPopupWindow();
     }
+
+    private void showTimeWindow() {
+        Calendar currentDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        startDate.set(currentYear - 120, 0, 1, 0, 0);
+        TimePickerView timePickerView = new TimePickerBuilder(getPageContext(), (date, v) -> {
+            String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_H_M);
+
+        }).setDate(currentDate).setRangDate(startDate, endDate)
+                .setType(new boolean[]{false, false, false, true, true, false})
+                .setSubmitColor(ContextCompat.getColor(getPageContext(), R.color.blue))
+                .setCancelColor(ContextCompat.getColor(getPageContext(), R.color.black_text))
+                //                .isDialog(true)
+                //                .setDecorView(all)
+                .build();
+        //        //设置dialog弹出位置
+        //        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        //        params.leftMargin = 0;
+        //        params.rightMargin = 0;
+        //        ViewGroup contentContainer = timePickerView.getDialogContainerLayout();
+        //        contentContainer.setLayoutParams(params);
+        //        timePickerView.getDialog().getWindow().setGravity(Gravity.BOTTOM);//可以改成Bottom
+        //        timePickerView.getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        timePickerView.show();
+
+    }
+
 
     @Override
     public void onClick(View v) {

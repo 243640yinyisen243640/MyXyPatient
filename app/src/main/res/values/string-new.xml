@@ -8,4 +8,11 @@
     <string name="privacy_protect_disagree">暂不同意</string>
     <string name="privacy_protect_agree">同意</string>
     <string name="main_cancle">取消</string>
+    <string name="tip">提示</string>
+    <string name="sure">确定</string>
+    <string name="quit_login_out">确认退出登录吗？</string>
+    <string name="cancle_title_tips">风险提示</string>
+    <string name="cancle_title_refuse">我再想想</string>
+    <string name="cancle_title_sure">注销账号</string>
+
 </resources>

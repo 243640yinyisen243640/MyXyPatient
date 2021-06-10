@@ -15,7 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.alibaba.fastjson.JSONObject;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
@@ -27,10 +31,11 @@ import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
 import com.vice.bloodpressure.bean.FoodsCategoryBean;
 import com.vice.bloodpressure.bean.FoodsCategoryListBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.FoodTypeActivity;
-import com.vice.bloodpressure.utils.PickerUtils;
+import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.utils.TextWatcherUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.MyListView;
@@ -40,6 +45,7 @@ import com.zhy.adapter.abslistview.ViewHolder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -383,15 +389,34 @@ public class FoodAddActivity extends BaseHandlerEventBusActivity implements Adap
                 startActivity(intent);
                 break;
             case R.id.tv_select_time:
-                PickerUtils.showTimeHm(getPageContext(), new PickerUtils.TimePickerCallBack() {
-                    @Override
-                    public void execEvent(String content) {
-                        tvSelectTime.setText(content);
-                    }
-                });
+//                PickerUtils.showTimeHm(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvSelectTime.setText(content);
+//                    }
+//                });
+                showTimeWindow();
                 break;
         }
     }
+
+    private void showTimeWindow() {
+        Calendar currentDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        startDate.set(currentYear - 120, 0, 1, 0, 0);
+        TimePickerView timePickerView = new TimePickerBuilder(getPageContext(), (date, v) -> {
+            String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_Y_M_D_H_M);
+            tvSelectTime.setText(content);
+        }).setDate(currentDate).setRangDate(startDate, endDate)
+                .setType(new boolean[]{true, true, true, true, true, false})
+                .setSubmitColor(ContextCompat.getColor(getPageContext(), R.color.blue))
+                .setCancelColor(ContextCompat.getColor(getPageContext(), R.color.black_text))
+                .build();
+        timePickerView.show();
+    }
+
 
     @Override
     public void processHandlerMsg(Message msg) {

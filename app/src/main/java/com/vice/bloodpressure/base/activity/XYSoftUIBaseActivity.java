@@ -30,9 +30,9 @@ public class XYSoftUIBaseActivity extends XYSoftBaseActivity {
         setContentView(contentView);
     }
 
-    protected boolean isFullScreen() {
-        return isScreen;
-    }
+//    protected boolean isFullScreen() {
+//        return isScreen;
+//    }
 
     /**
      * 头部管理器

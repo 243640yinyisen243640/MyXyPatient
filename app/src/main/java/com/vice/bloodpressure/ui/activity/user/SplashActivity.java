@@ -195,7 +195,6 @@ public class SplashActivity extends BaseActivity {
             };
             timer.start();
         } else {
-            Log.i("yys", "000isAgreePricacyProtect===" + isAgreePricacyProtect);
             showPrivacyProtectDialog();
         }
     }

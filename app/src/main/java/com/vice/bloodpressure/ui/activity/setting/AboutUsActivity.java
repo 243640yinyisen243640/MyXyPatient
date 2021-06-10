@@ -15,10 +15,13 @@ import com.azhon.appupdate.listener.OnDownloadListener;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
 import com.vice.bloodpressure.bean.UpdateBean;
+import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.UpdateUtils;
@@ -106,7 +109,12 @@ public class AboutUsActivity extends BaseHandlerActivity implements View.OnClick
      * 获取更新
      */
     private void getUpdate() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+
         HashMap map = new HashMap<>();
+        map.put("version_code", AppUtils.getAppVersionCode());
+        map.put("access_token", loginBean.getToken());
+        map.put("version", ConstantParam.SERVER_VERSION);
         XyUrl.okPost(XyUrl.GET_UPDATE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
@@ -119,7 +127,9 @@ public class AboutUsActivity extends BaseHandlerActivity implements View.OnClick
 
             @Override
             public void onError(int error, String errorMsg) {
-
+                if (10015 == error) {
+                    ToastUtils.showShort("当前已是最新版本");
+                }
             }
         });
     }
