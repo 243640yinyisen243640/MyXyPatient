@@ -33,9 +33,10 @@ import okhttp3.Response;
 public class XyUrl {
     //主地址 Start
     private final static boolean EXTERNAL_RELEASE = BuildConfig.ENVIRONMENT;
-//    private final static String DOMAIN = "http://port.xiyuns.cn/";
+    //    private final static String DOMAIN = "http://port.xiyuns.cn/";
     private final static String DOMAIN = "http://alb.xiyuns.cn/";
-    private final static String DOMAIN_TEST = "http://dt.xiyuns.cn/";
+//    private final static String DOMAIN_TEST = "http://dt.xiyuns.cn/";
+    private final static String DOMAIN_TEST = "http://d.xiyuns.cn/";
     public final static String HOST_URL = EXTERNAL_RELEASE ? DOMAIN : DOMAIN_TEST;
     //主地址 End
 
@@ -364,7 +365,8 @@ public class XyUrl {
     //添加血氧
     public final static String ADD_BLOOD_OXYGEN = HOST_URL + "/port/Record/addBloodox";
     //血氧记录
-    public final static String GET_BLOOD_OXYGEN = HOST_URL + "/port/Record/getBloodox";
+    public final static String GET_BLOOD_OXYGEN = HOST_URL + "/port/Record/getBloodox";  //血氧记录
+    public final static String GET_TEMPERATURE = HOST_URL + "/port/record/getTemperature";//血糖记录
     //添加体重
     public final static String ADD_WEIGHT = HOST_URL + "/addweight";
     //体重列表

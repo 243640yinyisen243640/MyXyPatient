@@ -117,9 +117,14 @@
         <activity android:name=".ui.activity.setting.AboutUsActivity" />
         <activity android:name=".ui.activity.setting.SettingActivity" />
         <activity android:name=".ui.activity.healthrecordlist.BloodOxygenListActivity" />
+        <activity android:name=".ui.activity.healthrecordlist.TemperatureListActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.healthrecordadd.BloodOxygenAddActivity" />
         <activity android:name=".ui.activity.healthrecordlist.WeightListActivity" />
         <activity android:name=".ui.activity.healthrecordadd.WeightAddActivity" />
+        <activity
+            android:name=".ui.activity.healthrecordadd.TemperatureAddActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.food.FoodHomeActivity" />
         <activity android:name=".ui.activity.user.MyReportListActivity" />
         <activity android:name=".ui.activity.user.MyLiverFilesActivity" />

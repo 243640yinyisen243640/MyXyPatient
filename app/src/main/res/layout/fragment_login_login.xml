@@ -100,30 +100,21 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_service_agreement"
-        style="@style/hh_fi_wr"
+    <TextView
+        android:id="@+id/tv_login_agreement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dp_20">
+        android:button="@null"
+        android:checked="true"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:text="@string/login_agreement"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
 
-
-        <LinearLayout
-            style="@style/hh_wr_wr"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/text_gray_12_w_w"
-                android:text="登录即代表您已同意" />
-
-            <TextView
-                style="@style/text_gray_12_w_w"
-                android:text="《慧健康用户服务协议》"
-                android:textColor="@color/main_home" />
-        </LinearLayout>
-
-
-    </RelativeLayout>
 
 
 </RelativeLayout>

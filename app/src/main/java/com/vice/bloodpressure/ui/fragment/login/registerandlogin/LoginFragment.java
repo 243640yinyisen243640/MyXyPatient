@@ -2,19 +2,29 @@ package com.vice.bloodpressure.ui.fragment.login.registerandlogin;
 
 import android.content.Intent;
 import android.os.Message;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.vice.bloodpressure.R;
-import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
-import com.vice.bloodpressure.base.fragment.BaseFragment;
 import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.modulemall.ui.BaseWebViewActivity;
+import com.vice.bloodpressure.R;
+import com.vice.bloodpressure.base.fragment.BaseFragment;
 import com.vice.bloodpressure.bean.RegisterQuestionAddBean;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.net.OkHttpCallBack;
@@ -25,7 +35,6 @@ import com.vice.bloodpressure.ui.fragment.login.forgetpwd.ResetPwdInputPhoneNumb
 import com.vice.bloodpressure.ui.fragment.login.phoneoridcardlogin.LoginBindPhoneNumberFragment;
 import com.vice.bloodpressure.ui.fragment.login.quicklogin.QuickLoginFragment;
 import com.vice.bloodpressure.utils.SPUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.utils.edittext.IdNumberKeyListener;
 import com.wei.android.lib.colorview.view.ColorTextView;
 
@@ -49,8 +58,8 @@ public class LoginFragment extends BaseFragment {
     EditText etPwd;
     @BindView(R.id.tv_login)
     ColorTextView tvLogin;
-    @BindView(R.id.rl_service_agreement)
-    RelativeLayout rlServiceAgreement;
+    @BindView(R.id.tv_login_agreement)
+    TextView agreeTextView;
     private String phoneOrIdCard;
     private String pwd;
 
@@ -68,6 +77,49 @@ public class LoginFragment extends BaseFragment {
      * 设置监听
      */
     private void setTextChangeListener() {
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        stringBuilder.append(getString(R.string.login_agreement_left));
+        int startUser = stringBuilder.length();
+        stringBuilder.append(getString(R.string.login_agreement_user_agreement));
+        int endUser = stringBuilder.length();
+        stringBuilder.append(getString(R.string.login_agreement_user_and));
+        int startPrivacy = stringBuilder.length();
+        stringBuilder.append(getString(R.string.login_agreement_privacy));
+        int endPrivacy = stringBuilder.length();
+        stringBuilder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getPageContext(), R.color.main_green)), startUser, endUser, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        stringBuilder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getPageContext(), R.color.main_green)), startPrivacy, endPrivacy, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        stringBuilder.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View view) {
+                Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+                intent.putExtra("title", "用户服务协议");
+                intent.putExtra("url", "file:///android_asset/user_protocol.html");
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        }, startUser, endUser, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        stringBuilder.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View view) {
+                Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+                intent.putExtra("title", "用户服务协议");
+                intent.putExtra("url", "file:///android_asset/user_protocol.html");
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        }, startPrivacy, endPrivacy, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        agreeTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        agreeTextView.setText(stringBuilder);
         etInputPhoneOrIdCard.setKeyListener(new IdNumberKeyListener());
         //        TextWatcherUtils.addTextChangedListener(new TextWatcherUtils.OnTextChangedListener() {
         //            @Override
@@ -83,7 +135,7 @@ public class LoginFragment extends BaseFragment {
         //        }, etInputPhoneOrIdCard, etPwd);
     }
 
-    @OnClick({R.id.tv_register, R.id.tv_forget_pwd, R.id.tv_register_code_quick_login, R.id.tv_login, R.id.rl_service_agreement})
+    @OnClick({R.id.tv_register, R.id.tv_forget_pwd, R.id.tv_register_code_quick_login, R.id.tv_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_register://注册
@@ -101,12 +153,14 @@ public class LoginFragment extends BaseFragment {
             case R.id.tv_login://登录
                 toCheckLogin();
                 break;
-            case R.id.rl_service_agreement://用户协议
-                Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
-                intent.putExtra("title", "用户服务协议");
-                intent.putExtra("url", "file:///android_asset/user_protocol.html");
-                startActivity(intent);
+            default:
                 break;
+//            case R.id.rl_service_agreement://用户协议
+//                Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+//                intent.putExtra("title", "用户服务协议");
+//                intent.putExtra("url", "file:///android_asset/user_protocol.html");
+//                startActivity(intent);
+//                break;
         }
     }
 

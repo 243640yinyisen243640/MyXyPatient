@@ -474,6 +474,7 @@
         <item>记录肝病营养指标</item>
         <item>记录体重</item>
         <item>记录血氧</item>
+        <item>记录体温</item>
     </array>
 
     <array name="health_item_img">
@@ -488,9 +489,11 @@
         <item>@drawable/hepatopathy_pabulum</item>
         <item>@drawable/health_weight_icon</item>
         <item>@drawable/health_blood_oxygen_icon</item>
+        <item>@drawable/health_temperature</item>
     </array>
 
     <array name="health_item_slogan">
+        <item>点击查看历史纪录</item>
         <item>点击查看历史纪录</item>
         <item>点击查看历史纪录</item>
         <item>点击查看历史纪录</item>

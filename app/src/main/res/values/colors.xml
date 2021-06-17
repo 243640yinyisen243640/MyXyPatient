@@ -135,4 +135,7 @@
 
     <color name="defaultTransparent">#00000000</color>
 
+    <color name="new_black_text">#3B4552</color>
+    <color name="ble_bg">#8f000000</color>
+
 </resources>

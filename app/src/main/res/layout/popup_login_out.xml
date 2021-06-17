@@ -28,7 +28,7 @@
         <TextView
             style="@style/text_gray_14_w_w"
             android:layout_gravity="center_horizontal"
-            android:text="您账号已在另一台设备登录。" />
+            android:text="您账号已过期，请重新登陆。" />
 
 
         <com.wei.android.lib.colorview.view.ColorTextView

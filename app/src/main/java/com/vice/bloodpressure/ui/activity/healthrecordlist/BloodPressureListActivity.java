@@ -3,6 +3,7 @@ package com.vice.bloodpressure.ui.activity.healthrecordlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -151,6 +152,7 @@ public class BloodPressureListActivity extends BaseHandlerEventBusActivity imple
         XyUrl.okPost(XyUrl.QUERY_BLOOD, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
+                Log.i("yys","values"+value);
                 bloodPressureList = JSONObject.parseArray(value, BloodPressureBean.class);
                 Message message = Message.obtain();
                 message.what = GET_DATA_SUCCESS;

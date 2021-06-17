@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="@string/privacy_protect_warm_tips"
+        android:text="@string/privacy_protect_warm_tip_privacy"
         android:textColor="@color/black_text"
         android:textSize="18sp" />
 

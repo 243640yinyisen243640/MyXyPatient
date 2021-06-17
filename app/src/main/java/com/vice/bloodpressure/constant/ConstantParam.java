@@ -15,6 +15,10 @@ public class ConstantParam {
     private static final String IM_KEY_DEBUG = "e0x9wycfe4jxq";
     public static final String IM_KEY = EXTERNAL_RELEASE ? IM_KEY_RELEASE : IM_KEY_DEBUG;
     /**
+     * 网络请求超时时间毫秒
+     */
+    int DEFAULT_TIMEOUT = 10;
+    /**
      * 注册问题 key
      */
     public static final String REGISTER_QUESTION_KEY = "register_question_key";
