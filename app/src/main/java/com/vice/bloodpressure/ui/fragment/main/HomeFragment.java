@@ -957,6 +957,9 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 intent.putExtra("day", "");
                 startActivity(intent);
                 break;
+            default:
+                break;
+
         }
     }
 

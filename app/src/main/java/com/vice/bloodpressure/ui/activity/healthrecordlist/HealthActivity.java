@@ -293,6 +293,7 @@ public class HealthActivity extends BaseActivity {
         temperaturePopup.showPopupWindow();
         countDown(temperature);
     }
+
     private void countDown(String temperature) {
         CountDownTimer timer = new CountDownTimer(3000, 1000) {
             @Override
@@ -319,10 +320,10 @@ public class HealthActivity extends BaseActivity {
         String userid = user.getUserid();
         String docId = SPStaticUtils.getString("docId");
         String token = user.getToken();
-        Call<String> requestCall = DataManager.saveDataTemperature(token, userid, temperature, "", docId,"1", (call, response) -> {
+        Call<String> requestCall = DataManager.saveDataTemperature(token, userid, temperature, "", docId, "1", (call, response) -> {
             if (response.code == 200) {
                 temperaturePopup.dismiss();
-                ToastUtils.showShort(response.msg);
+                ToastUtils.showShort(getString(R.string.show_up_msg));
             } else {
                 temperaturePopup.dismiss();
             }

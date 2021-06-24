@@ -33,8 +33,8 @@ import okhttp3.Response;
 public class XyUrl {
     //主地址 Start
     private final static boolean EXTERNAL_RELEASE = BuildConfig.ENVIRONMENT;
-    //    private final static String DOMAIN = "http://port.xiyuns.cn/";
-    private final static String DOMAIN = "http://alb.xiyuns.cn/";
+        private final static String DOMAIN = "http://port.xiyuns.cn/";
+//    private final static String DOMAIN = "http://alb.xiyuns.cn/";
 //    private final static String DOMAIN_TEST = "http://dt.xiyuns.cn/";
     private final static String DOMAIN_TEST = "http://d.xiyuns.cn/";
     public final static String HOST_URL = EXTERNAL_RELEASE ? DOMAIN : DOMAIN_TEST;

@@ -108,8 +108,8 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onClick(@NonNull View view) {
                 Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
-                intent.putExtra("title", "用户服务协议");
-                intent.putExtra("url", "file:///android_asset/user_protocol.html");
+                intent.putExtra("title", "隐私政策");
+                intent.putExtra("url", "http://chronics.xiyuns.cn/index/caseapp");
                 startActivity(intent);
             }
 
