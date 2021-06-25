@@ -18,8 +18,10 @@ public class DataManager {
         map.put("version", ConstantParam.SERVER_VERSION);
         return BaseNetworkUtils.getRequest(false, BaseNetworkUtils.JSON_OBJECT, AdverInfo.class, "port/advertising/getBulletAdv", map, successCallBack, failureCallBack);
     }
+
     /**
      * 上传温度数据
+     *
      * @param accessToken
      * @param uid
      * @param temperature
@@ -29,7 +31,7 @@ public class DataManager {
      * @param failureCallBack
      * @return
      */
-    public static Call<String> saveDataTemperature(String accessToken,String uid,String temperature,String time,String docId,String type, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> saveDataTemperature(String accessToken, String uid, String temperature, String time, String docId, String type, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         HashMap<String, String> map = new HashMap<>();
         map.put("access_token", accessToken);
         map.put("uid", uid);
@@ -37,7 +39,22 @@ public class DataManager {
         map.put("datetime", time);
         //上传类型 1自动 2手动
         map.put("type", type);
-        map.put("docuserid",docId);
+        map.put("docuserid", docId);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/port/record/addTemperatureData", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * 一键已读
+     *
+     * @param accessToken
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> readMessage(String accessToken, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("access_token", accessToken);
+        map.put("version", ConstantParam.SERVER_VERSION);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/port/Message/allReading", map, successCallBack, failureCallBack);
     }
 }

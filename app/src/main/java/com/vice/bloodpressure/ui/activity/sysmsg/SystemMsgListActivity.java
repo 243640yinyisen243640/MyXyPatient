@@ -4,16 +4,20 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.SystemMessageAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
@@ -25,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import retrofit2.Call;
 
 import static com.vice.bloodpressure.constant.ConstantParam.NO_DATA;
 
@@ -69,9 +74,25 @@ public class SystemMsgListActivity extends BaseHandlerActivity {
     @Override
     protected View addContentLayout() {
         View layout = getLayoutInflater().inflate(R.layout.activity_system_msg_list, contentLayout, false);
-        TextView read = getTvSave();
-        read.setText("一键已读");
+        getTvSave().setText("一键已读");
+        getTvSave().setOnClickListener(v -> {
+            rendMessage();
+        });
         return layout;
+    }
+
+    private void rendMessage() {
+        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
+        Call<String> requestCall = DataManager.readMessage(user.getToken(), (call, response) -> {
+            if (response.code == 200) {
+                for (int i = 0; i < list.size(); i++) {
+                    list.get(i).setIsread(1);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        }, (call, t) -> {
+            ToastUtils.showShort(getString(R.string.network_error));
+        });
     }
 
 

@@ -633,6 +633,12 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSystemMessageCount();
+    }
+
     /**
      * 获取未读消息数量
      */
