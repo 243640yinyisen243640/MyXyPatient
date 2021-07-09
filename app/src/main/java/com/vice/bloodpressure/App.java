@@ -6,6 +6,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
@@ -347,18 +349,18 @@ public class App extends BaseApplication implements RongIMClient.ConnectionStatu
     }
 
 
-    //    /**
-    //     * 重写 getResource 方法，防止系统字体影响
-    //     * 禁止app字体大小跟随系统字体大小调节
-    //     */
-    //    @Override
-    //    public Resources getResources() {
-    //        Resources resources = super.getResources();
-    //        if (resources != null && resources.getConfiguration().fontScale != 1.0f) {
-    //            Configuration configuration = resources.getConfiguration();
-    //            configuration.setToDefaults();
-    //            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-    //        }
-    //        return resources;
-    //    }
+    /**
+     * 重写 getResource 方法，防止系统字体影响
+     * 禁止app字体大小跟随系统字体大小调节
+     */
+    @Override
+    public Resources getResources() {
+        Resources resources = super.getResources();
+        if (resources != null && resources.getConfiguration().fontScale != 1.0f) {
+            Configuration configuration = resources.getConfiguration();
+            configuration.setToDefaults();
+            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        }
+        return resources;
+    }
 }
