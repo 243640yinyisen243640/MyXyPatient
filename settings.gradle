@@ -10,6 +10,8 @@ include ':libsku'
 
 
 include ':modulemall'
+include ':appupdateX'
+include ':ColorViewLib'
 
 
 

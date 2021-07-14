@@ -49,6 +49,7 @@ dependencies {
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.21'
     //Sku Start
     api project(':libsku')
+    api project('::ColorViewLib')
     implementation 'com.wuhenzhizao:titlebar:1.0.4'
     //Sku End
 }

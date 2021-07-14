@@ -94,6 +94,8 @@ dependencies {
     implementation project(path: ':libchart')
     implementation project(path: ':libsteps')
     implementation project(path: ':modulemall')
+    implementation project(':appupdateX')
+    implementation project(':ColorViewLib')
     //BaseAdapterForRV
     implementation 'com.zhy:base-rvadapter:3.0.3'
     //

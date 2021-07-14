@@ -11,7 +11,7 @@ android {
     buildTypes {
         //环境 以及融云环境
         def environment_debug = false
-        def environment_release = true
+        def environment_release = false
         debug {
             buildConfigField "Boolean", "ENVIRONMENT", "$environment_debug"
         }
@@ -102,9 +102,9 @@ dependencies {
     api 'com.gyf.immersionbar:immersionbar:3.0.0'
     api 'com.gyf.immersionbar:immersionbar-components:3.0.0'
     //Update
-    api 'com.azhon:appupdateX:3.0.3'
+//    api 'com.azhon:appupdateX:3.0.3'
     //ColorView
-    api 'com.wei.android.lib:colorview:1.3.5'
+//    api 'com.wei.android.lib:colorview:1.3.5'
     //PickerView
     api 'com.contrarywind:Android-PickerView:4.1.9'
     //图片浏览器
