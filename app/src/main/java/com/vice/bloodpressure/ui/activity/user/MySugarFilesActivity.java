@@ -63,9 +63,13 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1646,6 +1650,8 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             @Override
             public void onSuccess(String msg) {
                 ToastUtils.showShort(msg);
+//                getBornData(fieldValue);
+                getData();
                 //刷新本地保存的姓名
                 if ("nickname".equals(fieldName)) {
                     LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
@@ -1659,6 +1665,23 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
 
             }
         });
+    }
+
+    private void getBornData(String idCard) {
+        // 获取出生日期
+        String birthday = idCard.substring(6, 14);
+        Date birthDay = null;
+        try {
+            birthDay = new SimpleDateFormat("yyyyMMdd").parse(birthday);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        GregorianCalendar currentDay = new GregorianCalendar();
+        currentDay.setTime(birthDay);
+        int year = currentDay.get(Calendar.YEAR);
+        int month = currentDay.get(Calendar.MONTH) + 1;
+        int day = currentDay.get(Calendar.DAY_OF_MONTH);
+
     }
 
     @Override

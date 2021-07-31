@@ -12,6 +12,16 @@ include ':libsku'
 include ':modulemall'
 include ':appupdateX'
 include ':ColorViewLib'
+include ':citypickerview'
+include ':lib'
+include ':shadowLibrary'
+include ':roundcorners'
+include ':rulerlib'
+include ':library'
+include ':imagebrowserlibrary'
+include ':banner'
+include ':MPChartLib'
+
 
 
 

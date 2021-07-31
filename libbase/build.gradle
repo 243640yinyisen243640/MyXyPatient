@@ -32,6 +32,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':imagebrowserlibrary')
+    api project(':roundcorners')
     //必备官方依赖
     //对应Support:com.android.support:support-v4
     api 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -108,7 +110,7 @@ dependencies {
     //PickerView
     api 'com.contrarywind:Android-PickerView:4.1.9'
     //图片浏览器
-    api 'com.github.maning0303:MNImageBrowser:V1.3.7'
+//    api 'com.github.maning0303:MNImageBrowser:V1.3.7'
     //CheckHelper
     api 'com.github.gminibird:CheckHelper:1.1'
     //BannerViewPager
@@ -116,7 +118,7 @@ dependencies {
     //FloatingView
     api 'com.imuxuan:floatingview:1.6'
     //圆角
-    api 'com.github.KuangGang:RoundCorners:1.1.0'
+//    api 'com.github.KuangGang:RoundCorners:1.1.0'
     //状态栏
     api  'com.zackratos.ultimatebarx:ultimatebarx:0.5.1'
     //switch-button

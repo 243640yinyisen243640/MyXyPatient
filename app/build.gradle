@@ -2,7 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
     compileSdkVersion rootProject.ext.compileSdkVersion
+    dexOptions{
+        javaMaxHeapSize "4g"
+    }
     defaultConfig {
         applicationId rootProject.ext.applicationId
         minSdkVersion rootProject.ext.minSdkVersion
@@ -94,8 +99,29 @@ dependencies {
     implementation project(path: ':libchart')
     implementation project(path: ':libsteps')
     implementation project(path: ':modulemall')
+    //版本更新
     implementation project(':appupdateX')
+    //带颜色的按钮
+
     implementation project(':ColorViewLib')
+
+    //城市选择器
+    implementation project(':citypickerview')
+    //展开收起(单独或RecyclerView的Item中使用)
+    implementation project(':lib')
+    //阴影
+    implementation project(':shadowLibrary')
+    //圆角
+    implementation project(':roundcorners')
+    //卷尺
+    implementation project(':rulerlib')
+   //签名
+    implementation project(':library')
+    implementation project(':banner')
+    //图片浏览器
+    implementation project(':imagebrowserlibrary')
+
+    implementation project(':MPChartLib')
     //BaseAdapterForRV
     implementation 'com.zhy:base-rvadapter:3.0.3'
     //
@@ -110,21 +136,21 @@ dependencies {
     //RxHttpUtils
     implementation 'com.github.lygttpod:RxHttpUtils:2.3.3'
     //卷尺
-    implementation 'com.github.superSp:RulerView:v1.5'
+//    implementation 'com.github.superSp:RulerView:v1.5'
     //蓝牙
     implementation 'com.clj.fastble:FastBleLib:2.3.4'
     //城市选择器
-    implementation 'liji.library.dev:citypickerview:5.2.4'
+//    implementation 'liji.library.dev:citypickerview:5.2.4'
     //MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+//    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //ShadowLayout
-    implementation 'com.github.lihangleo2:ShadowLayout:3.2.0'
+//    implementation 'com.github.lihangleo2:ShadowLayout:3.2.0'
     //签名
-    implementation 'com.github.F1ReKing:SignatureView:1.1.0'
+//    implementation 'com.github.F1ReKing:SignatureView:1.1.0'
     //Gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.22'
     //展开收起
-    implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
+//    implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
     //视频播放
     implementation 'cn.jzvd:jiaozivideoplayer:7.6.0'
     //Exoplayer内核
@@ -134,7 +160,7 @@ dependencies {
 //    implementation 'com.lzx:StarrySkyX:2.4.5'
     implementation 'com.github.EspoirX:StarrySky:v2.6.3'
     //Banner
-    implementation 'com.youth.banner:banner:2.1.0'
+//    implementation 'com.youth.banner:banner:2.1.0'
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //FlycoTabLayout
@@ -188,6 +214,6 @@ dependencies {
     implementation 'com.umeng.umsdk:common:9.3.8'
     implementation 'com.umeng.umsdk:asms:1.2.2'
     implementation 'com.umeng.umsdk:apm:1.2.0'
-    implementation  'com.umeng.umsdk:abtest:1.0.0'//使用U-App中ABTest能力，可选
+    implementation 'com.umeng.umsdk:abtest:1.0.0'//使用U-App中ABTest能力，可选
     //友盟埋点结束
 }

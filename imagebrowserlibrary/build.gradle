@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.maning0303'
+//
+//def versions = rootProject.ext.versions
+//def appId = rootProject.ext.appId
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+}
+
+dependencies {
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly 'androidx.appcompat:appcompat:1.2.0'
+    compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
+}
