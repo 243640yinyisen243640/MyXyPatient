@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -209,6 +208,8 @@ public class BaseWebViewActivity extends BaseActivity {
                     } catch (Exception e) {
                         ToastUtils.showShort("设备未安装支付宝");
                     }
+                }else if (url.startsWith("weixin://")){
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 }
                 return super.shouldOverrideUrlLoading(view, url);
             }
