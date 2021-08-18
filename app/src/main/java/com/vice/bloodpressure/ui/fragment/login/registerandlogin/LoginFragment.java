@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -201,7 +202,8 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onError(int error, String errorMsg) {
                 sendHandlerMessage(LOGIN_FAILED);
-                ToastUtils.showShort(errorMsg);
+//                ToastUtils.showShort(errorMsg);
+                Toast.makeText(getPageContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
         });
 

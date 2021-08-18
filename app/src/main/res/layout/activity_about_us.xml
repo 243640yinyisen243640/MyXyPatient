@@ -67,6 +67,14 @@
             android:text="用户服务协议" />
 
         <View style="@style/line" />
+
+        <TextView
+            android:id="@+id/tv_user_agreement_privacy"
+            style="@style/text_black_16_f_w"
+            android:drawableRight="@drawable/arrow_setting"
+            android:padding="18dp"
+            android:text="用户隐私政策" />
+
     </LinearLayout>
 
 

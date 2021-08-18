@@ -168,8 +168,9 @@ public class AboutUsActivity extends BaseHandlerActivity implements View.OnClick
         }
     }
 
-    @OnClick({R.id.tv_question_feed_back, R.id.tv_connect_us, R.id.ll_update, R.id.tv_user_agreement})
+    @OnClick({R.id.tv_question_feed_back, R.id.tv_connect_us, R.id.ll_update, R.id.tv_user_agreement, R.id.tv_user_agreement_privacy})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.tv_question_feed_back:
                 startActivity(new Intent(getPageContext(), FeedBackActivity.class));
@@ -181,10 +182,21 @@ public class AboutUsActivity extends BaseHandlerActivity implements View.OnClick
                 getUpdate();
                 break;
             case R.id.tv_user_agreement:
-                Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+                intent = new Intent(getPageContext(), BaseWebViewActivity.class);
                 intent.putExtra("title", "用户服务协议");
                 intent.putExtra("url", "file:///android_asset/user_protocol.html");
                 startActivity(intent);
+                break;
+
+            case R.id.tv_user_agreement_privacy:
+                intent = new Intent(getPageContext(), com.lyd.modulemall.ui.BaseWebViewActivity.class);
+                intent.putExtra("title", "隐私政策");
+                intent.putExtra("url", "http://chronics.xiyuns.cn/index/caseapp");
+                startActivity(intent);
+                break
+                        ;
+            default:
+
                 break;
         }
     }

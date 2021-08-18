@@ -228,6 +228,15 @@ public class SplashActivity extends BaseActivity {
                 }
             }, privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            ss.setSpan(new UnderLineClickSpan() {
+                @Override
+                public void onClick(View widget) {
+                    jumpToUserAgreement();
+                }
+            }, privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
             serviceAgreementTextView.setText(ss);
             serviceAgreementTextView.setHighlightColor(Color.TRANSPARENT);
             serviceAgreementTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -254,6 +263,16 @@ public class SplashActivity extends BaseActivity {
         Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
         intent.putExtra("title", "用户服务协议");
         intent.putExtra("url", "file:///android_asset/user_protocol.html");
+        startActivity(intent);
+    }
+
+    /**
+     * 页面跳转-用户政策
+     */
+    private void jumpToUserAgreement() {
+        Intent intent = new Intent(getPageContext(), com.lyd.modulemall.ui.BaseWebViewActivity.class);
+        intent.putExtra("title", "隐私政策");
+        intent.putExtra("url", "http://chronics.xiyuns.cn/index/caseapp");
         startActivity(intent);
     }
 
