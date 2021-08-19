@@ -24,6 +24,8 @@ public class SharedPreferencesUtils {
     //饮食第一项
     public static final String SPORT = "sport";
 
+    public static final String IS_AGREE = "0";
+
     private static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
     }

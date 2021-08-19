@@ -12,7 +12,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -136,7 +135,7 @@ public class LoginFragment extends BaseFragment {
         //        }, etInputPhoneOrIdCard, etPwd);
     }
 
-    @OnClick({R.id.tv_register, R.id.tv_forget_pwd, R.id.tv_register_code_quick_login, R.id.tv_login})
+    @OnClick({R.id.tv_register, R.id.tv_forget_pwd, R.id.tv_register_code_quick_login, R.id.tv_login, R.id.tv_login_agreement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_register://注册
@@ -154,14 +153,26 @@ public class LoginFragment extends BaseFragment {
             case R.id.tv_login://登录
                 toCheckLogin();
                 break;
+            case R.id.tv_login_agreement:
+
+
+                if (agreeTextView.isSelected()) {
+                    agreeTextView.setSelected(false);
+                    agreeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.popup_bottom_checkbox_check, 0, 0, 0);
+                } else {
+                    agreeTextView.setSelected(true);
+                    agreeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.popup_bottom_checkbox_checked, 0, 0, 0);
+
+                }
+                break;
             default:
                 break;
-//            case R.id.rl_service_agreement://用户协议
-//                Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
-//                intent.putExtra("title", "用户服务协议");
-//                intent.putExtra("url", "file:///android_asset/user_protocol.html");
-//                startActivity(intent);
-//                break;
+            //            case R.id.rl_service_agreement://用户协议
+            //                Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+            //                intent.putExtra("title", "用户服务协议");
+            //                intent.putExtra("url", "file:///android_asset/user_protocol.html");
+            //                startActivity(intent);
+            //                break;
         }
     }
 
@@ -169,6 +180,7 @@ public class LoginFragment extends BaseFragment {
      * 校验登录参数
      */
     private void toCheckLogin() {
+
         phoneOrIdCard = etInputPhoneOrIdCard.getText().toString().trim();
         if (TextUtils.isEmpty(phoneOrIdCard)) {
             ToastUtils.showShort("请输入手机号或身份证");
@@ -177,6 +189,10 @@ public class LoginFragment extends BaseFragment {
         pwd = etPwd.getText().toString().trim();
         if (TextUtils.isEmpty(pwd)) {
             ToastUtils.showShort("请输入密码");
+            return;
+        }
+        if (!agreeTextView.isSelected()) {
+            ToastUtils.showShort("请先勾选协议");
             return;
         }
         toDoLogin();
@@ -202,8 +218,8 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onError(int error, String errorMsg) {
                 sendHandlerMessage(LOGIN_FAILED);
-//                ToastUtils.showShort(errorMsg);
-                Toast.makeText(getPageContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                ToastUtils.showShort(errorMsg);
+                //                Toast.makeText(getPageContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
         });
 

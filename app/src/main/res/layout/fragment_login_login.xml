@@ -54,6 +54,20 @@
             android:layout_marginTop="@dimen/dp_10">
 
         </View>
+        <TextView
+            android:id="@+id/tv_login_agreement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center|left"
+            android:layout_marginBottom="30dp"
+            android:drawableLeft="@drawable/popup_bottom_checkbox_selector"
+            android:drawablePadding="5dp"
+            android:gravity="center|left"
+            android:text="@string/login_agreement"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black_text"
+            android:textSize="13sp" />
 
 
         <com.wei.android.lib.colorview.view.ColorTextView
@@ -99,21 +113,6 @@
             android:text="若已通过医生刷身份证注册，则初始密码“888888“，登录后请前往“账号安全”绑定手机号并完成密码修改" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_login_agreement"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:layout_alignParentBottom="true"
-        android:button="@null"
-        android:checked="true"
-        android:drawablePadding="5dp"
-        android:gravity="center"
-        android:text="@string/login_agreement"
-        android:textColor="@color/black"
-        android:textSize="13sp" />
 
 
 
