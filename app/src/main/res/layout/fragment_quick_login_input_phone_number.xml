@@ -66,6 +66,12 @@
 
     </View>
 
+    <TextView
+        android:id="@+id/tv_login_phone_agreement"
+        android:text="@string/login_agreement"
+        style="@style/login_check_style" />
+
+
     <com.wei.android.lib.colorview.view.ColorTextView
         android:id="@+id/tv_get_register_code"
         style="@style/text_gray_14_f_w"

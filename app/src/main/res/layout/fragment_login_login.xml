@@ -56,18 +56,8 @@
         </View>
         <TextView
             android:id="@+id/tv_login_agreement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center|left"
-            android:layout_marginBottom="30dp"
-            android:drawableLeft="@drawable/popup_bottom_checkbox_selector"
-            android:drawablePadding="5dp"
-            android:gravity="center|left"
-            android:text="@string/login_agreement"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/black_text"
-            android:textSize="13sp" />
+            style="@style/login_check_style"
+            android:text="@string/login_agreement" />
 
 
         <com.wei.android.lib.colorview.view.ColorTextView

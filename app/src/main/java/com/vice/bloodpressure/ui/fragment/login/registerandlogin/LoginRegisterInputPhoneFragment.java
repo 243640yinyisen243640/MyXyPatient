@@ -93,10 +93,10 @@ public class LoginRegisterInputPhoneFragment extends BaseFragment {
             case R.id.tv_register_agreement:
                 if (agreeTextView.isSelected()) {
                     agreeTextView.setSelected(false);
-                    agreeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.popup_bottom_checkbox_check, 0, 0, 0);
+                    agreeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shopping_cart_uncheck, 0, 0, 0);
                 } else {
                     agreeTextView.setSelected(true);
-                    agreeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.popup_bottom_checkbox_checked, 0, 0, 0);
+                    agreeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shopping_cart_checked, 0, 0, 0);
                 }
                 break;
             default:

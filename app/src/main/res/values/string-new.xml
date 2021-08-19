@@ -32,8 +32,8 @@
     <string name="please_open_gps">当前手机扫描蓝牙需要打开定位功能</string>
 
     <string name="temperature_record_default_with_unit">体温℃</string>
-    <string name="login_agreement">登录即代表您已同意慧健康《用户协议》及《隐私政策》</string>
-    <string name="login_agreement_left">登录即代表您已同意慧健康</string>
+    <string name="login_agreement">请阅读并同意《用户协议》及《隐私政策》</string>
+    <string name="login_agreement_left">请阅读并同意慧健康</string>
     <string name="login_agreement_user_agreement">《用户协议》</string>
     <string name="login_agreement_user_and">及</string>
     <string name="login_agreement_privacy">《隐私政策》</string>

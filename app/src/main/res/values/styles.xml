@@ -847,4 +847,17 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
+
+    <style name="login_check_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center|left</item>
+        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:drawableLeft">@drawable/shopping_cart_uncheck</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">13sp</item>
+    </style>
 </resources>
