@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -43,6 +44,7 @@ import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.lyd.modulemall.ui.activity.ProductDetailActivity;
+import com.lyd.modulemall.ui.activity.user.MyCouponListActivity;
 import com.lyd.modulemall.ui.fragment.MallHomeFragment;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -74,6 +76,7 @@ import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.UpdateUtils;
 import com.vice.bloodpressure.view.NumberProgressBar;
 import com.vice.bloodpressure.view.popu.AdvertisementPop;
+import com.vice.bloodpressure.view.popu.CouponPop;
 import com.vice.bloodpressure.view.popu.GoodsDetailsPop;
 import com.vice.bloodpressure.view.popu.HomeGuidePopup;
 import com.vice.bloodpressure.view.popu.NoNeedPop;
@@ -186,6 +189,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     private AdvertisementPop advertisementPop;
     private GoodsDetailsPop goodsDetailsPop;
     private NoNeedPop noNeedPop;
+    private CouponPop couponPop;
 
     private ImageView backgroudImageView;
     private ImageView closeImageView;
@@ -197,10 +201,14 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     private TextView sureTextView;
     private ImageView noNeedcloseImageView;
 
+    private ImageView couponImageView;
+    private ImageView couponcloseImageView;
+
 
     private AdverInfo outadverInfo;
     private AdverInfo goodsAdverInfo;
     private AdverInfo noadverInfo;
+    private AdverInfo couponInfo;
 
     @Override
     protected View addContentLayout() {
@@ -469,6 +477,13 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         backgroudNoNeedImageView.setLayoutParams(ll);
         backgroudNoNeedImageView.setOnClickListener(this);
         noNeedcloseImageView.setOnClickListener(this);
+
+        couponPop = new CouponPop(this);
+        couponImageView = noNeedPop.findViewById(R.id.iv_main_coupon);
+        couponcloseImageView = noNeedPop.findViewById(R.id.iv_main_coupon_close);
+        couponImageView.setLayoutParams(ll);
+        couponImageView.setOnClickListener(this);
+        couponcloseImageView.setOnClickListener(this);
     }
 
 
@@ -532,9 +547,12 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 //                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, noadverInfo.getImg_url(), backgroudNoNeedImageView);
 
                 noNeedPop.showPopupWindow();
-
+                getCoupon();
+            } else {
+                getCoupon();
             }
         }, (call, t) -> {
+            getCoupon();
         });
     }
 
@@ -547,8 +565,6 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             if (response.code == 200) {
                 outadverInfo = (AdverInfo) response.object;
                 Glide.with(getPageContext()).asBitmap().load(outadverInfo.getImg_url()).centerInside().into(backgroudImageView);
-
-                //                                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, outadverInfo.getImg_url(), backgroudImageView);
                 advertisementPop.showPopupWindow();
                 getAdver();
 
@@ -562,6 +578,23 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     }
 
     /**
+     * 获取外部链接
+     */
+    private void getCoupon() {
+        LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        Call<String> requestCall = DataManager.getAdver(userLogin.getToken(), "4", (call, response) -> {
+            if (response.code == 200) {
+                couponInfo = (AdverInfo) response.object;
+                Glide.with(getPageContext()).asBitmap().load(couponInfo.getImg_url()).centerInside().into(couponImageView);
+
+                couponPop.showPopupWindow();
+
+            }
+        }, (call, t) -> {
+        });
+    }
+
+    /**
      * 获取商品的弹窗
      */
     private void getGoods() {
@@ -571,9 +604,6 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 goodsAdverInfo = (AdverInfo) response.object;
 
                 Glide.with(getPageContext()).asBitmap().load(goodsAdverInfo.getImg_url()).centerInside().into(backgroudGoodsImageView);
-
-                //                                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, goodsAdverInfo.getImg_url(), backgroudGoodsImageView);
-
                 goodsDetailsPop.showPopupWindow();
                 getOut();
 
@@ -583,6 +613,22 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         }, (call, t) -> {
             getOut();
         });
+    }
+
+    private void receiveCoupon() {
+        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
+
+        Call<String> requestCall = DataManager.receiveCoupin(user.getToken(), "", (call, response) -> {
+            Toast.makeText(getPageContext(), response.msg, Toast.LENGTH_SHORT).show();
+            if (response.code == 200) {
+                Intent intent = new Intent(getPageContext(), MyCouponListActivity.class);
+                intent.putExtra("activity_id", "-1");
+                startActivity(intent);
+                couponPop.dismiss();
+            }
+        }, (call, t) -> {
+        });
+
     }
 
     /**
@@ -718,6 +764,12 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_no", alerNo);
                 noNeedPop.dismiss();
+                break;
+            case R.id.iv_main_coupon:
+                receiveCoupon();
+                break;
+            case R.id.iv_main_coupon_close:
+                couponPop.dismiss();
                 break;
             default:
                 break;

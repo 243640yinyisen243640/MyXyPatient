@@ -807,7 +807,9 @@ public class FollowUpVisitBloodPressureSubmitActivity extends BaseHandlerActivit
         postData.setMedicdetail(postMedicList);
         //最后数据提交
         postData.setData(dataBean);
-        String jsonResult = JSON.toJSONString(postData);
+        String jsonResult = JSON.toJSONString(postData);//这不就这一个参数吗  string类型的
+
+
         XyUrl.okPostJson(XyUrl.FOLLOW_ADD, jsonResult, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {

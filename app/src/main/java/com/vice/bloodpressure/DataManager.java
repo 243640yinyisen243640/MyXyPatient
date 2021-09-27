@@ -57,4 +57,20 @@ public class DataManager {
         map.put("version", ConstantParam.SERVER_VERSION);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/port/Message/allReading", map, successCallBack, failureCallBack);
     }
+
+    /**
+     * 领取优惠券
+     * @param accessToken
+     * @param coupon_id
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> receiveCoupin(String accessToken, String coupon_id, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("access_token", accessToken);
+        map.put("coupon_id", coupon_id);
+        map.put("version", ConstantParam.SERVER_VERSION);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/nsgetcoupons", map, successCallBack, failureCallBack);
+    }
 }
