@@ -479,8 +479,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         noNeedcloseImageView.setOnClickListener(this);
 
         couponPop = new CouponPop(this);
-        couponImageView = noNeedPop.findViewById(R.id.iv_main_coupon);
-        couponcloseImageView = noNeedPop.findViewById(R.id.iv_main_coupon_close);
+        couponImageView = couponPop.findViewById(R.id.iv_main_coupon);
+        couponcloseImageView = couponPop.findViewById(R.id.iv_main_coupon_close);
         couponImageView.setLayoutParams(ll);
         couponImageView.setOnClickListener(this);
         couponcloseImageView.setOnClickListener(this);
@@ -615,17 +615,22 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         });
     }
 
-    private void receiveCoupon() {
+    private void receiveCoupon(String coupon_id) {
         LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
 
-        Call<String> requestCall = DataManager.receiveCoupin(user.getToken(), "", (call, response) -> {
+        Call<String> requestCall = DataManager.receiveCoupin(user.getToken(), coupon_id, (call, response) -> {
             Toast.makeText(getPageContext(), response.msg, Toast.LENGTH_SHORT).show();
             if (response.code == 200) {
                 Intent intent = new Intent(getPageContext(), MyCouponListActivity.class);
                 intent.putExtra("activity_id", "-1");
                 startActivity(intent);
                 couponPop.dismiss();
-            }
+            }/*else {
+                Intent intent = new Intent(getPageContext(), MyCouponListActivity.class);
+                intent.putExtra("activity_id", "-1");
+                startActivity(intent);
+                couponPop.dismiss();
+            }*/
         }, (call, t) -> {
         });
 
@@ -766,7 +771,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 noNeedPop.dismiss();
                 break;
             case R.id.iv_main_coupon:
-                receiveCoupon();
+                receiveCoupon(couponInfo.getCoupon_id());
                 break;
             case R.id.iv_main_coupon_close:
                 couponPop.dismiss();

@@ -243,7 +243,7 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
             WindowManager.LayoutParams attributes = protectDialog.getWindow().getAttributes();
             attributes.width = 4 * ScreenUtils.screenWidth(getPageContext()) / 5;
 
-            attributes.height = ScreenUtils.dip2px(getPageContext(), 480);
+            attributes.height = ScreenUtils.dip2px(getPageContext(), 400);
             protectDialog.getWindow().setAttributes(attributes);
             protectDialog.setCancelable(false);
 

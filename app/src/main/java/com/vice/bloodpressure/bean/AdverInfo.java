@@ -21,6 +21,16 @@ public class AdverInfo {
      */
     private String url;
 
+    private String coupon_id;
+
+    public String getCoupon_id() {
+        return coupon_id;
+    }
+
+    public void setCoupon_id(String coupon_id) {
+        this.coupon_id = coupon_id;
+    }
+
     public String getId() {
         return id;
     }
