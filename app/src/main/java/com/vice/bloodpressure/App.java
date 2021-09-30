@@ -101,19 +101,29 @@ public class App extends BaseApplication implements RongIMClient.ConnectionStatu
     public void onCreate() {
         super.onCreate();
         String isAgreeStr = (String) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.IS_AGREE);
-        Log.i("yys","isAgreeStr=="+isAgreeStr);
-        if ("1".equals(isAgreeStr)){
-            Log.i("yys","onCreate==");
-            initJPush();
-            initIm();
-            initRxHttp();
-            initBle();
-            initOpenInstall();
-            initBugly();
-            initAliPush();
-            initAudio();
-            initUmeng();
-        }
+//        if ("1".equals(isAgreeStr)){
+//            Log.i("yys","onCreate==");
+//            initJPush();
+//            initIm();
+//            initRxHttp();
+//            initBle();
+//            initOpenInstall();
+//            initBugly();
+//            initAliPush();
+//            initAudio();
+//            initUmeng();
+//        }
+
+
+        initJPush();
+        initIm();
+        initRxHttp();
+        initBle();
+        initOpenInstall();
+        initBugly();
+        initAliPush();
+        initAudio();
+        initUmeng();
 
     }
 

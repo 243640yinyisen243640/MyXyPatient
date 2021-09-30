@@ -22,9 +22,9 @@ public class SharedPreferencesUtils {
     //饮食第一项
     public static final String FOOD_FIRST = "food_first";
     //饮食第一项
-    public static final String SPORT = "sport";
+    public static final String SPORT = "sport";//kankan这个
 
-    public static final String IS_AGREE = "0";
+    public static final String IS_AGREE = "0";//这个0
 
     private static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);

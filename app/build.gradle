@@ -166,6 +166,8 @@ dependencies {
     //FlycoTabLayout
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 
+    implementation 'com.github.Blincheng:EToast2:v2.1.1'
+
     def glideVersion = "4.12.0"
     api "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"

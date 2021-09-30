@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -33,6 +32,7 @@ import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.SPStaticUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.gyf.immersionbar.ImmersionBar;
@@ -542,12 +542,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         Call<String> requestCall = DataManager.getAdver(userLogin.getToken(), "3", (call, response) -> {
             if (response.code == 200) {
                 noadverInfo = (AdverInfo) response.object;
-
                 Glide.with(getPageContext()).asBitmap().load(noadverInfo.getImg_url()).centerInside().into(backgroudNoNeedImageView);
-                //                ImgViewUtils.loadRoundImage(getPageContext(), R.drawable.default_image, noadverInfo.getImg_url(), backgroudNoNeedImageView);
-
                 noNeedPop.showPopupWindow();
-                getCoupon();
             } else {
                 getCoupon();
             }
@@ -566,11 +562,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 outadverInfo = (AdverInfo) response.object;
                 Glide.with(getPageContext()).asBitmap().load(outadverInfo.getImg_url()).centerInside().into(backgroudImageView);
                 advertisementPop.showPopupWindow();
-                getAdver();
-
             } else {
                 getAdver();
-
             }
         }, (call, t) -> {
             getAdver();
@@ -578,7 +571,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     }
 
     /**
-     * 获取外部链接
+     * 获取优惠券
      */
     private void getCoupon() {
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
@@ -605,7 +598,6 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
 
                 Glide.with(getPageContext()).asBitmap().load(goodsAdverInfo.getImg_url()).centerInside().into(backgroudGoodsImageView);
                 goodsDetailsPop.showPopupWindow();
-                getOut();
 
             } else {
                 getOut();
@@ -619,19 +611,18 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
 
         Call<String> requestCall = DataManager.receiveCoupin(user.getToken(), coupon_id, (call, response) -> {
-            Toast.makeText(getPageContext(), response.msg, Toast.LENGTH_SHORT).show();
+            Log.i("yys", "toast==" + response.msg);
+            //            Toast.makeText(MainActivity.this, response.msg, ).show();
+            //            EToast2.makeText(MainActivity.this, response.msg, Toast.LENGTH_SHORT).show();
+            ToastUtils.showShort(response.msg);
             if (response.code == 200) {
                 Intent intent = new Intent(getPageContext(), MyCouponListActivity.class);
                 intent.putExtra("activity_id", "-1");
                 startActivity(intent);
                 couponPop.dismiss();
-            }/*else {
-                Intent intent = new Intent(getPageContext(), MyCouponListActivity.class);
-                intent.putExtra("activity_id", "-1");
-                startActivity(intent);
-                couponPop.dismiss();
-            }*/
+            }
         }, (call, t) -> {
+
         });
 
     }
@@ -662,7 +653,9 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
      * 获取商城标题
      */
     private void getShopTitle() {
+        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
         HashMap map = new HashMap<>();
+        map.put("access_token", user.getToken());
         XyUrl.okPost(XyUrl.GET_SHOP_TITLE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
@@ -733,6 +726,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_external_x", alertExternalX);
                 advertisementPop.dismiss();
+                getAdver();
                 break;
             //商品 点击图片
             case R.id.iv_main_goods:
@@ -753,6 +747,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_product_x", alertProductX);
                 goodsDetailsPop.dismiss();
+                getOut();
+
                 break;
             //无链接 取消
             case R.id.iv_main_no_need_close:
@@ -769,6 +765,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 //上下文   事件ID   map
                 MobclickAgent.onEventObject(this, "alert_no", alerNo);
                 noNeedPop.dismiss();
+                getCoupon();
                 break;
             case R.id.iv_main_coupon:
                 receiveCoupon(couponInfo.getCoupon_id());
