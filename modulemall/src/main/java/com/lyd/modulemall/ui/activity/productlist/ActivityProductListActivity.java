@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
+import com.lyd.modulemall.R;
 import com.lyd.modulemall.adapter.MallHomeProductAdapter;
 import com.lyd.modulemall.bean.MallHomeProductBean;
 import com.lyd.modulemall.databinding.ActivityProductListActivityBinding;
 import com.lyd.modulemall.net.ErrorInfo;
 import com.lyd.modulemall.net.MallUrl;
 import com.lyd.modulemall.net.OnError;
+import com.maning.imagebrowserlibrary.utils.immersionbar.ImmersionBar;
 import com.rxjava.rxlife.RxLife;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.zackratos.ultimatebarx.library.UltimateBarX;
 
 import java.util.HashMap;
 import java.util.List;
@@ -144,9 +145,7 @@ public class ActivityProductListActivity extends AppCompatActivity {
     }
 
     private void initStatusBar() {
-        UltimateBarX.with(this)
-                .transparent()
-                .applyStatusBar();
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.white).init();
     }
 
 //    /**

@@ -35,21 +35,24 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     //RxHttp开始
     //RxHttp
-    def rxHttpVersion = "2.5.6"
-    implementation "com.ljx.rxhttp:rxhttp:$rxHttpVersion"
-    annotationProcessor "com.ljx.rxhttp:rxhttp-compiler:$rxHttpVersion"
-    //RxLife
-    implementation 'com.ljx.rxlife3:rxlife-rxjava:3.0.0'
+    def rxHttpVersion = "2.7.0"
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.github.liujingxing.rxhttp:rxhttp:2.7.0'
+    annotationProcessor 'com.github.liujingxing.rxhttp:rxhttp-compiler:2.7.0'
+//    //RxLife
+    implementation 'com.github.liujingxing.rxlife:rxlife-rxjava3:2.2.1'
+//    implementation 'com.ljx.rxlife3:rxlife-rxjava:3.0.0'
     //Gson 解析容错
-    implementation 'com.hjq.gson:factory:3.0'
+    implementation 'com.github.getActivity:GsonFactory:5.2'
     //RxHttp结束
     //alipaysdk
     implementation(name: 'alipaysdk-noutdid-15.8.01.201215151847', ext: 'aar')
     //wechatpaysdk
-    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.21'
+//    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.21'
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     //Sku Start
     api project(':libsku')
     api project(':ColorViewLib')
-    implementation 'com.wuhenzhizao:titlebar:1.0.4'
+//    implementation 'com.wuhenzhizao:titlebar:1.0.4'
     //Sku End
 }

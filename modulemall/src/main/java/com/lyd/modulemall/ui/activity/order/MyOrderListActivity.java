@@ -24,7 +24,7 @@ import com.lyd.modulemall.databinding.ActivityMyOrderListBinding;
 import com.lyd.modulemall.ui.fragment.MyOrderListFragment;
 import com.lyd.modulemall.ui.fragment.MyRefundOrderListFragment;
 import com.lyd.modulemall.utils.RxHttpPublicParamsAddUtils;
-import com.zackratos.ultimatebarx.library.UltimateBarX;
+import com.maning.imagebrowserlibrary.utils.immersionbar.ImmersionBar;
 
 import java.util.ArrayList;
 
@@ -91,11 +91,7 @@ public class MyOrderListActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initStatusBar() {
-        UltimateBarX.with(this)
-                .fitWindow(true)
-                .colorRes(R.color.white)
-                .light(true)
-                .applyStatusBar();
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.white).init();
     }
 
 

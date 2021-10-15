@@ -8,8 +8,10 @@ buildscript {
             dirs '../modulemall/libs', 'libs'
         }
         google()
-        jcenter()
+//        jcenter()
+        mavenCentral()
         maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
         maven { url "https://jitpack.io" }
         maven { url "https://dl.bintray.com/rongcloud/maven" }
         maven {
@@ -19,6 +21,7 @@ buildscript {
         maven{
             url "https://dl.bintray.com/lizixian/StarrySky/"
         }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
@@ -38,19 +41,17 @@ allprojects {
             dirs '../modulemall/libs', 'libs'
         }
         google()
-        jcenter()
+//        jcenter()
         mavenCentral()
         maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+
         maven { url "https://jitpack.io" }
-//        maven { url "https://dl.bintray.com/rongcloud/maven" }
         maven {url  "http://maven.rongcloud.cn/repository/maven-releases/"}
         maven {
             url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
         }
         maven {url 'https://developer.huawei.com/repo/'}
-//        maven{
-//            url "https://dl.bintray.com/lizixian/StarrySky/"
-//        }
     }
 }
 

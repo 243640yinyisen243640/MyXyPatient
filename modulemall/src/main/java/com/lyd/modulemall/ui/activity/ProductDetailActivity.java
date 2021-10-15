@@ -44,10 +44,10 @@ import com.lyd.modulemall.ui.activity.shoppingcart.ShoppingCartActivity;
 import com.lyd.modulemall.ui.activity.supplier.SupplierQualificationActivity;
 import com.lyd.modulemall.view.ProductSkuDialog;
 import com.maning.imagebrowserlibrary.MNImageBrowser;
+import com.maning.imagebrowserlibrary.utils.immersionbar.ImmersionBar;
 import com.rxjava.rxlife.RxLife;
 import com.wuhenzhizao.sku.bean.Sku;
 import com.wuhenzhizao.sku.bean.SkuAttribute;
-import com.zackratos.ultimatebarx.library.UltimateBarX;
 import com.zhpan.bannerview.BannerViewPager;
 import com.zhpan.bannerview.constants.PageStyle;
 import com.zhpan.indicator.enums.IndicatorStyle;
@@ -98,9 +98,7 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
 
 
     private void initStatusBar() {
-        UltimateBarX.with(this)
-                .transparent()
-                .applyStatusBar();
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.white).init();
     }
 
 

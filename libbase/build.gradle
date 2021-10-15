@@ -120,11 +120,11 @@ dependencies {
     //圆角
 //    api 'com.github.KuangGang:RoundCorners:1.1.0'
     //状态栏
-    api  'com.zackratos.ultimatebarx:ultimatebarx:0.5.1'
+//    api  'com.zackratos.ultimatebarx:ultimatebarx:0.5.1'
     //switch-button
     api 'com.github.zcweng:switch-button:0.0.3@aar'
-    //flexbox
-    api 'com.google.android:flexbox:2.0.1'
+    //flexbox  全局没有使用
+//    api 'com.google.android:flexbox:2.0.1'
     //知乎选择照片
     api 'com.zhihu.android:matisse:0.5.3-beta3'
     //鲁班压缩

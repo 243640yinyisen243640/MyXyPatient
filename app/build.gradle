@@ -138,7 +138,9 @@ dependencies {
     //卷尺
 //    implementation 'com.github.superSp:RulerView:v1.5'
     //蓝牙
-    implementation 'com.clj.fastble:FastBleLib:2.3.4'
+//    implementation 'com.clj.fastble:FastBleLib:2.3.4'
+
+    implementation 'com.github.Jasonchenlijian:FastBle:2.4.0'
     //城市选择器
 //    implementation 'liji.library.dev:citypickerview:5.2.4'
     //MPAndroidChart
@@ -154,10 +156,11 @@ dependencies {
     //视频播放
     implementation 'cn.jzvd:jiaozivideoplayer:7.6.0'
     //Exoplayer内核
-    implementation 'com.google.android.exoplayer:exoplayer:2.12.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.1'
     //音频播放
-//    implementation 'com.lzx:StarrySkyX:2.4.4'
-//    implementation 'com.lzx:StarrySkyX:2.4.5'
+
+
     implementation 'com.github.EspoirX:StarrySky:v2.6.3'
     //Banner
 //    implementation 'com.youth.banner:banner:2.1.0'
@@ -210,7 +213,7 @@ dependencies {
     //vivo依赖
     implementation "com.aliyun.ams:alicloud-android-third-push-vivo:$aliCloudVersion"
     //阿里推送 End
-    api 'pub.devrel:easypermissions:2.0.1'
+    api 'pub.devrel:easypermissions:3.0.0'
 
     //友盟埋点开始
     implementation 'com.umeng.umsdk:common:9.3.8'

@@ -11,8 +11,8 @@ import android.view.Surface;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
@@ -24,7 +24,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.ExoTrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -72,7 +72,7 @@ public class JZMediaExo extends JZMediaInterface implements Player.EventListener
         handler = new Handler();
         mMediaHandler.post(() -> {
 
-            TrackSelection.Factory videoTrackSelectionFactory =
+            ExoTrackSelection.Factory videoTrackSelectionFactory =
                     new AdaptiveTrackSelection.Factory();
             TrackSelector trackSelector =
                     new DefaultTrackSelector(context, videoTrackSelectionFactory);
@@ -214,7 +214,7 @@ public class JZMediaExo extends JZMediaInterface implements Player.EventListener
     }
 
     @Override
-    public void onTimelineChanged(final Timeline timeline, Object manifest, final int reason) {
+    public void onTimelineChanged(final Timeline timeline,  final int reason) {
         Log.e(TAG, "onTimelineChanged");
         //        JZMediaPlayer.instance().mainThreadHandler.post(() -> {
         //                if (reason == 0) {
@@ -273,7 +273,7 @@ public class JZMediaExo extends JZMediaInterface implements Player.EventListener
     }
 
     @Override
-    public void onPlayerError(ExoPlaybackException error) {
+    public void onPlayerError(PlaybackException error) {
         Log.e(TAG, "onPlayerError" + error.toString());
         handler.post(() -> jzvd.onError(1000, 1000));
     }

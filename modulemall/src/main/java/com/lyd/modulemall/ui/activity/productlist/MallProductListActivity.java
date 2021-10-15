@@ -27,12 +27,12 @@ import com.lyd.modulemall.databinding.ActivityMallProductListBinding;
 import com.lyd.modulemall.net.ErrorInfo;
 import com.lyd.modulemall.net.MallUrl;
 import com.lyd.modulemall.net.OnError;
+import com.maning.imagebrowserlibrary.utils.immersionbar.ImmersionBar;
 import com.rxjava.rxlife.RxLife;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.wei.android.lib.colorview.view.ColorTextView;
-import com.zackratos.ultimatebarx.library.UltimateBarX;
 
 import java.util.HashMap;
 import java.util.List;
@@ -92,11 +92,7 @@ public class MallProductListActivity extends AppCompatActivity implements View.O
     }
 
     private void initStatusBar() {
-        UltimateBarX.with(this)
-                .fitWindow(true)
-                .colorRes(R.color.white)
-                .light(true)
-                .applyStatusBar();
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.white).init();
     }
 
     private void getProductLabelList() {

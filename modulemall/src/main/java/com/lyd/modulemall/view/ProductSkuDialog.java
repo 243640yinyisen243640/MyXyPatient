@@ -24,10 +24,10 @@ import com.lyd.modulemall.R;
 import com.lyd.modulemall.bean.ProductBean;
 import com.lyd.modulemall.databinding.DialogProductSkuBinding;
 import com.lyd.modulemall.utils.NumberUtils;
+import com.lyd.modulemall.view.popup.AppUtils;
 import com.wuhenzhizao.sku.bean.Sku;
 import com.wuhenzhizao.sku.bean.SkuAttribute;
 import com.wuhenzhizao.sku.view.OnSkuListener;
-import com.wuhenzhizao.titlebar.utils.AppUtils;
 
 import java.util.List;
 

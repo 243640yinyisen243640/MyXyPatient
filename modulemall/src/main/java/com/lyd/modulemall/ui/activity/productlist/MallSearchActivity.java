@@ -13,7 +13,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.utils.edittext.EditTextUtils;
 import com.lyd.modulemall.R;
 import com.lyd.modulemall.databinding.ActivityMallSearchBinding;
-import com.zackratos.ultimatebarx.library.UltimateBarX;
+import com.maning.imagebrowserlibrary.utils.immersionbar.ImmersionBar;
 
 /**
  * 描述:  搜索页面
@@ -35,11 +35,7 @@ public class MallSearchActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initStatusBar() {
-        UltimateBarX.with(this)
-                .fitWindow(true)
-                .colorRes(R.color.white)
-                .light(true)
-                .applyStatusBar();
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.white).init();
     }
 
     private void initEtSearch() {
