@@ -13,7 +13,7 @@ android {
         def environment_debug = false
         def environment_release = true
         debug {
-            buildConfigField "Boolean", "ENVIRONMENT", "$environment_debug"
+            buildConfigField "Boolean", "ENVIRONMENT", "$environment_debug"//zhijie改这个不香吗
         }
         release {
             buildConfigField "Boolean", "ENVIRONMENT", "$environment_release"

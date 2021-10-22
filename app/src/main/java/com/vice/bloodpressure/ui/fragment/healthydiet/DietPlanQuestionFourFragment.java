@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.fragment.healthydiet;
 
 import android.content.Intent;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -197,6 +198,7 @@ public class DietPlanQuestionFourFragment extends BaseFragment implements View.O
         switch (msg.what) {
             case ADD_SUCCESS_345:
                 EventBusUtils.post(new EventMessage<>(ConstantParam.HOME_DIET_QUESTION_SUBMIT));
+                Log.i("yys", "event==发送");
                 break;
             case ADD_SUCCESS:
                 DietPlanAddSuccessBean data = (DietPlanAddSuccessBean) msg.obj;
@@ -214,6 +216,7 @@ public class DietPlanQuestionFourFragment extends BaseFragment implements View.O
                     }
                 });
                 EventBusUtils.post(new EventMessage<>(ConstantParam.HOME_DIET_QUESTION_SUBMIT));
+                Log.i("yys", "event==发送");
                 break;
             case ADD_FAILED:
                 rxTimer.timer(3 * 1000, new RxTimerUtils.RxAction() {
@@ -226,6 +229,7 @@ public class DietPlanQuestionFourFragment extends BaseFragment implements View.O
                     }
                 });
                 EventBusUtils.post(new EventMessage<>(ConstantParam.HOME_DIET_QUESTION_SUBMIT));
+                Log.i("yys", "event==发送");
                 break;
         }
     }

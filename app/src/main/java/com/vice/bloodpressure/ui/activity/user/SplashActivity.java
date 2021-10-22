@@ -62,10 +62,6 @@ import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.MainActivity;
 import com.vice.bloodpressure.ui.activity.im.DoctorAdviceActivity;
 import com.vice.bloodpressure.utils.ScreenUtils;
-import com.vice.bloodpressure.utils.SharedPreferencesUtilsApp;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
@@ -91,10 +87,6 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
      */
     private Dialog protectDialog;
     private String spanColor = "#FFC600";//隐私政策span颜色值
-    /**
-     * 是否同意隐私政策，1是，0或空为否
-     */
-    private String isAgreePricacyProtect;
 
     private static final String TAG = "LYD";
     AppWakeUpAdapter wakeUpAdapter = new AppWakeUpAdapter() {
@@ -121,7 +113,6 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
 //        MobclickAgent.setDebugMode( true );
         UMConfigure.setLogEnabled(true);
         getWindow().setBackgroundDrawable(null);
-        initValues();
         hideTitleBar();
         initStatusBar();
         setSplash();
@@ -138,12 +129,6 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
         }
     }
 
-    private void initValues() {
-        Map<String, String> map = new HashMap<>();
-        map.put(ConstantParam.IS_AGREE_PRIVACY_PROTECT, "0");
-        SharedPreferencesUtilsApp.getInfo(getPageContext(), map);
-        isAgreePricacyProtect = map.get(ConstantParam.IS_AGREE_PRIVACY_PROTECT);
-    }
 
     /**
      * 初始化计步服务
@@ -186,28 +171,7 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
      * 设置启动页
      */
     private void setSplash() {
-        //        new Handler().postDelayed(new Runnable() {
-        //            @Override
-        //            public void run() {
-        //                if (!"1".equals(isAgreePricacyProtect)) {
-        //                    showPrivacyProtectDialog();
-        //                } else {
-        //                    LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
-        //                    if (user != null) {
-        //                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-        //                        finish();
-        //                    } else {
-        //                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-        //                        finish();
-        //                    }
-        //
-        //                }
-        //            }
-        //        }, 1000);
-
-
-
-        if ("1".equals(isAgreePricacyProtect)) {
+        if ("1".equals(SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.IS_AGREE))) {
             timer = new CountDownTimer(countDownTime, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -251,7 +215,7 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
             TextView disagreeTextView = view.findViewById(R.id.tv_dpp_disagree);
             TextView agressTextView = view.findViewById(R.id.tv_dpp_agree);
 
-            String privacyProtectHint = getString(R.string.privacy_protect_hint);
+            String privacyProtectHint = getString(R.string.privacy_protect_hint1);
             SpannableString ss = new SpannableString(privacyProtectHint);
 
             ss.setSpan(new UnderLineClickSpan() {
@@ -290,8 +254,6 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
                 initAudio();
                 initUmeng();
                 protectDialog.dismiss();
-                SharedPreferencesUtilsApp.saveInfo(getPageContext(), ConstantParam.IS_AGREE_PRIVACY_PROTECT, "1");
-                isAgreePricacyProtect = "1";
                 startActivity(new Intent(getPageContext(), LoginActivity.class));
                 finish();
             });

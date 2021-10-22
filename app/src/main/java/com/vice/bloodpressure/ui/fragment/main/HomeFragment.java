@@ -125,6 +125,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * 描述: 首页Fragment
  * 作者: LYD
@@ -637,6 +639,7 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
     public void onResume() {
         super.onResume();
         getSystemMessageCount();
+        getIndexDiet();
     }
 
     /**
@@ -903,7 +906,9 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 break;
             //打开
             case R.id.tv_home_diet_empty_open:
-                startActivity(new Intent(getPageContext(), DietPlanQuestionActivity.class));
+                intent = new Intent(getPageContext(), DietPlanQuestionActivity.class);
+                startActivityForResult(intent, 100);
+                //                startActivity(new Intent(getPageContext(), DietPlanQuestionActivity.class));
                 break;
             //首页运动之查看更多
             case R.id.tv_home_sport_look_more:
@@ -968,6 +973,23 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
 
         }
     }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case 100:
+                    getIndexDiet();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
 
 
     /**
@@ -1118,6 +1140,7 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 getHomeSport();
                 break;
             case ConstantParam.HOME_DIET_QUESTION_SUBMIT:
+                Log.i("yys", "event==结果");
                 getIndexDiet();
                 break;
             case ConstantParam.BLOOD_SUGAR_ADD:

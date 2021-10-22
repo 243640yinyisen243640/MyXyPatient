@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.activity.smartdiet;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -47,6 +48,7 @@ public class DietPlanQuestionActivity extends BaseHandlerEventBusActivity implem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_back:
+                Log.i("yys","bt_back");
                 toBack();
                 break;
         }
@@ -62,6 +64,7 @@ public class DietPlanQuestionActivity extends BaseHandlerEventBusActivity implem
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.i("yys","onKeyDown");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             toBack();
             return true;
@@ -71,9 +74,12 @@ public class DietPlanQuestionActivity extends BaseHandlerEventBusActivity implem
 
     private void toBack() {
         //这里是取出我们返回栈存在Fragment的个数
-        if (getSupportFragmentManager().getBackStackEntryCount() <= 0)
+        if (getSupportFragmentManager().getBackStackEntryCount() <= 0) {
+            Log.i("yys","====RESULT_OK");
+            setResult(RESULT_OK);
             finish();
-        else {
+        } else {
+            Log.i("yys","====toBack");
             //取出我们返回栈保存的Fragment,这里会从栈顶开始弹栈
             getSupportFragmentManager().popBackStack();
         }
