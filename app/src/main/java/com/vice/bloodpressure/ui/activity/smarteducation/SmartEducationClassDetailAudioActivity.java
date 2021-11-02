@@ -274,7 +274,6 @@ public class SmartEducationClassDetailAudioActivity extends BaseHandlerActivity 
                 toSubmitEndTime(3);
                 break;
             case R.id.img_audio:
-                Log.i("yys", "===img_audio");
                 seekBar.setEnabled(true);
                 clickCount = clickCount + 1;
                 AnimationDrawable am = (AnimationDrawable) imgAudio.getBackground();
@@ -285,6 +284,7 @@ public class SmartEducationClassDetailAudioActivity extends BaseHandlerActivity 
                     //开始播放
                     SongInfo info = new SongInfo();
                     info.setSongId(id + "");
+                    Log.i("yys","id=="+id+""+"url=="+audioUrl);
                     info.setSongUrl(audioUrl);
                     StarrySky.with().playMusicByInfo(info);
                     //开始更新进度

@@ -10,7 +10,7 @@ android {
     }
     buildTypes {
         //环境 以及融云环境
-        def environment_debug = false
+        def environment_debug = true
         def environment_release = true
         debug {
             buildConfigField "Boolean", "ENVIRONMENT", "$environment_debug"//zhijie改这个不香吗

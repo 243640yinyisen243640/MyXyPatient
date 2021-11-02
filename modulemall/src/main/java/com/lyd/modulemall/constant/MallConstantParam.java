@@ -20,6 +20,7 @@ public class MallConstantParam {
 
     //退款关闭
     public static final String SERVICE_URL = "https://cschat-ccs.aliyun.com/index.htm?tntInstId=_2H2IAAq&scene=SCE00009832";
+//    public static final String SERVICE_URL = "https://cschat.antcloud.com.cn/index.htm?tntInstId=yzG_oFmH&scene=SCE01205783";
 
 
 }

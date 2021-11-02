@@ -156,12 +156,12 @@ dependencies {
     //视频播放
     implementation 'cn.jzvd:jiaozivideoplayer:7.6.0'
     //Exoplayer内核
-    implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
-    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.14.1'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.14.1'
     //音频播放
+    implementation 'com.google.android.exoplayer:extension-rtmp:2.14.1'
 
-
-    implementation 'com.github.EspoirX:StarrySky:v2.6.3'
+    implementation 'com.github.EspoirX:StarrySky:v2.6.5'
     //Banner
 //    implementation 'com.youth.banner:banner:2.1.0'
     //Kotlin

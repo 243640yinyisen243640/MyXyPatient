@@ -11,8 +11,8 @@ import android.view.Surface;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
@@ -273,7 +273,7 @@ public class JZMediaExo extends JZMediaInterface implements Player.EventListener
     }
 
     @Override
-    public void onPlayerError(PlaybackException error) {
+    public void onPlayerError(ExoPlaybackException error) {
         Log.e(TAG, "onPlayerError" + error.toString());
         handler.post(() -> jzvd.onError(1000, 1000));
     }
