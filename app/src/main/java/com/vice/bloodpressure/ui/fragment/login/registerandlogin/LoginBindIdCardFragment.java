@@ -96,7 +96,7 @@ public class LoginBindIdCardFragment extends BaseEventBusFragment {
                     return;
                 }
                 String message = "身份证号一旦提交不可修改，请确认是否输入正确";
-                DialogUtils.getInstance().showCommonDialog(getPageContext(), "", message,
+                DialogUtils.getInstance().showCommonDialog1(getPageContext(), "", message,
                         "返回确认", "绑定", new DialogUtils.DialogCallBack() {
                             @Override
                             public void execEvent() {
@@ -116,7 +116,7 @@ public class LoginBindIdCardFragment extends BaseEventBusFragment {
      */
     private void haveBindIdCard() {
         String message = "该身份证号已完成登记注册，若继续强制绑定则会将原身份证账号注销且数据清除不可恢复";
-        DialogUtils.getInstance().showCommonDialog(getPageContext(), "", message,
+        DialogUtils.getInstance().showCommonDialog1(getPageContext(), "", message,
                 "继续绑定", "考虑考虑", new DialogUtils.DialogCallBack() {
                     @Override
                     public void execEvent() {

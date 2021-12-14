@@ -89,7 +89,7 @@ public class DoctorInfoDetailActivity extends BaseHandlerActivity {
 
     @OnClick(R.id.tv_un_bind)
     public void onViewClicked() {
-        DialogUtils.getInstance().showCommonDialog(getPageContext(), "", "确定要解绑医生吗",
+        DialogUtils.getInstance().showCommonDialog1(getPageContext(), "", "确定要解绑医生吗",
                 "确定", "我再想想", new DialogUtils.DialogCallBack() {
                     @Override
                     public void execEvent() {

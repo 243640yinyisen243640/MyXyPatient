@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -89,7 +91,7 @@ public class DialogUtils {
     }
 
     /**
-     * 显示提示信息
+     * 显示提示信息  这个Dialog在oppo手机上弹不出，换成Dialog1（）这个方法，需要把弹框的高度写死，但是没有抛出设置高度的方法。故被弃用
      *
      * @param context
      * @param titleInfo
@@ -113,6 +115,16 @@ public class DialogUtils {
         messageDialog.create(style).show();
     }
 
+    /**
+     * 这个方法是显示提示信息 的替换方法
+     *
+     * @param context
+     * @param titleInfo
+     * @param messageInfo
+     * @param isHaveCancel
+     * @param callBack
+     * @param style
+     */
     public void showDialog1(Context context, String titleInfo, String messageInfo, boolean isHaveCancel, final DialogUtils.DialogCallBack callBack, int style) {
         Dialog commonDialog = new Dialog(context, R.style.Dialog_Base);
         View view = View.inflate(context, R.layout.dialog_common, null);
@@ -128,10 +140,19 @@ public class DialogUtils {
         TextView contentTextView = view.findViewById(R.id.tv_common_dialog_content);
         TextView sureTextView = view.findViewById(R.id.tv_common_dialog_sure);
         TextView unsureTextView = view.findViewById(R.id.tv_common_dialog_unsure);
-        if ("".equals(titleInfo)){
-            titleTextView.setText("提示");
+        View lineView = view.findViewById(R.id.view_common_dialog);
+        if (isHaveCancel) {
+            lineView.setVisibility(View.VISIBLE);
+            unsureTextView.setVisibility(View.VISIBLE);
+        } else {
+            lineView.setVisibility(View.GONE);
+            unsureTextView.setVisibility(View.GONE);
         }
-        titleTextView.setText(titleInfo);
+        if ("".equals(titleInfo)) {
+            titleTextView.setText("提示");
+        } else {
+            titleTextView.setText(titleInfo);
+        }
         contentTextView.setText(messageInfo);
 
 
@@ -148,6 +169,8 @@ public class DialogUtils {
 
 
     /**
+     * 被弃用
+     *
      * @param context
      * @param titleInfo
      * @param messageInfo
@@ -179,6 +202,62 @@ public class DialogUtils {
     }
 
     /**
+     * @param context
+     * @param titleInfo
+     * @param messageInfo
+     * @param leftBtnInfo
+     * @param rightBtnInfo
+     * @param leftCallBack
+     * @param rightCallBack
+     */
+    public void showCommonDialog1(Context context,
+                                  String titleInfo,
+                                  String messageInfo,
+                                  String leftBtnInfo,
+                                  String rightBtnInfo,
+                                  final DialogUtils.DialogCallBack leftCallBack,
+                                  final DialogUtils.DialogCallBack rightCallBack) {
+        Dialog commonDialog = new Dialog(context, R.style.Dialog_Base);
+        View view = View.inflate(context, R.layout.dialog_common, null);
+        commonDialog.setContentView(view);
+        WindowManager.LayoutParams attributes = commonDialog.getWindow().getAttributes();
+        attributes.width = 4 * ScreenUtils.screenWidth(context) / 5;
+
+        attributes.height = ScreenUtils.dip2px(context, 150);
+        commonDialog.getWindow().setAttributes(attributes);
+        commonDialog.setCancelable(false);
+
+        TextView titleTextView = view.findViewById(R.id.tv_common_dialog_title);
+        TextView contentTextView = view.findViewById(R.id.tv_common_dialog_content);
+        TextView leftTextView = view.findViewById(R.id.tv_common_dialog_sure);
+        TextView rightTextView = view.findViewById(R.id.tv_common_dialog_unsure);
+        View lineView = view.findViewById(R.id.view_common_dialog);
+
+        leftTextView.setTextColor(ContextCompat.getColor(context,R.color.webview_progress));
+        rightTextView.setTextColor(ContextCompat.getColor(context,R.color.main_red));
+        leftTextView.setText(leftBtnInfo);
+        rightTextView.setText(rightBtnInfo);
+        if ("".equals(titleInfo)) {
+            titleTextView.setText("提示");
+        } else {
+            titleTextView.setText(titleInfo);
+        }
+        contentTextView.setText(messageInfo);
+
+
+        rightTextView.setOnClickListener(v -> {
+            rightCallBack.execEvent();//设置取消的回调
+            commonDialog.dismiss();
+        });
+        leftTextView.setOnClickListener(v -> {
+            leftCallBack.execEvent();//设置确定的回调
+            commonDialog.dismiss();
+        });
+        commonDialog.show();
+    }
+
+
+    /**
      * 显示输入Dialog
      *
      * @param context
@@ -191,27 +270,6 @@ public class DialogUtils {
     }
 
 
-    public void showDecimalNumberInputDialog(Context context, String title, String hint, final DialogUtils.DialogInputCallBack callBack) {
-        QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(context);
-        builder.setTitle(title)
-                .setPlaceholder(hint)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        String text = builder.getEditText().getText().toString().trim();
-                        if (TextUtils.isEmpty(text)) {
-                            ToastUtils.showShort(hint);
-                        } else {
-                            callBack.execEvent(text);
-                            dialog.dismiss();
-                        }
-                    }
-                })
-                .create(R.style.DialogThemeCommon).show();
-        EditText editText = builder.getEditText();
-        editText.setInputType(8194);
-    }
 
     /**
      * 显示输入Dialog
@@ -242,6 +300,27 @@ public class DialogUtils {
                 })
                 .create(R.style.DialogThemeCommon).show();
 
+    }
+    public void showDecimalNumberInputDialog(Context context, String title, String hint, final DialogUtils.DialogInputCallBack callBack) {
+        QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(context);
+        builder.setTitle(title)
+                .setPlaceholder(hint)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        String text = builder.getEditText().getText().toString().trim();
+                        if (TextUtils.isEmpty(text)) {
+                            ToastUtils.showShort(hint);
+                        } else {
+                            callBack.execEvent(text);
+                            dialog.dismiss();
+                        }
+                    }
+                })
+                .create(R.style.DialogThemeCommon).show();
+        EditText editText = builder.getEditText();
+        editText.setInputType(8194);
     }
 
 
