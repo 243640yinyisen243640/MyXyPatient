@@ -222,7 +222,7 @@ public class PatientOfTreatListActivity extends BaseHandlerEventBusActivity impl
      * 是否要删除就诊人
      */
     private void showDelPatientOfTreat() {
-        DialogUtils.getInstance().showDialog(getPageContext(), "", "确定删除该就诊人吗？", true, new DialogUtils.DialogCallBack() {
+        DialogUtils.getInstance().showDialog1(getPageContext(), "", "确定删除该就诊人吗？", true, new DialogUtils.DialogCallBack() {
             @Override
             public void execEvent() {
                 goDelPatientOfTreat();

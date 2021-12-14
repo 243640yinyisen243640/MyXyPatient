@@ -140,7 +140,7 @@ public class AccountAndSafetyActivity extends BaseHandlerEventBusActivity {
                 break;
             case R.id.bt_exit:
                 RongIM.getInstance().logout();
-                DialogUtils.getInstance().showDialog(getPageContext(), "提示", "确定要退出登录?", true, () -> {
+                DialogUtils.getInstance().showDialog1(getPageContext(), "提示", "确定要退出登录?", true, () -> {
                     CloudPushService pushService = PushServiceFactory.getCloudPushService();
                     pushService.unbindAccount(new CommonCallback() {
                         @Override

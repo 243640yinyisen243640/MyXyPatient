@@ -456,7 +456,7 @@ public class NonDrug_03_CheckPrescriptionActivity extends BaseHandlerActivity {
     public void processHandlerMsg(Message msg) {
         switch (msg.what) {
             case ADD_SUCCESS:
-                DialogUtils.getInstance().showDialog(getPageContext(), "温馨提示", "您的信息已提交,请等待医生为你生成报告!", false, new DialogUtils.DialogCallBack() {
+                DialogUtils.getInstance().showDialog1(getPageContext(), "温馨提示", "您的信息已提交,请等待医生为你生成报告!", false, new DialogUtils.DialogCallBack() {
                     @Override
                     public void execEvent() {
                         ActivityUtils.finishToActivity(MainActivity.class, false);

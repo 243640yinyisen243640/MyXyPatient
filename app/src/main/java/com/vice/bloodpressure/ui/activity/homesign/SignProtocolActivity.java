@@ -57,7 +57,7 @@ public class SignProtocolActivity extends BaseHandlerActivity {
         getTvSave().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtils.getInstance().showDialog(getPageContext(), "", "请确定是否解约", true, new DialogUtils.DialogCallBack() {
+                DialogUtils.getInstance().showDialog1(getPageContext(), "", "请确定是否解约", true, new DialogUtils.DialogCallBack() {
                     @Override
                     public void execEvent() {
                         rescission();

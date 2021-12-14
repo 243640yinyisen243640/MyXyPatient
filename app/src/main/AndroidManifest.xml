@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.vice.bloodpressure">
 
+    <uses-permission android:name="com.vice.bloodpressure.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" /> <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -20,7 +21,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- 危险权限开始 -->
     <!-- https://developer.android.google.cn/guide/topics/permissions/overview#dangerous_permissions -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permisOP_POST_NOTIFICATIONsion.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 蓝牙权限结束 -->
     <!-- 外部存储(下载apk 访问照片 媒体内容 文件) -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

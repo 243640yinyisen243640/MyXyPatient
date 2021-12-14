@@ -1,9 +1,13 @@
 package com.vice.bloodpressure.utils;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -80,6 +84,10 @@ public class DialogUtils {
         showDialog(context, titleInfo, messageInfo, isHaveCancel, callBack, R.style.DialogThemeCommon);
     }
 
+    public void showDialog1(Context context, String titleInfo, String messageInfo, boolean isHaveCancel, final DialogUtils.DialogCallBack callBack) {
+        showDialog1(context, titleInfo, messageInfo, isHaveCancel, callBack, R.style.DialogThemeCommon);
+    }
+
     /**
      * 显示提示信息
      *
@@ -104,6 +112,40 @@ public class DialogUtils {
         });
         messageDialog.create(style).show();
     }
+
+    public void showDialog1(Context context, String titleInfo, String messageInfo, boolean isHaveCancel, final DialogUtils.DialogCallBack callBack, int style) {
+        Dialog commonDialog = new Dialog(context, R.style.Dialog_Base);
+        View view = View.inflate(context, R.layout.dialog_common, null);
+        commonDialog.setContentView(view);
+        WindowManager.LayoutParams attributes = commonDialog.getWindow().getAttributes();
+        attributes.width = 4 * ScreenUtils.screenWidth(context) / 5;
+
+        attributes.height = ScreenUtils.dip2px(context, 150);
+        commonDialog.getWindow().setAttributes(attributes);
+        commonDialog.setCancelable(false);
+
+        TextView titleTextView = view.findViewById(R.id.tv_common_dialog_title);
+        TextView contentTextView = view.findViewById(R.id.tv_common_dialog_content);
+        TextView sureTextView = view.findViewById(R.id.tv_common_dialog_sure);
+        TextView unsureTextView = view.findViewById(R.id.tv_common_dialog_unsure);
+        if ("".equals(titleInfo)){
+            titleTextView.setText("提示");
+        }
+        titleTextView.setText(titleInfo);
+        contentTextView.setText(messageInfo);
+
+
+        unsureTextView.setOnClickListener(v -> {
+            commonDialog.dismiss();
+        });
+        sureTextView.setOnClickListener(v -> {
+            callBack.execEvent();//设置确定的回调
+            commonDialog.dismiss();
+        });
+        commonDialog.show();
+
+    }
+
 
     /**
      * @param context

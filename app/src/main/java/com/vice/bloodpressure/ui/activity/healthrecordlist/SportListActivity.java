@@ -101,7 +101,7 @@ public class SportListActivity extends BaseHandlerEventBusActivity implements Vi
         lvSport.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogUtils.getInstance().showDialog(getPageContext(), "提示", "确定要删除?", true, () -> {
+                DialogUtils.getInstance().showDialog1(getPageContext(), "提示", "确定要删除?", true, () -> {
                     toDoDel(position);
                 });
                 return true;

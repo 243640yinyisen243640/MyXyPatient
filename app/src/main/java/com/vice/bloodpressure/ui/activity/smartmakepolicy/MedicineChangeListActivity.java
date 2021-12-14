@@ -116,7 +116,7 @@ public class MedicineChangeListActivity extends BaseHandlerActivity implements C
 
     @Override
     public void adapterViewClick(int position) {
-        DialogUtils.getInstance().showDialog(getPageContext(), "更换", "确定要更换药物?", true, new DialogUtils.DialogCallBack() {
+        DialogUtils.getInstance().showDialog1(getPageContext(), "更换", "确定要更换药物?", true, new DialogUtils.DialogCallBack() {
             @Override
             public void execEvent() {
                 change(position);

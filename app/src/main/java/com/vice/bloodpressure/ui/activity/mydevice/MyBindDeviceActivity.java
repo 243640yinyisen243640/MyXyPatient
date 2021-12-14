@@ -51,7 +51,7 @@ public class MyBindDeviceActivity extends BaseActivity {
 
 
     private void toUnbind() {
-        DialogUtils.getInstance().showDialog(getPageContext(), "提示", "确定要解绑设备?", true, this::toDoUnbind);
+        DialogUtils.getInstance().showDialog1(getPageContext(), "提示", "确定要解绑设备?", true, this::toDoUnbind);
     }
 
     private void toDoUnbind() {

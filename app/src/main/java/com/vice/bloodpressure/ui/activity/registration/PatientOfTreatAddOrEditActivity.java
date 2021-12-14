@@ -166,7 +166,7 @@ public class PatientOfTreatAddOrEditActivity extends BaseHandlerActivity impleme
      * @param idNumber
      */
     private void showAddOrEditDialog(String personName, String phoneNumber, String idNumber) {
-        DialogUtils.getInstance().showDialog(getPageContext(), "", "确定存储该就诊人吗？", true, new DialogUtils.DialogCallBack() {
+        DialogUtils.getInstance().showDialog1(getPageContext(), "", "确定存储该就诊人吗？", true, new DialogUtils.DialogCallBack() {
             @Override
             public void execEvent() {
                 goAddOrEdit(personName, phoneNumber, idNumber);

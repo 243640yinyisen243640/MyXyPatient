@@ -237,7 +237,7 @@ public class TestSportFragment extends BaseFragment {
                     toDoSubmit();
                 } else {
                     //有禁忌症
-                    DialogUtils.getInstance().showDialog(getPageContext(), "温馨提示", "您有运动禁忌症，不适合运动，无法生成运动处方！", false, new DialogUtils.DialogCallBack() {
+                    DialogUtils.getInstance().showDialog1(getPageContext(), "温馨提示", "您有运动禁忌症，不适合运动，无法生成运动处方！", false, new DialogUtils.DialogCallBack() {
                         @Override
                         public void execEvent() {
                         }
@@ -312,7 +312,7 @@ public class TestSportFragment extends BaseFragment {
     public void processHandlerMsg(Message msg) {
         switch (msg.what) {
             case ADD_SUCCESS:
-                DialogUtils.getInstance().showDialog(getPageContext(), "温馨提示", "您的信息已提交,请等待医生为你生成报告!", false, new DialogUtils.DialogCallBack() {
+                DialogUtils.getInstance().showDialog1(getPageContext(), "温馨提示", "您的信息已提交,请等待医生为你生成报告!", false, new DialogUtils.DialogCallBack() {
                     @Override
                     public void execEvent() {
                         ActivityUtils.finishToActivity(MainActivity.class, false);

@@ -200,7 +200,7 @@ public class MyAppointmentListFragment extends BaseEventBusFragment implements A
      * @param schid
      */
     private void showDelDialog(int schid) {
-        DialogUtils.getInstance().showDialog(getPageContext(), "", "亲，确定删除预约吗？", true, new DialogUtils.DialogCallBack() {
+        DialogUtils.getInstance().showDialog1(getPageContext(), "", "亲，确定删除预约吗？", true, new DialogUtils.DialogCallBack() {
             @Override
             public void execEvent() {
                 doDel(schid);

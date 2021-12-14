@@ -163,7 +163,7 @@ public class MedicineSearchActivity extends BaseActivity {
     }
 
     private void clearDialog() {
-        DialogUtils.getInstance().showDialog(getPageContext(), "", "确认要删除全部历史记录?", true, new DialogUtils.DialogCallBack() {
+        DialogUtils.getInstance().showDialog1(getPageContext(), "", "确认要删除全部历史记录?", true, new DialogUtils.DialogCallBack() {
             @Override
             public void execEvent() {
                 etInput.setText("");

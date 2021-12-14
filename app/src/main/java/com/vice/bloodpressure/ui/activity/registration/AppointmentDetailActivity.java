@@ -217,7 +217,7 @@ public class AppointmentDetailActivity extends BaseHandlerActivity implements Vi
      * 显示取消弹窗
      */
     private void showCancelDialog() {
-        DialogUtils.getInstance().showDialog(getPageContext(), "亲，确定取消预约吗？", "最多一天取消两次!", true, new DialogUtils.DialogCallBack() {
+        DialogUtils.getInstance().showDialog1(getPageContext(), "亲，确定取消预约吗？", "最多一天取消两次!", true, new DialogUtils.DialogCallBack() {
             @Override
             public void execEvent() {
                 doCancelAppointment();

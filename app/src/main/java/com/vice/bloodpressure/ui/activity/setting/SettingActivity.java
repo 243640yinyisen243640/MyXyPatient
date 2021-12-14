@@ -91,8 +91,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.bt_exit:
                 toExit();
-//                Intent intent = new Intent(getPageContext(), ChooseTimeActivity.class);
-//                startActivity(intent);
 
                 break;
         }
