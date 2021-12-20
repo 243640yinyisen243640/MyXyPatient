@@ -496,7 +496,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         if (notificationEnabled) {
 
         } else {
-            DialogUtils.getInstance().showDialog1(getPageContext(), " ", "请点击确定跳转至设置页面,并允许通知.", true, new DialogUtils.DialogCallBack() {
+            DialogUtils.getInstance().showDialog1(getPageContext(), "", "请点击确定跳转至设置页面,并允许通知.", true, new DialogUtils.DialogCallBack() {
                 @Override
                 public void execEvent() {
                     NotificationUtils.goToSettings(getPageContext());
