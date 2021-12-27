@@ -57,6 +57,7 @@ public class BloodPressureAddActivity extends BaseHandlerEventBusActivity {
     private String[] typeArray;
     private String high = "120";
     private String low = "80";
+    private String bmi = "80";
     private String time;
 
 
@@ -159,7 +160,7 @@ public class BloodPressureAddActivity extends BaseHandlerEventBusActivity {
         map.put("access_token", userLogin.getToken());
         map.put("systolic", high);//收缩
         map.put("diastole", low);//舒张
-        map.put("heartrate", "");
+        map.put("heartrate", bmi);//心率
         map.put("datetime", time);
         map.put("type", "2");
         XyUrl.okPostSave(XyUrl.ADD_BLOOD, map, new OkHttpCallBack<String>() {
@@ -190,6 +191,11 @@ public class BloodPressureAddActivity extends BaseHandlerEventBusActivity {
                 break;
             case ConstantParam.BLOOD_PRESSURE_ADD_TIME:
                 time = event.getMsg();
+                break;
+            case ConstantParam.BLOOD_PRESSURE_ADD_BMI:
+                bmi = event.getMsg();
+                break;
+            default:
                 break;
         }
     }

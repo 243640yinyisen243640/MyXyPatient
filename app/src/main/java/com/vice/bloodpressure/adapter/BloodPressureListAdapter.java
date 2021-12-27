@@ -26,6 +26,7 @@ public class BloodPressureListAdapter extends BaseQuickAdapter<BloodPressureBean
         //1偏高  2偏低  3正常
         int ishight = item.getIshight();
         TextView tvValue = helper.getView(R.id.tv_value);
+        TextView heartValue = helper.getView(R.id.tv_value_heart);
         switch (ishight) {
             case 1:
                 tvValue.setTextColor(ColorUtils.getColor(R.color.bp_value_high));
@@ -38,14 +39,15 @@ public class BloodPressureListAdapter extends BaseQuickAdapter<BloodPressureBean
                 break;
         }
         tvValue.setText(value);
+        heartValue.setText(item.getHeartrate() + "");
         //1自动  2手动
         int type = item.getType();
         if (1 == type) {
-            helper.setText(R.id.tv_type, "自动上传");
-            helper.setImageResource(R.id.img_type, R.drawable.patient_bp_auto_upload);
+            helper.setText(R.id.tv_type, "自动");
+            //            helper.setImageResource(R.id.img_type, R.drawable.patient_bp_auto_upload);
         } else {
-            helper.setText(R.id.tv_type, "手动上传");
-            helper.setImageResource(R.id.img_type, R.drawable.patient_bp_manual_upload);
+            helper.setText(R.id.tv_type, "手动");
+            //            helper.setImageResource(R.id.img_type, R.drawable.patient_bp_manual_upload);
         }
     }
 }

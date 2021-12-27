@@ -57,6 +57,8 @@ public class ConstantParam {
     public static final int BLOOD_PRESSURE_ADD_HIGH = 1006;
     //手动添加血压 低血压
     public static final int BLOOD_PRESSURE_ADD_LOW = 1007;
+    //添加心率
+    public static final int BLOOD_PRESSURE_ADD_BMI = 1050;
     //手动添加血压 时间
     public static final int BLOOD_PRESSURE_ADD_TIME = 1008;
     //手动添加身高

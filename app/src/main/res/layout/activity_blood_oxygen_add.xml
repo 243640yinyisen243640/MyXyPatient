@@ -101,7 +101,8 @@
         style="@style/hh_fi_wr"
         android:layout_marginTop="@dimen/dp_10"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"

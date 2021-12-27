@@ -45,6 +45,14 @@ public class BloodPressureAddManualFragment extends BaseFragment {
     TextView tvLow;
     @BindView(R.id.ruler_view_low)
     RulerView rulerViewLow;
+    @BindView(R.id.ruler_view_low_bmi)
+    RulerView rulerViewLowBmi;
+    @BindView(R.id.tv_low_bmi)
+    TextView bmiDataTextView;
+    @BindView(R.id.ll_bmi_record)
+    LinearLayout bmiDataLinearLayout;
+
+
     @BindView(R.id.tv_time)
     TextView tvTime;
     private boolean bmi;
@@ -62,6 +70,7 @@ public class BloodPressureAddManualFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         if (bmi) {
+            bmiDataLinearLayout.setVisibility(View.GONE);
             TextView tvHeight = getView().findViewById(R.id.tv_first_left);
             tvHeight.setText("身高");
             TextView tvHeightUnit = getView().findViewById(R.id.tv_first_right);
@@ -85,6 +94,9 @@ public class BloodPressureAddManualFragment extends BaseFragment {
                     startActivity(new Intent(getActivity().getApplicationContext(), BmiDetailActivity.class));
                 }
             });
+
+        } else {
+            bmiDataLinearLayout.setVisibility(View.VISIBLE);
 
         }
     }
@@ -134,6 +146,22 @@ public class BloodPressureAddManualFragment extends BaseFragment {
                     EventBusUtils.post(new EventMessage<>(ConstantParam.BLOOD_PRESSURE_ADD_LOW, result));
             }
         });
+
+
+        rulerViewLowBmi.setOnChooseResulterListener(new RulerView.OnChooseResulterListener() {
+            @Override
+            public void onEndResult(String result) {
+
+            }
+
+            @Override
+            public void onScrollResult(String result) {
+                bmiDataTextView.setText(floatStringToIntString(result));
+                EventBusUtils.post(new EventMessage<>(ConstantParam.BLOOD_PRESSURE_ADD_BMI, result));
+            }
+        });
+
+
     }
 
 

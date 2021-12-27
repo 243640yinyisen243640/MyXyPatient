@@ -5,29 +5,25 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dp_15">
+        android:padding="@dimen/dp_10">
 
         <TextView
             android:id="@+id/tv_time"
-            style="@style/text_black_14_w_w"
-            android:layout_centerVertical="true"
-            android:text="2018-01-01 16:41" />
+            style="@style/text_black_14_w_w" />
 
 
         <LinearLayout
             style="@style/hh_wr_wr"
-            android:layout_marginRight="28dp"
-            android:layout_toLeftOf="@+id/ll_type_right"
+            android:layout_marginLeft="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_value"
                 style="@style/text_black_14_w_w"
                 android:layout_marginRight="@dimen/dp_5"
-                android:text="180/120"
                 android:textColor="@color/bp_value_high" />
 
             <TextView
@@ -36,32 +32,43 @@
 
         </LinearLayout>
 
-
         <LinearLayout
-            android:id="@+id/ll_type_right"
             style="@style/hh_wr_wr"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="right"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/img_type"
-                android:layout_width="@dimen/dp_18"
-                android:layout_height="@dimen/dp_18"
-                android:scaleType="centerCrop"
-                android:src="@drawable/patient_bp_auto_upload" />
+            <TextView
+                android:id="@+id/tv_value_heart"
+                style="@style/text_black_14_w_w"
+                android:layout_width="30dp"
+                android:layout_marginRight="@dimen/dp_5"
+                android:gravity="right"
+                android:text="300"
+                android:textColor="@color/black_text" />
 
             <TextView
-                android:id="@+id/tv_type"
-                style="@style/text_gray_14_w_w"
-                android:gravity="right"
-                android:text="手动上传"
-                android:textSize="13sp" />
+                style="@style/text_gray_12_w_w"
+                android:text="次/分" />
+
         </LinearLayout>
 
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+        <TextView
+            android:id="@+id/tv_type"
+            style="@style/text_gray_14_w_w"
+            android:layout_marginLeft="10dp"
+            android:text="手动"
+            android:textSize="13sp" />
+
+    </LinearLayout>
 
     <View style="@style/line" />
 

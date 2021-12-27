@@ -22,7 +22,9 @@ public class BloodOxygenListAdapter extends BaseQuickAdapter<BloodOxygenListBean
         holder.setText(R.id.tv_oxygen_time, datetime);
         String oxygen = bean.getOxygen();
         String bpmval = bean.getBpmval();
-        holder.setText(R.id.tv_oxygen_number, oxygen + "" + "/" + bpmval);
-        holder.setText(R.id.tv_tongyong, "%" + "/" + "bmp");
+        //        holder.setText(R.id.tv_oxygen_number, oxygen + "" + "/" + bpmval);
+        //        holder.setText(R.id.tv_tongyong, "%" + "/" + "bmp");
+        holder.setText(R.id.tv_oxygen_number, oxygen);
+        holder.setText(R.id.tv_tongyong, "%");
     }
 }
