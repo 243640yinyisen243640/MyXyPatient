@@ -426,7 +426,7 @@
 
     <style name="appointment_of_time_seven_days_tv_top1" parent="text_white_14_w_w">
         <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:layout_marginTop">5dp</item>
+
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">10sp</item>
@@ -437,10 +437,21 @@
         <item name="android:layout_marginBottom">3dp</item>
     </style>
 
+    <style name="appointment_of_time_seven_days_tv_bottom1" parent="text_white_14_w_w">
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
 
     <!--其它-->
     <style name="appointment_of_time_seven_days_rl_copy" parent="hh_fi_wr">
         <item name="android:layout_height">45dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="appointment_of_time_seven_days_rl_copy1" parent="hh_fi_wr">
+        <item name="android:layout_height">30dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">vertical</item>
     </style>

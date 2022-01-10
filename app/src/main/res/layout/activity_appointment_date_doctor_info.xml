@@ -72,7 +72,6 @@
         <TextView
             style="@style/text_black_14_w_w"
             android:paddingLeft="@dimen/dp_12"
-            android:paddingRight="@dimen/dp_12"
             android:text="排班信息"
             android:textColor="@color/main_home" />
 
@@ -80,9 +79,7 @@
             android:id="@+id/tv_appointment_date_time"
             style="@style/text_black_14_f_w"
             android:drawableRight="@drawable/physical_examination_doctor_info_refresh"
-            android:paddingRight="@dimen/dp_12"
-            android:text="排班信息"
-            android:textColor="@color/main_home" />
+            android:textColor="@color/black_text" />
     </LinearLayout>
 
 
@@ -109,7 +106,8 @@
                 android:layout_width="38dp"
                 android:layout_gravity="center_vertical"
                 android:text="7月"
-                android:textColor="@color/main_home" />
+                android:textColor="@color/main_home"
+                android:visibility="invisible" />
 
             <View
                 style="@style/line"
@@ -225,7 +223,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -243,7 +240,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -261,7 +257,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -279,7 +274,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -297,7 +291,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -315,7 +308,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -333,7 +325,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -394,7 +385,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -412,7 +402,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -430,7 +419,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -448,7 +436,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -466,7 +453,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -484,7 +470,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 
@@ -502,7 +487,6 @@
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
                         android:text="约满"
-                        app:backgroundColorNormal="@color/color_e5"
                         app:cornerRadiusNormal="90dp" />
 
 

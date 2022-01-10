@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.lyd.baselib.widget.view.decoration.CommonItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -19,10 +20,10 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.AppointmentOfDoctorAdapter;
 import com.vice.bloodpressure.base.fragment.BaseFragment;
+import com.vice.bloodpressure.bean.AppointmentDoctorAllInfo;
 import com.vice.bloodpressure.bean.AppointmentDoctorListBean;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.lyd.baselib.widget.view.decoration.CommonItemDecoration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,7 @@ public class AppointmentOfDoctorFragment extends BaseFragment {
     //上拉加载页数
     private int pageIndex = 1;
     //分页
+    private AppointmentDoctorAllInfo allInfo;
 
     @Override
     protected int getLayoutId() {
@@ -96,7 +98,8 @@ public class AppointmentOfDoctorFragment extends BaseFragment {
         XyUrl.okPost(XyUrl.GET_SCHEDULE_DOC, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
-                list = JSONObject.parseArray(value, AppointmentDoctorListBean.class);
+                allInfo = JSONObject.parseObject(value, AppointmentDoctorAllInfo.class);
+                list = allInfo.getList();
                 if (list != null && list.size() > 0) {
                     Message msg = getHandlerMessage();
                     msg.obj = list;
@@ -131,6 +134,7 @@ public class AppointmentOfDoctorFragment extends BaseFragment {
         XyUrl.okPost(XyUrl.GET_SCHEDULE_DOC, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
+
                 list = JSONObject.parseArray(value, AppointmentDoctorListBean.class);
                 if (list != null && list.size() > 0) {
                     Message msg = getHandlerMessage();

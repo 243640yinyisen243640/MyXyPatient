@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <!--按时间搜索-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="排班时间："
+            android:textColor="@color/main_green"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_appointment_list_date_time"
+            style="@style/text_black_14_w_w"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_seven"
+        style="@style/hh_fi_wr"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <com.wei.android.lib.colorview.view.ColorRelativeLayout
+            android:id="@+id/rl_one"
+            style="@style/appointment_of_time_seven_days_rl_copy1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_week_one"
+                style="@style/appointment_of_time_seven_days_tv_top1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="周一"
+                android:textColor="@color/main_home" />
+
+            <TextView
+                android:id="@+id/tv_day_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14"
+                android:textColor="@color/main_home"
+                android:visibility="gone" />
+
+
+        </com.wei.android.lib.colorview.view.ColorRelativeLayout>
+
+        <com.wei.android.lib.colorview.view.ColorRelativeLayout
+            android:id="@+id/rl_two"
+            style="@style/appointment_of_time_seven_days_rl_copy1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_week_two"
+                style="@style/appointment_of_time_seven_days_tv_top1"
+                android:text="周二"
+                android:textColor="@color/main_home" />
+
+            <TextView
+                android:id="@+id/tv_day_two"
+                style="@style/appointment_of_time_seven_days_tv_bottom"
+                android:text="14"
+                android:textColor="@color/main_home"
+                android:visibility="gone" />
+
+
+        </com.wei.android.lib.colorview.view.ColorRelativeLayout>
+
+        <com.wei.android.lib.colorview.view.ColorRelativeLayout
+            android:id="@+id/rl_three"
+            style="@style/appointment_of_time_seven_days_rl_copy1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_week_three"
+                style="@style/appointment_of_time_seven_days_tv_top1"
+                android:text="周三"
+                android:textColor="@color/main_home" />
+
+            <TextView
+                android:id="@+id/tv_day_three"
+                style="@style/appointment_of_time_seven_days_tv_bottom"
+                android:text="14"
+                android:textColor="@color/main_home"
+                android:visibility="gone" />
+
+
+        </com.wei.android.lib.colorview.view.ColorRelativeLayout>
+
+        <com.wei.android.lib.colorview.view.ColorRelativeLayout
+            android:id="@+id/rl_four"
+            style="@style/appointment_of_time_seven_days_rl_copy1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_week_four"
+                style="@style/appointment_of_time_seven_days_tv_top1"
+                android:text="周四"
+                android:textColor="@color/main_home" />
+
+            <TextView
+                android:id="@+id/tv_day_four"
+                style="@style/appointment_of_time_seven_days_tv_bottom"
+                android:text="14"
+                android:textColor="@color/main_home"
+                android:visibility="gone" />
+
+
+        </com.wei.android.lib.colorview.view.ColorRelativeLayout>
+
+        <com.wei.android.lib.colorview.view.ColorRelativeLayout
+            android:id="@+id/rl_five"
+            style="@style/appointment_of_time_seven_days_rl_copy1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_week_five"
+                style="@style/appointment_of_time_seven_days_tv_top1"
+                android:text="周五"
+                android:textColor="@color/main_home" />
+
+            <TextView
+                android:id="@+id/tv_day_five"
+                style="@style/appointment_of_time_seven_days_tv_bottom"
+                android:text="14"
+                android:textColor="@color/main_home"
+                android:visibility="gone" />
+
+
+        </com.wei.android.lib.colorview.view.ColorRelativeLayout>
+
+        <com.wei.android.lib.colorview.view.ColorRelativeLayout
+            android:id="@+id/rl_six"
+            style="@style/appointment_of_time_seven_days_rl_copy1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_week_six"
+                style="@style/appointment_of_time_seven_days_tv_top1"
+                android:text="周六"
+                android:textColor="@color/main_home" />
+
+            <TextView
+                android:id="@+id/tv_day_six"
+                style="@style/appointment_of_time_seven_days_tv_bottom"
+                android:text="14"
+                android:textColor="@color/main_home"
+                android:visibility="gone" />
+
+
+        </com.wei.android.lib.colorview.view.ColorRelativeLayout>
+
+        <com.wei.android.lib.colorview.view.ColorRelativeLayout
+            android:id="@+id/rl_seven"
+            style="@style/appointment_of_time_seven_days_rl_copy1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_week_seven"
+                style="@style/appointment_of_time_seven_days_tv_top1"
+                android:text="周日"
+                android:textColor="@color/main_home" />
+
+            <TextView
+                android:id="@+id/tv_day_seven"
+                style="@style/appointment_of_time_seven_days_tv_bottom"
+                android:text="14"
+                android:textColor="@color/main_home"
+                android:visibility="gone" />
+
+
+        </com.wei.android.lib.colorview.view.ColorRelativeLayout>
+    </LinearLayout>
+    <!--列表-->
+
+
+    <!--空-->
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/srl_list"
+        style="@style/hh_fi_fi">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list_of_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_data_of_doctor" />
+    </LinearLayout>
+
+</LinearLayout>

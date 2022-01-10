@@ -15,7 +15,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.bean.RegistrationDepartmentsListBean;
 import com.vice.bloodpressure.ui.fragment.registration.AppointmentOfDoctorFragment;
-import com.vice.bloodpressure.ui.fragment.registration.AppointmentOfTimeFragment;
+import com.vice.bloodpressure.ui.fragment.registration.AppointmentOfTime1Fragment;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class PhysicalExaminationDoctorMainActivity extends BaseHandlerActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("depid", depid);
         AppointmentOfDoctorFragment doctorFragment = new AppointmentOfDoctorFragment();
-        AppointmentOfTimeFragment timeFragment = new AppointmentOfTimeFragment();
+        AppointmentOfTime1Fragment timeFragment = new AppointmentOfTime1Fragment();
         doctorFragment.setArguments(bundle);
         timeFragment.setArguments(bundle);
         //添加Fragment

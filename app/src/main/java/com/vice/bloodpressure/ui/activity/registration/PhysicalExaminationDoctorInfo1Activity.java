@@ -162,9 +162,12 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
                 setDoctorInfo();
             } else if (30002 == response.code) {
 
+            }else {
+                ToastUtils.showShort(R.string.network_error);
             }
 
         }, (call, t) -> {
+            ToastUtils.showShort(R.string.network_error);
         });
     }
 
@@ -299,7 +302,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
             tv.setText("-");
             tv.setTag(3);
             helper.setTextColorNormal(ColorUtils.getColor(R.color.color_666));
-            helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_e5));
+//            helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_e5));
         }
     }
 
@@ -307,7 +310,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
      * 设置医生排班信息
      */
     private void setDoctorInfo() {
-        tvRefresh.setText(allInfo.getTime().get(0) + "至" + allInfo.getTime().get(1));
+        tvRefresh.setText("("+allInfo.getTime().get(0) + "至" + allInfo.getTime().get(1)+")");
         list = allInfo.getList();
         if (list != null && 7 == list.size()) {
             //设置除时间
