@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,17 +12,18 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.bean.AppointmentCheckAddBean;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.bean.PatientOfTreatListBean;
 import com.vice.bloodpressure.bean.ScheduleInfoBean;
 import com.vice.bloodpressure.bean.ScheduleInfoPostBean;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.PickerUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
 
 /**
  * 描述: 预约确认
@@ -74,6 +77,7 @@ public class AppointmentCheckActivity extends BaseHandlerActivity {
      * 获取检验数据
      */
     private void getCheckData() {
+
         ScheduleInfoPostBean data = (ScheduleInfoPostBean) getIntent().getSerializableExtra("data");
         String schday = data.getSchday();
         String sid = data.getSid();
@@ -100,6 +104,37 @@ public class AppointmentCheckActivity extends BaseHandlerActivity {
         });
     }
 
+
+    private void getCheckData1() {
+        ScheduleInfoPostBean data = (ScheduleInfoPostBean) getIntent().getSerializableExtra("data");
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        String schday = data.getSchday();
+        Log.i("yys", "getCheckData1time====" + schday);
+
+        String sid = data.getSid();
+        String type = data.getType();
+        Call<String> requestCall = DataManager.getCheckData1(sid, schday, loginBean.getToken(), type, (call, response) -> {
+            if (response.code == 200) {
+                ScheduleInfoBean datainfo = (ScheduleInfoBean) response.object;
+                String hospitalname = datainfo.getHospitalname();
+                String depname = datainfo.getDepname();
+                String docname = datainfo.getDocname();
+                String strschday = datainfo.getStrschday();
+                String username = datainfo.getUsername();
+                tvHospitalName.setText("医院：" + hospitalname);
+                tvHospitalDepartment.setText("科室：" + depname);
+                tvDoctorName.setText("医生：" + docname);
+                tvTime.setText("日期：" + strschday);
+                //默认就诊人
+                tvPeopleSelect.setText(username);
+                listStr = datainfo.getStimestr();
+                //默认就诊人id
+                id = datainfo.getId() + "";
+            }
+        }, (call, t) -> {
+
+        });
+    }
 
     @Override
     protected View addContentLayout() {
@@ -227,6 +262,7 @@ public class AppointmentCheckActivity extends BaseHandlerActivity {
         Intent intent = null;
         switch (msg.what) {
             case GET_DATA:
+                Log.i("yys", "data==" + data);
                 data = (ScheduleInfoBean) msg.obj;
                 String hospitalname = data.getHospitalname();
                 String depname = data.getDepname();

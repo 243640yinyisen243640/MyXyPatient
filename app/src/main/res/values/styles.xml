@@ -424,6 +424,13 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="appointment_of_time_seven_days_tv_top1" parent="text_white_14_w_w">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">10sp</item>
+    </style>
     <style name="appointment_of_time_seven_days_tv_bottom" parent="text_white_14_w_w">
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_centerHorizontal">true</item>

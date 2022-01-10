@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.bean.AppointmentDoctorListBean;
-import com.vice.bloodpressure.ui.activity.registration.PhysicalExaminationDoctorInfoActivity;
+import com.vice.bloodpressure.ui.activity.registration.PhysicalExaminationDoctorInfo1Activity;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -53,8 +53,8 @@ public class AppointmentOfDoctorAdapter extends CommonAdapter<AppointmentDoctorL
             @Override
             public void onClick(View v) {
                 //ToastUtils.showShort("医生排班详情");
-                Intent intent = new Intent(Utils.getApp(), PhysicalExaminationDoctorInfoActivity.class);
-                intent.putExtra("docuserid", docuserid);
+                Intent intent = new Intent(Utils.getApp(), PhysicalExaminationDoctorInfo1Activity.class);
+                intent.putExtra("docuserid", docuserid + "");
                 intent.putExtra("docname", docname);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Utils.getApp().startActivity(intent);

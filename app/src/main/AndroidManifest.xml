@@ -180,6 +180,7 @@
         <activity android:name=".ui.activity.registration.report.ReportListMainActivity" />
         <activity android:name=".ui.activity.registration.MyAppointListMainActivity" />
         <activity android:name=".ui.activity.registration.PhysicalExaminationDoctorInfoActivity" />
+        <activity android:name=".ui.activity.registration.PhysicalExaminationDoctorInfo1Activity" />
         <activity android:name=".ui.activity.registration.PatientOfTreatListActivity" />
         <activity android:name=".ui.activity.registration.PatientOfTreatAddOrEditActivity" />
         <activity android:name=".ui.activity.registration.AppointmentDetailActivity" />

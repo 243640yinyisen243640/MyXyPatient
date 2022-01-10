@@ -1,6 +1,8 @@
 package com.vice.bloodpressure;
 
 import com.vice.bloodpressure.bean.AdverInfo;
+import com.vice.bloodpressure.bean.PhysicalExaminationDoctorInfoAllInfo;
+import com.vice.bloodpressure.bean.ScheduleInfoBean;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.retrofit.BaseNetworkUtils;
 import com.vice.bloodpressure.retrofit.HHSoftBaseResponse;
@@ -77,6 +79,7 @@ public class DataManager {
 
     /**
      * 举报
+     *
      * @param accessToken
      * @param successCallBack
      * @param failureCallBack
@@ -87,5 +90,41 @@ public class DataManager {
         map.put("access_token", accessToken);
         map.put("version", ConstantParam.SERVER_VERSION);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/index/Myinfo/toReport", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * @param doctorid
+     * @param accessToken
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+
+    public static Call<String> getAppDataInfo(String doctorid, String accessToken, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("docuserid", doctorid);
+        map.put("access_token", accessToken);
+        map.put("version", ConstantParam.SERVER_VERSION);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, PhysicalExaminationDoctorInfoAllInfo.class, "/scheduling/Hospitals/scheduleDetail", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     *
+     * @param sid
+     * @param schday
+     * @param accessToken
+     * @param type
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> getCheckData1(String sid, String schday,String accessToken,String type, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("sid", sid);
+        map.put("schday", schday);
+        map.put("type", type);
+        map.put("access_token", accessToken);
+        map.put("version", ConstantParam.SERVER_VERSION);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, ScheduleInfoBean.class, "/scheduling/Schedule/scheduleInfo", map, successCallBack, failureCallBack);
     }
 }

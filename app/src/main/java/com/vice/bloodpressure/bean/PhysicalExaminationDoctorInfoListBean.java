@@ -17,6 +17,9 @@ public class PhysicalExaminationDoctorInfoListBean {
 
     private int sid;
     private int docuserid;
+    /**
+     * 1：不可预约  2：休息 3：约满
+     */
     private int am;
     private int amnum;
     private int pm;
@@ -25,6 +28,7 @@ public class PhysicalExaminationDoctorInfoListBean {
     private String docname;
     private String doczhc;
     private String contents;
+    private String time;
     private int schweek;
 
     public int getSid() {
@@ -113,5 +117,13 @@ public class PhysicalExaminationDoctorInfoListBean {
 
     public void setSchweek(int schweek) {
         this.schweek = schweek;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
