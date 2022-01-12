@@ -26,12 +26,15 @@ import com.vice.bloodpressure.adapter.AppointmentOfTimeAdapter;
 import com.vice.bloodpressure.base.fragment.BaseFragment;
 import com.vice.bloodpressure.bean.AppointmentDoctorAllInfo;
 import com.vice.bloodpressure.bean.AppointmentDoctorListBean;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
+import com.vice.bloodpressure.utils.DataUtils;
 import com.wei.android.lib.colorview.helper.ColorViewHelper;
 import com.wei.android.lib.colorview.view.ColorRelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -130,11 +133,49 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
     @Override
     protected void init(View rootView) {
         initRv();
-        getList("");
-        initRefresh("");
+        String currntTime = DataUtils.currentDateString(DataFormatManager.TIME_FORMAT_Y_M_D);
+        Calendar calendar = Calendar.getInstance();
+        int i = calendar.get(Calendar.DAY_OF_WEEK);
+
+
+        getList(currntTime);
+        initRefresh(currntTime);
         //设置初次选中
-//        setRlCheckAndUnCheck(0);
-//        setTvCheckAndUnCheck(0);
+
+        switch (i) {
+            case 1:
+                setRlCheckAndUnCheck(6);
+                setTvCheckAndUnCheck(4);
+                break;
+            case 2:
+                setRlCheckAndUnCheck(0);
+                setTvCheckAndUnCheck(0);
+                break;
+            case 3:
+                setRlCheckAndUnCheck(1);
+                setTvCheckAndUnCheck(1);
+                break;
+            case 4:
+                setRlCheckAndUnCheck(2);
+                setTvCheckAndUnCheck(2);
+                break;
+            case 5:
+                setRlCheckAndUnCheck(3);
+                setTvCheckAndUnCheck(3);
+                break;
+            case 6:
+                setRlCheckAndUnCheck(4);
+                setTvCheckAndUnCheck(4);
+                break;
+            case 7:
+                setRlCheckAndUnCheck(5);
+                setTvCheckAndUnCheck(5);
+                break;
+            default:
+                break;
+
+        }
+        Log.i("yys", "====i===" + i);
     }
 
     /**
@@ -213,7 +254,7 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
         XyUrl.okPost(XyUrl.GET_SCHEDULE_DOC, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
-                Log.i("yys","onSuccess==="+value);
+                Log.i("yys", "onSuccess===" + value);
                 allInfo = JSONObject.parseObject(value, AppointmentDoctorAllInfo.class);
                 list = allInfo.getList();
                 if (list != null && list.size() > 0) {
@@ -304,7 +345,7 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
                 llEmpty.setVisibility(View.GONE);
                 Bundle bundle = msg.getData();
                 String time = bundle.getString("time");
-                timeTextView.setText("("+allInfo.getTime().get(0) + "至" + allInfo.getTime().get(6)+")");
+                timeTextView.setText("(" + allInfo.getTime().get(0) + "至" + allInfo.getTime().get(6) + ")");
                 list = allInfo.getList();
                 adapter = new AppointmentOfTimeAdapter(getPageContext(), R.layout.item_appoint_doctor_of_time, list, time);
                 rvListOfDoctor.setAdapter(adapter);
