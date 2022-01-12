@@ -18,7 +18,7 @@ public class PhysicalExaminationDoctorInfoListBean {
     private int sid;
     private int docuserid;
     /**
-     * 1：不可预约  2：休息 3：约满
+     * 1：可预约  2：休息 3：约满
      */
     private int am;
     private int amnum;
@@ -30,6 +30,19 @@ public class PhysicalExaminationDoctorInfoListBean {
     private String contents;
     private String time;
     private int schweek;
+
+    /**
+     * 1：可点击2：不可点击
+     */
+    private String click;
+
+    public String getClick() {
+        return click;
+    }
+
+    public void setClick(String click) {
+        this.click = click;
+    }
 
     public int getSid() {
         return sid;

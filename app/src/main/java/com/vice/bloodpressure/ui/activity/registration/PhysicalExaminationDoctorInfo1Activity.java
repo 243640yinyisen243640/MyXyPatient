@@ -2,7 +2,6 @@ package com.vice.bloodpressure.ui.activity.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -162,7 +161,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
                 setDoctorInfo();
             } else if (30002 == response.code) {
 
-            }else {
+            } else {
                 ToastUtils.showShort(R.string.network_error);
             }
 
@@ -238,7 +237,8 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
         switch (type) {
             case 1:
                 int am = data.getAm();
-                if (1 == am) {
+                String clickam = data.getClick();
+                if ("1".equals(clickam)) {
                     goToAppointmentActivity(type, index);
                 } else {
                     ToastUtils.showShort("不可预约");
@@ -246,7 +246,8 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
                 break;
             case 2:
                 int pm = data.getPm();
-                if (1 == pm) {
+                String clickpm = data.getClick();
+                if ("1".equals(clickpm)) {
                     goToAppointmentActivity(type, index);
                 } else {
                     ToastUtils.showShort("不可预约");
@@ -269,7 +270,6 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
         String sid = data.getSid() + "";
         //设置
         ScheduleInfoPostBean postBean = new ScheduleInfoPostBean();
-        Log.i("yys", "time==" + data.getTime());
         postBean.setSchday(data.getTime());
         postBean.setSid(sid);
         postBean.setType(type + "");
@@ -302,7 +302,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
             tv.setText("-");
             tv.setTag(3);
             helper.setTextColorNormal(ColorUtils.getColor(R.color.color_666));
-//            helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_e5));
+            //            helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_e5));
         }
     }
 
@@ -310,7 +310,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
      * 设置医生排班信息
      */
     private void setDoctorInfo() {
-        tvRefresh.setText("("+allInfo.getTime().get(0) + "至" + allInfo.getTime().get(1)+")");
+        tvRefresh.setText("(" + allInfo.getTime().get(0) + "至" + allInfo.getTime().get(1) + ")");
         list = allInfo.getList();
         if (list != null && 7 == list.size()) {
             //设置除时间
