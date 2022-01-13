@@ -238,7 +238,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
             case 1:
                 int am = data.getAm();
                 String clickam = data.getClick();
-                if ("1".equals(clickam)) {
+                if ("1".equals(clickam)&&1==am) {
                     goToAppointmentActivity(type, index);
                 } else {
                     ToastUtils.showShort("不可预约");
@@ -247,7 +247,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
             case 2:
                 int pm = data.getPm();
                 String clickpm = data.getClick();
-                if ("1".equals(clickpm)) {
+                if ("1".equals(clickpm)&&1==pm) {
                     goToAppointmentActivity(type, index);
                 } else {
                     ToastUtils.showShort("不可预约");
