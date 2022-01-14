@@ -175,7 +175,6 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
                 break;
 
         }
-        Log.i("yys", "====i===" + i);
     }
 
     /**
@@ -281,58 +280,7 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
         });
     }
 
-    /**
-     * 初始化七天时间
-     */
-    //    private void initTime() {
-    //        List<TextView> listTvWeeks = new ArrayList<>();
-    //        listTvWeeks.add(tvWeekOne);
-    //        listTvWeeks.add(tvWeekTwo);
-    //        listTvWeeks.add(tvWeekThree);
-    //        listTvWeeks.add(tvWeekFour);
-    //        listTvWeeks.add(tvWeekFive);
-    //        listTvWeeks.add(tvWeekSix);
-    //        listTvWeeks.add(tvWeekSeven);
-    //        List<TextView> listTvDays = new ArrayList<>();
-    //        listTvDays.add(tvDayOne);
-    //        listTvDays.add(tvDayTwo);
-    //        listTvDays.add(tvDayThree);
-    //        listTvDays.add(tvDayFour);
-    //        listTvDays.add(tvDayFive);
-    //        listTvDays.add(tvDaySix);
-    //        listTvDays.add(tvDaySeven);
-    //        //获取当前月份
-    //        //        Calendar calendar = Calendar.getInstance();
-    //        //        int month = calendar.get(Calendar.MONTH) + 1;
-    //        //获取周几和时间
-    //        String startDateString = TimeUtils.plusDay(1);
-    //        String endDateString = TimeUtils.plusDay(7);
-    //        DateFormat ymd = new SimpleDateFormat("yyyy-MM-dd");
-    //        DateFormat mm = new SimpleDateFormat("MM");
-    //        DateFormat dd = new SimpleDateFormat("dd");
-    //        Date startDate = com.blankj.utilcode.util.TimeUtils.string2Date(startDateString, ymd);
-    //        Date endDate = com.blankj.utilcode.util.TimeUtils.string2Date(endDateString, ymd);
-    //        dateList = TimeUtils.getBetweenDates(startDate, endDate);
-    //        //默认的第一次时间
-    //        Date firstDate = dateList.get(0);
-    //        String firstYmdStr = ymd.format(firstDate);
-    //        getList(firstYmdStr);
-    //        initRefresh(firstYmdStr);
-    //        //设置月份
-    //        String month = mm.format(firstDate);
-    //        tvMonth.setText(month + "月");
-    //        for (int i = 0; i < dateList.size(); i++) {
-    //            Date date = dateList.get(i);
-    //            String ymdStr = ymd.format(date);
-    //            String week = TimeUtils.dateToWeek(ymdStr);
-    //            listTvWeeks.get(i).setText(week);
-    //            String day = dd.format(date);
-    //            listTvDays.get(i).setText(day);
-    //        }
-    //        //设置初次选中
-    //        setRlCheckAndUnCheck(0);
-    //        setTvCheckAndUnCheck(0);
-    //    }
+
     @Override
     public void processHandlerMsg(Message msg) {
         switch (msg.what) {
