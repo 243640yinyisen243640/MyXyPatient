@@ -2,11 +2,11 @@ package com.vice.bloodpressure.ui.activity.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -34,6 +34,8 @@ import retrofit2.Call;
  * 创建日期: 2019/10/26 15:59
  */
 public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity implements View.OnClickListener {
+    private Button backButton;
+    private TextView titleTextView;
 
     private ImageView imgHead;
     private TextView tvDoctorName;
@@ -82,12 +84,13 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        topViewManager().topView().removeAllViews();
 
         docname = getIntent().getStringExtra("docname");
-        topViewManager().titleTextView().setText(docname);
-        topViewManager().titleTextView().setTextColor(ContextCompat.getColor(getPageContext(), R.color.black_text));
+
         docuserid = getIntent().getStringExtra("docuserid");
         containerView().addView(initView());
+        titleTextView.setText(docname);
         initLister();
         //获取当前月份
         Calendar calendar = Calendar.getInstance();
@@ -98,6 +101,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
     }
 
     private void initLister() {
+        backButton.setOnClickListener(this);
         tvRefresh.setOnClickListener(this);
         tvAmStateOne.setOnClickListener(this);
         tvAmStateTwo.setOnClickListener(this);
@@ -119,6 +123,8 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
 
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout.activity_appointment_date_doctor_info, null);
+        backButton = view.findViewById(R.id.bt_appointment_date_back);
+        titleTextView = view.findViewById(R.id.tv_appointment_date_title);
         imgHead = view.findViewById(R.id.iv_appointment_date_head);
         tvDoctorName = view.findViewById(R.id.tv_appointment_date_name);
         tvDoctorProfession = view.findViewById(R.id.tv_appointment_date_profession);
@@ -174,6 +180,9 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.bt_appointment_date_back:
+                finish();
+                break;
             case R.id.tv_appointment_date_time:
                 getData();
                 break;
@@ -238,7 +247,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
             case 1:
                 int am = data.getAm();
                 String clickam = data.getClick();
-                if ("1".equals(clickam)&&1==am) {
+                if ("1".equals(clickam) && 1 == am) {
                     goToAppointmentActivity(type, index);
                 } else {
                     ToastUtils.showShort("不可预约");
@@ -247,7 +256,7 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
             case 2:
                 int pm = data.getPm();
                 String clickpm = data.getClick();
-                if ("1".equals(clickpm)&&1==pm) {
+                if ("1".equals(clickpm) && 1 == pm) {
                     goToAppointmentActivity(type, index);
                 } else {
                     ToastUtils.showShort("不可预约");
@@ -283,27 +292,59 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
      * 设置状态
      *
      * @param tv
-     * @param state 1可预约  2不可预约
+     * @param state   1：可预约  2：休息 3：约满
+     * @param isClick 1：可点击2：不可点击
      */
-    private void setTvState(ColorTextView tv, int state) {
+    private void setTvState(ColorTextView tv, int state, String isClick) {
         ColorTextViewHelper helper = tv.getColorHelper();
-        // 1：不可预约  2：休息 3：约满
-        if (1 == state) {
-            tv.setText("预约");
-            tv.setTag(1);
-            helper.setTextColorNormal(ColorUtils.getColor(R.color.white));
-            helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_week_selected));
-        } else if (3 == state) {
-            tv.setText("约满");
-            tv.setTag(2);
-            helper.setTextColorNormal(ColorUtils.getColor(R.color.color_666));
-            helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_e5));
-        } else {
-            tv.setText("-");
-            tv.setTag(3);
-            helper.setTextColorNormal(ColorUtils.getColor(R.color.color_666));
-            //            helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_e5));
+        Log.i("yys", "state==" + state + "click==" + isClick);
+        // 1：可预约  2：休息 3：约满
+
+        switch (state) {
+            case 1:
+                if ("1".equals(isClick)) {
+                    tv.setText("预约");
+                    tv.setTag(1);
+                    helper.setTextColorNormal(ColorUtils.getColor(R.color.white));
+                    helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_week_selected));
+                } else {
+                    tv.setText("预约");
+                    tv.setTag(2);
+                    helper.setTextColorNormal(ColorUtils.getColor(R.color.color_e5));
+                    helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_93));
+                }
+
+                break;
+            case 2:
+                if ("1".equals(isClick)) {
+                    tv.setText("-");
+                    tv.setTag(3);
+                    helper.setTextColorNormal(ColorUtils.getColor(R.color.color_666));
+                } else {
+                    tv.setText("-");
+                    tv.setTag(2);
+                    helper.setTextColorNormal(ColorUtils.getColor(R.color.color_e5));
+                    helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_93));
+                }
+                break;
+            case 3:
+                if ("1".equals(isClick)) {
+                    tv.setText("约满");
+                    tv.setTag(2);
+                    helper.setTextColorNormal(ColorUtils.getColor(R.color.color_666));
+                    helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_e5));
+                } else {
+                    tv.setText("约满");
+                    tv.setTag(2);
+                    helper.setTextColorNormal(ColorUtils.getColor(R.color.color_e5));
+                    helper.setBackgroundColorNormal(ColorUtils.getColor(R.color.color_93));
+                }
+                break;
+            default:
+                break;
         }
+
+
     }
 
     /**
@@ -332,34 +373,35 @@ public class PhysicalExaminationDoctorInfo1Activity extends XYSoftUIBaseActivity
                 data = list.get(i);
                 int am = data.getAm();
                 int pm = data.getPm();
+                String isClick = data.getClick();
                 switch (i) {
                     case 0:
-                        setTvState(tvAmStateOne, am);
-                        setTvState(tvPmStateOne, pm);
+                        setTvState(tvAmStateOne, am, isClick);
+                        setTvState(tvPmStateOne, pm, isClick);
                         break;
                     case 1:
-                        setTvState(tvAmStateTwo, am);
-                        setTvState(tvPmStateTwo, pm);
+                        setTvState(tvAmStateTwo, am, isClick);
+                        setTvState(tvPmStateTwo, pm, isClick);
                         break;
                     case 2:
-                        setTvState(tvAmStateThree, am);
-                        setTvState(tvPmStateThree, pm);
+                        setTvState(tvAmStateThree, am, isClick);
+                        setTvState(tvPmStateThree, pm, isClick);
                         break;
                     case 3:
-                        setTvState(tvAmStateFour, am);
-                        setTvState(tvPmStateFour, pm);
+                        setTvState(tvAmStateFour, am, isClick);
+                        setTvState(tvPmStateFour, pm, isClick);
                         break;
                     case 4:
-                        setTvState(tvAmStateFive, am);
-                        setTvState(tvPmStateFive, pm);
+                        setTvState(tvAmStateFive, am, isClick);
+                        setTvState(tvPmStateFive, pm, isClick);
                         break;
                     case 5:
-                        setTvState(tvAmStateSix, am);
-                        setTvState(tvPmStateSix, pm);
+                        setTvState(tvAmStateSix, am, isClick);
+                        setTvState(tvPmStateSix, pm, isClick);
                         break;
                     case 6:
-                        setTvState(tvAmStateSeven, am);
-                        setTvState(tvPmStateSeven, pm);
+                        setTvState(tvAmStateSeven, am, isClick);
+                        setTvState(tvPmStateSeven, pm, isClick);
                         break;
                     default:
                         break;

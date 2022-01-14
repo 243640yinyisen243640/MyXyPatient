@@ -100,6 +100,7 @@ public class AppointmentOfDoctorFragment extends BaseFragment {
             public void onSuccess(String value) {
                 allInfo = JSONObject.parseObject(value, AppointmentDoctorAllInfo.class);
                 list = allInfo.getList();
+
                 if (list != null && list.size() > 0) {
                     Message msg = getHandlerMessage();
                     msg.obj = list;
@@ -134,8 +135,9 @@ public class AppointmentOfDoctorFragment extends BaseFragment {
         XyUrl.okPost(XyUrl.GET_SCHEDULE_DOC, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
+                allInfo = JSONObject.parseObject(value, AppointmentDoctorAllInfo.class);
 
-                list = JSONObject.parseArray(value, AppointmentDoctorListBean.class);
+                list = allInfo.getList();
                 if (list != null && list.size() > 0) {
                     Message msg = getHandlerMessage();
                     msg.obj = list;
@@ -194,7 +196,8 @@ public class AppointmentOfDoctorFragment extends BaseFragment {
             @Override
             public void onSuccess(String value) {
                 LogUtils.e(value);
-                tempList = JSONObject.parseArray(value, AppointmentDoctorListBean.class);
+                allInfo = JSONObject.parseObject(value, AppointmentDoctorAllInfo.class);
+                tempList = allInfo.getList();
                 LogUtils.e("pageIndex=======" + pageIndex);
                 LogUtils.e("list.size=======" + list.size());
                 LogUtils.e("tempList.size=======" + tempList.size());
