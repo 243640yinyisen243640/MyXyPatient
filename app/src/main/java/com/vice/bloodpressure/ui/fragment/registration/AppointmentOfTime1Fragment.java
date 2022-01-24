@@ -3,7 +3,6 @@ package com.vice.bloodpressure.ui.fragment.registration;
 
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -224,7 +223,9 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
         XyUrl.okPost(XyUrl.GET_SCHEDULE_DOC, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
-                tempList = JSONObject.parseArray(value, AppointmentDoctorListBean.class);
+                allInfo = JSONObject.parseObject(value, AppointmentDoctorAllInfo.class);
+                tempList = allInfo.getList();
+//                tempList = JSONObject.parseArray(value, AppointmentDoctorListBean.class);
                 list.addAll(tempList);
                 Message message = getHandlerMessage();
                 message.what = GET_MORE_DATA;
@@ -253,7 +254,6 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
         XyUrl.okPost(XyUrl.GET_SCHEDULE_DOC, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
-                Log.i("yys", "onSuccess===" + value);
                 allInfo = JSONObject.parseObject(value, AppointmentDoctorAllInfo.class);
                 list = allInfo.getList();
                 if (list != null && list.size() > 0) {
