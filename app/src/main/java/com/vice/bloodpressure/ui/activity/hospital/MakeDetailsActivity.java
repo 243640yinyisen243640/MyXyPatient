@@ -19,7 +19,7 @@ import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.bean.MakeDetailsBean;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.vice.bloodpressure.utils.ImageLoaderUtil;
+import com.vice.bloodpressure.utils.ImgViewUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,24 +93,36 @@ public class MakeDetailsActivity extends BaseHandlerActivity implements View.OnC
                 tvResult.setText(makeDetails.getReason());
                 if (makeDetails.getBlpic() != null && makeDetails.getBlpic().length > 0) {
                     if (makeDetails.getBlpic().length == 1) {
-                        ImageLoaderUtil.loadImgUrl(ivMakeOneShow, makeDetails.getBlpic()[0]);
+                        ImgViewUtils.loadRoundImage(this,R.drawable.hospital_appointmen_photo_load,makeDetails.getBlpic()[0],ivMakeOneShow);
+//                        ImageLoaderUtil.loadImgUrl(ivMakeOneShow, makeDetails.getBlpic()[0]);
 
                         ivMakeOneShow.setOnClickListener(this);
 
                         ivMakeTwoShow.setVisibility(View.INVISIBLE);
                         ivMakeThreeShow.setVisibility(View.INVISIBLE);
                     } else if (makeDetails.getBlpic().length == 2) {
-                        ImageLoaderUtil.loadImgUrl(ivMakeOneShow, makeDetails.getBlpic()[0]);
-                        ImageLoaderUtil.loadImgUrl(ivMakeTwoShow, makeDetails.getBlpic()[1]);
+
+                        ImgViewUtils.loadRoundImage(this,R.drawable.hospital_appointmen_photo_load,makeDetails.getBlpic()[0],ivMakeOneShow);
+                        ImgViewUtils.loadRoundImage(this,R.drawable.hospital_appointmen_photo_load,makeDetails.getBlpic()[1],ivMakeTwoShow);
+
+
+//                        ImageLoaderUtil.loadImgUrl(ivMakeOneShow, makeDetails.getBlpic()[0]);
+//                        ImageLoaderUtil.loadImgUrl(ivMakeTwoShow, makeDetails.getBlpic()[1]);
 
                         ivMakeOneShow.setOnClickListener(this);
                         ivMakeTwoShow.setOnClickListener(this);
 
                         ivMakeThreeShow.setVisibility(View.INVISIBLE);
                     } else if (makeDetails.getBlpic().length == 3) {
-                        ImageLoaderUtil.loadImgUrl(ivMakeOneShow, makeDetails.getBlpic()[0]);
-                        ImageLoaderUtil.loadImgUrl(ivMakeTwoShow, makeDetails.getBlpic()[1]);
-                        ImageLoaderUtil.loadImgUrl(ivMakeThreeShow, makeDetails.getBlpic()[2]);
+
+                        ImgViewUtils.loadRoundImage(this,R.drawable.hospital_appointmen_photo_load,makeDetails.getBlpic()[0],ivMakeOneShow);
+                        ImgViewUtils.loadRoundImage(this,R.drawable.hospital_appointmen_photo_load,makeDetails.getBlpic()[1],ivMakeTwoShow);
+                        ImgViewUtils.loadRoundImage(this,R.drawable.hospital_appointmen_photo_load,makeDetails.getBlpic()[2],ivMakeThreeShow);
+
+//
+                        //                        ImageLoaderUtil.loadImgUrl(ivMakeOneShow, makeDetails.getBlpic()[0]);
+                        //                        ImageLoaderUtil.loadImgUrl(ivMakeTwoShow, makeDetails.getBlpic()[1]);
+                        //                        ImageLoaderUtil.loadImgUrl(ivMakeThreeShow, makeDetails.getBlpic()[2]);
 
                         ivMakeOneShow.setOnClickListener(this);
                         ivMakeTwoShow.setOnClickListener(this);
