@@ -44,4 +44,18 @@
     <string name="login_agreement_user_and">及</string>
     <string name="login_agreement_privacy">《隐私政策》</string>
     <string name="show_up_msg">上传成功</string>
+    <string name="hospital_appoint_base_info_title">基本信息</string>
+    <string name="hospital_appoint_healthy_info_title">健康信息</string>
+    <string name="hospital_appoint_base_info_name">患者名称</string>
+    <string name="hospital_appoint_base_info_age">患者年龄</string>
+    <string name="please_input_hospital_appoint_name">请输入患者名称</string>
+    <string name="please_input_hospital_appoint_age">请输入患者年龄</string>
+    <string name="please_input_hospital_appoint_phone">请输入联系电话</string>
+    <string name="please_input_hospital_appoint_content">请输入诊断内容...</string>
+    <string name="please_input_hospital_appoint_aim">请输入住院目的...</string>
+    <string name="hospitalized_appoint_type">住院类型</string>
+    <string name="appointment_success_title">预约成功</string>
+    <string name="appointment_success_doctor_back">医生回复</string>
+    <string name="appointment_doing">预约中</string>
+    <string name="appointment_failed">预约失败</string>
 </resources>

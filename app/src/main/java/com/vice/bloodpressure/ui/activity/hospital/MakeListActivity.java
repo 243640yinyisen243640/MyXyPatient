@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSONObject;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -36,6 +37,7 @@ public class MakeListActivity extends BaseHandlerActivity implements View.OnClic
 
     private static final int GET_DATA = 0x0098;
     private static final int LORD_MORE = 0x0099;
+    private static final int REQUEST_CODE_FOR_REFRESH = 10;
     private LoginBean user;
     //分页开始
     private List<MakeBean> list;
@@ -112,7 +114,7 @@ public class MakeListActivity extends BaseHandlerActivity implements View.OnClic
             case R.id.btn_make_hos:
                 Intent intent = new Intent(getPageContext(), MakeActivity.class);
                 intent.putExtra("doctorId", doctorId);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE_FOR_REFRESH);
                 break;
         }
     }
@@ -162,5 +164,18 @@ public class MakeListActivity extends BaseHandlerActivity implements View.OnClic
         //刷新结束
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK){
+            switch (requestCode){
+                case REQUEST_CODE_FOR_REFRESH:
+                    getData();
+                    break;
+                default:
+                    break;
+            }
 
+        }
+    }
 }

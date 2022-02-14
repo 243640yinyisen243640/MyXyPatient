@@ -4,19 +4,22 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.alibaba.fastjson.JSONObject;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.baselib.utils.engine.GlideImageEngine;
 import com.maning.imagebrowserlibrary.MNImageBrowser;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.bean.MakeDetailsBean;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.ImageLoaderUtil;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
-import com.lyd.baselib.utils.engine.GlideImageEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +34,10 @@ public class MakeDetailsActivity extends BaseHandlerActivity implements View.OnC
     private static final int GET_DATA = 0x003;
     private String id;
     private LoginBean user;
+
+    private LinearLayout statusLinearLayout;
+    private TextView statusTextView;
+
     private TextView tvMakeTypeShow;
     private TextView tvMakeNicknameShow;
     private TextView tvMakeAgeShow;
@@ -44,12 +51,28 @@ public class MakeDetailsActivity extends BaseHandlerActivity implements View.OnC
     private ImageView ivMakeTwoShow;
     private ImageView ivMakeThreeShow;
     private MakeDetailsBean makeDetails;
+    private LinearLayout backLinearLayout;
 
     @Override
     public void processHandlerMsg(Message msg) {
         switch (msg.what) {
             case GET_DATA:
                 makeDetails = (MakeDetailsBean) msg.obj;
+                //1：预约中 2：预约成功 3：预约失败
+                if ("1".equals(makeDetails.getStatus())) {
+                    backLinearLayout.setVisibility(View.GONE);
+                    statusLinearLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.appointment_doing));
+                    statusTextView.setText(R.string.appointment_doing);
+                } else if ("2".equals(makeDetails.getStatus())) {
+                    statusLinearLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.appointment_success));
+                    statusTextView.setText(R.string.appointment_success_title);
+                    backLinearLayout.setVisibility(View.VISIBLE);
+                } else {
+                    statusLinearLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.appointment_failes));
+                    statusTextView.setText(R.string.appointment_failed);
+                    backLinearLayout.setVisibility(View.VISIBLE);
+                }
+
                 if (makeDetails.getType().equals("1")) {
                     tvMakeTypeShow.setText("初次");
                 } else if (makeDetails.getType().equals("2")) {
@@ -134,6 +157,8 @@ public class MakeDetailsActivity extends BaseHandlerActivity implements View.OnC
     }
 
     private void initViews() {
+        statusLinearLayout = findViewById(R.id.ll_appointment_status);
+        statusTextView = findViewById(R.id.tv_appointment_status);
         tvMakeTypeShow = findViewById(R.id.tv_make_type_show);
         tvMakeAgeShow = findViewById(R.id.tv_make_age_show);
         tvMakeNicknameShow = findViewById(R.id.tv_make_hos_nickname_show);
@@ -146,6 +171,7 @@ public class MakeDetailsActivity extends BaseHandlerActivity implements View.OnC
         ivMakeOneShow = findViewById(R.id.iv_make_one_show);
         ivMakeTwoShow = findViewById(R.id.iv_make_two_show);
         ivMakeThreeShow = findViewById(R.id.iv_make_three_show);
+        backLinearLayout = findViewById(R.id.ll_appointment_doctor_back);
     }
 
     @Override

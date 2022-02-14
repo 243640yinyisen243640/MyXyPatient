@@ -103,6 +103,7 @@ public class MakeActivity extends BaseHandlerActivity implements AdapterView.OnI
                 //清除压缩文件
                 FileUtils.deleteAllInDir("/storage/emulated/0/Android/data/com.vice.bloodpressure/cache/luban_disk_cache/");
                 ToastUtils.showShort("提交成功！请耐心等待医生安排");
+                setResult(RESULT_OK);
                 finish();
                 break;
         }
@@ -198,7 +199,7 @@ public class MakeActivity extends BaseHandlerActivity implements AdapterView.OnI
                     return;
                 }
                 Drawable.ConstantState state = ivOne.getDrawable().getCurrent().getConstantState();
-                if (state.equals(ContextCompat.getDrawable(this, R.drawable.add_img).getConstantState())) {
+                if (state.equals(ContextCompat.getDrawable(this, R.drawable.hospital_appointmen_photo_load).getConstantState())) {
                     ToastUtils.showShort("请添加病例资料");
                     return;
                 }

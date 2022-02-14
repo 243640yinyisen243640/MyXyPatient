@@ -17,9 +17,11 @@ import java.util.List;
 
 
 public class MakeAdapter extends CommonAdapter<MakeBean> {
+    private Context context;
 
     public MakeAdapter(Context context, int layoutId, List<MakeBean> datas) {
         super(context, layoutId, datas);
+        this.context = context;
     }
 
     @Override
@@ -29,6 +31,7 @@ public class MakeAdapter extends CommonAdapter<MakeBean> {
         switch (item.getStatus()) {
             case "1":
                 tvStatus.setText("预约中");
+                tvStatus.setTextColor(ColorUtils.getColor(R.color.hospital_appointment_status_doing));
                 break;
             case "2":
                 tvStatus.setText("预约成功");

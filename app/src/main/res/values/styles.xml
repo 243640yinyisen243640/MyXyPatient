@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:forceDarkAllowed" tools:targetApi = "q">false</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <!-- 启动主题 -->
@@ -431,6 +431,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">10sp</item>
     </style>
+
     <style name="appointment_of_time_seven_days_tv_bottom" parent="text_white_14_w_w">
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_centerHorizontal">true</item>
@@ -822,6 +823,7 @@
         <item name="android:backgroundDimEnabled">true</item><!--背景是否模糊显示-->
         <item name="android:backgroundDimAmount">0.6</item><!--灰度-->
     </style>
+
     <style name="user_business_filter" parent="QMUI.Compat.NoActionBar">
         <!--设置dialog的背景-->
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -840,11 +842,13 @@
         <!--背景是否模糊显示-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
     <style name="BaseAppTheme" parent="@style/BaseStyle">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimaryDark">#ffffff</item>
     </style>
+
     <style name="BaseStyle" parent="AppBaseTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -852,6 +856,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <style name="BleProgressDialogStyle" parent="@style/ProgressDialog">
         <item name="android:windowBackground">@color/ble_bg</item>
         <item name="android:windowNoTitle">true</item>
@@ -877,5 +882,34 @@
         <item name="android:layout_marginTop">15dp</item>
         <item name="android:textColor">@color/black_text</item>
         <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="hospital_appointment_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="hospital_appointment_title1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:drawablePadding">2dp</item>
+        <item name="android:drawableLeft">@drawable/appointment_star</item>
+    </style>
+
+    <style name="hospital_appointment_info_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginTop">18dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:drawableLeft">@drawable/appointment_star</item>
+        <item name="android:drawablePadding">2dp</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>

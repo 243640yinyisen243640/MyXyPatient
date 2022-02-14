@@ -46,6 +46,18 @@ public class MakeDetailsBean {
      * 结果反馈
      */
     private String reason;
+    /**
+     * 1：预约中 2：预约成功 3：预约失败
+     */
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;

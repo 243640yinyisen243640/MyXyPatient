@@ -1,403 +1,378 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/eighteen"
-    android:background="@color/white">
-
+    android:background="@color/gray_light">
 
     <LinearLayout
+        android:id="@+id/ll_appointment_status"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/eleven"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/iv_make_hos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/twenty_two"
-                android:src="@drawable/remind_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/five"
-                android:layout_toRightOf="@+id/iv_make_hos"
-                android:text="@string/content"
-                android:textColor="@color/management_text"
-                android:textSize="@dimen/twelve" />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_type"
-                android:textSize="@dimen/thirteen" />
-
-            <TextView
-                android:id="@+id/tv_make_type_show"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toEndOf="@+id/tv_make_hos_type"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_one"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_nickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_nickname"
-                android:textSize="@dimen/thirteen" />
-
-            <TextView
-                android:id="@+id/tv_make_hos_nickname_show"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toEndOf="@+id/tv_make_hos_nickname"
-                android:padding="@dimen/thirteen"
-                android:text="张三"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_age"
-                android:textSize="@dimen/thirteen" />
-
-            <TextView
-                android:id="@+id/tv_make_age_show"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toEndOf="@+id/tv_make_hos_age"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_sex"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_sex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_sex"
-                android:textSize="@dimen/thirteen" />
-
-
-            <TextView
-                android:id="@+id/tv_make_sex_show"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toRightOf="@+id/tv_make_hos_sex"
-                android:orientation="horizontal"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_phone"
-                android:textSize="@dimen/thirteen" />
-
-            <TextView
-                android:id="@+id/tv_make_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toEndOf="@+id/tv_make_hos_phone"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_diagnosis"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/two_hundred"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_diagnosis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_diagnosis"
-                android:textSize="@dimen/thirteen" />
-
-            <TextView
-                android:id="@+id/tv_make_diagnosis_show"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toEndOf="@+id/tv_make_hos_diagnosis"
-                android:background="@drawable/make_et_bg"
-                android:gravity="start"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_make_nickname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_marginTop="2dp"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_stay"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/two_hundred"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_stay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_stay"
-                android:textSize="@dimen/thirteen" />
-
-            <TextView
-                android:id="@+id/tv_make_stay_show"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toEndOf="@+id/tv_make_hos_stay"
-                android:background="@drawable/make_et_bg"
-                android:gravity="start"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-
-        <!-- 上传病历资料 -->
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_upload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/forty"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_upload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_updata"
-                android:textSize="@dimen/thirteen" />
-
-            <LinearLayout
-                android:id="@+id/ll_make_hos_upload"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/ninety"
-                android:layout_alignParentTop="true"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/tv_make_hos_upload"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen">
-
-                <ImageView
-                    android:id="@+id/iv_make_one_show"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="@dimen/one"
-                    android:src="@drawable/add_img" />
-
-                <ImageView
-                    android:id="@+id/iv_make_two_show"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="@dimen/one"
-                    android:src="@drawable/add_img" />
-
-                <ImageView
-                    android:id="@+id/iv_make_three_show"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="@dimen/one"
-                    android:src="@drawable/add_img" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_make_hos_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/twenty"
-            android:layout_marginTop="@dimen/thirteen"
-            android:layout_marginRight="@dimen/twenty"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tv_make_hos_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/thirteen"
-                android:text="@string/make_hos_time"
-                android:textSize="@dimen/thirteen" />
-
-            <TextView
-                android:id="@+id/tv_make_time_show"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/fifteen"
-                android:layout_toEndOf="@+id/tv_make_hos_time"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/eighty" />
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/one_hundred_forty"
-            android:gravity="center">
-
-
-            <TextView
-                android:id="@+id/tv_result"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/thirteen"
-                android:background="@drawable/make_et_bg"
-                android:padding="@dimen/thirteen"
-                android:textSize="@dimen/fifteen"
-                android:textStyle="bold" />
-
-
-        </RelativeLayout>
+        android:layout_height="150dp"
+        android:background="@drawable/appointment_success"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_appointment_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/appointment_success_logo"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="@string/appointment_success_title"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
-</ScrollView>
+
+    <ScrollView
+        style="@style/scrollView"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bg_white_5"
+                android:orientation="vertical"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    style="@style/hospital_appointment_title"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/hospital_appoint_base_info_title" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_make_hos_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="@string/make_hos_type"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_make_type_show"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:textColor="#7F7F7F"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <LinearLayout
+                    android:id="@+id/rl_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tv_make_hos_nickname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="@string/make_hos_nickname"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_make_hos_nickname_show"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:textColor="#7F7F7F"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <LinearLayout
+                    android:id="@+id/rl_make_hos_age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_make_hos_age"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="@string/make_hos_age"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_make_age_show"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:textColor="#7F7F7F"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <LinearLayout
+                    android:id="@+id/rl_make_hos_sex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_make_hos_sex"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="@string/make_hos_sex"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_make_sex_show"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal"
+                        android:textColor="#7F7F7F"
+                        android:textSize="14sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <LinearLayout
+                    android:id="@+id/rl_make_hos_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_make_hos_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="@string/make_hos_phone"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_make_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:textColor="#7F7F7F"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/shape_bg_white_5"
+                android:orientation="vertical"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    style="@style/hospital_appointment_title"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/hospital_appoint_healthy_info_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/make_hos_diagnosis"
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_make_diagnosis_show"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textColor="#7F7F7F"
+                    android:textSize="14sp" />
+
+                <View
+                    style="@style/line"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/make_hos_stay"
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_make_stay_show"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textColor="#7F7F7F"
+                    android:textSize="14sp" />
+
+                <View
+                    style="@style/line"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_make_hos_upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/make_hos_updata"
+                    android:textSize="14sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_make_hos_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/ninety"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_make_one_show"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/one"
+                        android:src="@drawable/hospital_appointmen_photo_load" />
+
+                    <ImageView
+                        android:id="@+id/iv_make_two_show"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/one"
+                        android:src="@drawable/hospital_appointmen_photo_load" />
+
+                    <ImageView
+                        android:id="@+id/iv_make_three_show"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="@dimen/one"
+                        android:src="@drawable/hospital_appointmen_photo_load" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/make_hos_time"
+                    android:textColor="@color/black_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_make_time_show"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textColor="#7F7F7F"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_appointment_doctor_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bg_white_5"
+                android:orientation="vertical"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/hospital_appointment_title"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/appointment_success_doctor_back" />
+
+                <TextView
+                    android:id="@+id/tv_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textColor="#7F7F7F"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</FrameLayout>
 
 

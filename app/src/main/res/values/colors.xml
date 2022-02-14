@@ -137,5 +137,9 @@
 
     <color name="new_black_text">#3B4552</color>
     <color name="ble_bg">#8f000000</color>
+    <color name="hospital_appointment_tip">#F07606 </color>
+    <color name="hospital_appointment_status_doing">#FFAE2E</color>
+    <color name="hospital_appointment_status_failed">#FFAE2E</color>
+    <color name="hospital_appointment_status_success">#FFAE2E</color>
 
 </resources>
