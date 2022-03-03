@@ -1,6 +1,6 @@
 var url = location.search.substring(1);
 
-pdfjsLib.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.4.456/cmaps/';
+pdfjsLib.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.3.200/cmaps/';
 pdfjsLib.cMapPacked = true;
 
 var pdfDoc = null;

@@ -367,6 +367,9 @@
             android:name=".base.activity.WebHelperActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".ui.activity.smartmakepolicy.loadPdfActivity"
+            android:screenOrientation="portrait"/>
+
         <!--首页选择时间-->
         <activity
             android:name=".ui.activity.home.ChooseTimeActivity"

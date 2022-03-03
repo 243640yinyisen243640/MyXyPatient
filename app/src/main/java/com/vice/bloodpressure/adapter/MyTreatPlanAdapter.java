@@ -9,6 +9,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseWebViewActivity;
 import com.vice.bloodpressure.bean.MyTreatPlanBean;
 import com.vice.bloodpressure.ui.activity.smartmakepolicy.HbpDetailActivity;
+import com.vice.bloodpressure.ui.activity.smartmakepolicy.loadPdfActivity;
 import com.vice.bloodpressure.ui.activity.sport.SportWeekPagerDetailActivity;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -78,13 +79,18 @@ public class MyTreatPlanAdapter extends CommonAdapter<MyTreatPlanBean> {
                         Utils.getApp().startActivity(intent);
                         break;
                     case "2":
-                        String startUrl = "file:///android_asset/pdf/pdf.html?";
-                        String pdf_url = item.getPdf_url();
-                        Intent intent1 = new Intent(Utils.getApp(), BaseWebViewActivity.class);
+                        Intent intent1 = new Intent(Utils.getApp(), loadPdfActivity.class);
+                        intent1.putExtra("url", item.getPdf_url());
                         intent1.putExtra("title", "糖尿病足");
-                        intent1.putExtra("url", startUrl + pdf_url);
                         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Utils.getApp().startActivity(intent1);
+                        //                                                String startUrl = "file:///android_asset/pdf/pdf.html?";
+                        //                                                String pdf_url = item.getPdf_url();
+                        //                                                Intent intent1 = new Intent(Utils.getApp(), BaseWebViewActivity.class);
+                        //                                                intent1.putExtra("title", "糖尿病足");
+                        //                                                intent1.putExtra("url", startUrl + pdf_url);
+                        //                                                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        //                                                Utils.getApp().startActivity(intent1);
                         break;
                     case "3":
                         Intent intent2 = new Intent(Utils.getApp(), SportWeekPagerDetailActivity.class);

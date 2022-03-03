@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,7 +191,6 @@ public class BaseWebViewActivity extends BaseActivity {
         WebViewClient webViewClient = new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.i("yys","shouldOverrideUrlLoading1");
                 if (url.startsWith("weixin://wap/pay?")) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
@@ -200,7 +198,6 @@ public class BaseWebViewActivity extends BaseActivity {
                     startActivity(intent);
                     return true;
                 } else if (url.contains("platformapi/startApp")) {
-                    Log.i("yys","shouldOverrideUrlLoading2");
                     try {
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
@@ -211,8 +208,7 @@ public class BaseWebViewActivity extends BaseActivity {
                     } catch (Exception e) {
                         ToastUtils.showShort("设备未安装支付宝");
                     }
-                }else if (url.startsWith("weixin://")){
-                    Log.i("yys","shouldOverrideUrlLoading3");
+                } else if (url.startsWith("weixin://")) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     return true;
                 }

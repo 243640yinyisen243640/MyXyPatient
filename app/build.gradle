@@ -5,7 +5,7 @@ android {
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     compileSdkVersion rootProject.ext.compileSdkVersion
-    dexOptions{
+    dexOptions {
         javaMaxHeapSize "4g"
     }
     defaultConfig {
@@ -115,7 +115,7 @@ dependencies {
     implementation project(':roundcorners')
     //卷尺
     implementation project(':rulerlib')
-   //签名
+    //签名
     implementation project(':library')
     implementation project(':banner')
     //图片浏览器
@@ -221,4 +221,9 @@ dependencies {
     implementation 'com.umeng.umsdk:apm:1.2.0'
     implementation 'com.umeng.umsdk:abtest:1.0.0'//使用U-App中ABTest能力，可选
     //友盟埋点结束
+
+
+    //pdf
+
+    implementation 'com.wdeo3601:pdf-view:1.0.4'
 }
