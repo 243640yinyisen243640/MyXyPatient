@@ -7,9 +7,12 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <ScrollView style="@style/scrollView">
+    <ScrollView
+        style="@style/scrollView">
 
         <LinearLayout
+            android:id="@+id/ll_confirm_order"
+
             style="@style/hh_fi_wr"
             android:orientation="vertical">
             <!--没有收货地址-->

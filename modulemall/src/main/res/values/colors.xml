@@ -13,4 +13,6 @@
     <color name="appColorPrimary">#FFD022</color>
     <color name="appColorPrimaryDark">#FFD022</color>
     <color name="appColorAccent">#FFD022</color>
+    <color name="mall_add_cart">#0DDC94</color>
+    <color name="mall_right_now_buy">#00C27F</color>
 </resources>

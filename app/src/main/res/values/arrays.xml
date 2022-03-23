@@ -621,6 +621,12 @@
         <item>@drawable/personalized_tcm</item>
         <item>@drawable/personalized_reduce_weight</item>
     </array>
+    <array name="make_policy_list_home_two">
+        <item>@drawable/personalized_hypoglycemic_program1</item>
+        <item>@drawable/personalized_depressurization_scheme1</item>
+        <item>@drawable/personalized_tcm1</item>
+        <item>@drawable/personalized_reduce_weight1</item>
+    </array>
 
     <!--    <array name="make_policy_list_user">-->
     <!--        <item>@drawable/personalized_depressurization_scheme</item>-->
@@ -1008,6 +1014,10 @@
     <array name="analyse_list_adapter">
         <item>@drawable/report_one_new</item>
         <item>@drawable/report_two_new</item>
+    </array>
+    <array name="analyse_list_adapter_two">
+        <item>@drawable/report_one_new1</item>
+        <item>@drawable/report_two_new1</item>
     </array>
 
 

@@ -171,7 +171,7 @@ public class BaseWebViewActivity extends BaseActivity {
         //水平不显示
         webView.setHorizontalScrollBarEnabled(false);
         //垂直不显示
-        webView.setVerticalScrollBarEnabled(false);
+           
         //加载Html链接
         webView.loadUrl(url);
         //加载Html标签

@@ -19,7 +19,7 @@ public class AnalyseListAdapter extends CommonAdapter {
 
     @Override
     protected void convert(ViewHolder viewHolder, Object item, int position) {
-        TypedArray imgArray = Utils.getApp().getResources().obtainTypedArray(R.array.analyse_list_adapter);
+        TypedArray imgArray = Utils.getApp().getResources().obtainTypedArray(R.array.analyse_list_adapter_two);
         viewHolder.setImageResource(R.id.img_analyse_list, imgArray.getResourceId(position, 0));
     }
 

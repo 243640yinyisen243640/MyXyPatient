@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -217,6 +218,15 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
                         //showChooseGoodsPopup.setData("0", data);
                         //设置sku
                         mySkuBean = data;
+                        if (mySkuBean == null) {
+                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
+                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
+                            productDetailBinding.tvSoldOutDes.setVisibility(View.VISIBLE);
+                        }else {
+                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_add_cart));
+                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_right_now_buy));
+                            productDetailBinding.tvSoldOutDes.setVisibility(View.GONE);
+                        }
                     }
                 }, new OnError() {
                     @Override

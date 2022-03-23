@@ -129,6 +129,8 @@ public class ConfirmOrderActivity extends BaseViewBindingActivity<ActivityConfir
                     @Override
                     public void accept(ConfirmOrderBean data) throws Exception {
                         //设置收货信息
+                        binding.llConfirmOrder.setVisibility(View.VISIBLE);
+                        binding.rlBottomPay.setVisibility(View.VISIBLE);
                         addressBean = data.getUserdefaultaddress();
                         if (addressBean != null) {
                             addressId = addressBean.getId() + "";
@@ -196,7 +198,8 @@ public class ConfirmOrderActivity extends BaseViewBindingActivity<ActivityConfir
                 }, new OnError() {
                     @Override
                     public void onError(ErrorInfo error) throws Exception {
-
+                        binding.llConfirmOrder.setVisibility(View.GONE);
+                        binding.rlBottomPay.setVisibility(View.GONE);
                     }
                 });
     }

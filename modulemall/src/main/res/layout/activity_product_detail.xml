@@ -8,11 +8,11 @@
 
     <com.lzy.widget.VerticalSlide
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <com.lzy.widget.vertical.VerticalScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 style="@style/hh_fi_wr"
@@ -263,7 +263,7 @@
         <com.lzy.widget.vertical.VerticalWebView
             android:id="@+id/web_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         </com.lzy.widget.vertical.VerticalWebView>
     </com.lzy.widget.VerticalSlide>
@@ -272,7 +272,7 @@
     <!--上 start-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <!--标题栏-->
         <RelativeLayout
@@ -310,6 +310,16 @@
             android:gravity="center"
             android:text="商品已下架啦~ 要不要瞧瞧别的~"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_sold_out_des"
+            style="@style/text_white_14_f_w"
+            android:layout_height="35dp"
+            android:layout_above="@+id/tv_sold_out_desc"
+            android:background="#666465"
+            android:gravity="center"
+            android:text="商品没有库存啦~ 要不要瞧瞧别的~"
+            android:visibility="visible" />
 
         <!--底部添加购物车-->
         <RelativeLayout
@@ -358,7 +368,7 @@
                     style="@style/text_white_14_f_w"
                     android:layout_height="38dp"
                     android:layout_weight="1"
-                    android:background="#0DDC94"
+                    android:background="@color/mall_add_cart"
                     android:gravity="center"
                     android:text="加入购物车"
                     app:rBottomLeftRadius="180dp"
@@ -371,7 +381,7 @@
                     style="@style/text_white_14_f_w"
                     android:layout_height="38dp"
                     android:layout_weight="1"
-                    android:background="#00C27F"
+                    android:background="@color/mall_right_now_buy"
                     android:gravity="center"
                     android:text="立即购买"
                     app:rBottomRightRadius="180dp"

@@ -24,7 +24,7 @@ public class MakePolicyAdapter extends CommonAdapter {
 
     @Override
     protected void convert(ViewHolder viewHolder, Object item, int position) {
-        TypedArray imgListHome = Utils.getApp().getResources().obtainTypedArray(R.array.make_policy_list_home);
+        TypedArray imgListHome = Utils.getApp().getResources().obtainTypedArray(R.array.make_policy_list_home_two);
         viewHolder.setImageResource(R.id.img_make_policy, imgListHome.getResourceId(position, 0));
     }
 }
