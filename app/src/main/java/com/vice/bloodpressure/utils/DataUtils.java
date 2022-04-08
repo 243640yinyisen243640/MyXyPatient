@@ -57,4 +57,18 @@ public class DataUtils {
         SimpleDateFormat format = new SimpleDateFormat(outFormat);
         return format.format(date);
     }
+
+    public static String getString2DateFormat(String time, String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        //获取当前时间
+        Date date = new Date(Long.parseLong(time));
+        return simpleDateFormat.format(date);
+    }
+
+    public static String getString2DateFormat(Long time, String format) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        //获取当前时间
+        Date date = new Date(time);
+        return simpleDateFormat.format(date);
+    }
 }

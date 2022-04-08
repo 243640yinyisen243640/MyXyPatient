@@ -15,13 +15,14 @@ import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.MyLiverFilesLvAdapter;
 import com.vice.bloodpressure.adapter.MyLiverFilesLvNewAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.bean.LiverFilesBean;
 import com.vice.bloodpressure.bean.LiverFilesRefreshBean;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.bean.MySugarLevel1Bean;
 import com.vice.bloodpressure.imp.AdapterClickLiverFilesImp;
 import com.vice.bloodpressure.net.OkHttpCallBack;
@@ -29,7 +30,6 @@ import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.CityPickerUtils;
 import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.utils.TimeFormatUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.MyListView;
@@ -455,6 +455,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
                 break;
             case 5:
                 resetMedicineHistory(position, type);
+                break;
+            default:
                 break;
         }
     }

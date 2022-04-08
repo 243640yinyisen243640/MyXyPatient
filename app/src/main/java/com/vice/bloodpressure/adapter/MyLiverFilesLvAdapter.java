@@ -35,7 +35,18 @@ public class MyLiverFilesLvAdapter extends CommonAdapter<MySugarLevel1Bean> {
         //右边
         TextView tvContent = viewHolder.getView(R.id.tv_right);
         tvName.setText(item.getName());
-        tvContent.setText(item.getContent());
+        if ("姓名".equals(item.getName())) {
+            int length = item.getContent().length();
+            if (length > 9) {
+                tvContent.setText(item.getContent().substring(0,9)+"...");
+            }else {
+                tvContent.setText(item.getContent());
+
+            }
+        }else {
+            tvContent.setText(item.getContent());
+        }
+//        tvContent.setText(item.getContent());
         viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

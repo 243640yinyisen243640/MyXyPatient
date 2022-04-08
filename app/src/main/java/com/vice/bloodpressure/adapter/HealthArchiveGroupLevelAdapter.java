@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,15 +19,15 @@ import com.blankj.utilcode.util.Utils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.bean.HealthArchiveGroupLevelOneBean;
 import com.vice.bloodpressure.bean.HealthArchiveGroupLevelZeroBean;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.imp.AdapterViewClickListener;
 import com.vice.bloodpressure.net.Service;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.PharmacyAddActivity;
 import com.vice.bloodpressure.utils.DialogUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
@@ -81,8 +82,19 @@ public class HealthArchiveGroupLevelAdapter extends BaseMultiItemQuickAdapter<Mu
                 TextView tvName = helper.getView(R.id.tv_left);//左边
                 TextView tvContent = helper.getView(R.id.tv_right);//右边
                 tvName.setText(lv1.getName());
+                Log.i("yys", "content===" + lv1.getName());
+
                 if (lv1.getUnit() == null) {
-                    tvContent.setText(lv1.getContent());
+                    if ("真实姓名".equals(lv1.getName()) || "昵称".equals(lv1.getName())) {
+                        int length = lv1.getContent().length();
+                        if (length > 9) {
+                            tvContent.setText(lv1.getContent().substring(0,9)+"...");
+                        }else {
+                            tvContent.setText(lv1.getContent());
+                        }
+                    }else {
+                        tvContent.setText(lv1.getContent());
+                    }
                 } else {
                     SpannableString spannableString = new SpannableString(lv1.getContent() + " " + lv1.getUnit());
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.gray_text));
