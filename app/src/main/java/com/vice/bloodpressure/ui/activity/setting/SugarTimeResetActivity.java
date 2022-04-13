@@ -219,6 +219,8 @@ public class SugarTimeResetActivity extends BaseHandlerActivity implements CallB
             case R.id.tv_eight_right:
                 selectTime(15, BeginEndTimePickerUtils.HOUR_THREE, 0, BeginEndTimePickerUtils.HOUR_SEVEN, 0);
                 break;
+            default:
+                break;
 
         }
     }

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +96,8 @@ public class HealthActivity extends BaseActivity {
         setTitle("健康记录");
         bleDialogUtils = new BleDialogUtils();
         showBleWaitingPopup = new ShowBleWaitingPopup(this);
+        showBleWaitingPopup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        showBleWaitingPopup.setAllowDismissWhenTouchOutside(false);
         setScanRule();
         registerBluetoothReceiver();
         getTvSave().setVisibility(View.VISIBLE);
