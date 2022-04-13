@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import androidx.core.content.ContextCompat;
+
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.vice.bloodpressure.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -147,6 +150,58 @@ public class PickerUtils {
         pv.setSelectOptions(0);
     }
 
+
+    public static void showTimeWindow(Context context, boolean[] booleans, String dataManager, final PickerUtils.TimePickerCallBack callBack) {
+        Calendar currentDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        startDate.set(currentYear - 120, 0, 1, 0, 0);
+
+        TimePickerView timePickerView = new TimePickerBuilder(context, (date, v) -> {
+            String content = DataUtils.convertDateToString(date, dataManager);
+            callBack.execEvent(content);
+        })
+                .setDate(currentDate)
+                .setRangDate(startDate, endDate)
+                .setType(booleans)
+                .setSubmitColor(ContextCompat.getColor(context, R.color.blue))
+                .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
+                .build();
+        timePickerView.show();
+    }
+
+
+
+    public static void showTimeWindow(Context context, boolean[] booleans, String dataManager, FrameLayout parentFra, final PickerUtils.TimePickerCallBack callBack) {
+        Calendar currentDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        int currentHour = currentDate.get(Calendar.HOUR);
+        startDate.set(currentYear - 120, 0, 1, 0, 0);
+        TimePickerView timePickerView = new TimePickerBuilder(context, (date, v) -> {
+            String content = DataUtils.convertDateToString(date, dataManager);
+            callBack.execEvent(content);
+        }).setDate(currentDate).setRangDate(startDate, endDate)
+                .setType(booleans)
+                .setSubmitColor(ContextCompat.getColor(context, R.color.blue))
+                .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
+                //                .isDialog(true)
+                .setDecorView(parentFra)
+                .build();
+        //        //设置dialog弹出位置
+        //        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        //        params.leftMargin = 0;
+        //        params.rightMargin = 0;
+        //        ViewGroup contentContainer = timePickerView.getDialogContainerLayout();
+        //        contentContainer.setLayoutParams(params);
+        //        timePickerView.getDialog().getWindow().setGravity(Gravity.BOTTOM);//可以改成Bottom
+        //        timePickerView.getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        timePickerView.show();
+
+    }
+
     public interface TimePickerCallBack {
         void execEvent(String content);
     }
@@ -158,4 +213,6 @@ public class PickerUtils {
     public interface PositionCallBack {
         void execEvent(String content, int position);
     }
+
+
 }

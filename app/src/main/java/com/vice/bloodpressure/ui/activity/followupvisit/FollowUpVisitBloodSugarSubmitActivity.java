@@ -1,8 +1,11 @@
 package com.vice.bloodpressure.ui.activity.followupvisit;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,6 +13,9 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -45,6 +51,7 @@ import com.vice.bloodpressure.bean.FollowUpVisitBloodSugarAddBean;
 import com.vice.bloodpressure.bean.FollowUpVisitBloodSugarDataBean;
 import com.vice.bloodpressure.bean.FollowUpVisitLvBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.imp.AdapterClickImp;
 import com.vice.bloodpressure.imp.AdapterClickSearchImp;
 import com.vice.bloodpressure.imp.OnItemClickListener;
@@ -54,6 +61,7 @@ import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.ListCastUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
+import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.MyListView;
 import com.vice.bloodpressure.view.popu.FollowUpVisitSavePopup;
@@ -1543,12 +1551,18 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
      * 选择时间
      */
     private void selectTime() {
-        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+        PickerUtils.showTimeWindow(FollowUpVisitBloodSugarSubmitActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
             @Override
             public void execEvent(String content) {
                 tvCheckTime.setText(content);
             }
         });
+//        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//            @Override
+//            public void execEvent(String content) {
+//                tvCheckTime.setText(content);
+//            }
+//        });
     }
 
     @OnClick({R.id.bt_back_new, R.id.tv_more_new, R.id.ll_select_time})
@@ -1687,6 +1701,97 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
                     sugarAddAdapter.notifyDataSetChanged();
                 });
 
+    }
+
+    /**
+     * 显示编辑框
+     */
+    private void showEditDialog(int timeHorizontal, int timeVertical) {
+
+        Dialog dialog = new Dialog(getPageContext(), R.style.Dialog_Base);
+        View view = View.inflate(getPageContext(), R.layout.input_user_info_dialog, null);
+        TextView titleTextView = view.findViewById(R.id.tv_dialog_title);
+        EditText msgEditText = view.findViewById(R.id.tv_dialog_msg);
+        TextView cancelTextView = view.findViewById(R.id.tv_dialog_cancel);
+        TextView sureTextView = view.findViewById(R.id.tv_dialog_sure);
+        msgEditText.setFocusable(true);//设置输入框可聚集
+        msgEditText.setFocusableInTouchMode(true);//设置触摸聚焦
+        msgEditText.requestFocus();//请求焦点
+        //        msgEditText.findFocus();//获取焦点
+        titleTextView.setText("血糖");
+        msgEditText.setHint("请输入血糖");
+        //        msgEditText.setText(msg);
+        //  msgEditText.setSelection(msg.length());
+        //设置14个字长
+        //        msgEditText.setMaxWidth(14);
+        dialog.setContentView(view);
+        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
+        attributes.width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 60);
+        attributes.height = ScreenUtils.dip2px(getPageContext(), 200);
+        dialog.getWindow().setAttributes(attributes);
+        cancelTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        });
+        sureTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                String content = msgEditText.getText().toString().trim();
+                FollowUpVisitBloodSugarAddBean bean = sevenSugarList.get(timeVertical);
+                switch (timeHorizontal) {
+                    case 0:
+                        bean.setOne(content);
+                        break;
+                    case 1:
+                        bean.setTwo(content);
+                        break;
+                    case 2:
+                        bean.setThree(content);
+                        break;
+                    case 3:
+                        bean.setFour(content);
+                        break;
+                    case 4:
+                        bean.setFive(content);
+                        break;
+                    case 5:
+                        bean.setSix(content);
+                        break;
+                    case 6:
+                        bean.setSeven(content);
+                        break;
+                    case 7:
+                        bean.setEight(content);
+                        break;
+                }
+                sugarAddAdapter.notifyDataSetChanged();
+
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showInputMethod();
+            }
+        }, 100);
+
+    }
+
+    private void showInputMethod() {
+        //自动弹出键盘
+        InputMethodManager inputManager = (InputMethodManager) getPageContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        //强制隐藏Android输入法窗口
+        // inputManager.hideSoftInputFromWindow(edit.getWindowToken(),0);
     }
 
     @Override

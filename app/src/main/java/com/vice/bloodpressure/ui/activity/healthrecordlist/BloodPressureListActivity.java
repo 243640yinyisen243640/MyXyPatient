@@ -27,6 +27,7 @@ import com.vice.bloodpressure.adapter.BloodPressureListAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
 import com.vice.bloodpressure.bean.BloodPressureBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.BloodPressureAddActivity;
@@ -258,7 +259,7 @@ public class BloodPressureListActivity extends BaseHandlerEventBusActivity imple
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_begin_time:
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(BloodPressureListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvBegin.setText(content);
@@ -269,11 +270,23 @@ public class BloodPressureListActivity extends BaseHandlerEventBusActivity imple
                         bTime = tvBegin.getText().toString().trim();
                         getData(bTime, eTime);
                     }
-
                 });
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvBegin.setText(content);
+//                        eTime = tvEnd.getText().toString().trim();
+//                        if ("选择结束时间".equals(eTime)) {
+//                            eTime = "";
+//                        }
+//                        bTime = tvBegin.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//
+//                });
                 break;
             case R.id.tv_end_time:
-                PickerUtils.showTime(BloodPressureListActivity.this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(BloodPressureListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvEnd.setText(content);
@@ -284,8 +297,21 @@ public class BloodPressureListActivity extends BaseHandlerEventBusActivity imple
                         eTime = tvEnd.getText().toString().trim();
                         getData(bTime, eTime);
                     }
-
                 });
+
+//                PickerUtils.showTime(BloodPressureListActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvEnd.setText(content);
+//                        bTime = tvBegin.getText().toString().trim();
+//                        if ("选择开始时间".equals(bTime)) {
+//                            bTime = "";
+//                        }
+//                        eTime = tvEnd.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//
+//                });
 
             default:
                 break;

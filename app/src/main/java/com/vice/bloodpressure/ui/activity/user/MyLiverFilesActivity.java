@@ -1,12 +1,19 @@
 package com.vice.bloodpressure.ui.activity.user;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.ArrayRes;
 
@@ -24,12 +31,13 @@ import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.bean.LiverFilesBean;
 import com.vice.bloodpressure.bean.LiverFilesRefreshBean;
 import com.vice.bloodpressure.bean.MySugarLevel1Bean;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.imp.AdapterClickLiverFilesImp;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.CityPickerUtils;
-import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
+import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.TimeFormatUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.MyListView;
@@ -642,7 +650,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
      * @param birthtime
      */
     private void showBottomTimeDialog(int position, int type, String birthtime) {
-        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+
+        PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
             @Override
             public void execEvent(String content) {
                 long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
@@ -650,6 +659,16 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
                 toDoSaveBottom(position, type, birthtime, timeS + "", content);
             }
         });
+
+
+//        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//            @Override
+//            public void execEvent(String content) {
+//                long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+//                long timeS = timeMs / 1000;
+//                toDoSaveBottom(position, type, birthtime, timeS + "", content);
+//            }
+//        });
     }
 
     /**
@@ -695,10 +714,74 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
      * @param hint
      * @param postKey
      */
+    //    private void showEditDialog(int position, int type, String title, String hint, String postKey) {
+    //        DialogUtils.getInstance().showEditTextDialog(getPageContext(), title, hint, text1 -> {
+    //            toDoSave(position, type, postKey, text1);
+    //        });
+    //    }
+
+    /**
+     * 显示编辑框
+     */
     private void showEditDialog(int position, int type, String title, String hint, String postKey) {
-        DialogUtils.getInstance().showEditTextDialog(getPageContext(), title, hint, text1 -> {
-            toDoSave(position, type, postKey, text1);
+
+        Dialog dialog = new Dialog(getPageContext(), R.style.Dialog_Base);
+        View view = View.inflate(getPageContext(), R.layout.input_user_info_dialog, null);
+        TextView titleTextView = view.findViewById(R.id.tv_dialog_title);
+        EditText msgEditText = view.findViewById(R.id.tv_dialog_msg);
+        TextView cancelTextView = view.findViewById(R.id.tv_dialog_cancel);
+        TextView sureTextView = view.findViewById(R.id.tv_dialog_sure);
+        msgEditText.setFocusable(true);//设置输入框可聚集
+        msgEditText.setFocusableInTouchMode(true);//设置触摸聚焦
+        msgEditText.requestFocus();//请求焦点
+        //        msgEditText.findFocus();//获取焦点
+        titleTextView.setText(title);
+        msgEditText.setHint(hint);
+        //        msgEditText.setText(msg);
+        //  msgEditText.setSelection(msg.length());
+        //设置14个字长
+        //        msgEditText.setMaxWidth(14);
+        dialog.setContentView(view);
+        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
+        attributes.width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 60);
+        attributes.height = ScreenUtils.dip2px(getPageContext(), 200);
+        dialog.getWindow().setAttributes(attributes);
+        cancelTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
         });
+        sureTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                String content = msgEditText.getText().toString().trim();
+
+                toDoSave(position, type, postKey, content);
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showInputMethod();
+            }
+        }, 100);
+
+    }
+
+    private void showInputMethod() {
+        //自动弹出键盘
+        InputMethodManager inputManager = (InputMethodManager) getPageContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        //强制隐藏Android输入法窗口
+        // inputManager.hideSoftInputFromWindow(edit.getWindowToken(),0);
     }
 
 

@@ -8,10 +8,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.TimeUtils;
 import com.lsp.RulerView;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
@@ -21,10 +17,9 @@ import com.vice.bloodpressure.base.fragment.BaseFragment;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.BmiDetailActivity;
-import com.vice.bloodpressure.utils.DataUtils;
+import com.vice.bloodpressure.utils.PickerUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -175,29 +170,15 @@ public class BloodPressureAddManualFragment extends BaseFragment {
         //            }
         //
         //        });
-        showTimeWindow();
+        PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, true, true, false}, DataFormatManager.TIME_FORMAT_Y_M_D_H_M, new PickerUtils.TimePickerCallBack() {
+            @Override
+            public void execEvent(String content) {
+                tvTime.setText(content);
+                EventBusUtils.post(new EventMessage<>(ConstantParam.BLOOD_PRESSURE_ADD_TIME, content));
+            }
+        });
     }
 
-    /**
-     * 选择生日
-     */
-    private void showTimeWindow() {
-        Calendar currentDate = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
-        int currentYear = currentDate.get(Calendar.YEAR);
-        startDate.set(currentYear - 120, 0, 1, 0, 0);
-        TimePickerView timePickerView = new TimePickerBuilder(getPageContext(), (date, v) -> {
-            String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_Y_M_D_H_M);
-            tvTime.setText(content);
-            EventBusUtils.post(new EventMessage<>(ConstantParam.BLOOD_PRESSURE_ADD_TIME, content));
-        }).setDate(currentDate).setRangDate(startDate, endDate)
-                .setType(new boolean[]{true, true, true, true, true, false})
-                .setSubmitColor(ContextCompat.getColor(getPageContext(), R.color.blue))
-                .setCancelColor(ContextCompat.getColor(getPageContext(), R.color.black_text))
-                .build();
-        timePickerView.show();
-    }
 
     @Override
     public void processHandlerMsg(Message msg) {

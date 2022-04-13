@@ -27,6 +27,7 @@ import com.vice.bloodpressure.adapter.TYAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
 import com.vice.bloodpressure.bean.BmiBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.BmiAddActivity;
@@ -269,7 +270,7 @@ public class BmiListActivity extends BaseHandlerEventBusActivity implements View
                 startActivity(new Intent(this, BmiAddActivity.class));
                 break;
             case R.id.tv_begin_time:
-                PickerUtils.showTime(BmiListActivity.this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(BmiListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvBegin.setText(content);
@@ -280,11 +281,25 @@ public class BmiListActivity extends BaseHandlerEventBusActivity implements View
                         bTime = tvBegin.getText().toString().trim();
                         getData(bTime, eTime);
                     }
-
                 });
+
+
+//                PickerUtils.showTime(BmiListActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvBegin.setText(content);
+//                        eTime = tvEnd.getText().toString().trim();
+//                        if ("选择结束时间".equals(eTime)) {
+//                            eTime = "";
+//                        }
+//                        bTime = tvBegin.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//
+//                });
                 break;
             case R.id.tv_end_time:
-                PickerUtils.showTime(BmiListActivity.this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(BmiListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvEnd.setText(content);
@@ -295,8 +310,22 @@ public class BmiListActivity extends BaseHandlerEventBusActivity implements View
                         eTime = tvEnd.getText().toString().trim();
                         getData(bTime, eTime);
                     }
-
                 });
+
+
+//                PickerUtils.showTime(BmiListActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvEnd.setText(content);
+//                        bTime = tvBegin.getText().toString().trim();
+//                        if ("选择开始时间".equals(bTime)) {
+//                            bTime = "";
+//                        }
+//                        eTime = tvEnd.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//
+//                });
                 break;
         }
     }

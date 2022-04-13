@@ -89,6 +89,8 @@ public class SystemMsgListActivity extends BaseHandlerActivity {
                     list.get(i).setIsread(1);
                     adapter.notifyDataSetChanged();
                 }
+            } else {
+                ToastUtils.showShort(response.msg);
             }
         }, (call, t) -> {
             ToastUtils.showShort(getString(R.string.network_error));

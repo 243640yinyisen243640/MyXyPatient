@@ -25,6 +25,7 @@ import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
 import com.vice.bloodpressure.bean.SevenAndThirtyBloodSugarListBean;
 import com.vice.bloodpressure.bean.SugarSearchBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.Service;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.BloodSugarAddActivity;
 import com.vice.bloodpressure.utils.PickerUtils;
@@ -232,20 +233,36 @@ public class BloodSugarListActivity extends BaseHandlerEventBusActivity implemen
                 setSevenAndThirty(type);
                 break;
             case R.id.tv_time_start://选择开始时间
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+
+                PickerUtils.showTimeWindow(BloodSugarListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         toJudgeBeginTime(content);
                     }
                 });
+
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        toJudgeBeginTime(content);
+//                    }
+//                });
                 break;
             case R.id.tv_time_end://选择结束时间
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(BloodSugarListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         toJudgeEndTime(content);
                     }
                 });
+
+
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        toJudgeEndTime(content);
+//                    }
+//                });
                 break;
         }
     }

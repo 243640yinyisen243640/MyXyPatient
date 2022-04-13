@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.blankj.utilcode.util.Utils;
 import com.vice.bloodpressure.R;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.utils.PickerUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -48,13 +49,22 @@ public class EducationFiveAdapter extends CommonAdapter<String> {
         View.OnClickListener timeClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PickerUtils.showTime(context, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(context, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         holder.setText(R.id.tv_time, content);
                         selectMapTime.put(position, content);
                     }
                 });
+
+//                PickerUtils.showTime(context, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//
+//                        holder.setText(R.id.tv_time, content);
+//                        selectMapTime.put(position, content);
+//                    }
+//                });
             }
         };
         holder.setOnClickListener(R.id.rl_time, timeClickListener);

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.ConvertUtils;
@@ -52,6 +53,7 @@ import com.vice.bloodpressure.ui.activity.healthrecordadd.TemperatureAddActivity
 import com.vice.bloodpressure.ui.activity.healthrecordadd.WeightAddActivity;
 import com.vice.bloodpressure.utils.BleDialogUtils;
 import com.vice.bloodpressure.utils.DataConvert;
+import com.vice.bloodpressure.view.popu.ShowBleWaitingPopup;
 import com.vice.bloodpressure.view.popu.ShowTemperaturePopup;
 
 import java.util.List;
@@ -84,12 +86,15 @@ public class HealthActivity extends BaseActivity {
     private UUID uuid_chara;
 
     private ShowTemperaturePopup temperaturePopup;
+    private ShowBleWaitingPopup showBleWaitingPopup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("健康记录");
         bleDialogUtils = new BleDialogUtils();
+        showBleWaitingPopup = new ShowBleWaitingPopup(this);
         setScanRule();
         registerBluetoothReceiver();
         getTvSave().setVisibility(View.VISIBLE);
@@ -212,6 +217,7 @@ public class HealthActivity extends BaseActivity {
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
                 String name = bleDevice.getName();
                 Log.e("yys", "连接成功的设备名称==" + name);
+                //                showBleWaitingPopup.dismiss();
                 dialogConnectSuccess();
                 //                Log.i("yys", "mac===" + bleDevice.getMac());
                 if (bDeviceBName.equals(name)) {
@@ -264,7 +270,7 @@ public class HealthActivity extends BaseActivity {
                                         @Override
                                         public void run() {
                                             Log.e("yys", "data==" + data);
-                                            dialogDismiss();
+                                            //                                            dialogDismiss();
                                             String convertString = ConvertUtils.bytes2HexString(data);
                                             showPop(DataConvert.hexStrToUTF8(convertString));
                                         }
@@ -338,16 +344,18 @@ public class HealthActivity extends BaseActivity {
      * 开始连接
      */
     private void dialogStartConnect() {
-        bleDialogUtils.showProgress(HealthActivity.this, getString(R.string.ble_connecting));
+
+        showBleWaitingPopup.showPopupWindow();
+        //        bleDialogUtils.showProgress(HealthActivity.this, getString(R.string.ble_connecting));
     }
 
     /**
      * 连接成功
      */
     private void dialogConnectSuccess() {
-        bleDialogUtils.dismissProgress();
-        bleDialogUtils.mProgressDialog = null;
-        bleDialogUtils.showProgress(HealthActivity.this, getString(R.string.ble_connected_and_wait_data));
+        showBleWaitingPopup.dismiss();
+        //        bleDialogUtils.mProgressDialog = null;
+        Toast.makeText(this, "连接成功", Toast.LENGTH_LONG).show();
     }
 
     /**

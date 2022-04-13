@@ -71,6 +71,7 @@ public abstract class BaseDialog<V extends View> implements DialogInterface.OnKe
             params.width = getScreenWidthPixels() - SizeUtils.dp2px(10);
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             window.setAttributes(params);
+//            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             //AndroidRuntimeException: requestFeature() must be called before adding content
             window.requestFeature(Window.FEATURE_NO_TITLE);

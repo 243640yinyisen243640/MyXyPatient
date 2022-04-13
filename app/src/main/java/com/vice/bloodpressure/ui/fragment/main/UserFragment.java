@@ -371,6 +371,8 @@ public class UserFragment extends BaseFragment implements SimpleImmersionOwner {
             case IS_LIVER_FILE:
                 IsLiverFilesBean isLiverFilesBean = (IsLiverFilesBean) msg.obj;
                 String archivestyle = isLiverFilesBean.getArchivestyle();
+//                String archivestyle = "2";
+
                 if ("2".equals(archivestyle)) {
                     intent = new Intent(getPageContext(), MyLiverFilesActivity.class);
                 } else {

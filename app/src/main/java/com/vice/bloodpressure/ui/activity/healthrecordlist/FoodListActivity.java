@@ -27,6 +27,7 @@ import com.vice.bloodpressure.adapter.FoodAndDrinkAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
 import com.vice.bloodpressure.bean.FoodAndDrinkBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.FoodAddActivity;
@@ -164,7 +165,7 @@ public class FoodListActivity extends BaseHandlerEventBusActivity implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_begin_time:
-                PickerUtils.showTime(FoodListActivity.this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(FoodListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvBeginTime.setText(content);
@@ -175,12 +176,24 @@ public class FoodListActivity extends BaseHandlerEventBusActivity implements Vie
                         bTime = tvBeginTime.getText().toString().trim();
                         getData(bTime, eTime);
                     }
-
-
                 });
+//                PickerUtils.showTime(FoodListActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvBeginTime.setText(content);
+//                        eTime = tvEndTime.getText().toString().trim();
+//                        if ("选择结束时间".equals(eTime)) {
+//                            eTime = "";
+//                        }
+//                        bTime = tvBeginTime.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//
+//
+//                });
                 break;
             case R.id.tv_end_time:
-                PickerUtils.showTime(FoodListActivity.this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(FoodListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvEndTime.setText(content);
@@ -191,8 +204,20 @@ public class FoodListActivity extends BaseHandlerEventBusActivity implements Vie
                         eTime = tvEndTime.getText().toString().trim();
                         getData(bTime, eTime);
                     }
-
                 });
+//                PickerUtils.showTime(FoodListActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvEndTime.setText(content);
+//                        bTime = tvBeginTime.getText().toString().trim();
+//                        if ("选择开始时间".equals(bTime)) {
+//                            bTime = "";
+//                        }
+//                        eTime = tvEndTime.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//
+//                });
                 break;
             case R.id.btn_add_health_record_base:
                 startActivity(new Intent(FoodListActivity.this, FoodAddActivity.class));

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -17,10 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
@@ -31,7 +28,7 @@ import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.imp.CallBack;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.vice.bloodpressure.utils.DataUtils;
+import com.vice.bloodpressure.utils.PickerUtils;
 import com.vice.bloodpressure.utils.edittext.TextWatcherForBloodSugarAdd;
 
 import java.math.BigDecimal;
@@ -77,6 +74,7 @@ public class BloodSugarDialogHome extends Dialog {
         //        lp.width = DensityUtil.dip2px(context, 300);
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
         win.setAttributes(lp);//这是什么呀
+
     }
 
 
@@ -101,9 +99,19 @@ public class BloodSugarDialogHome extends Dialog {
                 //                        }
                 //                    }
                 //                });
-                showTimeWindow();
+                closeKeyboard();
+                PickerUtils.showTimeWindow(context, new boolean[]{false, false, false, true, true, false}, DataFormatManager.TIME_FORMAT_H_M, all, new PickerUtils.TimePickerCallBack() {
+                    @Override
+                    public void execEvent(String content) {
+                        tvTime.setText(content);
+                        if (!TextUtils.isEmpty(etBlood.getText().toString().trim())) {
+                            btnSave.setBackgroundColor(ColorUtils.getColor(R.color.main_home));
+                        }
+                    }
+                });
             }
         });
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,38 +129,15 @@ public class BloodSugarDialogHome extends Dialog {
             }
         });
     }
-
-    private void showTimeWindow() {
-        Calendar currentDate = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
-        int currentYear = currentDate.get(Calendar.YEAR);
-        startDate.set(currentYear - 120, 0, 1, 0, 0);
-        TimePickerView timePickerView = new TimePickerBuilder(context, (date, v) -> {
-            String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_H_M);
-            tvTime.setText(content);
-            if (!TextUtils.isEmpty(etBlood.getText().toString().trim())) {
-                btnSave.setBackgroundColor(ColorUtils.getColor(R.color.main_home));
+    //只是关闭软键盘  隐藏所有的软键盘
+    private void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && getCurrentFocus() != null) {
+            if (getCurrentFocus().getWindowToken() != null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
-        }).setDate(currentDate).setRangDate(startDate, endDate)
-                .setType(new boolean[]{false, false, false, true, true, false})
-                .setSubmitColor(ContextCompat.getColor(context, R.color.blue))
-                .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
-                //                .isDialog(true)
-                .setDecorView(all)
-                .build();
-        //        //设置dialog弹出位置
-        //        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-        //        params.leftMargin = 0;
-        //        params.rightMargin = 0;
-        //        ViewGroup contentContainer = timePickerView.getDialogContainerLayout();
-        //        contentContainer.setLayoutParams(params);
-        //        timePickerView.getDialog().getWindow().setGravity(Gravity.BOTTOM);//可以改成Bottom
-        //        timePickerView.getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        timePickerView.show();
-
+        }
     }
-
 
     /**
      * 时间点 ‘凌晨’,’8’,

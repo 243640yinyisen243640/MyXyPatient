@@ -82,7 +82,7 @@ public class HealthArchiveGroupLevelAdapter extends BaseMultiItemQuickAdapter<Mu
                 TextView tvName = helper.getView(R.id.tv_left);//左边
                 TextView tvContent = helper.getView(R.id.tv_right);//右边
                 tvName.setText(lv1.getName());
-                Log.i("yys", "content===" + lv1.getName());
+
 
                 if (lv1.getUnit() == null) {
                     if ("真实姓名".equals(lv1.getName()) || "昵称".equals(lv1.getName())) {

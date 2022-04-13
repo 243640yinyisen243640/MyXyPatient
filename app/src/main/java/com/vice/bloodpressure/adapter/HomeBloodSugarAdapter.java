@@ -168,6 +168,9 @@ public class HomeBloodSugarAdapter extends BaseQuickAdapter<HomeBloodSugarListBe
                     String timeMd = ymdStrFormatToMdStr(time);
                     //没有数据 点击添加
                     Dialog dialog = new BloodSugarDialogHome(callback, listStr, context, R.style.bloodDialog, typePosition, timeMd);
+                    dialog.setCancelable(true);
+                    dialog.setCanceledOnTouchOutside(true);
+
                     dialog.show();
 //                    Intent intent = new Intent(context, ChooseTimeActivity.class);
 //                    context.startActivity(intent);

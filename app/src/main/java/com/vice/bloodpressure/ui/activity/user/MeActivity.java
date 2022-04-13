@@ -1,6 +1,8 @@
 package com.vice.bloodpressure.ui.activity.user;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -8,9 +10,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +30,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.GifSizeFilter;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
@@ -32,12 +39,12 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.bean.PersonalRecordBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.homesign.MyQRCodeActivity;
-import com.vice.bloodpressure.utils.DialogUtils;
-import com.lyd.baselib.utils.GifSizeFilter;
 import com.vice.bloodpressure.utils.PickerUtils;
+import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.TimeFormatUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -163,7 +170,8 @@ public class MeActivity extends BaseHandlerActivity {
     }
 
     private void toUpdateBirthday() {
-        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+
+        PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
             @Override
             public void execEvent(String content) {
                 tvBirthday.setText(content);
@@ -172,6 +180,16 @@ public class MeActivity extends BaseHandlerActivity {
                 toSave("birthtime", timeS + "");
             }
         });
+
+//        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//            @Override
+//            public void execEvent(String content) {
+//                tvBirthday.setText(content);
+//                long birthdayTime = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+//                long timeS = birthdayTime / 1000;
+//                toSave("birthtime", timeS + "");
+//            }
+//        });
     }
 
     private void toUpdateSex() {
@@ -192,15 +210,79 @@ public class MeActivity extends BaseHandlerActivity {
     }
 
     private void toUpdateNickName() {
-        DialogUtils.getInstance().showEditTextDialog(getPageContext(), "昵称", "请输入昵称", new DialogUtils.DialogInputCallBack() {
-            @Override
-            public void execEvent(String text) {
-                tvName.setText(text);
-                toSave("petname", text);
-            }
-        });
+        showEditDialog();
+        //        DialogUtils.getInstance().showEditTextDialog(getPageContext(), "昵称", "请输入昵称", new DialogUtils.DialogInputCallBack() {
+        //            @Override
+        //            public void execEvent(String text) {
+        //                tvName.setText(text);
+        //                toSave("petname", text);
+        //            }
+        //        });
     }
 
+    /**
+     * 显示编辑框
+     */
+    private void showEditDialog() {
+
+        Dialog dialog = new Dialog(getPageContext(), R.style.Dialog_Base);
+        View view = View.inflate(getPageContext(), R.layout.input_user_info_dialog, null);
+        TextView titleTextView = view.findViewById(R.id.tv_dialog_title);
+        EditText msgEditText = view.findViewById(R.id.tv_dialog_msg);
+        TextView cancelTextView = view.findViewById(R.id.tv_dialog_cancel);
+        TextView sureTextView = view.findViewById(R.id.tv_dialog_sure);
+        msgEditText.setFocusable(true);//设置输入框可聚集
+        msgEditText.setFocusableInTouchMode(true);//设置触摸聚焦
+        msgEditText.requestFocus();//请求焦点
+        //        msgEditText.findFocus();//获取焦点
+        titleTextView.setText("昵称");
+        msgEditText.setHint("请输入昵称");
+        //        msgEditText.setText(msg);
+        //  msgEditText.setSelection(msg.length());
+        //设置14个字长
+        //        msgEditText.setMaxWidth(14);
+        dialog.setContentView(view);
+        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
+        attributes.width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 60);
+        attributes.height = ScreenUtils.dip2px(getPageContext(), 200);
+        dialog.getWindow().setAttributes(attributes);
+        cancelTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        });
+        sureTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                String content = msgEditText.getText().toString().trim();
+
+                toSave("petname", content);
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showInputMethod();
+            }
+        }, 100);
+
+    }
+
+    private void showInputMethod() {
+        //自动弹出键盘
+        InputMethodManager inputManager = (InputMethodManager) getPageContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        //强制隐藏Android输入法窗口
+        // inputManager.hideSoftInputFromWindow(edit.getWindowToken(),0);
+    }
 
     /**
      * 知乎选择照片

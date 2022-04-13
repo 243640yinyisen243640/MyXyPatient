@@ -40,16 +40,17 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.bumptech.glide.Glide;
 import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.GifSizeFilter;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.Service;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.DialogUtils;
-import com.lyd.baselib.utils.GifSizeFilter;
 import com.vice.bloodpressure.utils.PickerUtils;
 import com.vice.bloodpressure.view.popu.SlideFromBottomPopup;
 import com.wei.android.lib.colorview.view.ColorButton;
@@ -259,7 +260,7 @@ public class HospitalizationAppointmentAddActivity extends BaseHandlerActivity {
                 listPopupWindow.show();
                 break;
             case R.id.tv_six:
-                PickerUtils.showTime(this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(HospitalizationAppointmentAddActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvSix.setText(content);
@@ -267,9 +268,17 @@ public class HospitalizationAppointmentAddActivity extends BaseHandlerActivity {
                         time = content;
                     }
                 });
+//                PickerUtils.showTime(this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvSix.setText(content);
+//                        tvSix.setTextColor(Color.BLACK);
+//                        time = content;
+//                    }
+//                });
                 break;
             case R.id.tv_four:
-                DialogUtils.getInstance().showCommonDialog(this, "请选择性别",
+                DialogUtils.getInstance().showCommonDialog1(this, "请选择性别",
                         "", "男", "女", new DialogUtils.DialogCallBack() {
                             @Override
                             public void execEvent() {

@@ -1,14 +1,20 @@
 package com.vice.bloodpressure.ui.activity.user;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
-import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +29,6 @@ import com.allen.library.bean.BaseData;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.CommonObserver;
 import com.blankj.utilcode.util.ImageUtils;
-import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPStaticUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -58,6 +63,7 @@ import com.vice.bloodpressure.ui.activity.healthrecordadd.PharmacyAddActivity;
 import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
+import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.TimeFormatUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 
@@ -696,16 +702,18 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
         String text = tvLeft.getText().toString();
         switch (text) {
             case "真实姓名":
-                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "真实姓名", "请输入真实姓名", text1 -> {
-                    //                    tvRight.setText(text1);
-                    toDoSave("nickname", text1, tvRight, help);
-                });
+                showEditDialog("nickname", "真实姓名", "请输入真实姓名", tvRight, help);
+                //                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "真实姓名", "请输入真实姓名", text1 -> {
+                //                    //                    tvRight.setText(text1);
+                //                    toDoSave("nickname", text1, tvRight, help);
+                //                });
                 break;
             case "昵称":
-                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "昵称", "请输入昵称", text1 -> {
-                    //                    tvRight.setText(text1);
-                    toDoSave("petname", text1, tvRight, help);
-                });
+                showEditDialog("petname", "昵称", "请输入昵称", tvRight, help);
+                //                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "昵称", "请输入昵称", text1 -> {
+                //                    //                    tvRight.setText(text1);
+                //                    toDoSave("petname", text1, tvRight, help);
+                //                });
                 break;
             case "性别":
                 ArrayList<String> sexList = new ArrayList<>();
@@ -724,15 +732,25 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 }, sexList);
                 break;
             case "出生日期":
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
-                    @Override
-                    public void execEvent(String content) {
-                        //                        tvRight.setText(content);
-                        long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
-                        long timeS = timeMs / 1000;
-                        toDoSave("birthtime", timeS + "", tvRight, help);
-                    }
-                });
+
+                                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
+                                    @Override
+                                    public void execEvent(String content) {
+                                        long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+                                        long timeS = timeMs / 1000;
+                                        toDoSave("birthtime", timeS + "", tvRight, help);
+                                    }
+                                });
+
+                //                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                //                    @Override
+                //                    public void execEvent(String content) {
+                //                        //                        tvRight.setText(content);
+                //                        long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+                //                        long timeS = timeMs / 1000;
+                //                        toDoSave("birthtime", timeS + "", tvRight, help);
+                //                    }
+                //                });
                 break;
             case "民族":
                 String[] nations = Utils.getApp().getResources().getStringArray(R.array.nation_list);
@@ -777,15 +795,25 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 }, diabetesTypeList);
                 break;
             case "糖尿病确诊日期":
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
-                        //                        tvRight.setText(content);
                         long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
                         long timeS = timeMs / 1000;
                         toDoSave("diabetesleitime", timeS + "", tvRight, help);
                     }
                 });
+
+                //                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                //                    @Override
+                //                    public void execEvent(String content) {
+                //                        //                        tvRight.setText(content);
+                //                        long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+                //                        long timeS = timeMs / 1000;
+                //                        toDoSave("diabetesleitime", timeS + "", tvRight, help);
+                //                    }
+                //                });
                 break;
             case "吸烟":
                 ArrayList<String> smokeList = new ArrayList<>();
@@ -905,10 +933,11 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 showCityPickerView(tvRight);
                 break;
             case "住址":
-                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "住址", "请输入住址", text1 -> {
-                    //                    tvRight.setText(text1);
-                    toDoSave("address", text1, tvRight, help);
-                });
+                showEditDialog("address", "住址", "请输入住址", tvRight, help);
+                //                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "住址", "请输入住址", text1 -> {
+                //                    //                    tvRight.setText(text1);
+                //                    toDoSave("address", text1, tvRight, help);
+                //                });
                 break;
             case "医疗支付方式":// 1 社会医疗基本保险 2 新型农村合作医疗保险 3 城镇居民医疗保险 4 商业保险 5 公费医疗 6 自费医疗 7 其它
                 ArrayList<String> payList = new ArrayList<>();
@@ -950,20 +979,22 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 }, payList);
                 break;
             case "身份证号":
-                DialogUtils.getInstance().showEditTextIdNumberDialog(getPageContext(), "身份证号", "请输入身份证号", text1 -> {
-                    //                    tvRight.setText(text1);
-                    if (!RegexUtils.isIDCard18(text1)) {
-                        ToastUtils.showShort("请输入合法的身份证号码");
-                        return;
-                    }
-                    toDoSave("idcard", text1, tvRight, help);
-                });
+                showEditDialog("idcard", "身份证号", "请输入身份证号", tvRight, help);
+                //                DialogUtils.getInstance().showEditTextIdNumberDialog(getPageContext(), "身份证号", "请输入身份证号", text1 -> {
+                //                    //                    tvRight.setText(text1);
+                //                    if (!RegexUtils.isIDCard18(text1)) {
+                //                        ToastUtils.showShort("请输入合法的身份证号码");
+                //                        return;
+                //                    }
+                //                    toDoSave("idcard", text1, tvRight, help);
+                //                });
                 break;
             case "就诊卡号":
-                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "就诊卡号", "请输入就诊卡号", InputType.TYPE_CLASS_NUMBER, text1 -> {
-                    //                    tvRight.setText(text1);
-                    toDoSave("jzkahao", text1, tvRight, help);
-                });
+                showEditDialog("jzkahao", "就诊卡号", "请输入就诊卡号", tvRight, help);
+                //                DialogUtils.getInstance().showEditTextDialog(getPageContext(), "就诊卡号", "请输入就诊卡号", InputType.TYPE_CLASS_NUMBER, text1 -> {
+                //                    //                    tvRight.setText(text1);
+                //                    toDoSave("jzkahao", text1, tvRight, help);
+                //                });
                 break;
             case "是否独居"://独居：1是 2否
                 ArrayList<String> dujuList = new ArrayList<>();
@@ -1001,15 +1032,26 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 }, gxyzhenduanList);
                 break;
             case "高血压确诊日期":
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
-                        //                        tvRight.setText(content);
                         long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
                         long timeS = timeMs / 1000;
                         toDoSave("gxytime", timeS + "", tvRight, help);
                     }
                 });
+
+
+
+                //                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                //                    @Override
+                //                    public void execEvent(String content) {
+                //                        //                        tvRight.setText(content);
+                //                        long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+                //                        long timeS = timeMs / 1000;
+                //                        toDoSave("gxytime", timeS + "", tvRight, help);
+                //                    }
+                //                });
                 break;
             case "妊娠"://妊娠 ：1是  2否
                 ArrayList<String> gestationList = new ArrayList<>();
@@ -1028,7 +1070,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 }, gestationList);
                 break;
             case "妊娠日期":
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         //                        tvRight.setText(content);
@@ -1037,121 +1079,147 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                         toDoSave("gestationtime", timeS + "", tvRight, help);
                     }
                 });
+
+                //                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                //                    @Override
+                //                    public void execEvent(String content) {
+                //                        //                        tvRight.setText(content);
+                //                        long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+                //                        long timeS = timeMs / 1000;
+                //                        toDoSave("gestationtime", timeS + "", tvRight, help);
+                //                    }
+                //                });
                 break;
             //第二部分
             ////////////////////////////////////////////////////
             case "身高"://height
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "身高", "请输入身高", text1 -> {
-                    //tvRight.setText(text1);
-                    SPStaticUtils.put("height", text1);
-                    toDoSave("height", text1, tvRight, help);
-                    //                    resetValue(help, tvRight, text1);
-                    resetBmi(help);
-                });
+
+                showEditDialog("height", "身高", "请输入身高", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "身高", "请输入身高", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    SPStaticUtils.put("height", text1);
+                //                    toDoSave("height", text1, tvRight, help);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    resetBmi(help);
+                //                });
                 break;
             case "体重"://weight
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "体重", "请输入体重", text1 -> {
-                    //tvRight.setText(text1);
-                    SPStaticUtils.put("weight", text1);
-                    toDoSave("weight", text1, tvRight, help);
-                    resetBmi(help);
-                });
+                showEditDialog("weight", "体重", "请输入体重", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "体重", "请输入体重", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    SPStaticUtils.put("weight", text1);
+                //                    toDoSave("weight", text1, tvRight, help);
+                //                    resetBmi(help);
+                //                });
                 break;
             case "BMI"://计算,不可修改
                 String weight = SPStaticUtils.getString("weight");
                 String height = SPStaticUtils.getString("height");
                 break;
             case "腰围"://waistline
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "腰围", "请输入腰围", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSave("waistline", text1, tvRight, help);
-                    SPStaticUtils.put("waistline", text1);
-                    resetThr();
-                });
+                showEditDialog("waistline", "腰围", "请输入腰围", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "腰围", "请输入腰围", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSave("waistline", text1, tvRight, help);
+                //                    SPStaticUtils.put("waistline", text1);
+                //                    resetThr();
+                //                });
                 break;
             case "臀围"://hipline
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "臀围", "请输入臀围", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSave("hipline", text1, tvRight, help);
-                    SPStaticUtils.put("hipline", text1);
-                    resetThr();
-                });
+                showEditDialog("hipline", "臀围", "请输入臀围", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "臀围", "请输入臀围", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSave("hipline", text1, tvRight, help);
+                //                    SPStaticUtils.put("hipline", text1);
+                //                    resetThr();
+                //                });
                 break;
             case "腰臀比"://计算,不可修改
                 break;
             case "收缩压"://systolic
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "收缩压", "请输入收缩压", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSave("systolic", text1, tvRight, help);
-                });
+                showEditDialog("systolic", "收缩压", "请输入收缩压", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "收缩压", "请输入收缩压", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSave("systolic", text1, tvRight, help);
+                //                });
                 break;
             case "舒张压"://diastolic
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "舒张压", "请输入舒张压", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSave("diastolic", text1, tvRight, help);
-                });
+                showEditDialog("diastolic", "舒张压", "请输入舒张压", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "舒张压", "请输入舒张压", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSave("diastolic", text1, tvRight, help);
+                //                });
                 break;
             case "静息心率"://heartrate
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "静息心率", "请输入静息心率", text1 -> {
-                    //tvRight.setText(text1);
-                    resetValue(help, tvRight, text1);
-                    toDoSave("heartrate", text1, tvRight, help);
-                });
+                showEditDialog("heartrate", "静息心率", "请输入静息心率", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "静息心率", "请输入静息心率", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    resetValue(help, tvRight, text1);
+                //                    toDoSave("heartrate", text1, tvRight, help);
+                //                });
                 break;
             //第三部分
             //////////////////////////////////////////////////////////////////
             case "OGTT2h血糖"://xtogtt2h
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "OGTT2h血糖", "请输入OGTT2h血糖", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("xtogtt2h", text1, tvRight, help);
-                });
+                showEditDialog("xtogtt2h", "OGTT2h血糖", "请输入OGTT2h血糖", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "OGTT2h血糖", "请输入OGTT2h血糖", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("xtogtt2h", text1, tvRight, help);
+                //                });
                 break;
             case "H b A 1 c":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "H b A 1 c", "请输入H b A 1 c", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("xthbalc", text1, tvRight, help);
-                });
+                showEditDialog("xthbalc", "H b A 1 c", "请输入H b A 1 c", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "H b A 1 c", "请输入H b A 1 c", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("xthbalc", text1, tvRight, help);
+                //                });
                 break;
             case "随机血糖":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "随机血糖", "请输入随机血糖", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("xtsuiji", text1, tvRight, help);
-                });
+                showEditDialog("xtsuiji", "随机血糖", "请输入随机血糖", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "随机血糖", "请输入随机血糖", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("xtsuiji", text1, tvRight, help);
+                //                });
                 break;
             case "空腹血糖":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "空腹血糖", "请输入空腹血糖", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("xtkongfu", text1, tvRight, help);
-                });
+                showEditDialog("xtkongfu", "空腹血糖", "请输入空腹血糖", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "空腹血糖", "请输入空腹血糖", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("xtkongfu", text1, tvRight, help);
+                //                });
                 break;
             case "餐 后2h 血 糖":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "餐 后2h 血 糖", "请输入餐 后2h 血 糖", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("xtcaihou", text1, tvRight, help);
-                });
+                showEditDialog("xtcaihou", "餐 后2h 血 糖", "请输入餐 后2h 血 糖", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "餐 后2h 血 糖", "请输入餐 后2h 血 糖", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("xtcaihou", text1, tvRight, help);
+                //                });
                 break;
             case "夜间血糖":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "夜间血糖", "请输入夜间血糖", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("xtyejian", text1, tvRight, help);
-                });
+                showEditDialog("xtyejian", "夜间血糖", "请输入夜间血糖", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "夜间血糖", "请输入夜间血糖", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("xtyejian", text1, tvRight, help);
+                //                });
                 break;
             case "睡前血糖":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "睡前血糖", "请输入睡前血糖", text1 -> {
-                    //tvRight.setText(text1);
-                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("xtshuiqian", text1, tvRight, help);
-                });
+                showEditDialog("xtshuiqian", "睡前血糖", "请输入睡前血糖", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "睡前血糖", "请输入睡前血糖", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("xtshuiqian", text1, tvRight, help);
+                //                });
                 break;
             case "近期经常发生低血糖"://是否
                 ArrayList<String> xtogtt2hList = new ArrayList<>();
@@ -1172,115 +1240,139 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             //第四部分
             /////////////////////////////////////////////////////
             case "总胆固醇(TC)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "总胆固醇(TC)", "请输入总胆固醇(TC)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("sytc", text1, tvRight, help);
-                });
+                showEditDialog("sytc", "总胆固醇(TC)", "请输入总胆固醇(TC)", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "总胆固醇(TC)", "请输入总胆固醇(TC)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("sytc", text1, tvRight, help);
+                //                });
                 break;
             case "甘油三酯":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "甘油三酯", "请输入甘油三酯", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("sytg", text1, tvRight, help);
-                });
+                showEditDialog("sytg", "甘油三酯", "请输入甘油三酯", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "甘油三酯", "请输入甘油三酯", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("sytg", text1, tvRight, help);
+                //                });
                 break;
             case "低密度脂蛋白(LDL-C)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "低密度脂蛋白(LDL-C)", "请输入低密度脂蛋白(LDL-C)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syldl", text1, tvRight, help);
-                });
+                showEditDialog("syldl", "低密度脂蛋白(LDL-C)", "请输入低密度脂蛋白(LDL-C)", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "低密度脂蛋白(LDL-C)", "请输入低密度脂蛋白(LDL-C)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syldl", text1, tvRight, help);
+                //                });
                 break;
             case "谷丙转氨酶(ALT)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "谷丙转氨酶(ALT)", "请输入谷丙转氨酶(ALT)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syalt", text1, tvRight, help);
-                });
+                showEditDialog("syalt", "谷丙转氨酶(ALT)", "请输入谷丙转氨酶(ALT)", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "谷丙转氨酶(ALT)", "请输入谷丙转氨酶(ALT)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syalt", text1, tvRight, help);
+                //                });
                 break;
             case "谷草转氨酶(AST)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "谷草转氨酶(AST)", "请输入谷草转氨酶(AST)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syast", text1, tvRight, help);
-                });
+                showEditDialog("syast", "谷草转氨酶(AST)", "请输入谷草转氨酶(AST)", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "谷草转氨酶(AST)", "请输入谷草转氨酶(AST)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syast", text1, tvRight, help);
+                //                });
                 break;
             case "总胆红素(T-BIL)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "总胆红素(T-BIL)", "请输入总胆红素(T-BIL)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("sytbil", text1, tvRight, help);
-                });
+                showEditDialog("sytbil", "总胆红素(T-BIL)", "请输入总胆红素(T-BIL)", tvRight, help);
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "总胆红素(T-BIL)", "请输入总胆红素(T-BIL)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("sytbil", text1, tvRight, help);
+                //                });
                 break;
             case "高密度脂蛋白(HDL-C)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "高密度脂蛋白(HDL-C)", "请输入高密度脂蛋白(HDL-C)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syhdl", text1, tvRight, help);
-                });
+                showEditDialog("syhdl", "高密度脂蛋白(HDL-C)", "请输入高密度脂蛋白(HDL-C)", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "高密度脂蛋白(HDL-C)", "请输入高密度脂蛋白(HDL-C)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syhdl", text1, tvRight, help);
+                //                });
                 break;
             case "碱性磷酸酶(ALP)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "碱性磷酸酶(ALP)", "请输入碱性磷酸酶(ALP)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syalp", text1, tvRight, help);
-                });
+                showEditDialog("syalp", "碱性磷酸酶(ALP)", "请输入碱性磷酸酶(ALP)", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "碱性磷酸酶(ALP)", "请输入碱性磷酸酶(ALP)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syalp", text1, tvRight, help);
+                //                });
                 break;
             case "尿常规(尿蛋白)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿常规(尿蛋白)", "请输入尿常规(尿蛋白)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syncg", text1, tvRight, help);
-                });
+                showEditDialog("syncg", "尿常规(尿蛋白)", "请输入尿常规(尿蛋白)", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿常规(尿蛋白)", "请输入尿常规(尿蛋白)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syncg", text1, tvRight, help);
+                //                });
                 break;
             case "24小时尿白蛋白(24hUAE)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "24小时尿白蛋白(24hUAE)", "请输入24小时尿白蛋白(24hUAE)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syhuae", text1, tvRight, help);
-                });
+                showEditDialog("syhuae", "24小时尿白蛋白(24hUAE)", "请输入24小时尿白蛋白(24hUAE)", tvRight, help);
+                //
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "24小时尿白蛋白(24hUAE)", "请输入24小时尿白蛋白(24hUAE)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syhuae", text1, tvRight, help);
+                //                });
                 break;
             case "尿白蛋白/肌酐(ACR)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿白蛋白/肌酐(ACR)", "请输入尿白蛋白/肌酐(ACR)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syacr", text1, tvRight, help);
-                });
+                showEditDialog("syacr", "尿白蛋白/肌酐(ACR)", "请输入尿白蛋白/肌酐(ACR)", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿白蛋白/肌酐(ACR)", "请输入尿白蛋白/肌酐(ACR)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syacr", text1, tvRight, help);
+                //                });
                 break;
             case "尿白蛋白(UAE)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿白蛋白(UAE)", "请输入尿白蛋白(UAE)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("syuae", text1, tvRight, help);
-                });
+                showEditDialog("syuae", "尿白蛋白(UAE)", "请输入尿白蛋白(UAE)", tvRight, help);
+                //
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿白蛋白(UAE)", "请输入尿白蛋白(UAE)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("syuae", text1, tvRight, help);
+                //                });
                 break;
             case "尿素氮(BUN)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿素氮(BUN)", "请输入尿素氮(BUN)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("synsd", text1, tvRight, help);
-                });
+                showEditDialog("synsd", "尿素氮(BUN)", "请输入尿素氮(BUN)", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "尿素氮(BUN)", "请输入尿素氮(BUN)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("synsd", text1, tvRight, help);
+                //                });
                 break;
             case "内生肌酐清除率(Ccr)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    toDoSaveGlucose("synsjg", text1, tvRight, help);
-                });
+                showEditDialog("synsjg", "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    toDoSaveGlucose("synsjg", text1, tvRight, help);
+                //                });
                 break;
             case "血清肌酐(SRC)":
-                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "血清肌酐(SRC)", "请输入血清肌酐(SRC)", text1 -> {
-                    //tvRight.setText(text1);
-                    //                    resetValue(help, tvRight, text1);
-                    if (1 == sexInt) {
-                        //男性
-                        toDoSaveGlucose("syxqjg", text1, tvRight, help);
-                    } else {
-                        //女性
-                        toDoSaveGlucose("syxqjgg", text1, tvRight, help);
-                    }
-                });
+                showEditDialog("choose", "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", tvRight, help);
+
+                //                DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "血清肌酐(SRC)", "请输入血清肌酐(SRC)", text1 -> {
+                //                    //tvRight.setText(text1);
+                //                    //                    resetValue(help, tvRight, text1);
+                //                    if (1 == sexInt) {
+                //                        //男性
+                //                        toDoSaveGlucose("syxqjg", text1, tvRight, help);
+                //                    } else {
+                //                        //女性
+                //                        toDoSaveGlucose("syxqjgg", text1, tvRight, help);
+                //                    }
+                //                });
                 break;
             //第五部分
             ///////////////////////////////////////////
@@ -1532,6 +1624,175 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
         }
     }
 
+
+
+
+    /**
+     * 显示编辑框
+     */
+    private void showEditDialog(String filedName, String title, String hint, TextView tvRight, BaseViewHolder help) {
+
+        Dialog dialog = new Dialog(getPageContext(), R.style.Dialog_Base);
+        View view = View.inflate(getPageContext(), R.layout.input_user_info_dialog, null);
+        TextView titleTextView = view.findViewById(R.id.tv_dialog_title);
+        EditText msgEditText = view.findViewById(R.id.tv_dialog_msg);
+        TextView cancelTextView = view.findViewById(R.id.tv_dialog_cancel);
+        TextView sureTextView = view.findViewById(R.id.tv_dialog_sure);
+        msgEditText.setFocusable(true);//设置输入框可聚集
+        msgEditText.setFocusableInTouchMode(true);//设置触摸聚焦
+        msgEditText.requestFocus();//请求焦点
+        //        msgEditText.findFocus();//获取焦点
+        titleTextView.setText(title);
+        msgEditText.setHint(hint);
+        //        msgEditText.setText(msg);
+        //  msgEditText.setSelection(msg.length());
+        //设置14个字长
+        //        msgEditText.setMaxWidth(14);
+        dialog.setContentView(view);
+        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
+        attributes.width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 60);
+        attributes.height = ScreenUtils.dip2px(getPageContext(), 200);
+        dialog.getWindow().setAttributes(attributes);
+        cancelTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        });
+        sureTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                String content = msgEditText.getText().toString().trim();
+                if (TextUtils.isEmpty(content)) {
+                    ToastUtils.showShort(hint);
+                    return;
+                }
+                switch (filedName) {
+                    //身高
+                    case "height":
+                        toDoSave(filedName, content, tvRight, help);
+                        SPStaticUtils.put("height", content);
+                        resetBmi(help);
+                        break;
+                    //体重
+                    case "weight":
+                        toDoSave(filedName, content, tvRight, help);
+                        resetBmi(help);
+                        SPStaticUtils.put("weight", content);
+                        break;
+                    //腰围
+                    case "waistline":
+                        toDoSave(filedName, content, tvRight, help);
+                        resetThr();
+                        SPStaticUtils.put("waistline", content);
+                        break;
+                    //臀围
+                    case "hipline":
+                        toDoSave(filedName, content, tvRight, help);
+                        resetThr();
+                        SPStaticUtils.put("hipline", content);
+                        break;
+
+                    case "nickname":
+                    case "petname":
+                    case "address":
+                        //身份证号
+                    case "idcard":
+                        //就诊卡号
+                    case "jzkahao":
+                        //收缩压
+                    case "systolic":
+                        //舒张压
+                    case "diastolic":
+                        //静息心率
+                    case "heartrate":
+                        toDoSave(filedName, content, tvRight, help);
+                        break;
+                    //以下是第三部分
+                    //OGTT2h血糖
+                    case "xtogtt2h":
+                        //H b A 1 c
+                    case "xthbalc":
+                        //随机血糖
+                    case "xtsuiji":
+                        //空腹血糖
+                    case "xtkongfu":
+                        //餐后2h血糖
+                    case "xtcaihou":
+                        //夜间血糖
+                    case "xtyejian":
+                        //睡前血糖
+                    case "xtshuiqian":
+                        //总胆固醇
+                    case "sytc":
+                        //甘油三酯
+                    case "sytg":
+                        //低密度脂蛋白
+                    case "syldl":
+                        //谷丙转氨酶(ALT)
+                    case "syalt":
+                        //谷草转氨酶(AST)
+                    case "syast":
+                        //总胆红素(T-BIL)
+                    case "sytbil":
+                        //高密度脂蛋白(HDL-C)
+                    case "syhdl":
+                        //碱性磷酸酶(ALP)
+                    case "syalp":
+                        //尿常规(尿蛋白)
+                    case "syncg":
+                        //24小时尿白蛋白(24hUAE)
+                    case "syhuae":
+                        //尿白蛋白/肌酐(ACR)
+                    case "syacr":
+                        //尿白蛋白(UAE)
+                    case "syuae":
+                        //尿素氮(BUN)
+                    case "synsd":
+                        //内生肌酐清除率(Ccr)
+
+                    case "synsjg":
+                        toDoSaveGlucose(filedName, content, tvRight, help);
+                        break;
+                    case "choose":
+                        //血清肌酐(SRC)
+                        if (1 == sexInt) {
+                            //男性
+                            toDoSaveGlucose("syxqjg", content, tvRight, help);
+                        } else {
+                            //女性
+                            toDoSaveGlucose("syxqjgg", content, tvRight, help);
+                        }
+                        break;
+                    default:
+
+                        break;
+                }
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showInputMethod();
+            }
+        }, 100);
+
+    }
+
+    private void showInputMethod() {
+        //自动弹出键盘
+        InputMethodManager inputManager = (InputMethodManager) getPageContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        //强制隐藏Android输入法窗口
+        // inputManager.hideSoftInputFromWindow(edit.getWindowToken(),0);
+    }
 
     /**
      * 展示城市选择器
@@ -1846,8 +2107,9 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                             case "synsd":
                                 //内生肌酐清除率(Ccr)
                             case "synsjg":
-                                //血清肌酐(SRC)
+                                //血清肌酐(SRC) 分男性和女性
                             case "syxqjg":
+                            case "syxqjgg":
                                 resetValue(help, textView, fieldValue);
                                 break;
                             //近期经常发生低血糖

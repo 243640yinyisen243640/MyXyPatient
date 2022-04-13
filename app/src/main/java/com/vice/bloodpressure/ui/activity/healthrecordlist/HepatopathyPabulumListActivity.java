@@ -26,6 +26,7 @@ import com.vice.bloodpressure.adapter.HepatopathyPabulumListAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
 import com.vice.bloodpressure.bean.HepatopathyPabulumListBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.HepatopathyPabulumAddActivity;
@@ -202,7 +203,7 @@ public class HepatopathyPabulumListActivity extends BaseHandlerEventBusActivity 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_begin_time:
-                PickerUtils.showTime(HepatopathyPabulumListActivity.this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(HepatopathyPabulumListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         pageIndex = 1;
@@ -214,11 +215,24 @@ public class HepatopathyPabulumListActivity extends BaseHandlerEventBusActivity 
                         beginTime = tvBeginTime.getText().toString().trim();
                         getData(beginTime, endTime);
                     }
-
                 });
+//                PickerUtils.showTime(HepatopathyPabulumListActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        pageIndex = 1;
+//                        tvBeginTime.setText(content);
+//                        endTime = tvEndTime.getText().toString().trim();
+//                        if ("选择结束时间".equals(endTime)) {
+//                            endTime = "";
+//                        }
+//                        beginTime = tvBeginTime.getText().toString().trim();
+//                        getData(beginTime, endTime);
+//                    }
+//
+//                });
                 break;
             case R.id.rl_end_time:
-                PickerUtils.showTime(HepatopathyPabulumListActivity.this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(HepatopathyPabulumListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         pageIndex = 1;
@@ -230,8 +244,21 @@ public class HepatopathyPabulumListActivity extends BaseHandlerEventBusActivity 
                         endTime = tvEndTime.getText().toString().trim();
                         getData(beginTime, endTime);
                     }
-
                 });
+//                PickerUtils.showTime(HepatopathyPabulumListActivity.this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        pageIndex = 1;
+//                        tvEndTime.setText(content);
+//                        beginTime = tvBeginTime.getText().toString().trim();
+//                        if ("选择开始时间".equals(beginTime)) {
+//                            beginTime = "";
+//                        }
+//                        endTime = tvEndTime.getText().toString().trim();
+//                        getData(beginTime, endTime);
+//                    }
+//
+//                });
                 break;
             case R.id.btn_add_record:
                 startActivity(new Intent(this, HepatopathyPabulumAddActivity.class));

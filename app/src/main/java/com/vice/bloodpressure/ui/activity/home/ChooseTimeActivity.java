@@ -13,17 +13,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.ColorUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.constant.DataFormatManager;
-import com.vice.bloodpressure.utils.DataUtils;
+import com.vice.bloodpressure.utils.PickerUtils;
 import com.vice.bloodpressure.utils.ScreenUtils;
-
-import java.util.Calendar;
 
 /**
  * 类描述：
@@ -81,7 +76,17 @@ public class ChooseTimeActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.timeLin:
-                showTimeWindow();
+                PickerUtils.showTimeWindow(ChooseTimeActivity.this, new boolean[]{false, false, false, true, true, false}, DataFormatManager.TIME_FORMAT_H_M, new PickerUtils.TimePickerCallBack() {
+                    @Override
+                    public void execEvent(String content) {
+                        tvTime.setText(content);
+                        if (!TextUtils.isEmpty(etBlood.getText().toString().trim())) {
+                            btnSave.setBackgroundColor(ColorUtils.getColor(R.color.main_home));
+                        }
+                    }
+                });
+
+
                 break;
             case R.id.dialog_saveButton:
 
@@ -93,25 +98,6 @@ public class ChooseTimeActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void showTimeWindow() {
-        Calendar currentDate = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
-        int currentYear = currentDate.get(Calendar.YEAR);
-        startDate.set(currentYear - 120, 0, 1, 0, 0);
-        TimePickerView timePickerView = new TimePickerBuilder(getPageContext(), (date, v) -> {
-            String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_H_M);
-            tvTime.setText(content);
-            if (!TextUtils.isEmpty(etBlood.getText().toString().trim())) {
-                btnSave.setBackgroundColor(ColorUtils.getColor(R.color.main_home));
-            }
-        }).setDate(currentDate).setRangDate(startDate, endDate)
-                .setType(new boolean[]{false, false, false, true, true, false})
-                .setSubmitColor(ContextCompat.getColor(getPageContext(), R.color.blue))
-                .setCancelColor(ContextCompat.getColor(getPageContext(), R.color.black_text))
-                .build();
-        timePickerView.show();
-    }
 
 
 }

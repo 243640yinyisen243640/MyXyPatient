@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
@@ -128,7 +127,7 @@ public class CityPickerView implements CanShow, OnWheelChangedListener {
         mTvCancel = (TextView) popview.findViewById(R.id.tv_cancel);
 
         popwindow = new PopupWindow(popview, LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+                utils.dip2px(context,270));
         popwindow.setAnimationStyle(R.style.AnimBottom);
         popwindow.setBackgroundDrawable(new ColorDrawable());
         popwindow.setTouchable(true);

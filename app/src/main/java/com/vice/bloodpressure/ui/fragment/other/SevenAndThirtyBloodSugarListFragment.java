@@ -22,6 +22,7 @@ import com.vice.bloodpressure.base.fragment.BaseEventBusFragment;
 import com.vice.bloodpressure.bean.SevenAndThirtyBloodSugarListBean;
 import com.vice.bloodpressure.bean.SugarSearchBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.imp.AdapterClickImp;
 import com.vice.bloodpressure.imp.AdapterClickSearchImp;
 import com.vice.bloodpressure.net.Service;
@@ -180,7 +181,7 @@ public class SevenAndThirtyBloodSugarListFragment extends BaseEventBusFragment i
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_time_start://选择开始时间
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvTimeStart.setText(content);
@@ -192,9 +193,22 @@ public class SevenAndThirtyBloodSugarListFragment extends BaseEventBusFragment i
                         getSugarSearch(beginTime, endTime);
                     }
                 });
+
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvTimeStart.setText(content);
+//                        endTime = tvTimeEnd.getText().toString().trim();
+//                        if ("请选择结束时间".equals(endTime)) {
+//                            endTime = "";
+//                        }
+//                        beginTime = tvTimeStart.getText().toString().trim();
+//                        getSugarSearch(beginTime, endTime);
+//                    }
+//                });
                 break;
             case R.id.tv_time_end://选择结束时间
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvTimeEnd.setText(content);
@@ -206,6 +220,18 @@ public class SevenAndThirtyBloodSugarListFragment extends BaseEventBusFragment i
                         getSugarSearch(beginTime, endTime);
                     }
                 });
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvTimeEnd.setText(content);
+//                        beginTime = tvTimeStart.getText().toString().trim();
+//                        if ("请选择开始时间".equals(beginTime)) {
+//                            beginTime = "";
+//                        }
+//                        endTime = tvTimeEnd.getText().toString().trim();
+//                        getSugarSearch(beginTime, endTime);
+//                    }
+//                });
                 break;
             case R.id.tv_add://选择结束时间
                 startActivity(new Intent(getPageContext(), BloodSugarAddActivity.class));

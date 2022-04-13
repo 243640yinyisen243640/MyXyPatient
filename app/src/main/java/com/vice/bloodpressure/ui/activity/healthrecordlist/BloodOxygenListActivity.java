@@ -24,6 +24,7 @@ import com.vice.bloodpressure.adapter.BloodOxygenListAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerEventBusActivity;
 import com.vice.bloodpressure.bean.BloodOxygenListBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.BloodOxygenAddActivity;
@@ -113,7 +114,8 @@ public class BloodOxygenListActivity extends BaseHandlerEventBusActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_begin_time:
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+
+                PickerUtils.showTimeWindow(BloodOxygenListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvBeginTime.setText(content);
@@ -124,11 +126,23 @@ public class BloodOxygenListActivity extends BaseHandlerEventBusActivity {
                         bTime = tvBeginTime.getText().toString().trim();
                         getData(bTime, eTime);
                     }
-
                 });
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvBeginTime.setText(content);
+//                        eTime = tvEndTime.getText().toString().trim();
+//                        if ("选择结束时间".equals(eTime)) {
+//                            eTime = "";
+//                        }
+//                        bTime = tvBeginTime.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//
+//                });
                 break;
             case R.id.tv_end_time:
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(BloodOxygenListActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvEndTime.setText(content);
@@ -140,6 +154,19 @@ public class BloodOxygenListActivity extends BaseHandlerEventBusActivity {
                         getData(bTime, eTime);
                     }
                 });
+
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvEndTime.setText(content);
+//                        bTime = tvBeginTime.getText().toString().trim();
+//                        if ("选择开始时间".equals(bTime)) {
+//                            bTime = "";
+//                        }
+//                        eTime = tvEndTime.getText().toString().trim();
+//                        getData(bTime, eTime);
+//                    }
+//                });
                 break;
             case R.id.btn_add_record:
                 Intent intent = new Intent(getPageContext(), BloodOxygenAddActivity.class);

@@ -7,10 +7,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
@@ -23,10 +19,9 @@ import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.vice.bloodpressure.utils.DataUtils;
+import com.vice.bloodpressure.utils.PickerUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -80,7 +75,12 @@ public class HemoglobinAddActivity extends BaseActivity implements View.OnClickL
                 //                        tvHemoglobinTime.setText(content);
                 //                    }
                 //                });
-                showTimeWindow();
+                PickerUtils.showTimeWindow(HemoglobinAddActivity.this, new boolean[]{true, true, true, true, true, false}, DataFormatManager.TIME_FORMAT_Y_M_D_H_M, new PickerUtils.TimePickerCallBack() {
+                    @Override
+                    public void execEvent(String content) {
+                        tvHemoglobinTime.setText(content);
+                    }
+                });
                 break;
             case R.id.tv_more:
                 saveData();
@@ -88,22 +88,6 @@ public class HemoglobinAddActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private void showTimeWindow() {
-        Calendar currentDate = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
-        int currentYear = currentDate.get(Calendar.YEAR);
-        startDate.set(currentYear - 120, 0, 1, 0, 0);
-        TimePickerView timePickerView = new TimePickerBuilder(getPageContext(), (date, v) -> {
-            String content = DataUtils.convertDateToString(date, DataFormatManager.TIME_FORMAT_Y_M_D_H_M);
-            tvHemoglobinTime.setText(content);
-        }).setDate(currentDate).setRangDate(startDate, endDate)
-                .setType(new boolean[]{true, true, true, true, true, false})
-                .setSubmitColor(ContextCompat.getColor(getPageContext(), R.color.blue))
-                .setCancelColor(ContextCompat.getColor(getPageContext(), R.color.black_text))
-                .build();
-        timePickerView.show();
-    }
 
 
     /**

@@ -17,22 +17,23 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPStaticUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.google.gson.Gson;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.EducationFiveAdapter;
 import com.vice.bloodpressure.adapter.NonDrugSportMultiAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.bean.NonDrugSportMultiBean;
 import com.vice.bloodpressure.bean.nondrug.FoodFirstBean;
 import com.vice.bloodpressure.bean.nondrug.NonDrugResultBean;
 import com.vice.bloodpressure.bean.nondrug.SportBean;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.imp.OnItemClickListener;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.MainActivity;
 import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.utils.TimeFormatUtils;
 
 import java.util.ArrayList;
@@ -1025,7 +1026,7 @@ public class NonDrug_04_05_EducationAndComplicationPrescriptionActivity extends 
     }
 
     private void showTimePicker(String type) {
-        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+        PickerUtils.showTimeWindow(NonDrug_04_05_EducationAndComplicationPrescriptionActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
             @Override
             public void execEvent(String content) {
                 switch (type) {
@@ -1044,9 +1045,35 @@ public class NonDrug_04_05_EducationAndComplicationPrescriptionActivity extends 
                     case "3":
                         tvBloodTime.setText(content);
                         break;
+                    default:
+                        break;
                 }
             }
         });
+
+
+        //        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+        //            @Override
+        //            public void execEvent(String content) {
+        //                switch (type) {
+        //                    case "-1":
+        //                        tvSugarTime.setText(content);
+        //                        break;
+        //                    case "0":
+        //                        tvRetinaTime.setText(content);
+        //                        break;
+        //                    case "1":
+        //                        tvNerveTime.setText(content);
+        //                        break;
+        //                    case "2":
+        //                        tvLegsTime.setText(content);
+        //                        break;
+        //                    case "3":
+        //                        tvBloodTime.setText(content);
+        //                        break;
+        //                }
+        //            }
+        //        });
     }
 
     @Override

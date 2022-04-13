@@ -12,15 +12,16 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.bean.PersonalRecordBeanFroNonDrug;
 import com.vice.bloodpressure.bean.nondrug.FoodFirstBean;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.PickerUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -286,12 +287,18 @@ public class FoodPrescriptionFirstActivity extends BaseHandlerActivity {
             //糖尿病肾病 时间
             case R.id.rl_diabetic_nephropathy_time:
             case R.id.tv_diabetic_nephropathy_time:
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(FoodPrescriptionFirstActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvDiabeticNephropathyTime.setText(content);
                     }
                 });
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvDiabeticNephropathyTime.setText(content);
+//                    }
+//                });
                 break;
             //近三天血糖是否偏高
             case R.id.rl_recent_three_days:

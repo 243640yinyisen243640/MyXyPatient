@@ -26,14 +26,15 @@ import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.GifSizeFilter;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
-import com.lyd.baselib.bean.LoginBean;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.lyd.baselib.utils.GifSizeFilter;
 import com.vice.bloodpressure.utils.PickerUtils;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -213,12 +214,18 @@ public class MakeActivity extends BaseHandlerActivity implements AdapterView.OnI
                 sendHandlerMessage(msg);
                 break;
             case R.id.tv_make_hos_time:
-                PickerUtils.showTime(this, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(MakeActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvTime.setText(content);
                     }
                 });
+//                PickerUtils.showTime(this, new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvTime.setText(content);
+//                    }
+//                });
                 break;
             case R.id.iv_make_hos_one:
                 mPosition = 0;

@@ -17,6 +17,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.WeightListAdapter;
 import com.vice.bloodpressure.base.fragment.BaseFragment;
 import com.vice.bloodpressure.bean.WeightListBean;
+import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordadd.WeightAddActivity;
@@ -214,7 +215,7 @@ public class WeightListFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_begin_time:
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvBeginTime.setText(content);
@@ -225,11 +226,24 @@ public class WeightListFragment extends BaseFragment {
                         beginTime = tvBeginTime.getText().toString().trim();
                         getWeightList(beginTime, endTime);
                     }
-
                 });
+
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvBeginTime.setText(content);
+//                        endTime = tvEndTime.getText().toString().trim();
+//                        if ("选择结束时间".equals(endTime)) {
+//                            endTime = "";
+//                        }
+//                        beginTime = tvBeginTime.getText().toString().trim();
+//                        getWeightList(beginTime, endTime);
+//                    }
+//
+//                });
                 break;
             case R.id.tv_end_time:
-                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvEndTime.setText(content);
@@ -241,6 +255,19 @@ public class WeightListFragment extends BaseFragment {
                         getWeightList(beginTime, endTime);
                     }
                 });
+
+//                PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+//                    @Override
+//                    public void execEvent(String content) {
+//                        tvEndTime.setText(content);
+//                        beginTime = tvBeginTime.getText().toString().trim();
+//                        if ("选择开始时间".equals(beginTime)) {
+//                            beginTime = "";
+//                        }
+//                        endTime = tvEndTime.getText().toString().trim();
+//                        getWeightList(beginTime, endTime);
+//                    }
+//                });
                 break;
             case R.id.btn_add_record:
                 startActivity(new Intent(getPageContext(), WeightAddActivity.class));
