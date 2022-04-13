@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -174,22 +175,22 @@ public class MeActivity extends BaseHandlerActivity {
         PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
             @Override
             public void execEvent(String content) {
-                tvBirthday.setText(content);
+                //                tvBirthday.setText(content);
                 long birthdayTime = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
                 long timeS = birthdayTime / 1000;
-                toSave("birthtime", timeS + "");
+                toSave("birthtime", timeS + "", content);
             }
         });
 
-//        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
-//            @Override
-//            public void execEvent(String content) {
-//                tvBirthday.setText(content);
-//                long birthdayTime = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
-//                long timeS = birthdayTime / 1000;
-//                toSave("birthtime", timeS + "");
-//            }
-//        });
+        //        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+        //            @Override
+        //            public void execEvent(String content) {
+        //                tvBirthday.setText(content);
+        //                long birthdayTime = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+        //                long timeS = birthdayTime / 1000;
+        //                toSave("birthtime", timeS + "");
+        //            }
+        //        });
     }
 
     private void toUpdateSex() {
@@ -199,11 +200,11 @@ public class MeActivity extends BaseHandlerActivity {
         PickerUtils.showOption(getPageContext(), new PickerUtils.TimePickerCallBack() {
             @Override
             public void execEvent(String content) {
-                tvSex.setText(content);
+                //                tvSex.setText(content);
                 if ("男".equals(content)) {
-                    toSave("sex", "1");
+                    toSave("sex", "1", "");
                 } else {
-                    toSave("sex", "2");
+                    toSave("sex", "2", "");
                 }
             }
         }, sexList);
@@ -237,6 +238,7 @@ public class MeActivity extends BaseHandlerActivity {
         //        msgEditText.findFocus();//获取焦点
         titleTextView.setText("昵称");
         msgEditText.setHint("请输入昵称");
+
         //        msgEditText.setText(msg);
         //  msgEditText.setSelection(msg.length());
         //设置14个字长
@@ -260,8 +262,13 @@ public class MeActivity extends BaseHandlerActivity {
                 // TODO Auto-generated method stub
 
                 String content = msgEditText.getText().toString().trim();
+                if (TextUtils.isEmpty(content)) {
+                    ToastUtils.showShort("请输入昵称");
+                }else {
+                    toSave("petname", content, "");
+                }
 
-                toSave("petname", content);
+
 
                 dialog.dismiss();
             }
@@ -328,13 +335,37 @@ public class MeActivity extends BaseHandlerActivity {
      * @param fieldName
      * @param fieldValue
      */
-    private void toSave(String fieldName, String fieldValue) {
+    private void toSave(String fieldName, String fieldValue, String content) {
         Map<String, Object> map = new HashMap<>();
         map.put("fieldname", fieldName);
         map.put("fieldvalue", fieldValue);
         XyUrl.okPostSave(XyUrl.PERSONAL_SAVE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String msg) {
+                MeActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (fieldName) {
+                            case "petname":
+                                tvName.setText(fieldValue);
+                                break;
+                            case "sex":
+                                if ("1".equals(fieldValue)) {
+                                    tvSex.setText("男");
+                                } else {
+                                    tvSex.setText("女");
+                                }
+                                break;
+                            case "birthtime":
+                                tvBirthday.setText(content);
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                    }
+                });
 
                 ToastUtils.showShort(msg);
             }
@@ -392,6 +423,8 @@ public class MeActivity extends BaseHandlerActivity {
                     String url = cropImageUri.getPath();
                     uploadPhoto(url);
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -432,7 +465,7 @@ public class MeActivity extends BaseHandlerActivity {
                 }
                 String birthday = TimeUtils.millis2String(user.getBirthtime() * 1000L, TimeFormatUtils.getDefaultFormat());
                 tvBirthday.setText(birthday);
-                tvName.setText(user.getNickname());
+                tvName.setText(user.getPetname());
                 break;
             case CHANGE_IMG_HEAD:
                 String headUrl = (String) msg.obj;
