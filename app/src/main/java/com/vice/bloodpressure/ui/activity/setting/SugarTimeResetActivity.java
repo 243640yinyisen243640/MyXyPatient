@@ -164,7 +164,6 @@ public class SugarTimeResetActivity extends BaseHandlerActivity implements CallB
         switch (view.getId()) {
             //空腹
             case R.id.tv_one_left:
-                //                selectTime1(3, 6);
                 selectTime(0, BeginEndTimePickerUtils.HOUR_THREE, 0, BeginEndTimePickerUtils.HOUR_SEVEN, 0);
                 break;
             case R.id.tv_one_right:
