@@ -18,6 +18,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.vice.bloodpressure.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -200,6 +201,55 @@ public class PickerUtils {
         //        timePickerView.getDialog().getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         timePickerView.show();
 
+    }
+
+    /**
+     * 显示时分
+     *
+     * @param context
+     * @param startHour
+     * @param endHour
+     * @param callBack
+     */
+    public static void onTimePicker(Context context, int startHour, int endHour, PickerUtils.TimePickerCallBack1 callBack) {
+        if (0 <= startHour && startHour < 24 && 0 <= endHour && endHour < 24 && startHour <= endHour) {
+            List<String> optionsItem1 = new ArrayList<>();
+            List<List<String>> optionsItem2 = new ArrayList<>();
+            for (int i = startHour; i < endHour + 1; i++) {
+                if (i < 10) {
+                    optionsItem1.add("0" + i);
+                } else {
+                    optionsItem1.add("" + i);
+                }
+                List<String> item2 = new ArrayList<>();
+                for (int j = 0; j < 60; j++) {
+                    if (j < 10) {
+                        item2.add("0" + j);
+                    } else {
+                        item2.add("" + j);
+                    }
+                }
+                optionsItem2.add(item2);
+            }
+            OptionsPickerView optionsPickerView = new OptionsPickerBuilder(context, (options1, options2, options3, v) -> {
+                String hour = optionsItem1.get(options1);
+                //                String result = optionsItem1.get(options1) + "时" + optionsItem2.get(options1).get(options2) + "分";
+                String min = optionsItem2.get(options1).get(options2);
+                callBack.execEvent(hour, min);
+            })
+                    .setCancelText("取消")
+                    .setSubmitText("确定")
+                    //                .setCancelColor(ContextCompat.getColor(context, R.color.begin_end_time))
+                    //                .setSubmitColor(ContextCompat.getColor(context, R.color.begin_end_time))
+                    .setLabels("时", "分", "")
+                    .build();
+            optionsPickerView.setPicker(optionsItem1, optionsItem2);
+            optionsPickerView.show();
+        }
+    }
+
+    public interface TimePickerCallBack1 {
+        void execEvent(String hour, String minute);
     }
 
     public interface TimePickerCallBack {

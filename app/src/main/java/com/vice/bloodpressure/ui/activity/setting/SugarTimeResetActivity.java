@@ -13,6 +13,7 @@ import com.vice.bloodpressure.bean.ScopeBean;
 import com.vice.bloodpressure.imp.CallBackTime;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
+import com.vice.bloodpressure.utils.PickerUtils;
 import com.vice.bloodpressure.utils.time.BeginEndTimePickerUtils;
 
 import java.text.DateFormat;
@@ -228,93 +229,93 @@ public class SugarTimeResetActivity extends BaseHandlerActivity implements CallB
      * 设置可选时间
      */
     private void selectTime(int tag, int beginHour, int beginMinute, int endHour, int endMinute) {
-//        BeginEndTimePickerUtils.onTimePicker(this, beginHour, endHour, (hour, minute) -> {
-//
-//            //设置当前点击的时间
-//            String selectTime = hour + ":" + minute;
-//            Date selectTimeParse = getDateFromString(selectTime);
-//            switch (tag) {
-//                //空腹
-//                case 0:
-//                    //设置当前点击的时间
-//                    listSugar.get(tag).setText(selectTime);
-//                    //设置联动时间
-//                    listSugar.get(15).setText(minusOneMinute(selectTime));
-//                    break;
-//                case 1:
-//                    setTime(tag, selectTime, "空腹", "");
-//                    break;
-//                //早餐后
-//                case 2:
-//                    setTime(tag, selectTime, "早餐后", "空腹");
-//                    break;
-//                case 3:
-//                    setTime(tag, selectTime, "早餐后", "");
-//                    break;
-//                //午餐前
-//                case 4:
-//                    setTime(tag, selectTime, "午餐前", "早餐后");
-//                    break;
-//                case 5:
-//                    setTime(tag, selectTime, "午餐前", "");
-//                    break;
-//                //午餐后
-//                case 6:
-//                    setTime(tag, selectTime, "午餐后", "午餐前");
-//                    break;
-//                case 7:
-//                    setTime(tag, selectTime, "午餐后", "");
-//                    break;
-//                //晚餐前
-//                case 8:
-//                    setTime(tag, selectTime, "晚餐前", "午餐后");
-//                    break;
-//                case 9:
-//                    setTime(tag, selectTime, "晚餐前", "");
-//                    break;
-//                //晚餐后
-//                case 10:
-//                    setTime(tag, selectTime, "晚餐后", "晚餐前");
-//                    break;
-//                case 11:
-//                    setTime(tag, selectTime, "晚餐后", "");
-//                    break;
-//                //睡前
-//                case 12:
-//                    setTime(tag, selectTime, "睡前", "晚餐后");
-//                    break;
-//                //睡前 结束时间
-//                case 13:
-//                    if (("22".equals(hour)) || ("23".equals(hour))) {
-//                        setTime(tag, selectTime, "睡前", "");
-//                    } else if (("00".equals(hour)) || ("01".equals(hour)) || ("02".equals(hour))) {
-//                        listSugar.get(tag).setText(selectTime);
-//                        listSugar.get(tag + 1).setText(addOneMinute(selectTime));
-//                    } else {
-//                        ToastUtils.showShort("请选择22点至次日2点之间的时间");
-//                    }
-//                    break;
-//                //凌晨 开始时间
-//                case 14:
-//                    if (("22".equals(hour)) || ("23".equals(hour))) {
-//                        setTime(tag, selectTime, "凌晨", "睡前");
-//                    } else if (("00".equals(hour)) || ("01".equals(hour)) || ("02".equals(hour))) {
-//                        listSugar.get(tag).setText(selectTime);
-//                        listSugar.get(tag - 1).setText(minusOneMinute(selectTime));
-//                    } else {
-//                        ToastUtils.showShort("请选择22点至次日2点之间的时间");
-//                    }
-//                    break;
-//                case 15:
-//                    //设置当前点击的时间
-//                    listSugar.get(tag).setText(selectTime);
-//                    //设置联动时间
-//                    listSugar.get(0).setText(addOneMinute(selectTime));
-//                    break;
-//                default:
-//                    break;
-//            }
-//        });
+        PickerUtils.onTimePicker(this, beginHour, endHour, (hour, minute) -> {
+
+            //设置当前点击的时间
+            String selectTime = hour + ":" + minute;
+            Date selectTimeParse = getDateFromString(selectTime);
+            switch (tag) {
+                //空腹
+                case 0:
+                    //设置当前点击的时间
+                    listSugar.get(tag).setText(selectTime);
+                    //设置联动时间
+                    listSugar.get(15).setText(minusOneMinute(selectTime));
+                    break;
+                case 1:
+                    setTime(tag, selectTime, "空腹", "");
+                    break;
+                //早餐后
+                case 2:
+                    setTime(tag, selectTime, "早餐后", "空腹");
+                    break;
+                case 3:
+                    setTime(tag, selectTime, "早餐后", "");
+                    break;
+                //午餐前
+                case 4:
+                    setTime(tag, selectTime, "午餐前", "早餐后");
+                    break;
+                case 5:
+                    setTime(tag, selectTime, "午餐前", "");
+                    break;
+                //午餐后
+                case 6:
+                    setTime(tag, selectTime, "午餐后", "午餐前");
+                    break;
+                case 7:
+                    setTime(tag, selectTime, "午餐后", "");
+                    break;
+                //晚餐前
+                case 8:
+                    setTime(tag, selectTime, "晚餐前", "午餐后");
+                    break;
+                case 9:
+                    setTime(tag, selectTime, "晚餐前", "");
+                    break;
+                //晚餐后
+                case 10:
+                    setTime(tag, selectTime, "晚餐后", "晚餐前");
+                    break;
+                case 11:
+                    setTime(tag, selectTime, "晚餐后", "");
+                    break;
+                //睡前
+                case 12:
+                    setTime(tag, selectTime, "睡前", "晚餐后");
+                    break;
+                //睡前 结束时间
+                case 13:
+                    if (("22".equals(hour)) || ("23".equals(hour))) {
+                        setTime(tag, selectTime, "睡前", "");
+                    } else if (("00".equals(hour)) || ("01".equals(hour)) || ("02".equals(hour))) {
+                        listSugar.get(tag).setText(selectTime);
+                        listSugar.get(tag + 1).setText(addOneMinute(selectTime));
+                    } else {
+                        ToastUtils.showShort("请选择22点至次日2点之间的时间");
+                    }
+                    break;
+                //凌晨 开始时间
+                case 14:
+                    if (("22".equals(hour)) || ("23".equals(hour))) {
+                        setTime(tag, selectTime, "凌晨", "睡前");
+                    } else if (("00".equals(hour)) || ("01".equals(hour)) || ("02".equals(hour))) {
+                        listSugar.get(tag).setText(selectTime);
+                        listSugar.get(tag - 1).setText(minusOneMinute(selectTime));
+                    } else {
+                        ToastUtils.showShort("请选择22点至次日2点之间的时间");
+                    }
+                    break;
+                case 15:
+                    //设置当前点击的时间
+                    listSugar.get(tag).setText(selectTime);
+                    //设置联动时间
+                    listSugar.get(0).setText(addOneMinute(selectTime));
+                    break;
+                default:
+                    break;
+            }
+        });
 
 
 
