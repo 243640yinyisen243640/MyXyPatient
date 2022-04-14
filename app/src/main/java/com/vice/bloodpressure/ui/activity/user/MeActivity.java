@@ -1,8 +1,6 @@
 package com.vice.bloodpressure.ui.activity.user;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -10,14 +8,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.text.TextUtils;
+import android.text.InputType;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -44,8 +38,8 @@ import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.homesign.MyQRCodeActivity;
+import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
-import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.TimeFormatUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -97,6 +91,8 @@ public class MeActivity extends BaseHandlerActivity {
     TextView tvTel;
 
     private Uri cropImageUri;
+
+    private PersonalRecordBean userInfo;
 
 
     @Override
@@ -211,7 +207,7 @@ public class MeActivity extends BaseHandlerActivity {
     }
 
     private void toUpdateNickName() {
-        showEditDialog();
+        showDialog();
         //        DialogUtils.getInstance().showEditTextDialog(getPageContext(), "昵称", "请输入昵称", new DialogUtils.DialogInputCallBack() {
         //            @Override
         //            public void execEvent(String text) {
@@ -221,74 +217,13 @@ public class MeActivity extends BaseHandlerActivity {
         //        });
     }
 
-    /**
-     * 显示编辑框
-     */
-    private void showEditDialog() {
-
-        Dialog dialog = new Dialog(getPageContext(), R.style.Dialog_Base);
-        View view = View.inflate(getPageContext(), R.layout.input_user_info_dialog, null);
-        TextView titleTextView = view.findViewById(R.id.tv_dialog_title);
-        EditText msgEditText = view.findViewById(R.id.tv_dialog_msg);
-        TextView cancelTextView = view.findViewById(R.id.tv_dialog_cancel);
-        TextView sureTextView = view.findViewById(R.id.tv_dialog_sure);
-        msgEditText.setFocusable(true);//设置输入框可聚集
-        msgEditText.setFocusableInTouchMode(true);//设置触摸聚焦
-        msgEditText.requestFocus();//请求焦点
-        //        msgEditText.findFocus();//获取焦点
-        titleTextView.setText("昵称");
-        msgEditText.setHint("请输入昵称");
-
-        //        msgEditText.setText(msg);
-        //  msgEditText.setSelection(msg.length());
-        //设置14个字长
-        //        msgEditText.setMaxWidth(14);
-        dialog.setContentView(view);
-        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
-        attributes.width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 60);
-        attributes.height = ScreenUtils.dip2px(getPageContext(), 200);
-        dialog.getWindow().setAttributes(attributes);
-        cancelTextView.setOnClickListener(new View.OnClickListener() {
-
+    private void showDialog() {
+        DialogUtils.editDialog(getPageContext(), "昵称", "请输入昵称", userInfo.getPetname(), InputType.TYPE_CLASS_TEXT, 0, new DialogUtils.DialogInputCallBack() {
             @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                dialog.dismiss();
+            public void execEvent(String text) {
+                toSave("petname", text, "");
             }
         });
-        sureTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                String content = msgEditText.getText().toString().trim();
-                if (TextUtils.isEmpty(content)) {
-                    ToastUtils.showShort("请输入昵称");
-                }else {
-                    toSave("petname", content, "");
-                }
-
-
-
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showInputMethod();
-            }
-        }, 100);
-
-    }
-
-    private void showInputMethod() {
-        //自动弹出键盘
-        InputMethodManager inputManager = (InputMethodManager) getPageContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        //强制隐藏Android输入法窗口
-        // inputManager.hideSoftInputFromWindow(edit.getWindowToken(),0);
     }
 
     /**
@@ -347,7 +282,12 @@ public class MeActivity extends BaseHandlerActivity {
                     public void run() {
                         switch (fieldName) {
                             case "petname":
-                                tvName.setText(fieldValue);
+                                if (fieldValue.length() >= 9) {
+                                    tvName.setText(fieldValue.substring(0, 9) + "...");
+                                } else {
+                                    tvName.setText(fieldValue);
+                                }
+                                userInfo.setPetname(fieldValue);
                                 break;
                             case "sex":
                                 if ("1".equals(fieldValue)) {
@@ -456,16 +396,20 @@ public class MeActivity extends BaseHandlerActivity {
     public void processHandlerMsg(Message msg) {
         switch (msg.what) {
             case GET_USER_INFO:
-                PersonalRecordBean user = (PersonalRecordBean) msg.obj;
-                int sex = user.getSex();
+                userInfo = (PersonalRecordBean) msg.obj;
+                int sex = userInfo.getSex();
                 if (1 == sex) {
                     tvSex.setText("男");
                 } else {
                     tvSex.setText("女");
                 }
-                String birthday = TimeUtils.millis2String(user.getBirthtime() * 1000L, TimeFormatUtils.getDefaultFormat());
+                String birthday = TimeUtils.millis2String(userInfo.getBirthtime() * 1000L, TimeFormatUtils.getDefaultFormat());
                 tvBirthday.setText(birthday);
-                tvName.setText(user.getPetname());
+                if (userInfo.getPetname().length() >= 9) {
+                    tvName.setText(userInfo.getPetname().substring(0, 9) + "...");
+                } else {
+                    tvName.setText(userInfo.getPetname());
+                }
                 break;
             case CHANGE_IMG_HEAD:
                 String headUrl = (String) msg.obj;

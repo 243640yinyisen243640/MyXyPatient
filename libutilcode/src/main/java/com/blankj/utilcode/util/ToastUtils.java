@@ -58,6 +58,7 @@ public final class ToastUtils {
     private static final ToastUtils DEFAULT_MAKER = make();
     private static IToast iToast;
     private String mMode;
+    //    private int mGravity =  Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
     private int mGravity = -1;
     private int mXOffset = -1;
     private int mYOffset = -1;

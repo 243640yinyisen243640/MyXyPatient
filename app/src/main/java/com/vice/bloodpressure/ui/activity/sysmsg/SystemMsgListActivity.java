@@ -84,13 +84,12 @@ public class SystemMsgListActivity extends BaseHandlerActivity {
     private void rendMessage() {
         LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
         Call<String> requestCall = DataManager.readMessage(user.getToken(), (call, response) -> {
+            ToastUtils.showShort(response.msg);
             if (response.code == 200) {
                 for (int i = 0; i < list.size(); i++) {
                     list.get(i).setIsread(1);
                     adapter.notifyDataSetChanged();
                 }
-            } else {
-                ToastUtils.showShort(response.msg);
             }
         }, (call, t) -> {
             ToastUtils.showShort(getString(R.string.network_error));

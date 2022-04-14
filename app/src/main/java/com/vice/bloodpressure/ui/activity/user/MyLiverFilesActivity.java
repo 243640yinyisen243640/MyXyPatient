@@ -1,19 +1,13 @@
 package com.vice.bloodpressure.ui.activity.user;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.ArrayRes;
 
@@ -36,8 +30,8 @@ import com.vice.bloodpressure.imp.AdapterClickLiverFilesImp;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.CityPickerUtils;
+import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
-import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.TimeFormatUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.MyListView;
@@ -419,6 +413,9 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
             case R.id.ll_medicine_history:
                 toToggle(elMedicineHistory, imgMedicineHistory);
                 break;
+            default:
+                break;
+
         }
     }
 
@@ -478,10 +475,10 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetBaseInfo(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "姓名", "请输入姓名", "nickname");
+                showEditDialog(position, type, "姓名", "请输入姓名", "nickname",InputType.TYPE_CLASS_TEXT);
                 break;
             case 1:
-                showEditDialog(position, type, "民族", "请输入民族", "minzu");
+                showEditDialog(position, type, "民族", "请输入民族", "minzu",InputType.TYPE_CLASS_TEXT);
                 break;
             case 2:
                 showCityPickerView(position, type);
@@ -501,6 +498,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
             case 7:
                 showBottomDialog(position, type, "profession", R.array.liver_files_base_info_profession);
                 break;
+            default:
+                break;
         }
     }
 
@@ -513,35 +512,37 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetBodyCheck(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "身高", "请输入身高", "height");
+                showEditDialog(position, type, "身高", "请输入身高", "height",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 1:
-                showEditDialog(position, type, "体重", "请输入体重", "weight");
+                showEditDialog(position, type, "体重", "请输入体重", "weight",InputType.TYPE_CLASS_NUMBER);
                 break;
             //BMI
             case 2:
                 break;
             case 3:
-                showEditDialog(position, type, "腰围", "请输入腰围", "waistline");
+                showEditDialog(position, type, "腰围", "请输入腰围", "waistline",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 4:
-                showEditDialog(position, type, "臀围", "请输入臀围", "hipline");
+                showEditDialog(position, type, "臀围", "请输入臀围", "hipline",InputType.TYPE_CLASS_NUMBER);
                 break;
             //腰臀比
             case 5:
                 break;
             //体脂百分比
             case 6:
-                showEditDialog(position, type, "体脂百分比", "请输入体脂百分比", "tizhi");
+                showEditDialog(position, type, "体脂百分比", "请输入体脂百分比", "tizhi",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 7:
-                showEditDialog(position, type, "上臀围", "请输入上臀围", "stun");
+                showEditDialog(position, type, "上臀围", "请输入上臀围", "stun",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 8:
-                showEditDialog(position, type, "上腰肌围", "请输入上腰肌围", "syao");
+                showEditDialog(position, type, "上腰肌围", "请输入上腰肌围", "syao",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 9:
-                showEditDialog(position, type, "握力", "请输入握力", "woli");
+                showEditDialog(position, type, "握力", "请输入握力", "woli",InputType.TYPE_CLASS_NUMBER);
+                break;
+            default:
                 break;
         }
     }
@@ -556,28 +557,30 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetLabCheck(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "ALT", "请输入ALT", "alts");
+                showEditDialog(position, type, "ALT", "请输入ALT", "alts",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 1:
-                showEditDialog(position, type, "白蛋白", "请输入白蛋白", "bai");
+                showEditDialog(position, type, "白蛋白", "请输入白蛋白", "bai",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 2:
-                showEditDialog(position, type, "血糖", "请输入血糖", "xuet");
+                showEditDialog(position, type, "血糖", "请输入血糖", "xuet",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 3:
-                showEditDialog(position, type, "血红蛋白", "请输入血红蛋白", "xueh");
+                showEditDialog(position, type, "血红蛋白", "请输入血红蛋白", "xueh",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 4:
-                showEditDialog(position, type, "总胆红素", "请输入总胆红素", "zong");
+                showEditDialog(position, type, "总胆红素", "请输入总胆红素", "zong",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 5:
-                showEditDialog(position, type, "前白蛋白", "请输入前白蛋白", "qian");
+                showEditDialog(position, type, "前白蛋白", "请输入前白蛋白", "qian",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 6:
-                showEditDialog(position, type, "凝血酶原活力度", "请输入凝血酶原活力度", "ning");
+                showEditDialog(position, type, "凝血酶原活力度", "请输入凝血酶原活力度", "ning",InputType.TYPE_CLASS_NUMBER);
                 break;
             case 7:
-                showEditDialog(position, type, "血氨", "请输入血氨", "xuea");
+                showEditDialog(position, type, "血氨", "请输入血氨", "xuea",InputType.TYPE_CLASS_NUMBER);
+                break;
+            default:
                 break;
         }
     }
@@ -598,6 +601,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
                 break;
             case 2:
                 showMultiLineEditDialog(position, type, "膳食史", liverRecordThree, "textarea2");
+                break;
+            default:
                 break;
         }
     }
@@ -633,6 +638,7 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
      * @param postKey
      */
     private void showMultiLineEditDialog(int position, int type, String title, String content, String postKey) {
+
         LiverFilesInputShowUtils.showPopup(getPageContext(), title, content, new LiverFilesInputShowUtils.DialogInputCallBack() {
             @Override
             public void execEvent(String content) {
@@ -661,14 +667,14 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
         });
 
 
-//        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
-//            @Override
-//            public void execEvent(String content) {
-//                long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
-//                long timeS = timeMs / 1000;
-//                toDoSaveBottom(position, type, birthtime, timeS + "", content);
-//            }
-//        });
+        //        PickerUtils.showTime(getPageContext(), new PickerUtils.TimePickerCallBack() {
+        //            @Override
+        //            public void execEvent(String content) {
+        //                long timeMs = TimeUtils.string2Millis(content, TimeFormatUtils.getDefaultFormat());
+        //                long timeS = timeMs / 1000;
+        //                toDoSaveBottom(position, type, birthtime, timeS + "", content);
+        //            }
+        //        });
     }
 
     /**
@@ -723,65 +729,20 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     /**
      * 显示编辑框
      */
-    private void showEditDialog(int position, int type, String title, String hint, String postKey) {
+    private void showEditDialog(int position, int type, String title, String hint, String postKey,int inputType) {
 
-        Dialog dialog = new Dialog(getPageContext(), R.style.Dialog_Base);
-        View view = View.inflate(getPageContext(), R.layout.input_user_info_dialog, null);
-        TextView titleTextView = view.findViewById(R.id.tv_dialog_title);
-        EditText msgEditText = view.findViewById(R.id.tv_dialog_msg);
-        TextView cancelTextView = view.findViewById(R.id.tv_dialog_cancel);
-        TextView sureTextView = view.findViewById(R.id.tv_dialog_sure);
-        msgEditText.setFocusable(true);//设置输入框可聚集
-        msgEditText.setFocusableInTouchMode(true);//设置触摸聚焦
-        msgEditText.requestFocus();//请求焦点
-        //        msgEditText.findFocus();//获取焦点
-        titleTextView.setText(title);
-        msgEditText.setHint(hint);
-        //        msgEditText.setText(msg);
-        //  msgEditText.setSelection(msg.length());
-        //设置14个字长
-        //        msgEditText.setMaxWidth(14);
-        dialog.setContentView(view);
-        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
-        attributes.width = ScreenUtils.screenWidth(getPageContext()) - ScreenUtils.dip2px(getPageContext(), 60);
-        attributes.height = ScreenUtils.dip2px(getPageContext(), 200);
-        dialog.getWindow().setAttributes(attributes);
-        cancelTextView.setOnClickListener(new View.OnClickListener() {
 
+        DialogUtils.editDialog(getPageContext(), title, hint, "",inputType, 0, new DialogUtils.DialogInputCallBack() {
             @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                dialog.dismiss();
+            public void execEvent(String text) {
+
+
+                toDoSave(position, type, postKey, text);
+
+
             }
         });
-        sureTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
 
-                String content = msgEditText.getText().toString().trim();
-
-                toDoSave(position, type, postKey, content);
-
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showInputMethod();
-            }
-        }, 100);
-
-    }
-
-    private void showInputMethod() {
-        //自动弹出键盘
-        InputMethodManager inputManager = (InputMethodManager) getPageContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        //强制隐藏Android输入法窗口
-        // inputManager.hideSoftInputFromWindow(edit.getWindowToken(),0);
     }
 
 
@@ -871,6 +832,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
                 LiverFilesRefreshBean refreshBean = (LiverFilesRefreshBean) msg.obj;
                 toRefreshData(refreshBean);
                 break;
+            default:
+                break;
         }
     }
 
@@ -915,6 +878,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
                 break;
             case 5:
                 medicineHistory = value;
+                break;
+            default:
                 break;
         }
     }
