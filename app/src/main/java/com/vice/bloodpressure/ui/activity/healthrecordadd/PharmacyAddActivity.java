@@ -392,6 +392,8 @@ public class PharmacyAddActivity extends BaseHandlerActivity implements AdapterV
             case GET_SEARCH_NO_DATA:
                 labellid = 0;
                 break;
+            default:
+                break;
         }
     }
 }
