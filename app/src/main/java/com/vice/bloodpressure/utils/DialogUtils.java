@@ -421,7 +421,7 @@ public class DialogUtils {
         dialog.setContentView(view);
         WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
         attributes.width = ScreenUtils.screenWidth(context) - ScreenUtils.dip2px(context, 60);
-        attributes.height = ScreenUtils.dip2px(context, 200);
+        attributes.height = ScreenUtils.dip2px(context, 190);
         dialog.getWindow().setAttributes(attributes);
         dialog.show();
 

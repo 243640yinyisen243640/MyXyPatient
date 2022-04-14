@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -1665,39 +1666,78 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
      */
     private void showEdit(int timeHorizontal, int timeVertical) {
         FollowUpVisitBloodSugarAddBean bean = sevenSugarList.get(timeVertical);
-        DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "血糖",
-                "请输入血糖", text1 -> {
-                    switch (timeHorizontal) {
-                        case 0:
-                            bean.setOne(text1);
-                            break;
-                        case 1:
-                            bean.setTwo(text1);
-                            break;
-                        case 2:
-                            bean.setThree(text1);
-                            break;
-                        case 3:
-                            bean.setFour(text1);
-                            break;
-                        case 4:
-                            bean.setFive(text1);
-                            break;
-                        case 5:
-                            bean.setSix(text1);
-                            break;
-                        case 6:
-                            bean.setSeven(text1);
-                            break;
-                        case 7:
-                            bean.setEight(text1);
-                            break;
-                        default:
-                            break;
 
-                    }
-                    sugarAddAdapter.notifyDataSetChanged();
-                });
+        DialogUtils.editDialog(getPageContext(), "血糖", "请输入血糖", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+            @Override
+            public void execEvent(String text1) {
+                switch (timeHorizontal) {
+                    case 0:
+                        bean.setOne(text1);
+                        break;
+                    case 1:
+                        bean.setTwo(text1);
+                        break;
+                    case 2:
+                        bean.setThree(text1);
+                        break;
+                    case 3:
+                        bean.setFour(text1);
+                        break;
+                    case 4:
+                        bean.setFive(text1);
+                        break;
+                    case 5:
+                        bean.setSix(text1);
+                        break;
+                    case 6:
+                        bean.setSeven(text1);
+                        break;
+                    case 7:
+                        bean.setEight(text1);
+                        break;
+                    default:
+                        break;
+
+                }
+                sugarAddAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+//        DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "血糖",
+//                "请输入血糖", text1 -> {
+//                    switch (timeHorizontal) {
+//                        case 0:
+//                            bean.setOne(text1);
+//                            break;
+//                        case 1:
+//                            bean.setTwo(text1);
+//                            break;
+//                        case 2:
+//                            bean.setThree(text1);
+//                            break;
+//                        case 3:
+//                            bean.setFour(text1);
+//                            break;
+//                        case 4:
+//                            bean.setFive(text1);
+//                            break;
+//                        case 5:
+//                            bean.setSix(text1);
+//                            break;
+//                        case 6:
+//                            bean.setSeven(text1);
+//                            break;
+//                        case 7:
+//                            bean.setEight(text1);
+//                            break;
+//                        default:
+//                            break;
+//
+//                    }
+//                    sugarAddAdapter.notifyDataSetChanged();
+//                });
 
     }
 

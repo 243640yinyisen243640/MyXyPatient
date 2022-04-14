@@ -1,10 +1,12 @@
 package com.vice.bloodpressure.ui.activity.healthrecordadd;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -296,13 +298,20 @@ public class PharmacyAddActivity extends BaseHandlerActivity implements AdapterV
 
     }
 
+    private void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && getCurrentFocus() != null) {
+            if (getCurrentFocus().getWindowToken() != null) {
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
 
     @OnClick({R.id.rl_start_time, R.id.rl_end_time, R.id.ll_time})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_start_time:
-
-
+                closeKeyboard();
                 PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
@@ -317,6 +326,8 @@ public class PharmacyAddActivity extends BaseHandlerActivity implements AdapterV
                 //                                });
                 break;
             case R.id.rl_end_time:
+                closeKeyboard();
+
                 PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
@@ -331,7 +342,9 @@ public class PharmacyAddActivity extends BaseHandlerActivity implements AdapterV
                 //                                });
                 break;
             case R.id.ll_time:
-//                                PickerUtils.showTimeHm(getPageContext(), new PickerUtils.TimePickerCallBack() {
+                closeKeyboard();
+
+                //                                PickerUtils.showTimeHm(getPageContext(), new PickerUtils.TimePickerCallBack() {
                 //                                    @Override
                 //                                    public void execEvent(String content) {
                 //                                        tvTime.setText(content);
@@ -344,6 +357,8 @@ public class PharmacyAddActivity extends BaseHandlerActivity implements AdapterV
                         tvTime.setText(content);
                     }
                 });
+                break;
+            default:
                 break;
         }
     }
