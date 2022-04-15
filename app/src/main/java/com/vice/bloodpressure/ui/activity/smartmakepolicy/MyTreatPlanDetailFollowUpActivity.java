@@ -107,6 +107,8 @@ public class MyTreatPlanDetailFollowUpActivity extends BaseHandlerActivity {
                     tvDoctorAdvice.setText(data.getMessage());
                 }
                 break;
+            default:
+                break;
         }
 
     }

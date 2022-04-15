@@ -143,20 +143,25 @@ public class NonDrug_04_05_EducationAndComplicationPrescriptionActivity extends 
      *
      * @param type
      */
+    ArrayList<NonDrugSportMultiBean> list = new ArrayList<>();
     private void initRvLegs(String type) {
+        list.clear();
         String[] listString;
         if ("0".equals(type)) {
             listString = getResources().getStringArray(R.array.data_legs_have_symptom);
         } else {
             listString = getResources().getStringArray(R.array.data_legs_no_symptom);
         }
-        ArrayList<NonDrugSportMultiBean> list = new ArrayList<>();
         for (int i = 0; i < listString.length; i++) {
             list.add(new NonDrugSportMultiBean(listString[i], NonDrugSportMultiBean.Type.TypeOne));
         }
-        legsAdapter = new NonDrugSportMultiAdapter(list);
-        rvLegsCheck.setLayoutManager(new LinearLayoutManager(this));
-        rvLegsCheck.setAdapter(legsAdapter);
+        if (legsAdapter == null){
+            legsAdapter = new NonDrugSportMultiAdapter(list);
+            rvLegsCheck.setLayoutManager(new LinearLayoutManager(this));
+            rvLegsCheck.setAdapter(legsAdapter);
+        }else {
+            rvLegsCheck.notify();
+        }
         legsAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -972,6 +977,7 @@ public class NonDrug_04_05_EducationAndComplicationPrescriptionActivity extends 
     }
 
     private void showOptionThreePicker(String type) {
+        Log.i("yys","=======");
         String[] diabetesMellitusCondition = getResources().getStringArray(R.array.data_diabetes_mellitus_condition);
         PickerUtils.showOption(getPageContext(), new PickerUtils.TimePickerCallBack() {
             @Override

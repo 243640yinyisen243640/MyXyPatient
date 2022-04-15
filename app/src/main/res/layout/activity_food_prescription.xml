@@ -39,7 +39,7 @@
             android:background="@color/white"
             android:orientation="vertical">
             <!--身高-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -47,16 +47,20 @@
 
                 <TextView
                     style="@style/text_black_14_w_w"
+                    android:layout_height="match_parent"
                     android:text="身高" />
 
 
                 <LinearLayout
                     style="@style/hh_wr_wr"
-                    android:layout_alignParentRight="true">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right">
 
                     <EditText
                         android:id="@+id/et_height"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -66,13 +70,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--体重 -->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -83,13 +87,11 @@
                     android:text="体重" />
 
 
-                <LinearLayout
-                    style="@style/hh_wr_wr"
-                    android:layout_alignParentRight="true">
+                <LinearLayout style="@style/hh_fi_wr">
 
                     <EditText
                         android:id="@+id/et_weight"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -99,13 +101,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--年龄-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -117,12 +119,11 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
-                    android:layout_alignParentRight="true">
+                    style="@style/hh_fi_wr">
 
                     <EditText
                         android:id="@+id/et_age"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -132,7 +133,7 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
@@ -143,7 +144,7 @@
                 style="@style/hh_fi_wr"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp_12">
@@ -155,12 +156,12 @@
 
 
                     <LinearLayout
-                        style="@style/hh_wr_wr"
+                        style="@style/hh_fi_wr"
                         android:layout_alignParentRight="true">
 
                         <EditText
                             android:id="@+id/et_waistline"
-                            style="@style/et_non_drug_input"
+                            style="@style/et_non_drug_input_1"
                             android:hint="请输入" />
 
 
@@ -170,7 +171,7 @@
 
                     </LinearLayout>
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
@@ -183,7 +184,7 @@
                 style="@style/hh_fi_wr"
                 android:orientation="vertical">
                 <!--最近一次空腹血糖测值(mmol/L)-->
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp_12">
@@ -195,12 +196,12 @@
 
 
                     <LinearLayout
-                        style="@style/hh_wr_wr"
+                        style="@style/hh_fi_wr"
                         android:layout_alignParentRight="true">
 
                         <EditText
                             android:id="@+id/et_recent_empty"
-                            style="@style/et_non_drug_input"
+                            style="@style/et_non_drug_input_1"
                             android:layout_alignParentRight="true"
                             android:hint="请输入" />
 
@@ -212,13 +213,13 @@
                     </LinearLayout>
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
                     android:layout_marginLeft="@dimen/dp_10" />
                 <!--最近一次餐后2小时血糖测值(mmol/L)-->
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp_12">
@@ -230,12 +231,12 @@
 
 
                     <LinearLayout
-                        style="@style/hh_wr_wr"
+                        style="@style/hh_fi_wr"
                         android:layout_alignParentRight="true">
 
                         <EditText
                             android:id="@+id/et_recent_two_hours"
-                            style="@style/et_non_drug_input"
+                            style="@style/et_non_drug_input_1"
                             android:layout_alignParentRight="true"
                             android:hint="请输入" />
 
@@ -247,13 +248,13 @@
                     </LinearLayout>
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
                     android:layout_marginLeft="@dimen/dp_10" />
                 <!--最近一次糖化血红蛋白(%)-->
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp_12">
@@ -265,12 +266,12 @@
 
 
                     <LinearLayout
-                        style="@style/hh_wr_wr"
+                        style="@style/hh_fi_wr"
                         android:layout_alignParentRight="true">
 
                         <EditText
                             android:id="@+id/et_recent_sugar"
-                            style="@style/et_non_drug_input"
+                            style="@style/et_non_drug_input_1"
                             android:layout_alignParentRight="true"
                             android:hint="请输入" />
 
@@ -282,7 +283,7 @@
                     </LinearLayout>
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
@@ -300,7 +301,7 @@
             android:orientation="vertical">
 
             <!--收缩压(高压)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -312,12 +313,11 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
-                    android:layout_alignParentRight="true">
+                    style="@style/hh_fi_wr">
 
                     <EditText
                         android:id="@+id/et_high_pressure"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -327,13 +327,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--舒张压(低压)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -345,12 +345,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_low_pressure"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -360,13 +360,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--胆固醇(TC)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -378,12 +378,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_tc"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -393,13 +393,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--甘油三酯(TG)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -411,12 +411,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_tg"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -426,13 +426,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--低密度脂蛋白(LDL)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -444,12 +444,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_ldl"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -459,13 +459,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--高密度脂蛋白(HDL)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -477,12 +477,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_hdl"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -492,7 +492,7 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
@@ -507,7 +507,7 @@
             android:background="@color/white"
             android:orientation="vertical">
             <!--劳动强度-->
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/rl_labour_intensity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -521,18 +521,18 @@
 
                 <TextView
                     android:id="@+id/tv_labour_intensity"
-                    style="@style/et_non_drug_select"
+                    style="@style/et_non_drug_select1"
                     android:hint="请选择" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
 
             <!--肾损-->
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/rl_kidney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -546,14 +546,14 @@
 
                 <TextView
                     android:id="@+id/tv_kidney"
-                    style="@style/et_non_drug_select"
+                    style="@style/et_non_drug_select1"
                     android:hint="请选择" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <!--吸烟-->
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/rl_smoke"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -567,11 +567,11 @@
 
                 <TextView
                     android:id="@+id/tv_smoke"
-                    style="@style/et_non_drug_select"
+                    style="@style/et_non_drug_select1"
                     android:hint="请选择" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -582,7 +582,7 @@
             android:background="@color/white"
             android:orientation="vertical">
             <!--血清肌酐(SRC)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -594,12 +594,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_src"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -609,13 +609,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginStart="@dimen/dp_10" />
             <!--尿白蛋白/肌酐(ACR)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -627,12 +627,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_acr"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -642,13 +642,13 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
                 android:layout_marginLeft="@dimen/dp_10" />
             <!--肾小球滤过率(GFR)-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12">
@@ -660,12 +660,12 @@
 
 
                 <LinearLayout
-                    style="@style/hh_wr_wr"
+                    style="@style/hh_fi_wr"
                     android:layout_alignParentRight="true">
 
                     <EditText
                         android:id="@+id/et_gfr"
-                        style="@style/et_non_drug_input"
+                        style="@style/et_non_drug_input_1"
                         android:hint="请输入" />
 
 
@@ -675,7 +675,7 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
@@ -691,7 +691,7 @@
             android:background="@color/white"
             android:orientation="vertical">
             <!--糖尿病肾病-->
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/rl_diabetic_nephropathy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -706,11 +706,11 @@
 
                 <TextView
                     android:id="@+id/tv_diabetic_nephropathy"
-                    style="@style/et_non_drug_select"
+                    style="@style/et_non_drug_select1"
                     android:hint="请选择" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
@@ -724,7 +724,7 @@
                 android:visibility="gone">
 
                 <!-- 慢性肾病肾功能分期-->
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_diabetic_nephropathy_period"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -738,17 +738,17 @@
 
                     <TextView
                         android:id="@+id/tv_diabetic_nephropathy_period"
-                        style="@style/et_non_drug_select"
+                        style="@style/et_non_drug_select1"
                         android:hint="请选择" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
                     android:layout_marginLeft="@dimen/dp_10" />
                 <!-- 确诊时间-->
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_diabetic_nephropathy_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -762,11 +762,11 @@
 
                     <TextView
                         android:id="@+id/tv_diabetic_nephropathy_time"
-                        style="@style/et_non_drug_select"
+                        style="@style/et_non_drug_select1"
                         android:hint="请选择" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
@@ -785,7 +785,7 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/rl_recent_three_days"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -799,11 +799,11 @@
 
                 <TextView
                     android:id="@+id/tv_recent_three_days"
-                    style="@style/et_non_drug_select"
+                    style="@style/et_non_drug_select1"
                     android:hint="请选择" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 style="@style/line"
@@ -816,7 +816,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_recent_three_days_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -830,11 +830,11 @@
 
                     <TextView
                         android:id="@+id/tv_recent_three_days_time"
-                        style="@style/et_non_drug_select"
+                        style="@style/et_non_drug_select1"
                         android:hint="请选择" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
@@ -850,7 +850,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_recent_three_days_is_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -864,11 +864,11 @@
 
                     <TextView
                         android:id="@+id/tv_recent_three_days_is_balance"
-                        style="@style/et_non_drug_select"
+                        style="@style/et_non_drug_select1"
                         android:hint="请选择" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
@@ -882,7 +882,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_recent_three_days_add"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -896,11 +896,11 @@
 
                     <TextView
                         android:id="@+id/tv_recent_three_days_add"
-                        style="@style/et_non_drug_select"
+                        style="@style/et_non_drug_select1"
                         android:hint="请选择" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
@@ -914,7 +914,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_recent_three_days_add_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -928,11 +928,11 @@
 
                     <TextView
                         android:id="@+id/tv_recent_three_days_add_count"
-                        style="@style/et_non_drug_select"
+                        style="@style/et_non_drug_select1"
                         android:hint="请选择" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"
@@ -946,7 +946,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rl_recent_three_days_add_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -960,11 +960,11 @@
 
                     <TextView
                         android:id="@+id/tv_recent_three_days_add_time"
-                        style="@style/et_non_drug_select"
+                        style="@style/et_non_drug_select1"
                         android:hint="请选择" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/line"

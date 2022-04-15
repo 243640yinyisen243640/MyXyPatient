@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vice.bloodpressure.R;
@@ -324,7 +323,7 @@ public class FoodRiceAdapterSecond extends BaseAdapter {
     }
 
     public class ViewHolder {
-        RelativeLayout rlType;
+        LinearLayout rlType;
 
         TextView tvLeft;
         TextView tvRight;

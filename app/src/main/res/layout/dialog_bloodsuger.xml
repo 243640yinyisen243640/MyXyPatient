@@ -19,6 +19,7 @@
             android:orientation="horizontal" />
 
         <LinearLayout
+            android:id="@+id/ll_check_un_dissmiss"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@drawable/background_four_yuanjiao"

@@ -49,6 +49,7 @@ public class BloodSugarDialogHome extends Dialog {
     private CallBack callBack;
     private Button btnSave;
     private FrameLayout all;
+    private LinearLayout dismiss;
 
     public BloodSugarDialogHome(CallBack callBack, List<String> listStr, Context context, int themeResId, int position, String day) {
         super(context, themeResId);
@@ -84,9 +85,16 @@ public class BloodSugarDialogHome extends Dialog {
         etBlood = view.findViewById(R.id.bloodEdit);
         LinearLayout llTime = view.findViewById(R.id.timeLin);
         all = view.findViewById(R.id.ll_blood_show);
+        dismiss = view.findViewById(R.id.ll_check_un_dissmiss);
         RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         all.setLayoutParams(rl);
         etBlood.addTextChangedListener(new TextWatcherForBloodSugarAdd(etBlood).setDigits(40));
+        dismiss.setOnClickListener(v -> {
+
+        });
+        all.setOnClickListener(v -> {
+            dismiss();
+        });
         llTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,6 +137,7 @@ public class BloodSugarDialogHome extends Dialog {
             }
         });
     }
+
     //只是关闭软键盘  隐藏所有的软键盘
     private void closeKeyboard() {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

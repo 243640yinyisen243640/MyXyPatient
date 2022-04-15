@@ -443,8 +443,8 @@ public class DialogUtils {
                     ToastUtils.showShort(hintMsg);
                 } else {
                     dialogInputCallBack.execEvent(content);
-                    dialog.dismiss();
                 }
+                dialog.dismiss();
 
 
             }

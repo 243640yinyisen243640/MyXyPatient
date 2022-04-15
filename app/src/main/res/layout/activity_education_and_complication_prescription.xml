@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/scrollView">
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/scrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:descendantFocusability="blocksDescendants">
         <!--教育处方-->
         <LinearLayout
             android:id="@+id/ll_education"

@@ -306,6 +306,15 @@
 
     <!--Dialog结束-->
 
+    <style name="et_non_drug_input_1" parent="et_base_style_no_bg">
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/dp_10</item>
+        <item name="android:paddingRight">@dimen/dp_10</item>
+        <item name="android:inputType">numberDecimal</item>
+    </style>
+
 
     <style name="et_non_drug_input" parent="et_base_style_no_bg">
         <item name="android:layout_width">wrap_content</item>
@@ -316,6 +325,14 @@
 
     <style name="et_non_drug_select" parent="et_non_drug_input">
         <item name="android:layout_alignParentRight">true</item>
+        <item name="android:drawableRight">@drawable/right_arrow</item>
+        <item name="android:drawablePadding">@dimen/dp_8</item>
+    </style>
+
+    <style name="et_non_drug_select1" parent="et_non_drug_input">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">right</item>
         <item name="android:drawableRight">@drawable/right_arrow</item>
         <item name="android:drawablePadding">@dimen/dp_8</item>
     </style>
