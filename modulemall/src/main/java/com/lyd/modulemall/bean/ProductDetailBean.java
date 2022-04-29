@@ -33,6 +33,9 @@ public class ProductDetailBean {
     private int sales;
     private int real_sales;
     private int shipping_fee_id;
+    /**
+     * 库存
+     */
     private int stock;
     private String description;
     private String return_desc;

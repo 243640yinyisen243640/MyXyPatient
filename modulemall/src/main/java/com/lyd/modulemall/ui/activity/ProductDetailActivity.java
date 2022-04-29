@@ -157,8 +157,22 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
                         //使用WebView加载网页,而不是浏览器
                         productDetailBinding.webDetail.setWebViewClient(getWebViewClient());
                         productDetailBinding.webDetail.setWebChromeClient(getWebChromeClient());
+
+                        if (productDetailBean.getStock() == 0) {
+                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
+                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
+                            productDetailBinding.tvSoldOutDes.setVisibility(View.VISIBLE);
+                        } else {
+                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_add_cart));
+                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_right_now_buy));
+                            productDetailBinding.tvSoldOutDes.setVisibility(View.GONE);
+                        }
+
+
                         //商品状态 1上架，2下架
                         int state = data.getState();
+
+
                         if (2 == state) {
                             productDetailBinding.tvSoldOutDesc.setVisibility(View.VISIBLE);
                         } else {
@@ -218,15 +232,15 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
                         //showChooseGoodsPopup.setData("0", data);
                         //设置sku
                         mySkuBean = data;
-                        if (mySkuBean == null) {
-                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
-                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
-                            productDetailBinding.tvSoldOutDes.setVisibility(View.VISIBLE);
-                        }else {
-                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_add_cart));
-                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_right_now_buy));
-                            productDetailBinding.tvSoldOutDes.setVisibility(View.GONE);
-                        }
+                        //                        if (mySkuBean == null) {
+                        //                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
+                        //                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.gray_text));
+                        //                            productDetailBinding.tvSoldOutDes.setVisibility(View.VISIBLE);
+                        //                        }else {
+                        //                            productDetailBinding.tvAddCart.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_add_cart));
+                        //                            productDetailBinding.tvBuyQuick.setBackgroundColor(ContextCompat.getColor(ProductDetailActivity.this, R.color.mall_right_now_buy));
+                        //                            productDetailBinding.tvSoldOutDes.setVisibility(View.GONE);
+                        //                        }
                     }
                 }, new OnError() {
                     @Override
@@ -403,7 +417,14 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
             case "tv_add_cart":
             case "tv_buy_quick":
             case "ll_select_specification":
+
                 Log.e(TAG, "被点击");
+
+                if (productDetailBean.getStock() == 0) {
+                    ToastUtils.showShort("没有库存啦");
+                    return;
+                }
+
                 showSkuDialog();
                 //                //选择规格
                 //                showChooseGoodsPopup.showPopupWindow();

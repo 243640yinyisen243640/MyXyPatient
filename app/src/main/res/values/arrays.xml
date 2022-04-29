@@ -1180,7 +1180,7 @@
         <item>体重测评</item>
         <item>抑郁测评</item>
         <item>焦虑测评</item>
-        <item>慢病管理</item>
+        <!--<item>慢病管理</item>-->
     </array>
 
     <array name="little_tools_img">

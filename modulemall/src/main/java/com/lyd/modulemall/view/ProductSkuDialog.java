@@ -2,6 +2,8 @@ package com.lyd.modulemall.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -46,7 +48,7 @@ public class ProductSkuDialog extends Dialog {
     private String stockQuantityFormat;
 
     public ProductSkuDialog(@NonNull Context context) {
-        this(context, R.style.CommonBottomDialogStyle);
+        this(context, R.style.Dialog_style);
     }
 
     public ProductSkuDialog(@NonNull Context context, @StyleRes int themeResId) {
@@ -233,6 +235,7 @@ public class ProductSkuDialog extends Dialog {
             selectedSku = firstSku;
             //选中第一个sku
             binding.scrollSkuList.setSelectedSku(selectedSku);
+
             Glide.with(Utils.getApp()).load(product.getMainImage()).into(binding.ivSkuLogo);
             binding.tvSkuSellingPrice.setText(String.format(priceFormat, NumberUtils.formatNumber(selectedSku.getSellingPrice())));
             binding.tvSkuSellingPriceUnit.setText("/" + product.getMeasurementUnit());
@@ -288,6 +291,10 @@ public class ProductSkuDialog extends Dialog {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         window.getDecorView().setPadding(0, 0, 0, 0);
         AppUtils.transparencyBar(getWindow());
+        //去除系统自带的margin
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //背景全透明
+        window.setDimAmount(0f);
     }
 
 
