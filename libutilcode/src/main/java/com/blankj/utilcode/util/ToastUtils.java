@@ -62,10 +62,13 @@ public final class ToastUtils {
 //    private int mGravity = -1;
     private int mXOffset = -1;
     private int mYOffset = -1;
-    private int mBgColor = COLOR_DEFAULT;
+//    private int mBgColor = COLOR_DEFAULT;
+    private int mBgColor = 0xff000000;
     private int mBgResource = -1;
-    private int mTextColor = COLOR_DEFAULT;
-    private int mTextSize = -1;
+//    private int mTextColor = COLOR_DEFAULT;
+    private int mTextColor = 0xFFFFFFFF;
+//    private int mTextSize = -1;
+    private int mTextSize = 17;
     private boolean isLong = false;
     private Drawable[] mIcons = new Drawable[4];
     private boolean isNotUseSystemToast = false;
