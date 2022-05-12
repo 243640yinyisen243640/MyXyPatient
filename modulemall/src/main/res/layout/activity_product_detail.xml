@@ -335,7 +335,7 @@
                 style="@style/text_black_14_w_w"
                 android:drawableLeft="@drawable/product_detail_favo_yes"
                 android:drawablePadding="5dp"
-                android:padding="17dp"
+                android:padding="13dp"
                 android:text="收藏"
                 android:textColor="#646464"
                 android:textSize="11sp" />
@@ -347,7 +347,7 @@
                 android:layout_toRightOf="@+id/tv_favo"
                 android:drawableLeft="@drawable/product_detail_chat"
                 android:drawablePadding="5dp"
-                android:padding="17dp"
+                android:padding="13dp"
                 android:text="客服"
                 android:textColor="#646464"
                 android:textSize="11sp" />

@@ -58,10 +58,11 @@ project.ext {
     compileSdkVersion = 29
     targetSdkVersion = 29
 
+    
 
 
 
     applicationId = "com.vice.bloodpressure"
-    versionCode = 65
-    versionName = "1.5.6"
+    versionCode = 66
+    versionName = "1.5.7"
 }
