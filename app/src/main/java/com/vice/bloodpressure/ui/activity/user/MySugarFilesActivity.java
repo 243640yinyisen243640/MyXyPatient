@@ -104,7 +104,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
     private int sexInt;
     private HealthArchiveGroupLevelAdapter adapter;
     private MySugarFilesMedicineHistoryListAdapter medicineHistoryListAdapter;
-
+    private ArrayList<MultiItemEntity> multiItemEntityArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -632,8 +632,11 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
 
         //添加0级数据
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getPageContext());
-        ArrayList<MultiItemEntity> multiItemEntityArrayList = new ArrayList<>(lv0);
+        multiItemEntityArrayList = new ArrayList<>(lv0);
         adapter = new HealthArchiveGroupLevelAdapter(this, multiItemEntityArrayList, this);
+
+
+
         rvHealthArchive.setAdapter(adapter);
         //解决复用错乱
         rvHealthArchive.setItemViewCacheSize(23);
@@ -1200,7 +1203,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             case "腰臀比"://计算,不可修改
                 break;
             case "收缩压"://systolic
-                DialogUtils.editDialog(getPageContext(), "收缩压", "请输入收缩压", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "收缩压", "请输入收缩压", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1215,7 +1218,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "舒张压"://diastolic
-                DialogUtils.editDialog(getPageContext(), "舒张压", "请输入舒张压", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "舒张压", "请输入舒张压", "",InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1938,6 +1941,9 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 MySugarFilesActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        MultiItemEntity multiItemEntity1 = multiItemEntityArrayList.get(help.getBindingAdapterPosition());
+                        HealthArchiveGroupLevelOneBean levelOneBean1 = (HealthArchiveGroupLevelOneBean) multiItemEntity1;
+                        levelOneBean1.setContent(fieldValue);
                         switch (fieldName) {
                             case "nickname":
                                 int lengthnickname = fieldValue.length();
@@ -1955,17 +1961,23 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                                 int lengthpetname = fieldValue.length();
                                 if (lengthpetname > 9) {
                                     textView.setText(fieldValue.substring(0, 9) + "...");
+                                    levelOneBean1.setContent(fieldValue.substring(0, 9) + "...");
                                 } else {
                                     textView.setText(fieldValue);
+                                    levelOneBean1.setContent(fieldValue);
                                 }
+
                                 break;
                             //性别
                             case "sex":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("男");
+                                    levelOneBean1.setContent("男");
                                 } else {
-                                    textView.setText("女 ");
+                                    textView.setText("女");
+                                    levelOneBean1.setContent("女");
                                 }
+
                                 break;
                             //出生时间
                             case "birthtime":
@@ -1978,19 +1990,25 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                                 long date = Long.parseLong(fieldValue) * 1000;
                                 String string2DateFormat = DataUtils.getString2DateFormat(date, DataFormatManager.TIME_FORMAT_Y_M_D);
                                 textView.setText(string2DateFormat);
+                                levelOneBean1.setContent(string2DateFormat);
                                 break;
                             //糖尿病类型
                             case "diabeteslei":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("1型");
+                                    levelOneBean1.setContent("1型");
                                 } else if ("2".equals(fieldValue)) {
                                     textView.setText("2型");
+                                    levelOneBean1.setContent("2型");
                                 } else if ("3".equals(fieldValue)) {
                                     textView.setText("妊娠");
+                                    levelOneBean1.setContent("妊娠");
                                 } else if ("4".equals(fieldValue)) {
                                     textView.setText("其他");
+                                    levelOneBean1.setContent("其他");
                                 } else {
                                     textView.setText("无");
+                                    levelOneBean1.setContent("无");
                                 }
                                 break;
                             //是否吸烟
@@ -2010,38 +2028,49 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                             case "angiocarpy":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("是");
+                                    levelOneBean1.setContent("是");
                                 } else {
                                     textView.setText("否");
+                                    levelOneBean1.setContent("否");
                                 }
                                 break;
                             //文化程度
                             case "culture":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("小学及以下");
+                                    levelOneBean1.setContent("小学及以下");
                                 } else if ("2".equals(fieldValue)) {
                                     textView.setText("初中");
+                                    levelOneBean1.setContent("初中");
                                 } else if ("3".equals(fieldValue)) {
                                     textView.setText("高中");
+                                    levelOneBean1.setContent("高中");
                                 } else {
                                     textView.setText("大学及以上");
+                                    levelOneBean1.setContent("大学及以上");
                                 }
                                 break;
                             //职业情况
                             case "profession":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("轻体力");
+                                    levelOneBean1.setContent("轻体力");
                                 } else if ("2".equals(fieldValue)) {
                                     textView.setText("中体力");
+                                    levelOneBean1.setContent("中体力");
                                 } else {
                                     textView.setText("重体力");
+                                    levelOneBean1.setContent("重体力");
                                 }
                                 break;
                             //是否结婚
                             case "marriage":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("未婚");
+                                    levelOneBean1.setContent("未婚");
                                 } else {
                                     textView.setText("已婚");
+                                    levelOneBean1.setContent("已婚");
                                 }
                                 break;
                             case "jbprov":
@@ -2058,29 +2087,38 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                             case "zhifufangshi":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("社会医疗基本保险");
+                                    levelOneBean1.setContent("社会医疗基本保险");
                                 } else if ("2".equals(fieldValue)) {
                                     textView.setText("新型农村合作医疗保险");
+                                    levelOneBean1.setContent("新型农村合作医疗保险");
                                 } else if ("3".equals(fieldValue)) {
                                     textView.setText("城镇居民医疗保险");
-
+                                    levelOneBean1.setContent("城镇居民医疗保险");
                                 } else if ("4".equals(fieldValue)) {
                                     textView.setText("商业保险");
+                                    levelOneBean1.setContent("商业保险");
                                 } else if ("5".equals(fieldValue)) {
                                     textView.setText("公费医疗");
+                                    levelOneBean1.setContent("公费医疗");
                                 } else if ("6".equals(fieldValue)) {
                                     textView.setText("自费医疗");
+                                    levelOneBean1.setContent("自费医疗");
                                 } else {
                                     textView.setText("其它");
+                                    levelOneBean1.setContent("其它");
                                 }
                                 break;
                             //高血压确诊
                             case "gxyzhenduan":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("确诊有");
+                                    levelOneBean1.setContent("确诊有");
                                 } else if ("2".equals(fieldValue)) {
                                     textView.setText("未诊断");
+                                    levelOneBean1.setContent("未诊断");
                                 } else {
                                     textView.setText("确诊无");
+                                    levelOneBean1.setContent("确诊无");
                                 }
                                 break;
 
@@ -2135,6 +2173,9 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 MySugarFilesActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        MultiItemEntity multiItemEntity1 = multiItemEntityArrayList.get(help.getBindingAdapterPosition());
+                        HealthArchiveGroupLevelOneBean levelOneBean1 = (HealthArchiveGroupLevelOneBean) multiItemEntity1;
+                        levelOneBean1.setContent(fieldValue);
                         switch (fieldName) {
                             //OGTT2h血糖
                             case "xtogtt2h":
@@ -2187,8 +2228,10 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                             case "xtdi":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("是");
+                                    levelOneBean1.setContent("是");
                                 } else {
                                     textView.setText("否");
+                                    levelOneBean1.setContent("否");
                                 }
                                 break;
 
@@ -2224,6 +2267,9 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 MySugarFilesActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        MultiItemEntity multiItemEntity1 = multiItemEntityArrayList.get(help.getBindingAdapterPosition());
+                        HealthArchiveGroupLevelOneBean levelOneBean1 = (HealthArchiveGroupLevelOneBean) multiItemEntity1;
+                        levelOneBean1.setContent(fieldValue);
                         switch (fieldName) {
                             //糖尿病视网膜病变
                             case "nephropathy":
@@ -2249,10 +2295,13 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                             case "cerebrovascular":
                                 if ("1".equals(fieldValue)) {
                                     textView.setText("确诊无");
+                                    levelOneBean1.setContent("确诊无");
                                 } else if ("2".equals(fieldValue)) {
                                     textView.setText("确诊有");
+                                    levelOneBean1.setContent("确诊有");
                                 } else {
                                     textView.setText("未诊断");
+                                    levelOneBean1.setContent("未诊断");
                                 }
                                 break;
 
@@ -2385,6 +2434,8 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             case GET_DATA_MEDICINE_HISTORY_ERROR:
                 List<PersonalRecordMedicineHistoryBean> listEmpty = new ArrayList<>();
                 addData(personalRecordBean, listEmpty);
+                break;
+            default:
                 break;
         }
     }
