@@ -512,35 +512,35 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetBodyCheck(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "身高", "请输入身高", "height",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "身高", "请输入身高", "height",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 1:
-                showEditDialog(position, type, "体重", "请输入体重", "weight",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "体重", "请输入体重", "weight",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             //BMI
             case 2:
                 break;
             case 3:
-                showEditDialog(position, type, "腰围", "请输入腰围", "waistline",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "腰围", "请输入腰围", "waistline",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 4:
-                showEditDialog(position, type, "臀围", "请输入臀围", "hipline",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "臀围", "请输入臀围", "hipline",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             //腰臀比
             case 5:
                 break;
             //体脂百分比
             case 6:
-                showEditDialog(position, type, "体脂百分比", "请输入体脂百分比", "tizhi",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "体脂百分比", "请输入体脂百分比", "tizhi",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 7:
-                showEditDialog(position, type, "上臀围", "请输入上臀围", "stun",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "上臀围", "请输入上臀围", "stun",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 8:
-                showEditDialog(position, type, "上腰肌围", "请输入上腰肌围", "syao",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "上腰肌围", "请输入上腰肌围", "syao",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 9:
-                showEditDialog(position, type, "握力", "请输入握力", "woli",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "握力", "请输入握力", "woli",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             default:
                 break;
@@ -557,28 +557,28 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetLabCheck(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "ALT", "请输入ALT", "alts",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "ALT", "请输入ALT", "alts",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 1:
-                showEditDialog(position, type, "白蛋白", "请输入白蛋白", "bai",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "白蛋白", "请输入白蛋白", "bai",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 2:
-                showEditDialog(position, type, "血糖", "请输入血糖", "xuet",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "血糖", "请输入血糖", "xuet",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 3:
-                showEditDialog(position, type, "血红蛋白", "请输入血红蛋白", "xueh",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "血红蛋白", "请输入血红蛋白", "xueh",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 4:
-                showEditDialog(position, type, "总胆红素", "请输入总胆红素", "zong",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "总胆红素", "请输入总胆红素", "zong",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 5:
-                showEditDialog(position, type, "前白蛋白", "请输入前白蛋白", "qian",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "前白蛋白", "请输入前白蛋白", "qian",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 6:
-                showEditDialog(position, type, "凝血酶原活力度", "请输入凝血酶原活力度", "ning",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "凝血酶原活力度", "请输入凝血酶原活力度", "ning",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 7:
-                showEditDialog(position, type, "血氨", "请输入血氨", "xuea",InputType.TYPE_CLASS_NUMBER);
+                showEditDialog(position, type, "血氨", "请输入血氨", "xuea",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             default:
                 break;

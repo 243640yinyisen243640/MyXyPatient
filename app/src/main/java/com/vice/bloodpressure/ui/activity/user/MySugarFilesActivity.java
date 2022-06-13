@@ -1126,7 +1126,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             //第二部分
             ////////////////////////////////////////////////////
             case "身高"://height
-                DialogUtils.editDialog(getPageContext(), "身高", "请输入身高", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "身高", "请输入身高", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1143,7 +1143,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "体重"://weight
-                DialogUtils.editDialog(getPageContext(), "体重", "请输入体重", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "体重", "请输入体重", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1163,7 +1163,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 String height = SPStaticUtils.getString("height");
                 break;
             case "腰围"://waistline
-                DialogUtils.editDialog(getPageContext(), "腰围", "请输入腰围", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "腰围", "请输入腰围", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1181,7 +1181,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "臀围"://hipline
-                DialogUtils.editDialog(getPageContext(), "臀围", "请输入臀围", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "臀围", "请输入臀围", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1230,7 +1230,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "静息心率"://heartrate
-                DialogUtils.editDialog(getPageContext(), "静息心率", "请输入静息心率", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "静息心率", "请输入静息心率", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1247,7 +1247,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             //第三部分
             //////////////////////////////////////////////////////////////////
             case "OGTT2h血糖"://xtogtt2h
-                DialogUtils.editDialog(getPageContext(), "OGTT2h血糖", "请输入OGTT2h血糖", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "OGTT2h血糖", "请输入OGTT2h血糖", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1262,7 +1262,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "H b A 1 c":
-                DialogUtils.editDialog(getPageContext(), "H b A 1 c", "请输入H b A 1 c", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "H b A 1 c", "请输入H b A 1 c", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1277,7 +1277,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "随机血糖":
-                DialogUtils.editDialog(getPageContext(), "随机血糖", "请输入随机血糖", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "随机血糖", "请输入随机血糖", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1292,7 +1292,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "空腹血糖":
-                DialogUtils.editDialog(getPageContext(), "空腹血糖", "请输入空腹血糖", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "空腹血糖", "请输入空腹血糖", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1307,7 +1307,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "餐 后2h 血 糖":
-                DialogUtils.editDialog(getPageContext(), "餐 后2h 血 糖", "请输入餐 后2h 血 糖", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "餐 后2h 血 糖", "请输入餐 后2h 血 糖", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1322,7 +1322,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "夜间血糖":
-                DialogUtils.editDialog(getPageContext(), "夜间血糖", "请输入夜间血糖", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "夜间血糖", "请输入夜间血糖", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1337,7 +1337,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "睡前血糖":
-                DialogUtils.editDialog(getPageContext(), "睡前血糖", "请输入睡前血糖", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "睡前血糖", "请输入睡前血糖", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1370,7 +1370,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             //第四部分
             /////////////////////////////////////////////////////
             case "总胆固醇(TC)":
-                DialogUtils.editDialog(getPageContext(), "总胆固醇(TC)", "请输入总胆固醇(TC)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "总胆固醇(TC)", "请输入总胆固醇(TC)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1385,7 +1385,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "甘油三酯":
-                DialogUtils.editDialog(getPageContext(), "甘油三酯", "请输入甘油三酯", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "甘油三酯", "请输入甘油三酯", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1400,7 +1400,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "低密度脂蛋白(LDL-C)":
-                DialogUtils.editDialog(getPageContext(), "低密度脂蛋白(LDL-C)", "请输入低密度脂蛋白(LDL-C)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "低密度脂蛋白(LDL-C)", "请输入低密度脂蛋白(LDL-C)", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1415,7 +1415,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "谷丙转氨酶(ALT)":
-                DialogUtils.editDialog(getPageContext(), "谷丙转氨酶(ALT)", "请输入谷丙转氨酶(ALT)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "谷丙转氨酶(ALT)", "请输入谷丙转氨酶(ALT)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1430,7 +1430,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "谷草转氨酶(AST)":
-                DialogUtils.editDialog(getPageContext(), "谷草转氨酶(AST)", "请输入谷草转氨酶(AST)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "谷草转氨酶(AST)", "请输入谷草转氨酶(AST)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1445,7 +1445,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "总胆红素(T-BIL)":
-                DialogUtils.editDialog(getPageContext(), "总胆红素(T-BIL)", "请输入总胆红素(T-BIL)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "总胆红素(T-BIL)", "请输入总胆红素(T-BIL)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1460,7 +1460,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "高密度脂蛋白(HDL-C)":
-                DialogUtils.editDialog(getPageContext(), "高密度脂蛋白(HDL-C)", "请输入高密度脂蛋白(HDL-C)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "高密度脂蛋白(HDL-C)", "请输入高密度脂蛋白(HDL-C)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1476,7 +1476,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "碱性磷酸酶(ALP)":
-                DialogUtils.editDialog(getPageContext(), "碱性磷酸酶(ALP)", "请输入碱性磷酸酶(ALP)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "碱性磷酸酶(ALP)", "请输入碱性磷酸酶(ALP)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1492,7 +1492,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿常规(尿蛋白)":
-                DialogUtils.editDialog(getPageContext(), "尿常规(尿蛋白)", "请输入尿常规(尿蛋白)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿常规(尿蛋白)", "请输入尿常规(尿蛋白)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1508,7 +1508,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "24小时尿白蛋白(24hUAE)":
-                DialogUtils.editDialog(getPageContext(), "24小时尿白蛋白(24hUAE)", "请输入24小时尿白蛋白(24hUAE)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "24小时尿白蛋白(24hUAE)", "请输入24小时尿白蛋白(24hUAE)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1524,7 +1524,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿白蛋白/肌酐(ACR)":
-                DialogUtils.editDialog(getPageContext(), "尿白蛋白/肌酐(ACR)", "请输入尿白蛋白/肌酐(ACR)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿白蛋白/肌酐(ACR)", "请输入尿白蛋白/肌酐(ACR)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1540,7 +1540,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿白蛋白(UAE)":
-                DialogUtils.editDialog(getPageContext(), "尿白蛋白(UAE)", "请输入尿白蛋白(UAE)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿白蛋白(UAE)", "请输入尿白蛋白(UAE)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1556,7 +1556,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿素氮(BUN)":
-                DialogUtils.editDialog(getPageContext(), "尿素氮(BUN)", "请输入尿素氮(BUN)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿素氮(BUN)", "请输入尿素氮(BUN)", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1572,7 +1572,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "内生肌酐清除率(Ccr)":
-                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1588,7 +1588,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "血清肌酐(SRC)":
-                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "", InputType.TYPE_CLASS_NUMBER, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1863,8 +1863,6 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 break;
         }
     }
-
-
 
 
     /**
