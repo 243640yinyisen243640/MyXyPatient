@@ -636,7 +636,6 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
         adapter = new HealthArchiveGroupLevelAdapter(this, multiItemEntityArrayList, this);
 
 
-
         rvHealthArchive.setAdapter(adapter);
         //解决复用错乱
         rvHealthArchive.setItemViewCacheSize(23);
@@ -1218,7 +1217,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "舒张压"://diastolic
-                DialogUtils.editDialog(getPageContext(), "舒张压", "请输入舒张压", "",InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "舒张压", "请输入舒张压", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1373,7 +1372,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             //第四部分
             /////////////////////////////////////////////////////
             case "总胆固醇(TC)":
-                DialogUtils.editDialog(getPageContext(), "总胆固醇(TC)", "请输入总胆固醇(TC)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "总胆固醇(TC)", "请输入总胆固醇(TC)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1388,7 +1387,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "甘油三酯":
-                DialogUtils.editDialog(getPageContext(), "甘油三酯", "请输入甘油三酯", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "甘油三酯", "请输入甘油三酯", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1403,7 +1402,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "低密度脂蛋白(LDL-C)":
-                DialogUtils.editDialog(getPageContext(), "低密度脂蛋白(LDL-C)", "请输入低密度脂蛋白(LDL-C)", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "低密度脂蛋白(LDL-C)", "请输入低密度脂蛋白(LDL-C)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1418,7 +1417,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "谷丙转氨酶(ALT)":
-                DialogUtils.editDialog(getPageContext(), "谷丙转氨酶(ALT)", "请输入谷丙转氨酶(ALT)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "谷丙转氨酶(ALT)", "请输入谷丙转氨酶(ALT)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1433,7 +1432,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "谷草转氨酶(AST)":
-                DialogUtils.editDialog(getPageContext(), "谷草转氨酶(AST)", "请输入谷草转氨酶(AST)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "谷草转氨酶(AST)", "请输入谷草转氨酶(AST)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1448,7 +1447,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "总胆红素(T-BIL)":
-                DialogUtils.editDialog(getPageContext(), "总胆红素(T-BIL)", "请输入总胆红素(T-BIL)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "总胆红素(T-BIL)", "请输入总胆红素(T-BIL)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1463,7 +1462,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "高密度脂蛋白(HDL-C)":
-                DialogUtils.editDialog(getPageContext(), "高密度脂蛋白(HDL-C)", "请输入高密度脂蛋白(HDL-C)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "高密度脂蛋白(HDL-C)", "请输入高密度脂蛋白(HDL-C)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1479,7 +1478,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "碱性磷酸酶(ALP)":
-                DialogUtils.editDialog(getPageContext(), "碱性磷酸酶(ALP)", "请输入碱性磷酸酶(ALP)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "碱性磷酸酶(ALP)", "请输入碱性磷酸酶(ALP)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1495,7 +1494,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿常规(尿蛋白)":
-                DialogUtils.editDialog(getPageContext(), "尿常规(尿蛋白)", "请输入尿常规(尿蛋白)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿常规(尿蛋白)", "请输入尿常规(尿蛋白)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1511,7 +1510,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "24小时尿白蛋白(24hUAE)":
-                DialogUtils.editDialog(getPageContext(), "24小时尿白蛋白(24hUAE)", "请输入24小时尿白蛋白(24hUAE)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "24小时尿白蛋白(24hUAE)", "请输入24小时尿白蛋白(24hUAE)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1527,7 +1526,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿白蛋白/肌酐(ACR)":
-                DialogUtils.editDialog(getPageContext(), "尿白蛋白/肌酐(ACR)", "请输入尿白蛋白/肌酐(ACR)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿白蛋白/肌酐(ACR)", "请输入尿白蛋白/肌酐(ACR)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1543,7 +1542,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿白蛋白(UAE)":
-                DialogUtils.editDialog(getPageContext(), "尿白蛋白(UAE)", "请输入尿白蛋白(UAE)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿白蛋白(UAE)", "请输入尿白蛋白(UAE)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1559,7 +1558,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "尿素氮(BUN)":
-                DialogUtils.editDialog(getPageContext(), "尿素氮(BUN)", "请输入尿素氮(BUN)", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "尿素氮(BUN)", "请输入尿素氮(BUN)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1575,7 +1574,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "内生肌酐清除率(Ccr)":
-                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -1591,7 +1590,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 //                });
                 break;
             case "血清肌酐(SRC)":
-                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
+                DialogUtils.editDialog(getPageContext(), "内生肌酐清除率(Ccr)", "请输入内生肌酐清除率(Ccr)", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL, 0, new DialogUtils.DialogInputCallBack() {
                     @Override
                     public void execEvent(String text) {
 
@@ -2125,13 +2124,30 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
 
                             //身高
                             case "height":
-                                //腰围
-                            case "waistline":
-                                //臀围
-                            case "hipline":
-                                //重量
+                                SPStaticUtils.put("height", fieldValue);
+                                resetValue(help, textView, fieldValue);
+                                resetBmi(help, "height");
+
+                                break;
+                            //重量
                             case "weight":
-                                //收缩压
+                                SPStaticUtils.put("weight", fieldValue);
+                                resetValue(help, textView, fieldValue);
+                                resetBmi(help, "weight");
+                                break;
+                            //腰围
+                            case "waistline":
+                                SPStaticUtils.put("waistline", fieldValue);
+                                resetThr(help, "waistline");
+                                resetValue(help, textView, fieldValue);
+                                break;
+                            //臀围
+                            case "hipline":
+                                SPStaticUtils.put("hipline", fieldValue);
+                                resetThr(help, "hipline");
+                                resetValue(help, textView, fieldValue);
+                                break;
+                            //收缩压
                             case "systolic":
                                 //舒张压
                             case "diastolic":
@@ -2341,7 +2357,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
         textView.setText(spannableString);
     }
 
-    private void resetBmi(BaseViewHolder help) {
+    private void resetBmi(BaseViewHolder help, String type) {
         String height = SPStaticUtils.getString("height");
         String weight = SPStaticUtils.getString("weight");
         NumberFormat nf = NumberFormat.getNumberInstance();
@@ -2351,15 +2367,24 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
         nf.setRoundingMode(RoundingMode.HALF_UP);
         if (height != "" && weight != "") {
             String str = nf.format(Double.valueOf(weight) / Double.valueOf(height) / Double.valueOf(height) * 10000);
-            resetValue(help, adapter.getTvBmi(), str);
             SpannableString spannableString = new SpannableString(str + " " + "kg/m²");
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.gray_text));
             spannableString.setSpan(colorSpan, 0, str.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             adapter.getTvBmi().setText(spannableString);
+            if ("height".equals(type)) {
+                MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 2);
+                HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
+                levelOneBean2.setContent(str);
+            } else {
+                MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 1);
+                HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
+                levelOneBean2.setContent(str);
+            }
         }
+
     }
 
-    private void resetThr() {
+    private void resetThr(BaseViewHolder help, String type) {
         String waistline = SPStaticUtils.getString("waistline");
         String hipline = SPStaticUtils.getString("hipline");
         NumberFormat nf = NumberFormat.getNumberInstance();
@@ -2367,7 +2392,19 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
         nf.setRoundingMode(RoundingMode.HALF_UP);
         if (waistline != "" && hipline != "") {
             String str = nf.format(Double.valueOf(waistline) / Double.valueOf(hipline));
-            adapter.getTvThr().setText(str);
+            SpannableString spannableString = new SpannableString(str + " ");
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.gray_text));
+            spannableString.setSpan(colorSpan, 0, str.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            adapter.getTvThr().setText(spannableString);
+            if ("waistline".equals(type)) {
+                MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 2);
+                HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
+                levelOneBean2.setContent(str);
+            } else {
+                MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 1);
+                HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
+                levelOneBean2.setContent(str);
+            }
         }
     }
 
