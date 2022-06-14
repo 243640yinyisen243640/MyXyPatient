@@ -20,6 +20,9 @@ import java.util.List;
  */
 public class MyLiverFilesLvAdapter extends CommonAdapter<MySugarLevel1Bean> {
     private AdapterClickLiverFilesImp clickImp;
+    /**
+     * 0：设置基本信息  3：肝病记录   4：轻诊断  5：用药史
+     */
     private int type;
 
     public MyLiverFilesLvAdapter(Context context, int layoutId, List<MySugarLevel1Bean> datas, AdapterClickLiverFilesImp clickImp, int type) {

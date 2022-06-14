@@ -131,6 +131,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     //用药史
     private String medicineHistory;
 
+    private LiverFilesBean allData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,47 +175,43 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
 
     /**
      * 设置
-     *
-     * @param data
      */
-    private void setData(LiverFilesBean data) {
+    private void setData() {
         //设置基本信息
-        setBaseInfo(data);
+        setBaseInfo();
         //设置体格检查
-        setBodyCheck(data);
+        setBodyCheck();
         //设置实验室检查
-        setLabCheck(data);
+        setLabCheck();
         //设置肝病记录
-        setLiverRecord(data);
+        setLiverRecord();
         //设置轻诊断
-        setSoftCheck(data);
+        setSoftCheck();
         //设置用药史
-        setMedicineHistory(data);
+        setMedicineHistory();
     }
 
 
     /**
      * 设置基本信息
-     *
-     * @param data
      */
-    private void setBaseInfo(LiverFilesBean data) {
+    private void setBaseInfo() {
         List<String> listStr = new ArrayList<>();
-        String nickname = data.getNickname();
+        String nickname = allData.getNickname();
         listStr.add(nickname);
-        String minzu = data.getMinzu();
+        String minzu = allData.getMinzu();
         listStr.add(minzu);
-        String address = data.getNativeplace();
+        String address = allData.getNativeplace();
         listStr.add(address);
-        String sex = data.getSex();
+        String sex = allData.getSex();
         listStr.add(sex);
-        String culture = data.getCulture();
+        String culture = allData.getCulture();
         listStr.add(culture);
-        String drink = data.getDrink();
+        String drink = allData.getDrink();
         listStr.add(drink);
-        String birthtime = data.getBirthtime();
+        String birthtime = allData.getBirthtime();
         listStr.add(birthtime);
-        String profession = data.getProfession();
+        String profession = allData.getProfession();
         listStr.add(profession);
 
         listBaseInfo = new ArrayList<>();
@@ -230,15 +228,58 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     }
 
     /**
-     * 设置体格检查
-     *
-     * @param data
+     * 计算bmi
      */
-    private void setBodyCheck(LiverFilesBean data) {
+    private void resetBim(int position) {
+        String height = allData.getHeight();
+        String weight = allData.getWeight();
+
+        //计算BMI
+        if (!TextUtils.isEmpty(height) && !TextUtils.isEmpty(weight)) {
+            double doubleHeight = TurnsUtils.getDouble(height, 0);
+            double doubleWeight = TurnsUtils.getDouble(weight, 0);
+            double doubleHeightM = doubleHeight / 100;
+            double doubleBmi = doubleWeight / (doubleHeightM * doubleHeightM);
+            DecimalFormat df = new DecimalFormat("0.00");
+            String bmi = df.format(doubleBmi);
+            listBodyCheck.get(position).setContent(bmi);
+            bodyCheckAdapter.notifyDataSetChanged();
+            //            listStr.add(bmi);
+        } else {
+            //            listStr.add("");
+            listBodyCheck.get(position).setContent("");
+            bodyCheckAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void resetwh(int position) {
+        String waistline = allData.getWaistline();
+        String hipline = allData.getHipline();
+        //计算腰臀比
+        if (!TextUtils.isEmpty(waistline) && !TextUtils.isEmpty(hipline)) {
+            double doubleW = TurnsUtils.getDouble(waistline, 0);
+            double doubleH = TurnsUtils.getDouble(hipline, 0);
+            double doubleWh = doubleW / doubleH;
+            DecimalFormat df = new DecimalFormat("0.00");
+            String wh = df.format(doubleWh);
+            listBodyCheck.get(position).setContent(wh);
+            bodyCheckAdapter.notifyDataSetChanged();
+            //            listStr.add(wh);
+        } else {
+            //            listStr.add("");
+            listBodyCheck.get(position).setContent("");
+            bodyCheckAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 设置体格检查
+     */
+    private void setBodyCheck() {
         List<String> listStr = new ArrayList<>();
-        String height = data.getHeight();
+        String height = allData.getHeight();
         listStr.add(height);
-        String weight = data.getWeight();
+        String weight = allData.getWeight();
         listStr.add(weight);
         //计算BMI
         if (!TextUtils.isEmpty(height) && !TextUtils.isEmpty(weight)) {
@@ -252,9 +293,9 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
         } else {
             listStr.add("");
         }
-        String waistline = data.getWaistline();
+        String waistline = allData.getWaistline();
         listStr.add(waistline);
-        String hipline = data.getHipline();
+        String hipline = allData.getHipline();
         listStr.add(hipline);
         //计算腰臀比
         if (!TextUtils.isEmpty(waistline) && !TextUtils.isEmpty(hipline)) {
@@ -267,13 +308,13 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
         } else {
             listStr.add("");
         }
-        String tizhi = data.getTizhi();
+        String tizhi = allData.getTizhi();
         listStr.add(tizhi);
-        String stun = data.getStun();
+        String stun = allData.getStun();
         listStr.add(stun);
-        String syao = data.getSyao();
+        String syao = allData.getSyao();
         listStr.add(syao);
-        String woli = data.getWoli();
+        String woli = allData.getWoli();
         listStr.add(woli);
 
 
@@ -296,23 +337,23 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     /**
      * 设置实验室检查
      */
-    private void setLabCheck(LiverFilesBean data) {
+    private void setLabCheck() {
         List<String> listStr = new ArrayList<>();
-        String alts = data.getAlts();
+        String alts = allData.getAlts();
         listStr.add(alts);
-        String bai = data.getBai();
+        String bai = allData.getBai();
         listStr.add(bai);
-        String xuet = data.getXuet();
+        String xuet = allData.getXuet();
         listStr.add(xuet);
-        String xueh = data.getXueh();
+        String xueh = allData.getXueh();
         listStr.add(xueh);
-        String zong = data.getZong();
+        String zong = allData.getZong();
         listStr.add(zong);
-        String qian = data.getQian();
+        String qian = allData.getQian();
         listStr.add(qian);
-        String ning = data.getNing();
+        String ning = allData.getNing();
         listStr.add(ning);
-        String xuea = data.getXuea();
+        String xuea = allData.getXuea();
         listStr.add(xuea);
 
 
@@ -332,14 +373,12 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
 
     /**
      * 设置肝病记录
-     *
-     * @param data
      */
-    private void setLiverRecord(LiverFilesBean data) {
+    private void setLiverRecord() {
         List<String> listStr = new ArrayList<>();
-        liverRecordOne = data.getTextarea0();
-        liverRecordTwo = data.getTextarea1();
-        liverRecordThree = data.getTextarea2();
+        liverRecordOne = allData.getTextarea0();
+        liverRecordTwo = allData.getTextarea1();
+        liverRecordThree = allData.getTextarea2();
         listStr.add("查看详情");
         listStr.add("查看详情");
         listStr.add("查看详情");
@@ -360,11 +399,9 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
 
     /**
      * 设置轻诊断
-     *
-     * @param data
      */
-    private void setSoftCheck(LiverFilesBean data) {
-        softcheck = data.getDiagnosis();
+    private void setSoftCheck() {
+        softcheck = allData.getDiagnosis();
         List<MySugarLevel1Bean> listLiverRecord = new ArrayList<>();
         MySugarLevel1Bean bean = new MySugarLevel1Bean();
         bean.setName("轻诊断");
@@ -377,11 +414,9 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
 
     /**
      * 设置用药史
-     *
-     * @param data
      */
-    private void setMedicineHistory(LiverFilesBean data) {
-        medicineHistory = data.getMedchinehis();
+    private void setMedicineHistory() {
+        medicineHistory = allData.getMedchinehis();
         List<MySugarLevel1Bean> listLiverRecord = new ArrayList<>();
         MySugarLevel1Bean bean = new MySugarLevel1Bean();
         bean.setName("用药史");
@@ -475,10 +510,10 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetBaseInfo(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "姓名", "请输入姓名", "nickname",InputType.TYPE_CLASS_TEXT);
+                showEditDialog(position, type, "姓名", "请输入姓名", "nickname", InputType.TYPE_CLASS_TEXT);
                 break;
             case 1:
-                showEditDialog(position, type, "民族", "请输入民族", "minzu",InputType.TYPE_CLASS_TEXT);
+                showEditDialog(position, type, "民族", "请输入民族", "minzu", InputType.TYPE_CLASS_TEXT);
                 break;
             case 2:
                 showCityPickerView(position, type);
@@ -512,35 +547,35 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetBodyCheck(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "身高", "请输入身高", "height",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "身高", "请输入身高", "height", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 1:
-                showEditDialog(position, type, "体重", "请输入体重", "weight",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "体重", "请输入体重", "weight", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             //BMI
             case 2:
                 break;
             case 3:
-                showEditDialog(position, type, "腰围", "请输入腰围", "waistline",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "腰围", "请输入腰围", "waistline", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 4:
-                showEditDialog(position, type, "臀围", "请输入臀围", "hipline",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "臀围", "请输入臀围", "hipline", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             //腰臀比
             case 5:
                 break;
             //体脂百分比
             case 6:
-                showEditDialog(position, type, "体脂百分比", "请输入体脂百分比", "tizhi",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "体脂百分比", "请输入体脂百分比", "tizhi", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 7:
-                showEditDialog(position, type, "上臀围", "请输入上臀围", "stun",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "上臀围", "请输入上臀围", "stun", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 8:
-                showEditDialog(position, type, "上腰肌围", "请输入上腰肌围", "syao",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "上腰肌围", "请输入上腰肌围", "syao", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 9:
-                showEditDialog(position, type, "握力", "请输入握力", "woli",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "握力", "请输入握力", "woli", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             default:
                 break;
@@ -557,28 +592,28 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     private void resetLabCheck(int position, int type) {
         switch (position) {
             case 0:
-                showEditDialog(position, type, "ALT", "请输入ALT", "alts",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "ALT", "请输入ALT", "alts", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 1:
-                showEditDialog(position, type, "白蛋白", "请输入白蛋白", "bai",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "白蛋白", "请输入白蛋白", "bai", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 2:
-                showEditDialog(position, type, "血糖", "请输入血糖", "xuet",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "血糖", "请输入血糖", "xuet", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 3:
-                showEditDialog(position, type, "血红蛋白", "请输入血红蛋白", "xueh",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "血红蛋白", "请输入血红蛋白", "xueh", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 4:
-                showEditDialog(position, type, "总胆红素", "请输入总胆红素", "zong",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "总胆红素", "请输入总胆红素", "zong", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 5:
-                showEditDialog(position, type, "前白蛋白", "请输入前白蛋白", "qian",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "前白蛋白", "请输入前白蛋白", "qian", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 6:
-                showEditDialog(position, type, "凝血酶原活力度", "请输入凝血酶原活力度", "ning",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "凝血酶原活力度", "请输入凝血酶原活力度", "ning", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             case 7:
-                showEditDialog(position, type, "血氨", "请输入血氨", "xuea",InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                showEditDialog(position, type, "血氨", "请输入血氨", "xuea", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 break;
             default:
                 break;
@@ -729,10 +764,10 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     /**
      * 显示编辑框
      */
-    private void showEditDialog(int position, int type, String title, String hint, String postKey,int inputType) {
+    private void showEditDialog(int position, int type, String title, String hint, String postKey, int inputType) {
 
 
-        DialogUtils.editDialog(getPageContext(), title, hint, "",inputType, 0, new DialogUtils.DialogInputCallBack() {
+        DialogUtils.editDialog(getPageContext(), title, hint, "", inputType, 0, new DialogUtils.DialogInputCallBack() {
             @Override
             public void execEvent(String text) {
 
@@ -824,8 +859,8 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
     public void processHandlerMsg(Message msg) {
         switch (msg.what) {
             case GET_LIVER_INFO:
-                LiverFilesBean data = (LiverFilesBean) msg.obj;
-                setData(data);
+                allData = (LiverFilesBean) msg.obj;
+                setData();
                 break;
             case SAVE_DATA:
                 ToastUtils.showShort("保存成功");
@@ -855,6 +890,27 @@ public class MyLiverFilesActivity extends BaseHandlerActivity implements Adapter
             case 1:
                 listBodyCheck.get(position).setContent(value);
                 bodyCheckAdapter.notifyDataSetChanged();
+                switch (position) {
+                    case 0:
+                        allData.setHeight(value);
+                        resetBim(position + 2);
+                        break;
+                    case 1:
+                        allData.setWeight(value);
+                        resetBim(position + 1);
+                        break;
+                    case 3:
+                        allData.setWaistline(value);
+                        resetwh(position + 2);
+                        break;
+
+                    case 4:
+                        allData.setWaistline(value);
+                        resetwh(position + 1);
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case 2:
                 listLabCheck.get(position).setContent(value);

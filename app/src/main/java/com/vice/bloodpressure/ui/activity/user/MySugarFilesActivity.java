@@ -8,6 +8,7 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -423,6 +424,8 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 "臀围", "腰臀比", "收缩压", "舒张压",
                 "静息心率"};
         //身高体重bmi
+        SPStaticUtils.put("height", data.getHeight());
+        SPStaticUtils.put("weight", data.getWeight());
         double height = TurnsUtils.getDouble(data.getHeight(), 1);
         double weight = TurnsUtils.getDouble(data.getWeight(), 1);
         double heightM = height * 0.01;
@@ -437,6 +440,8 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             bmiStr = result;
         }
         //腰围臀围 腰臀比
+        SPStaticUtils.put("waistline", data.getWaistline());
+        SPStaticUtils.put("hipline", data.getHipline());
         double Waistline = TurnsUtils.getDouble(data.getWaistline(), 1);
         double Hipline = TurnsUtils.getDouble(data.getHipline(), 1);
         double wCompareH;
@@ -2126,14 +2131,13 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                             case "height":
                                 SPStaticUtils.put("height", fieldValue);
                                 resetValue(help, textView, fieldValue);
-                                resetBmi(help, "height");
-
+                                resetBmiHeight(help, fieldValue);
                                 break;
                             //重量
                             case "weight":
                                 SPStaticUtils.put("weight", fieldValue);
                                 resetValue(help, textView, fieldValue);
-                                resetBmi(help, "weight");
+                                resetBmiWeight(help, "weight");
                                 break;
                             //腰围
                             case "waistline":
@@ -2357,7 +2361,31 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
         textView.setText(spannableString);
     }
 
-    private void resetBmi(BaseViewHolder help, String type) {
+
+    private void resetBmiHeight(BaseViewHolder help, String value) {
+        String height = SPStaticUtils.getString("height");
+        //        String height = value;
+        String weight = SPStaticUtils.getString("weight");
+        Log.i("yys", "height===" + height + "weight===" + weight);
+
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        //保留两位小数
+        nf.setMaximumFractionDigits(1);
+        //如果不需要四舍五入，可以使用RoundingMode.DOWN
+        nf.setRoundingMode(RoundingMode.HALF_UP);
+        if (height != "" && weight != "") {
+            String str = nf.format(Double.valueOf(weight) / Double.valueOf(height) / Double.valueOf(height) * 10000);
+            SpannableString spannableString = new SpannableString(str + " " + "kg/m²");
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.gray_text));
+            spannableString.setSpan(colorSpan, 0, str.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            adapter.getTvBmi().setText(spannableString);
+            MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 2);
+            HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
+            levelOneBean2.setContent(str);
+        }
+    }
+
+    private void resetBmiWeight(BaseViewHolder help, String type) {
         String height = SPStaticUtils.getString("height");
         String weight = SPStaticUtils.getString("weight");
         NumberFormat nf = NumberFormat.getNumberInstance();
@@ -2371,18 +2399,13 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.gray_text));
             spannableString.setSpan(colorSpan, 0, str.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             adapter.getTvBmi().setText(spannableString);
-            if ("height".equals(type)) {
-                MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 2);
-                HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
-                levelOneBean2.setContent(str);
-            } else {
-                MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 1);
-                HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
-                levelOneBean2.setContent(str);
-            }
+            MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 1);
+            HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
+            levelOneBean2.setContent(str);
         }
 
     }
+
 
     private void resetThr(BaseViewHolder help, String type) {
         String waistline = SPStaticUtils.getString("waistline");
@@ -2395,7 +2418,6 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
             SpannableString spannableString = new SpannableString(str + " ");
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.gray_text));
             spannableString.setSpan(colorSpan, 0, str.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            adapter.getTvThr().setText(spannableString);
             if ("waistline".equals(type)) {
                 MultiItemEntity multiItemEntity2 = multiItemEntityArrayList.get(help.getBindingAdapterPosition() + 2);
                 HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
@@ -2405,6 +2427,7 @@ public class MySugarFilesActivity extends BaseHandlerEventBusActivity implements
                 HealthArchiveGroupLevelOneBean levelOneBean2 = (HealthArchiveGroupLevelOneBean) multiItemEntity2;
                 levelOneBean2.setContent(str);
             }
+            adapter.getTvThr().setText(spannableString);
         }
     }
 
