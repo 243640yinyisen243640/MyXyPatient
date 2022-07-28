@@ -11,12 +11,13 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.utils.MD5Utils;
 import com.vice.bloodpressure.utils.TextWatcherUtils;
 import com.wei.android.lib.colorview.view.ColorTextView;
 
@@ -124,6 +125,9 @@ public class UserPhoneInputPhoneNumberActivity extends BaseHandlerActivity {
         map.put("username", phone);
         map.put("oldusername", oldUserName);
         map.put("type", type);
+        //新加参数  sign  通过Md5加密  (zzxykj+手机号+da317b17f20f2638f60364666e83b2b7)   md5加密
+        String signParam = "zzxykj" + phone + "da317b17f20f2638f60364666e83b2b7";
+        map.put("sign", MD5Utils.getMD5(signParam));
         XyUrl.okPostSave(XyUrl.SEND_CODE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {

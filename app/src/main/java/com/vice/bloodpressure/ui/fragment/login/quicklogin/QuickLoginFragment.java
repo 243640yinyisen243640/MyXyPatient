@@ -29,6 +29,7 @@ import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.fragment.login.registerandlogin.LoginRegisterInputRegisterCodeFragment;
+import com.vice.bloodpressure.utils.MD5Utils;
 import com.vice.bloodpressure.utils.TextWatcherUtils;
 import com.wei.android.lib.colorview.view.ColorTextView;
 
@@ -159,6 +160,9 @@ public class QuickLoginFragment extends BaseFragment {
         HashMap map = new HashMap<>();
         map.put("username", phoneNumber);
         map.put("type", ConstantParam.SendCodeType.QUICK_LOGIN.getName());
+        //新加参数  sign  通过Md5加密  (zzxykj+手机号+da317b17f20f2638f60364666e83b2b7)   md5加密
+        String signParam = "zzxykj" + phoneNumber + "da317b17f20f2638f60364666e83b2b7";
+        map.put("sign", MD5Utils.getMD5(signParam));
         XyUrl.okPostSave(XyUrl.SEND_CODE, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {

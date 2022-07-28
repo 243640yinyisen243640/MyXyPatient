@@ -396,7 +396,8 @@ public class XyUrl {
     public final static String RESET_PWD = HOST_URL + "/index/Login/reLogin";
     //登录注册结束
     //商城标题
-    public final static String GET_SHOP_TITLE = HOST_URL + "/index/index/gettitlecs";
+    public final
+    static String GET_SHOP_TITLE = HOST_URL + "/index/index/gettitlecs";
     //检验数据开始
     //返回各监测信息最新更新时间
     public final static String GET_EXAMINE_TIME = HOST_URL + "/port/record/getExamineTime";
