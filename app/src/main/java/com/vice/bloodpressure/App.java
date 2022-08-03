@@ -115,16 +115,6 @@ public class App extends BaseApplication implements RongIMClient.ConnectionStatu
         }
 
 
-//        initJPush();
-//        initIm();
-//        initRxHttp();
-//        initBle();
-//        initOpenInstall();
-//        initBugly();
-//        initAliPush();
-//        initAudio();
-//        initUmeng();
-
     }
 
 

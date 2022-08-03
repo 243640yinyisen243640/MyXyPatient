@@ -24,7 +24,7 @@ public class SharedPreferencesUtils {
     //饮食第一项
     public static final String SPORT = "sport";//kankan这个
 
-    public static final String IS_AGREE = "is_agree";//这个0是什么知道了吗
+    public static final String IS_AGREE = "is_agree";
 
 
     private static SharedPreferences getSharedPreferences(Context context) {
