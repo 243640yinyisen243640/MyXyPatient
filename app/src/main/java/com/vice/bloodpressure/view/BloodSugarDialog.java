@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.azhon.appupdate.utils.DensityUtil;
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
@@ -61,9 +60,11 @@ public class BloodSugarDialog extends Dialog {
         setContentView(view);
         Window win = getWindow();
         WindowManager.LayoutParams lp = win.getAttributes();
-        lp.gravity = Gravity.CENTER;
-        lp.height = DensityUtil.dip2px(context, 350);
-        lp.width = DensityUtil.dip2px(context, 300);
+        lp.gravity = Gravity.TOP;
+        //        lp.height = DensityUtil.dip2px(context, 350);
+        lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        //        lp.width = DensityUtil.dip2px(context, 300);
+        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
         win.setAttributes(lp);
     }
 
@@ -91,7 +92,7 @@ public class BloodSugarDialog extends Dialog {
                 //                });
 
 
-                PickerUtils.showTimeWindow(context, new boolean[]{false, false, false, true, true, false}, DataFormatManager.TIME_FORMAT_H_M, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(context, new boolean[]{false, false, false, true, true, false}, DataFormatManager.TIME_FORMAT_H_M, all,new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvTime.setText(content);
@@ -118,6 +119,10 @@ public class BloodSugarDialog extends Dialog {
                 }
                 saveData();
             }
+        });
+
+        all.setOnClickListener(v -> {
+            dismiss();
         });
     }
 

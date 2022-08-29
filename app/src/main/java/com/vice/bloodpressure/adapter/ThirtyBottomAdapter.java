@@ -172,6 +172,8 @@ public class ThirtyBottomAdapter extends BaseQuickAdapter<SevenAndThirtyBloodSug
                     String timeMd = ymdStrFormatToMdStr(time);
                     //没有数据 点击添加
                     Dialog dialog = new BloodSugarDialog(context, R.style.bloodDialog, typePosition, timeMd);
+                    dialog.setCancelable(true);
+                    dialog.setCanceledOnTouchOutside(true);
                     dialog.show();
                 }
             }

@@ -74,7 +74,7 @@ public class BloodSugarDialogHome extends Dialog {
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
         //        lp.width = DensityUtil.dip2px(context, 300);
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        win.setAttributes(lp);//这是什么呀
+        win.setAttributes(lp);
 
     }
 
