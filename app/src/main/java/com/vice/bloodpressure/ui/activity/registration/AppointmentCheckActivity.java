@@ -109,8 +109,6 @@ public class AppointmentCheckActivity extends BaseHandlerActivity {
         ScheduleInfoPostBean data = (ScheduleInfoPostBean) getIntent().getSerializableExtra("data");
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         String schday = data.getSchday();
-        Log.i("yys", "getCheckData1time====" + schday);
-
         String sid = data.getSid();
         String type = data.getType();
         Call<String> requestCall = DataManager.getCheckData1(sid, schday, loginBean.getToken(), type, (call, response) -> {

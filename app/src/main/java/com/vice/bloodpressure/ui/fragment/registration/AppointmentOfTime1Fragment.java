@@ -353,9 +353,12 @@ public class AppointmentOfTime1Fragment extends BaseFragment {
      */
     private void getAndRefresh(int position) {
 
-        String str = allInfo.getTime().get(position);
-        getList(str);
-        initRefresh(str);
+        if (allInfo!=null){
+            String str = allInfo.getTime().get(position);
+            getList(str);
+            initRefresh(str);
+        }
+
     }
 
     /**
