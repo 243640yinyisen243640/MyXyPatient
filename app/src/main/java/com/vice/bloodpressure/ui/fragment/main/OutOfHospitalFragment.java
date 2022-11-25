@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,11 +75,12 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
 
     //
     private NearHospitalAdapter adapter;
-    private List<HospitalBean> bloodPressureList;//血压数据
+    private List<HospitalBean> bloodPressureList = new ArrayList<>();
     private List<HospitalBean> bpList;//上拉加载数据
-    private int i = 2;//上拉加载页数
+    private int i = 1;//上拉加载页数
     //
     private String proId;
+    private String cityId;
     private SimpleImmersionProxy mSimpleImmersionProxy = new SimpleImmersionProxy(this);
 
     @Override
@@ -93,28 +95,29 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
 
                 spLeft.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
                         int itemId = spLeft.getSelectedItemPosition();
-                        String pCityCode = pList.get(itemId).getCitycode() + "";
+                        proId = pList.get(itemId).getCitycode() + "";
                         int pId = pList.get(itemId).getId();
                         TextView textView = view.findViewById(R.id.tv_spinner);
                         if (!textView.getText().equals("未选择")) {
                             textView.setTextColor(Color.GREEN);
                         }
+                        i = 1;
+                        cityId = "";
                         if (0 == itemId) {
                             //恢复初始数据
-                            getHospital("", "");//获取默认的列表
                             cityList = new ArrayList<>();
                             CityBean city = new CityBean("未选择", "");
                             cityList.add(city);
                             cAdapter = new SpinnerAdapter<>(cityList, 2);
                             spRight.setAdapter(cAdapter);
+                            getHospital();//获取默认的列表
                         } else {
                             //开始搜索
-                            getHospital(pCityCode, "");
+                            getHospital();
                             getCity(pId);
                         }
-                        proId = pCityCode;
                     }
 
                     @Override
@@ -131,18 +134,15 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
                 spRight.setAdapter(cAdapter);
                 spRight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
                         int itemCityId = spRight.getSelectedItemPosition();
-                        String cityId = cList.get(itemCityId).getCitycode();
+                        cityId = cList.get(itemCityId).getCitycode();
                         TextView textView = view.findViewById(R.id.tv_spinner);
                         if (!textView.getText().equals("未选择")) {
                             textView.setTextColor(Color.GREEN);
                         }
-                        if (0 == itemCityId) {
-                            getHospital(proId, "");
-                        } else {
-                            getHospital("", cityId);
-                        }
+                        i = 1;
+                        getHospital();
                     }
 
                     @Override
@@ -152,18 +152,28 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
                 });
                 break;
             case 3://医院列表
-                bloodPressureList = (List<HospitalBean>) msg.obj;
-                adapter = new NearHospitalAdapter(Utils.getApp(), R.layout.item_near_hospital, bloodPressureList);
-                lvNearHospital.setAdapter(adapter);
-                break;
-            case 4://医院列表刷新
+                if (i == 1) {
+                    Log.i("xie", "i==1");
+                    bloodPressureList = (List<HospitalBean>) msg.obj;
+                    adapter = new NearHospitalAdapter(Utils.getApp(), R.layout.item_near_hospital, bloodPressureList);
+                    lvNearHospital.setAdapter(adapter);
+                } else {
+                    Log.i("xie", "i=="+i);
+                    bloodPressureList.addAll((List<HospitalBean>) msg.obj);
+                    adapter.notifyDataSetChanged();
+                }
                 i++;
-                adapter.notifyDataSetChanged();
                 break;
+//            case 4://医院列表刷新
+//                i++;
+//                adapter.notifyDataSetChanged();
+//                break;
             case GET_NO_DATA:
                 String errorMsg = (String) msg.obj;
                 ToastUtils.showShort(errorMsg);
-                lvNearHospital.setAdapter(null);
+                if (i == 1) {
+                    lvNearHospital.setAdapter(null);
+                }
                 break;
         }
     }
@@ -179,7 +189,7 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
         user = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         initViews(rootView);
         //获取默认的列表
-        getHospital("", "");
+        getHospital();
         //获取默认省份
         getData();
         //默认城市
@@ -197,22 +207,24 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
             public void onRefresh(RefreshLayout refreshlayout) {
                 srlNearHospital.finishRefresh(2000);
                 HashMap map = new HashMap<>();
-                map.put("page", 1);
-                XyUrl.okPost(XyUrl.HOSPITAL, map, new OkHttpCallBack<String>() {
-                    @Override
-                    public void onSuccess(String value) {
-                        bloodPressureList = JSONObject.parseArray(value, HospitalBean.class);
-                        Message message = Message.obtain();
-                        message.what = 3;
-                        message.obj = bloodPressureList;
-                        sendHandlerMessage(message);
-                    }
-
-                    @Override
-                    public void onError(int error, String errorMsg) {
-
-                    }
-                });
+                i = 1;
+                getHospital();
+//                map.put("page", i);
+//                XyUrl.okPost(XyUrl.HOSPITAL, map, new OkHttpCallBack<String>() {
+//                    @Override
+//                    public void onSuccess(String value) {
+//                        bloodPressureList = JSONObject.parseArray(value, HospitalBean.class);
+//                        Message message = Message.obtain();
+//                        message.what = 3;
+//                        message.obj = bloodPressureList;
+//                        sendHandlerMessage(message);
+//                    }
+//
+//                    @Override
+//                    public void onError(int error, String errorMsg) {
+//
+//                    }
+//                });
             }
         });
 
@@ -221,24 +233,25 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 srlNearHospital.finishLoadMore(2000);
-                HashMap map = new HashMap<>();
-                map.put("page", i);
-                //判断
-                XyUrl.okPost(XyUrl.HOSPITAL, map, new OkHttpCallBack<String>() {
-                    @Override
-                    public void onSuccess(String value) {
-                        bpList = JSONObject.parseArray(value, HospitalBean.class);
-                        bloodPressureList.addAll(bpList);
-                        Message message = Message.obtain();
-                        message.what = 4;
-                        sendHandlerMessage(message);
-                    }
-
-                    @Override
-                    public void onError(int error, String errorMsg) {
-
-                    }
-                });
+                getHospital();
+//                HashMap map = new HashMap<>();
+//                map.put("page", i);
+//                //判断
+//                XyUrl.okPost(XyUrl.HOSPITAL, map, new OkHttpCallBack<String>() {
+//                    @Override
+//                    public void onSuccess(String value) {
+//                        bpList = JSONObject.parseArray(value, HospitalBean.class);
+//                        bloodPressureList.addAll(bpList);
+//                        Message message = Message.obtain();
+//                        message.what = 4;
+//                        sendHandlerMessage(message);
+//                    }
+//
+//                    @Override
+//                    public void onError(int error, String errorMsg) {
+//
+//                    }
+//                });
             }
         });
 
@@ -247,10 +260,10 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
     /**
      * 医院列表
      */
-    private void getHospital(String proId, String cityId) {
+    private void getHospital(/*String proId, String cityId*/) {
         if (TextUtils.isEmpty(proId) && TextUtils.isEmpty(cityId)) {
             HashMap map = new HashMap<>();
-            map.put("page", 1);
+            map.put("page", i);
             XyUrl.okPost(XyUrl.HOSPITAL, map, new OkHttpCallBack<String>() {
                 @Override
                 public void onSuccess(String value) {
@@ -273,7 +286,7 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
             });
         } else if (!TextUtils.isEmpty(proId) && TextUtils.isEmpty(cityId)) {//搜索省
             HashMap map = new HashMap<>();
-            map.put("page", 1);
+            map.put("page", i);
             map.put("citycode", proId);
             XyUrl.okPost(XyUrl.SEARCH_PROVINCE_HOSPITAL, map, new OkHttpCallBack<String>() {
                 @Override
@@ -297,7 +310,7 @@ public class OutOfHospitalFragment extends BaseFragment implements SimpleImmersi
             });
         } else {//搜索市
             HashMap map = new HashMap<>();
-            map.put("page", 1);
+            map.put("page", i);
             map.put("citycode", cityId);
             XyUrl.okPost(XyUrl.SEARCH_CITY_HOSPITAL, map, new OkHttpCallBack<String>() {
                 @Override

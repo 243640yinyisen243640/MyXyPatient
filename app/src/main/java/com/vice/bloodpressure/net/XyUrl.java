@@ -549,6 +549,7 @@ public class XyUrl {
         }
         //Json方式提交
         JSONObject json = new JSONObject(params);
+        Log.i("HTTPLogHTTPLog", json.toString());
         RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, json.toString());
         //提交
         Request request = new Request.Builder()

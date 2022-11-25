@@ -46,7 +46,8 @@ dependencies {
     implementation 'com.github.getActivity:GsonFactory:5.2'
     //RxHttp结束
     //alipaysdk
-    implementation(name: 'alipaysdk-noutdid-15.8.01.201215151847', ext: 'aar')
+//    implementation(name: 'alipaysdk-noutdid-15.8.01.201215151847', ext: 'aar')
+    api 'com.alipay.sdk:alipaysdk-android:+@aar'
     //wechatpaysdk
 //    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.21'
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'

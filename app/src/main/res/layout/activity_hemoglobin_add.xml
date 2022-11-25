@@ -16,7 +16,6 @@
             android:id="@+id/tv_blood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:text="@string/sugar_value"
             android:textSize="@dimen/size_15" />
 
@@ -63,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="用药时间"
+            android:text="检测时间"
             android:textSize="@dimen/size_15" />
 
         <TextView
