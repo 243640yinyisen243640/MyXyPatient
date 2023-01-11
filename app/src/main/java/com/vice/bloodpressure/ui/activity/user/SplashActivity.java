@@ -118,7 +118,7 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
         setSplash();
         //获取唤醒参数
         OpenInstall.getWakeUp(getIntent(), wakeUpAdapter);
-        initStepService();
+
     }
 
     @Override
@@ -172,6 +172,7 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
      */
     private void setSplash() {
         if ("1".equals(SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.IS_AGREE))) {
+            initStepService();
             timer = new CountDownTimer(countDownTime, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -244,6 +245,7 @@ public class SplashActivity extends BaseActivity implements RongIMClient.Connect
             });
             agressTextView.setOnClickListener(v -> {
                 SharedPreferencesUtils.putBean(getPageContext(), SharedPreferencesUtils.IS_AGREE, "1");
+                initStepService();
                 initJPush();
                 initIm();
                 initRxHttp();

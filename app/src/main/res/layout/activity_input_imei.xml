@@ -42,7 +42,7 @@
         android:layout_marginTop="@dimen/dp_30"
         android:layout_marginRight="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_20"
-        android:text="确定输入"
+        android:text="确认绑定"
         app:backgroundColorNormal="@color/main_home"
         app:cornerRadiusNormal="4dp" />
 

@@ -15,6 +15,9 @@ public class StepBootCompleteReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (!"1".equals(StepSharedPreferencesUtil.getParam(context,"is_agree","0"))){
+            return;
+        }
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             try {
                 Intent todayStepIntent = new Intent(context, StepService.class);
