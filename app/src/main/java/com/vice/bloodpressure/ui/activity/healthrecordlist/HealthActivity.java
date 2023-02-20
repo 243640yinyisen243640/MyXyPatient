@@ -123,7 +123,6 @@ public class HealthActivity extends BaseActivity {
                     @Override
                     public void onDenied() {
                         ToastUtils.showShort(R.string.please_open_gps);
-                        Log.e("yys", "accessFineLocationDenied");
                     }
                 }).request();
     }

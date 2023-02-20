@@ -109,7 +109,6 @@ public class DataManager {
     }
 
     /**
-     *
      * @param sid
      * @param schday
      * @param accessToken
@@ -118,7 +117,7 @@ public class DataManager {
      * @param failureCallBack
      * @return
      */
-    public static Call<String> getCheckData1(String sid, String schday,String accessToken,String type, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> getCheckData1(String sid, String schday, String accessToken, String type, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         HashMap<String, String> map = new HashMap<>();
         map.put("sid", sid);
         map.put("schday", schday);
@@ -126,5 +125,24 @@ public class DataManager {
         map.put("access_token", accessToken);
         map.put("version", ConstantParam.SERVER_VERSION);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, ScheduleInfoBean.class, "/scheduling/Schedule/scheduleInfo", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * @param glucosevalue
+     * @param category
+     * @param datetime
+     * @param accessToken
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> saveXuetang(String glucosevalue, String category, String datetime, String accessToken, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("glucosevalue", glucosevalue);
+        map.put("category", category);
+        map.put("datetime", datetime);
+        map.put("access_token", accessToken);
+        map.put("version", ConstantParam.SERVER_VERSION);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, ScheduleInfoBean.class, "/port/record/addbloodglucose", map, successCallBack, failureCallBack);
     }
 }

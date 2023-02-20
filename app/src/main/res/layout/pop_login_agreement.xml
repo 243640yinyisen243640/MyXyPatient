@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/shape_bg_white_5"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="35dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="30dp">
+
+        <TextView
+            android:id="@+id/tv_login_a_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black_text"
+            android:src="@drawable/default_img_main_adver"
+            android:text="用户协议及隐私政策"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_login_a_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="#ABABAB"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_login_a_un"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_black_1"
+                android:gravity="center"
+                android:text="@string/privacy_protect_disagree"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_login_a_agree"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_privacy_protect_bg_agree"
+                android:gravity="center"
+                android:text="@string/privacy_protect_agree"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

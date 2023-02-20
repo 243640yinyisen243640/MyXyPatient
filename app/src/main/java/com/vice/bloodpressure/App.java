@@ -102,7 +102,6 @@ public class App extends BaseApplication implements RongIMClient.ConnectionStatu
         super.onCreate();
         String isAgreeStr = (String) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.IS_AGREE);
         if ("1".equals(isAgreeStr)){
-            Log.i("yys","onCreate==");
             initJPush();
             initIm();
             initRxHttp();

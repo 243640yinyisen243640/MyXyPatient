@@ -3,6 +3,7 @@ package com.vice.bloodpressure.ui.activity.healthrecordadd;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -12,20 +13,21 @@ import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.lsp.RulerView;
-import com.lyd.baselib.utils.eventbus.EventBusUtils;
-import com.lyd.baselib.utils.eventbus.EventMessage;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.GvSugarAddAdapter;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.bean.ResetTargetBean;
 import com.vice.bloodpressure.bean.ScopeBean;
-import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.constant.DataFormatManager;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.PickerUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.popu.CenterPopup;
+import com.vice.bloodpressure.view.popu.XueTangFailedPopup;
 import com.wei.android.lib.colorview.view.ColorTextView;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +39,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import retrofit2.Call;
 
 
 /**
@@ -71,6 +74,8 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
     //popu结束
     private ScopeBean targetBean;
 
+    private XueTangFailedPopup failedPopup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +96,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
     private void setTitleBar() {
         setTitle("记录血糖");
         showTvSave();
-        getTvSave().setOnClickListener(this);
+        getLlMore().setOnClickListener(this);
     }
 
     /**
@@ -103,6 +108,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
         tvDesc = popup.findViewById(R.id.tv_desc);
         ColorTextView tvKnow = popup.findViewById(R.id.tv_know);
         tvKnow.setOnClickListener(this);
+        failedPopup = new XueTangFailedPopup(BloodSugarAddActivity.this);
     }
 
     /**
@@ -122,7 +128,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
 
             @Override
             public void onError(int error, String errorMsg) {
-
+                Log.i("yys", "error==" + error + "errorMsg==" + errorMsg);
             }
         });
     }
@@ -225,7 +231,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
                 tvDesc.setText(String.format("您上传%s低于正常范围", contentDouble));
                 popup.showPopupWindow();
             } else {
-                toDoSave();
+                save();
             }
         }
     }
@@ -243,18 +249,43 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
         XyUrl.okPostSave(XyUrl.ADD_SUGAR, map, new OkHttpCallBack<String>() {
             @Override
             public void onSuccess(String value) {
-                ToastUtils.showShort(R.string.save_ok);
-                EventBusUtils.post(new EventMessage<>(ConstantParam.BLOOD_SUGAR_ADD));
+                //                ToastUtils.showShort(R.string.save_ok);
+                //                EventBusUtils.post(new EventMessage<>(ConstantParam.BLOOD_SUGAR_ADD));
+
+                failedPopup.showPopupWindow();
+
                 finish();
             }
 
             @Override
             public void onError(int error, String errorMsg) {
+                Log.i("yys", "error==" + error + "errorMsg" + errorMsg);
+                ToastUtils.showShort(errorMsg);
 
             }
         });
     }
 
+
+    private void save() {
+        String time = tvCheckTime.getText().toString().trim();
+        String sugarValue = tvResult.getText().toString().trim();
+        LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        Call<String> requestCall = DataManager.saveXuetang(sugarValue, (selectPosition + 1) + "", time, userLogin.getToken(), (call, response) -> {
+            failedPopup.showPopupWindow();
+            finish();
+        }, (call, t) -> {
+
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (failedPopup != null) {
+            failedPopup.dismiss();
+        }
+    }
 
     /**
      * 设置时间
@@ -313,8 +344,6 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
             }
         });
     }
-
-
 
 
     @OnItemClick(R.id.gv_time)
@@ -420,12 +449,12 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_more:
+            case R.id.ll_more:
                 toSave();
                 break;
             case R.id.tv_know:
                 popup.dismiss();
-                toDoSave();
+                save();
                 break;
         }
     }

@@ -1,7 +1,9 @@
 package com.vice.bloodpressure.ui.fragment.login.registerandlogin;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Message;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -36,6 +38,7 @@ import com.vice.bloodpressure.ui.fragment.login.phoneoridcardlogin.LoginBindPhon
 import com.vice.bloodpressure.ui.fragment.login.quicklogin.QuickLoginFragment;
 import com.vice.bloodpressure.utils.SPUtils;
 import com.vice.bloodpressure.utils.edittext.IdNumberKeyListener;
+import com.vice.bloodpressure.view.popu.LoginAgreementPop;
 import com.wei.android.lib.colorview.view.ColorTextView;
 
 import java.util.HashMap;
@@ -62,6 +65,7 @@ public class LoginFragment extends BaseFragment {
     TextView agreeTextView;
     private String phoneOrIdCard;
     private String pwd;
+    private String spanColor = "#333333";//隐私政策span颜色值
 
     @Override
     protected int getLayoutId() {
@@ -188,11 +192,64 @@ public class LoginFragment extends BaseFragment {
             ToastUtils.showShort("请输入密码");
             return;
         }
+        //        if (!agreeTextView.isSelected()) {
+        //            ToastUtils.showShort("请先勾选协议");
+        //            return;
+        //        }
         if (!agreeTextView.isSelected()) {
-            ToastUtils.showShort("请先勾选协议");
+            LoginAgreementPop loginAgreementPop = new LoginAgreementPop(getPageContext());
+            TextView contentTextView = loginAgreementPop.findViewById(R.id.tv_login_a_content);
+            TextView unAgreeTextView = loginAgreementPop.findViewById(R.id.tv_login_a_un);
+            TextView agreeTextView = loginAgreementPop.findViewById(R.id.tv_login_a_agree);
+            String privacyProtectHint = getString(R.string.login_agreement);
+            SpannableString ss = new SpannableString(privacyProtectHint);
+
+            ss.setSpan(new UnderLineClickSpan() {
+                @Override
+                public void onClick(View widget) {
+                    Intent intent = new Intent(getPageContext(), com.vice.bloodpressure.base.activity.BaseWebViewActivity.class);
+                    intent.putExtra("title", "用户服务协议");
+                    intent.putExtra("url", "file:///android_asset/user_protocol.html");
+                    startActivity(intent);
+                }
+            }, privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.indexOf("《"), privacyProtectHint.indexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            ss.setSpan(new UnderLineClickSpan() {
+                @Override
+                public void onClick(View widget) {
+                    Intent intent = new Intent(getPageContext(), com.lyd.modulemall.ui.BaseWebViewActivity.class);
+                    intent.putExtra("title", "隐私政策");
+                    intent.putExtra("url", "http://chronics.xiyuns.cn/index/caseapp");
+                    startActivity(intent);
+                }
+            }, privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor(spanColor)), privacyProtectHint.lastIndexOf("《"), privacyProtectHint.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            contentTextView.setText(ss);
+            contentTextView.setHighlightColor(Color.TRANSPARENT);
+            contentTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            unAgreeTextView.setOnClickListener(v -> {
+                loginAgreementPop.dismiss();
+
+            });
+            agreeTextView.setOnClickListener(v -> {
+                toDoLogin();
+            });
+            loginAgreementPop.showPopupWindow();
             return;
         }
         toDoLogin();
+    }
+
+    private abstract class UnderLineClickSpan extends ClickableSpan {
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(ds.linkColor);
+            ds.setUnderlineText(false);
+            ds.clearShadowLayer();
+        }
     }
 
     /**

@@ -128,6 +128,12 @@ public class XueTangFragment extends BaseEventBusFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_xuetang;
     }

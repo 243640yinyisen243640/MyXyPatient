@@ -94,7 +94,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //OpenInstall安装
-    implementation files('libs/OpenInstall_v2.5.0.jar')
+    implementation files('libs/OpenInstall_v2.6.3.jar')
+
     implementation project(path: ':libpickers')
     implementation project(path: ':libchart')
     implementation project(path: ':libsteps')
