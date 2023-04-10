@@ -95,7 +95,8 @@ public class BloodOxygenAddActivity extends BaseHandlerActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_select_time:
-                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, true, true, false}, DataFormatManager.TIME_FORMAT_Y_M_D_H_M, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(),new boolean[]{true, true, true, false, false, false},
+                        DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         tvTime.setText(content);

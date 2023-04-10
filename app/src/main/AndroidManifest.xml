@@ -455,10 +455,10 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="0TNU2gINttTz3uHKHuP4nNVHDgGhwT4z" />
 
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" /> <!-- 计步Service -->
+<!--        <service-->
+<!--            android:name="com.baidu.location.f"-->
+<!--            android:enabled="true"-->
+<!--            android:process=":remote" /> &lt;!&ndash; 计步Service &ndash;&gt;-->
         <service
             android:name="com.lyd.libsteps.StepService"
             android:enabled="true"

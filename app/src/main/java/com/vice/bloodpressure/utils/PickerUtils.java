@@ -152,7 +152,8 @@ public class PickerUtils {
     }
 
 
-    public static void showTimeWindow(Context context, boolean[] booleans, String dataManager, final PickerUtils.TimePickerCallBack callBack) {
+    public static void showTimeWindow(Context context, boolean[] booleans, String dataManager,
+                                      final PickerUtils.TimePickerCallBack callBack) {
         Calendar currentDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
@@ -166,12 +167,11 @@ public class PickerUtils {
                 .setDate(currentDate)
                 .setRangDate(startDate, endDate)
                 .setType(booleans)
-                .setSubmitColor(ContextCompat.getColor(context, R.color.blue))
+                .setSubmitColor(ContextCompat.getColor(context, R.color.main_green))
                 .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
                 .build();
         timePickerView.show();
     }
-
 
 
     public static void showTimeWindow(Context context, boolean[] booleans, String dataManager, FrameLayout parentFra, final PickerUtils.TimePickerCallBack callBack) {

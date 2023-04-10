@@ -63,6 +63,6 @@ project.ext {
 
 
     applicationId = "com.vice.bloodpressure"
-    versionCode = 74
-    versionName = "1.6.5"
+    versionCode = 76
+    versionName = "1.6.7"
 }

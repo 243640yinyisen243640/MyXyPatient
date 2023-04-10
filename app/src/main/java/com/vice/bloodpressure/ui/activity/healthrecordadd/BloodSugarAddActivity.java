@@ -5,6 +5,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -109,6 +110,13 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
         ColorTextView tvKnow = popup.findViewById(R.id.tv_know);
         tvKnow.setOnClickListener(this);
         failedPopup = new XueTangFailedPopup(BloodSugarAddActivity.this);
+        failedPopup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        failedPopup.setBackPressEnable(false);
+        failedPopup.setAllowDismissWhenTouchOutside(false);
+        TextView sureTv = failedPopup.findViewById(R.id.tv_xuetang_add_sure);
+        sureTv.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     /**
@@ -273,7 +281,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         Call<String> requestCall = DataManager.saveXuetang(sugarValue, (selectPosition + 1) + "", time, userLogin.getToken(), (call, response) -> {
             failedPopup.showPopupWindow();
-            finish();
+
         }, (call, t) -> {
 
         });

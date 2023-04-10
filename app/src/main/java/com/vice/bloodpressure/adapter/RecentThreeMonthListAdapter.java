@@ -22,7 +22,7 @@ public class RecentThreeMonthListAdapter extends CommonAdapter<SugarReportBean.D
     @Override
     protected void convert(ViewHolder viewHolder, SugarReportBean.DanbaiBean item, int position) {
         String datetime = item.getDatetime();
-        int value = TurnsUtils.getInt(item.getDiastaticvalue(), 0);
+        float value = TurnsUtils.getFloat(item.getDiastaticvalue(), 0);
         String condition = item.getBiao();
         //1型糖尿病6.1~7.0%
         //2型糖尿病6.0%~7.0%
