@@ -1148,12 +1148,14 @@
         <item>@drawable/device_list_vivachek</item>
         <item>@drawable/device_list_aicare_wise_medical</item>
         <item>@drawable/device_list_sphygmomanometer</item>
+        <item>@drawable/logo_shukewei</item>
     </array>
 
     <array name="my_device_list_name">
         <item>微策一诺</item>
         <item>小糖医</item>
         <item>血压计</item>
+        <item>舒可唯</item>
     </array>
 
 

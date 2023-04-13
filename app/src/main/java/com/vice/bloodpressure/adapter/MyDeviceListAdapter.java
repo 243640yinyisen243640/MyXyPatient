@@ -52,6 +52,13 @@ public class MyDeviceListAdapter extends BaseQuickAdapter<String, BaseViewHolder
                         intent.putExtra("type", "4");
                         intent.putExtra("imei", "");
                         break;
+                    case 3:
+                        intent = new Intent(Utils.getApp(), InputImeiActivity.class);
+                        intent.putExtra("type", "2");
+                        intent.putExtra("imei", "");
+                        break;
+                    default:
+                        break;
                 }
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Utils.getApp().startActivity(intent);
