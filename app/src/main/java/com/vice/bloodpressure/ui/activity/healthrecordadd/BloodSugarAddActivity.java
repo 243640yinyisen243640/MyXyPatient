@@ -436,6 +436,9 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
                 initRuleListener();
                 setGv();
                 break;
+            default:
+                break;
+
         }
     }
 

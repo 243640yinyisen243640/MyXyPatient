@@ -54,7 +54,7 @@ public class MyDeviceListAdapter extends BaseQuickAdapter<String, BaseViewHolder
                         break;
                     case 3:
                         intent = new Intent(Utils.getApp(), InputImeiActivity.class);
-                        intent.putExtra("type", "2");
+                        intent.putExtra("type", "5");
                         intent.putExtra("imei", "");
                         break;
                     default:

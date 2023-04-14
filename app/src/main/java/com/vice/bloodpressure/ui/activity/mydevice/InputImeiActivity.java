@@ -8,13 +8,13 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseActivity;
-import com.lyd.baselib.bean.LoginBean;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.MainActivity;
-import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.wei.android.lib.colorview.view.ColorEditText;
 
 import java.util.HashMap;
@@ -70,6 +70,14 @@ public class InputImeiActivity extends BaseActivity {
                 imgBg.setImageResource(R.drawable.default_scan_bg);
                 tvHint.setText("请确定您输入正确的设备号");
                 etImei.setHint("请输入设备号");
+                break;
+            case "5":
+                setTitle("绑定设备号");
+                imgBg.setImageResource(R.drawable.bg_shukewei);
+                tvHint.setText("请确定您输入正确的SN号码");
+                etImei.setHint("请输入SN号码");
+                break;
+            default:
                 break;
         }
     }
