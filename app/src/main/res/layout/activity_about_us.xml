@@ -87,7 +87,7 @@
 
         <TextView
             style="@style/text_gray_14_w_w"
-            android:text="Copyright©2016-2021" />
+            android:text="Copyright©2016-2023" />
 
         <TextView
             style="@style/text_gray_14_w_w"

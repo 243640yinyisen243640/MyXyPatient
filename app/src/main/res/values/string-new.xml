@@ -12,7 +12,7 @@
 3.我们会采用业界先进的安全保护措施保护您的信息安全。\n
 4.未经您同意，我们不会从第三方处获取，共享或向其提供您的信息。\n
 5.您可以查询，更正，删除您的个人信息，我们也提供账户注销的渠道。</string>
-    <string name="privacy_protect_disagree">暂不同意</string>
+    <string name="privacy_protect_disagree">不同意</string>
     <string name="privacy_protect_agree">同意</string>
     <string name="main_cancle">取消</string>
     <string name="tip">提示</string>

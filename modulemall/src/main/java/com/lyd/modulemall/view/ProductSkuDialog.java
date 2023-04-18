@@ -164,6 +164,7 @@ public class ProductSkuDialog extends Dialog {
                 }
                 binding.tvSkuInfo.setText("已选：" + builder.toString());
                 binding.tvSkuQuantity.setText(String.format(stockQuantityFormat, selectedSku.getStockQuantity()));
+                binding.tvSkuSellingPrice.setText(String.format(priceFormat, NumberUtils.formatNumber(selectedSku.getSellingPrice())));
                 //binding.btnSubmit.setEnabled(true);
                 String quantity = binding.etSkuQuantityInput.getText().toString();
                 if (!TextUtils.isEmpty(quantity)) {
