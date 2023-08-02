@@ -141,6 +141,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".ui.activity.smartdiet.DietPlanTwoStepsActivity" />
         <activity android:name=".ui.activity.smartdiet.DietPlanDetailActivity" />
+        <activity android:name=".ui.activity.smartdiet.DietPlanResultPopActivity" />
         <activity android:name=".ui.activity.smartdiet.DietPlanBaseInfoActivity" />
         <activity android:name=".ui.activity.smartdiet.DietPlanMainActivity" />
         <activity android:name=".ui.activity.homesign.SignPatientInfoActivity" />

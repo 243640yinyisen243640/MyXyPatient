@@ -167,7 +167,14 @@ public class ConfirmOrderActivity extends BaseViewBindingActivity<ActivityConfir
                         //设置优惠券
                         coupon_list = data.getCoupon_list();
                         if (coupon_list != null && coupon_list.size() > 0) {
-                            binding.tvCouponText.setText("请选择优惠券");
+                            coupon_id = data.getCoupon_list().get(0).getCouon_user_id();
+                            coupon_money = data.getCoupon_list().get(0).getCoupon_money();
+                            at_least = data.getCoupon_list().get(0).getAt_least();
+                            double allMoney = goods_total_money - TurnsUtils.getDouble(coupon_money, 0);
+                            binding.tvProductAllMoney.setText(MoneyUtils.formatPrice(allMoney));
+                            binding.tvBottomAllMoney.setText(MoneyUtils.formatPrice(allMoney));
+                            binding.tvCouponText.setText("省" + coupon_money + "元:  " + "满" + at_least + "-" + coupon_money);
+
                             //注册选择器
                             SingleCheckHelper singleCheckHelper = new SingleCheckHelper();
                             singleCheckHelper.register(ConfirmOrderBean.CouponListBean.class, new CheckHelper.Checker<ConfirmOrderBean.CouponListBean, BaseViewHolder>() {

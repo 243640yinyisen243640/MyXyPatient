@@ -22,6 +22,7 @@ import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.smartdiet.DietPlanBaseInfoActivity;
 import com.vice.bloodpressure.ui.activity.smartdiet.DietPlanResultActivity;
+import com.vice.bloodpressure.ui.activity.smartdiet.DietPlanResultPopActivity;
 import com.vice.bloodpressure.ui.activity.smartdiet.DietPlanTwoStepsActivity;
 import com.vice.bloodpressure.utils.RxTimerUtils;
 import com.vice.bloodpressure.utils.SPUtils;
@@ -124,7 +125,12 @@ public class DietPlanQuestionFourFragment extends BaseFragment implements View.O
                     toDoSubmit345();
                 } else {
                     //提交题目
-                    selectPopup.showPopupWindow();
+//                    selectPopup.showPopupWindow();
+                    //      修改把弹出修改为跳转页面
+                    Intent intent = new Intent(getPageContext(), DietPlanResultPopActivity.class);
+                    intent.putExtra("bean",bean);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
                 break;
         }
@@ -202,31 +208,25 @@ public class DietPlanQuestionFourFragment extends BaseFragment implements View.O
                 break;
             case ADD_SUCCESS:
                 DietPlanAddSuccessBean data = (DietPlanAddSuccessBean) msg.obj;
-                rxTimer.timer(3 * 1000, new RxTimerUtils.RxAction() {
-                    @Override
-                    public void action(long number) {
-                        createPopup.dismiss();
-                        int id = data.getId();
-                        //清空答题页面
-                        getActivity().finish();
-                        //跳转详情
-                        Intent intent = new Intent(getPageContext(), DietPlanResultActivity.class);
-                        intent.putExtra("id", id);
-                        startActivity(intent);
-                    }
+                rxTimer.timer(3 * 1000, number -> {
+                    int id = data.getId();
+                    //清空答题页面
+                    getActivity().finish();
+                    //跳转详情
+                    Intent intent = new Intent(getPageContext(), DietPlanResultActivity.class);
+                    intent.putExtra("id", id);
+                    startActivity(intent);
+
                 });
                 EventBusUtils.post(new EventMessage<>(ConstantParam.HOME_DIET_QUESTION_SUBMIT));
                 Log.i("yys", "event==发送");
                 break;
             case ADD_FAILED:
-                rxTimer.timer(3 * 1000, new RxTimerUtils.RxAction() {
-                    @Override
-                    public void action(long number) {
-                        createPopup.dismiss();
-                        Intent intent = new Intent(getPageContext(), DietPlanBaseInfoActivity.class);
-                        intent.putExtra("type", "notMatch");
-                        startActivity(intent);
-                    }
+                rxTimer.timer(3 * 1000, number -> {
+                    Intent intent = new Intent(getPageContext(), DietPlanBaseInfoActivity.class);
+                    intent.putExtra("type", "notMatch");
+                    startActivity(intent);
+                    getActivity().finish();
                 });
                 EventBusUtils.post(new EventMessage<>(ConstantParam.HOME_DIET_QUESTION_SUBMIT));
                 Log.i("yys", "event==发送");

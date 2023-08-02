@@ -3,26 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="275dp"
+        android:id="@+id/ll_user_smart_diet"
+        android:layout_width="match_parent"
         android:layout_height="375dp"
-        android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
 
-        <TextView
-            style="@style/text_black_14_w_w"
-            android:layout_marginTop="@dimen/dp_30"
-            android:text="查看我的饮食方案" />
-
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="275dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:scaleType="centerCrop"
@@ -45,14 +41,39 @@
         </com.wei.android.lib.colorview.view.ColorTextView>
 
 
-        <TextView
+        <com.wei.android.lib.colorview.view.ColorTextView
             android:id="@+id/tv_my_select"
-            style="@style/text_gray_14_w_w"
-            android:layout_marginTop="18dp"
+            style="@style/text_white_16_f_w"
+            android:layout_marginLeft="@dimen/dp_18"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="@dimen/dp_18"
             android:gravity="center_horizontal"
-            android:text="我自己选" />
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:text="我自己选"
+            app:backgroundColorNormal="@color/gray_text"
+            app:cornerRadiusNormal="3dp" />
 
 
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_user_smart_gif"
+        android:layout_width="275dp"
+        android:layout_height="160dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/img_gif"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            style="@style/text_black_14_w_w"
+            android:text="正在努力生成中..." />
     </LinearLayout>
 
 

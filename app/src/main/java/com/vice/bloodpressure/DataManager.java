@@ -1,6 +1,7 @@
 package com.vice.bloodpressure;
 
 import com.vice.bloodpressure.bean.AdverInfo;
+import com.vice.bloodpressure.bean.DietPlanAddSuccessBean;
 import com.vice.bloodpressure.bean.PhysicalExaminationDoctorInfoAllInfo;
 import com.vice.bloodpressure.bean.ScheduleInfoBean;
 import com.vice.bloodpressure.constant.ConstantParam;
@@ -144,5 +145,19 @@ public class DataManager {
         map.put("access_token", accessToken);
         map.put("version", ConstantParam.SERVER_VERSION);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, ScheduleInfoBean.class, "/port/record/addbloodglucose", map, successCallBack, failureCallBack);
+    }
+
+
+    public static Call<String> dietPlanAdd(String sex, String height, String weight, String profession,String dn,String dn_type,String accessToken, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("sex", sex);
+        map.put("height", height);
+        map.put("weight", weight);
+        map.put("profession", profession);
+        map.put("dn", dn);
+        map.put("dn_type", dn_type);
+        map.put("access_token", accessToken);
+        map.put("version", ConstantParam.SERVER_VERSION);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, DietPlanAddSuccessBean.class, "/port/Food/dietPlanAdd", map, successCallBack, failureCallBack);
     }
 }
