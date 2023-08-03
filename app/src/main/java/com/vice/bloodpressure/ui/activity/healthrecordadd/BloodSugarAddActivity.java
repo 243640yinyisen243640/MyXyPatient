@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity.healthrecordadd;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -231,9 +232,11 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
             double contentDouble = TurnsUtils.getDouble(sugarValue, 0);
 
             if (contentDouble > sugarHighDouble) {
-                popup.showPopupWindow();
+                Intent intent = new Intent(getPageContext(),BloodSugarAddUnNormalActivity.class);
+
                 tvDesc.setText(String.format("您上传%s高于正常范围", contentDouble));
                 tvTitle.setText("血糖高了");
+                startActivity(intent);
             } else if (contentDouble < sugarLowDouble) {
                 tvTitle.setText("血糖低了");
                 tvDesc.setText(String.format("您上传%s低于正常范围", contentDouble));
@@ -241,6 +244,19 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
             } else {
                 save();
             }
+
+
+//            if (contentDouble > sugarHighDouble) {
+//                popup.showPopupWindow();
+//                tvDesc.setText(String.format("您上传%s高于正常范围", contentDouble));
+//                tvTitle.setText("血糖高了");
+//            } else if (contentDouble < sugarLowDouble) {
+//                tvTitle.setText("血糖低了");
+//                tvDesc.setText(String.format("您上传%s低于正常范围", contentDouble));
+//                popup.showPopupWindow();
+//            } else {
+//                save();
+//            }
         }
     }
 
