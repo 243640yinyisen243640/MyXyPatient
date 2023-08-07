@@ -1,6 +1,5 @@
 package com.vice.bloodpressure.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -18,9 +17,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.bean.HomeBloodSugarListBean;
 import com.vice.bloodpressure.imp.CallBack;
+import com.vice.bloodpressure.ui.activity.healthrecordadd.MainSugarAddActivity;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.HealthRecordBloodSugarListActivity;
-import com.vice.bloodpressure.view.BloodSugarDialogHome;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -165,15 +165,22 @@ public class HomeBloodSugarAdapter extends BaseQuickAdapter<HomeBloodSugarListBe
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Utils.getApp().startActivity(intent);
                 } else {
-                    String timeMd = ymdStrFormatToMdStr(time);
-                    //没有数据 点击添加
-                    Dialog dialog = new BloodSugarDialogHome(callback, listStr, context, R.style.bloodDialog, typePosition, timeMd);
-                    dialog.setCancelable(true);
-                    dialog.setCanceledOnTouchOutside(true);
+                    Intent intent = new Intent(context, MainSugarAddActivity.class);
+                    intent.putExtra("typePosition", typePosition + "");
+                    intent.putExtra("timeMd", ymdStrFormatToMdStr(time));
+                    intent.putExtra("listStr", (Serializable) listStr);
+                    context.startActivity(intent);
 
-                    dialog.show();
-//                    Intent intent = new Intent(context, ChooseTimeActivity.class);
-//                    context.startActivity(intent);
+
+//                                        String timeMd = ymdStrFormatToMdStr(time);
+//                                        //没有数据 点击添加
+//                                        Dialog dialog = new BloodSugarDialogHome(callback, listStr, context, R.style.bloodDialog, typePosition, timeMd);
+//                                        dialog.setCancelable(true);
+//                                        dialog.setCanceledOnTouchOutside(true);
+//
+//                                        dialog.show();
+//                                        Intent intent = new Intent(context, ChooseTimeActivity.class);
+//                                        context.startActivity(intent);
                 }
             }
         });

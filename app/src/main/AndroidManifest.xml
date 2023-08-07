@@ -278,6 +278,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <activity android:name=".ui.activity.healthrecordadd.BloodSugarAddUnNormalActivity"/>
+        <activity android:name=".ui.activity.healthrecordadd.MainSugarAddActivity"/>
         <activity
             android:name=".ui.activity.im.DoctorAdviceActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />

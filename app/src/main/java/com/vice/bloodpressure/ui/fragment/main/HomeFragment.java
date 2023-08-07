@@ -641,6 +641,7 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
         getSystemMessageCount();
         getIndexDiet();
         getHomeSport();
+        getHomeBloodSugarList();
     }
 
     /**
