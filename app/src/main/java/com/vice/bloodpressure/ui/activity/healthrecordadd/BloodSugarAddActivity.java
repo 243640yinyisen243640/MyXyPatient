@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ColorUtils;
@@ -106,9 +107,9 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
      */
     private void initPopu() {
         popup = new CenterPopup(getPageContext());
-        tvTitle = popup.findViewById(R.id.tv_title);
-        tvDesc = popup.findViewById(R.id.tv_desc);
-        ColorTextView tvKnow = popup.findViewById(R.id.tv_know);
+        tvTitle = popup.findViewById(R.id.tv_title_warning);
+        tvDesc = popup.findViewById(R.id.tv_desc_warning);
+        ColorTextView tvKnow = popup.findViewById(R.id.tv_know_warning);
         tvKnow.setOnClickListener(this);
         failedPopup = new XueTangFailedPopup(BloodSugarAddActivity.this);
         failedPopup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -230,33 +231,38 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
             double sugarLowDouble = TurnsUtils.getDouble(sugarLow, 0);
             double sugarHighDouble = TurnsUtils.getDouble(sugarHigh, 0);
             double contentDouble = TurnsUtils.getDouble(sugarValue, 0);
-
             if (contentDouble > sugarHighDouble) {
-                Intent intent = new Intent(getPageContext(),BloodSugarAddUnNormalActivity.class);
-
-                tvDesc.setText(String.format("您上传%s高于正常范围", contentDouble));
-                tvTitle.setText("血糖高了");
+                Intent intent = new Intent(getPageContext(), BloodSugarAddUnNormalActivity.class);
+                intent.putExtra("type", "1");
+                intent.putExtra("time", tvCheckTime.getText().toString().trim());
+                intent.putExtra("result", tvResult.getText().toString().trim());
+                intent.putExtra("selectPosition", (selectPosition+1)+"");
                 startActivity(intent);
+                finish();
             } else if (contentDouble < sugarLowDouble) {
-                tvTitle.setText("血糖低了");
-                tvDesc.setText(String.format("您上传%s低于正常范围", contentDouble));
-                popup.showPopupWindow();
+                Intent intent = new Intent(getPageContext(), BloodSugarAddUnNormalActivity.class);
+                intent.putExtra("type", "2");
+                intent.putExtra("time", tvCheckTime.getText().toString().trim());
+                intent.putExtra("result", tvResult.getText().toString().trim());
+                intent.putExtra("selectPosition", (selectPosition+1)+"");
+                startActivity(intent);
+                finish();
             } else {
                 save();
             }
 
 
-//            if (contentDouble > sugarHighDouble) {
-//                popup.showPopupWindow();
-//                tvDesc.setText(String.format("您上传%s高于正常范围", contentDouble));
-//                tvTitle.setText("血糖高了");
-//            } else if (contentDouble < sugarLowDouble) {
-//                tvTitle.setText("血糖低了");
-//                tvDesc.setText(String.format("您上传%s低于正常范围", contentDouble));
-//                popup.showPopupWindow();
-//            } else {
-//                save();
-//            }
+            //            if (contentDouble > sugarHighDouble) {
+            //                popup.showPopupWindow();
+            //                tvDesc.setText(String.format("您上传%s高于正常范围", contentDouble));
+            //                tvTitle.setText("血糖高了");
+            //            } else if (contentDouble < sugarLowDouble) {
+            //                tvTitle.setText("血糖低了");
+            //                tvDesc.setText(String.format("您上传%s低于正常范围", contentDouble));
+            //                popup.showPopupWindow();
+            //            } else {
+            //                save();
+            //            }
         }
     }
 
@@ -296,10 +302,13 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
         String sugarValue = tvResult.getText().toString().trim();
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         Call<String> requestCall = DataManager.saveXuetang(sugarValue, (selectPosition + 1) + "", time, userLogin.getToken(), (call, response) -> {
-            failedPopup.showPopupWindow();
-
+            if (response.code==200){
+                finish();
+            }else {
+                Toast.makeText(getPageContext(),"添加失败",Toast.LENGTH_SHORT).show();
+            }
         }, (call, t) -> {
-
+            Toast.makeText(getPageContext(),"网络连接异常，请稍后重试",Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -479,7 +488,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
             case R.id.ll_more:
                 toSave();
                 break;
-            case R.id.tv_know:
+            case R.id.tv_know_warning:
                 popup.dismiss();
                 save();
                 break;

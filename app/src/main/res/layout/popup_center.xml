@@ -13,16 +13,15 @@
 
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_title_warning"
             style="@style/text_white_16_w_w"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginTop="150dp"
             android:gravity="left"
-            android:text="血糖高了"
             android:textColor="@color/main_home" />
 
         <TextView
-            android:id="@+id/tv_desc"
+            android:id="@+id/tv_desc_warning"
             style="@style/text_gray_16_w_w"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginTop="180dp"
@@ -31,7 +30,7 @@
 
 
         <com.wei.android.lib.colorview.view.ColorTextView
-            android:id="@+id/tv_know"
+            android:id="@+id/tv_know_warning"
             style="@style/text_white_16_w_w"
             android:layout_gravity="center"
             android:layout_marginTop="90dp"
