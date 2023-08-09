@@ -84,6 +84,11 @@ public class SevenAndThirtyBloodSugarListFragment extends BaseEventBusFragment i
         getData();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
 
     /**
      * 获取七天和三十天数据

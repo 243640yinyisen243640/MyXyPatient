@@ -1,9 +1,11 @@
 package com.vice.bloodpressure.ui.activity.healthrecordadd;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,12 +26,20 @@ import retrofit2.Call;
  * 描述:
  */
 public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
+    @BindView(R.id.ll_desc_warning)
+    LinearLayout backLinearLayout;
     @BindView(R.id.tv_title_warning)
     TextView tvTitle;
     @BindView(R.id.tv_desc_warning)
     TextView descTv;
+    @BindView(R.id.tv_desc_warning_text)
+    TextView warningTitleTv;
+    @BindView(R.id.tv_desc_warning_unit)
+    TextView unitTitleTv;
     @BindView(R.id.tv_know_warning)
     TextView knowTv;
+    @BindView(R.id.tv_know_warning_back)
+    TextView backTv;
     /**
      * 1:偏高   2：偏低
      */
@@ -57,16 +67,26 @@ public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
         knowTv.setOnClickListener(v -> {
             save();
         });
+        backTv.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void setValues() {
         Log.i("yys","type=="+type+"result=="+result+"time=="+time+"selectPosition=="+selectPosition);
+        descTv.setText(result);
         if ("1".equals(type)) {
-            tvTitle.setText("血糖高了");
-            descTv.setText(String.format("您上传%s高于正常范围", result));
+            unitTitleTv.setTextColor(Color.parseColor("#FF0000"));
+            descTv.setTextColor(Color.parseColor("#FF0000"));
+            tvTitle.setText("血糖偏高");
+            warningTitleTv.setText("高于正常范围");
+            backLinearLayout.setBackground(getDrawable(R.drawable.warning_high));
         } else {
-            tvTitle.setText("血糖低了");
-            descTv.setText(String.format("您上传%s低于正常范围", result));
+            descTv.setTextColor(Color.parseColor("#2390F6"));
+            unitTitleTv.setTextColor(Color.parseColor("#2390F6"));
+            tvTitle.setText("血糖偏低");
+            warningTitleTv.setText("低于正常范围");
+            backLinearLayout.setBackground(getDrawable(R.drawable.warning_low));
         }
     }
 

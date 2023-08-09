@@ -3,47 +3,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/sugar_add_warning">
+    <ImageView
+        android:layout_width="107dp"
+        android:layout_height="78dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/warning_bg" />
 
+    <TextView
+        android:id="@+id/tv_title_warning"
+        style="@style/text_white_16_w_w"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/ll_desc_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/warning_high"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_title_warning"
-            style="@style/text_white_16_w_w"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginTop="150dp"
-            android:gravity="left"
-            android:textColor="@color/main_home" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:textSize="15sp"
+            android:paddingTop="30dp"
+            android:text="您上传的血糖值" />
 
         <TextView
             android:id="@+id/tv_desc_warning"
-            style="@style/text_gray_16_w_w"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginTop="180dp"
-            android:gravity="left"
-            android:text="您上传xx值已经超出范围" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7.7"
+            android:textColor="#FF0000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_desc_warning_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="mmol/L"
+            android:textSize="15sp"
+            android:textColor="#FF0000" />
+
+        <TextView
+            android:id="@+id/tv_desc_warning_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="高于正常范围" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 
-        <com.wei.android.lib.colorview.view.ColorTextView
-            android:id="@+id/tv_know_warning"
-            style="@style/text_white_16_w_w"
-            android:layout_gravity="center"
-            android:layout_marginTop="90dp"
-            android:paddingLeft="50dp"
-            android:paddingTop="@dimen/dp_10"
-            android:paddingRight="50dp"
-            android:paddingBottom="@dimen/dp_10"
-            android:text="知道了"
-            app:backgroundColorNormal="@color/main_home"
-            app:cornerRadiusNormal="@dimen/dp_18" />
+    <com.wei.android.lib.colorview.view.ColorTextView
+        android:id="@+id/tv_know_warning"
+        style="@style/text_white_16_w_w"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:paddingTop="@dimen/dp_15"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_15"
+        android:text="继续上传"
+        app:backgroundColorNormal="@color/main_home"
+        app:cornerRadiusNormal="90dp" />
 
-
-    </FrameLayout>
+    <TextView
+        android:id="@+id/tv_know_warning_back"
+        style="@style/text_white_16_w_w"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/shape_white_green_90"
+        android:padding="@dimen/dp_15"
+        android:textColor="@color/main_green"
+        android:text="重新输入" />
 
 
 </LinearLayout>

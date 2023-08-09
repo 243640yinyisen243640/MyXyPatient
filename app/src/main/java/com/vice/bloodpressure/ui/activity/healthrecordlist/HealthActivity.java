@@ -488,6 +488,7 @@ public class HealthActivity extends BaseActivity {
                 }
                 intent.putExtra("position", position);
                 startActivity(intent);
+                finish();
             }
 
             @Override
