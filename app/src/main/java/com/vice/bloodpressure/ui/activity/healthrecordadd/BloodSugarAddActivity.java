@@ -238,7 +238,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
                 intent.putExtra("result", tvResult.getText().toString().trim());
                 intent.putExtra("selectPosition", (selectPosition+1)+"");
                 startActivity(intent);
-                finish();
+//                finish();
             } else if (contentDouble < sugarLowDouble) {
                 Intent intent = new Intent(getPageContext(), BloodSugarAddUnNormalActivity.class);
                 intent.putExtra("type", "2");
@@ -246,7 +246,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
                 intent.putExtra("result", tvResult.getText().toString().trim());
                 intent.putExtra("selectPosition", (selectPosition+1)+"");
                 startActivity(intent);
-                finish();
+//                finish();
             } else {
                 save();
             }

@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity.healthrecordadd;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
@@ -14,6 +15,7 @@ import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
+import com.vice.bloodpressure.ui.activity.MainActivity;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -94,6 +96,10 @@ public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         Call<String> requestCall = DataManager.saveXuetang(result, selectPosition, time, userLogin.getToken(), (call, response) -> {
             if (response.code==200){
+//                finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
             }else {
                 Toast.makeText(getPageContext(),"添加失败",Toast.LENGTH_SHORT).show();
