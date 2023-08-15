@@ -214,10 +214,15 @@
         <activity android:name=".ui.activity.tcm.TcmListActivity" /> <!-- 运动类型 -->
         <activity android:name=".ui.activity.healthrecordlist.SportTypeActivity" /> <!-- 血糖提交 -->
         <activity android:name=".ui.activity.followupvisit.FollowUpVisitBloodSugarSubmitActivity" /> <!-- 血压提交 -->
+        <activity android:name=".ui.activity.followupvisit.FollowUpVisitBloodSugarSubmit2Activity" /> <!-- 血压提交 -->
         <activity android:name=".ui.activity.followupvisit.FollowUpVisitBloodPressureSubmitActivity" />
+        <activity android:name=".ui.activity.followupvisit.FollowUpVisitBloodPressureSubmit2Activity" />
         <activity android:name=".ui.activity.followupvisit.FollowUpVisitListActivity" /> <!-- 介绍bmi -->
         <activity android:name=".ui.activity.healthrecordlist.BmiDetailActivity" /> <!-- 添加血压 -->
         <activity android:name=".ui.activity.healthrecordadd.BloodPressureAddActivity" /> <!-- 食物相关 -->
+
+        <activity android:name=".ui.activity.followupvisit.FollowUpVisitBloodTipsActivity"/>
+        <activity android:name=".ui.activity.followupvisit.FollowUpVisitPressureTipsActivity"/>
         <activity
             android:name=".ui.activity.food.FoodWarehouseActivity"
             android:windowSoftInputMode="stateHidden" />

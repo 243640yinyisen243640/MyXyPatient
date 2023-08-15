@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,6 @@ import com.lyd.baselib.utils.GifSizeFilter;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.AddPicAdapter;
 import com.vice.bloodpressure.adapter.FollowUpVisitBloodSugarAddAdapter;
@@ -58,8 +58,6 @@ import com.vice.bloodpressure.utils.ListCastUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.MyListView;
-import com.vice.bloodpressure.view.popu.FollowUpVisitSavePopup;
-import com.vice.bloodpressure.view.popu.SlideFromBottomPopup;
 import com.wei.android.lib.colorview.view.ColorEditText;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -95,7 +93,7 @@ import top.zibin.luban.OnCompressListener;
  * 作者: LYD
  * 创建日期: 2019/7/26 10:09
  */
-public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity implements View.OnClickListener, AdapterClickImp, AdapterClickSearchImp {
+public class FollowUpVisitBloodSugarSubmit2Activity extends BaseHandlerActivity implements AdapterClickImp, AdapterClickSearchImp {
     private static final int GET_FOLLOW_UP_VISIT_DETAIL = 10010;
     private static final String TAG = "FollowUpVisitBloodSugarSubmitActivity";
     private static final int SAVE_RIGHT = 0;
@@ -317,10 +315,6 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
 
 
     FollowUpVisitBloodSugarDataBean mainBean;
-    //返回保存
-    private FollowUpVisitSavePopup popupBack;
-    private FollowUpVisitSavePopup popupSave;
-    //返回保存
     //症状
     private FollowUpVisitRvAdapter adapter;
     private List<String> selectDatas = new ArrayList<>();
@@ -334,7 +328,6 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
     //用药情况
     //拍照选择照片
     private File file;
-    private SlideFromBottomPopup photoPopu;
     //拍照选择照片
     //血糖
     private List<FollowUpVisitBloodSugarAddBean> sevenSugarList;
@@ -354,13 +347,11 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
     private AddPicAdapter neuropathyAddPicAdapter;
     private List<String> neuropathyPics;
     private int mPosition;
-    private QMUITipDialog tipDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitleBar();
-        initPopup();
         setRadioGroup();
         setHeightAndWeightListener();
         KeyboardUtils.fixAndroidBug5497(this);
@@ -397,38 +388,6 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
                 }).request();
     }
 
-    /**
-     * 弹窗 添加保存
-     */
-    private void initPopup() {
-        //返回键 保存 弹窗
-        popupBack = new FollowUpVisitSavePopup(getPageContext());
-        popupSave = new FollowUpVisitSavePopup(getPageContext());
-        TextView tvContentTopBack = popupBack.findViewById(R.id.tv_content_top);
-        TextView tvContentBottomBack = popupBack.findViewById(R.id.tv_content_bottom);
-        TextView tvLeftBack = popupBack.findViewById(R.id.tv_left);
-        TextView tvRightBack = popupBack.findViewById(R.id.tv_right);
-        TextView tvContentTopSave = popupSave.findViewById(R.id.tv_content_top);
-        TextView tvContentBottomSave = popupSave.findViewById(R.id.tv_content_bottom);
-        TextView tvLeftSave = popupSave.findViewById(R.id.tv_left);
-        TextView tvRightSave = popupSave.findViewById(R.id.tv_right);
-        tvContentTopBack.setText("您还未完成管理问卷填写");
-        tvContentBottomBack.setText("是否保存");
-        tvLeftBack.setText("不保存");
-        tvRightBack.setText("保存草稿");
-        tvContentTopSave.setText("您已完成管理问卷填写");
-        tvContentBottomSave.setText("是否提交");
-        tvLeftSave.setText("保存草稿");
-        tvRightSave.setText("完成提交");
-        tvLeftBack.setOnClickListener(this);
-        tvLeftBack.setTag(BACK_LEFT);
-        tvRightBack.setOnClickListener(this);
-        tvRightBack.setTag(BACK_RIGHT);
-        tvLeftSave.setOnClickListener(this);
-        tvLeftSave.setTag(SAVE_LEFT);
-        tvRightSave.setOnClickListener(this);
-        tvRightSave.setTag(SAVE_RIGHT);
-    }
 
     /**
      * 设置
@@ -1140,8 +1099,9 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //如果返回键按下
+            Log.i("yys", "onKeyDownstatus==" + status);
             if ("2".equals(status) || "3".equals(status)) {
-                showPopupWindow(popupBack);
+                setIntentData();
             } else {
                 finish();
             }
@@ -1525,8 +1485,9 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
      * 返回点击
      */
     private void backClick() {
+        Log.i("yys", "status===" + status);
         if ("2".equals(status) || "3".equals(status)) {
-            showPopupWindow(popupBack);
+            setIntentData();
         } else {
             finish();
         }
@@ -1537,7 +1498,9 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
      */
     private void saveClick() {
         if ("2".equals(status) || "3".equals(status)) {
-            showPopupWindow(popupSave);
+            //            popupSave.showPopupWindow();
+            toDoSubmit("3");
+
         }
     }
 
@@ -1545,7 +1508,7 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
      * 选择时间
      */
     private void selectTime() {
-        PickerUtils.showTimeWindow(FollowUpVisitBloodSugarSubmitActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
+        PickerUtils.showTimeWindow(FollowUpVisitBloodSugarSubmit2Activity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
             @Override
             public void execEvent(String content) {
                 tvCheckTime.setText(content);
@@ -1575,34 +1538,359 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
     }
 
 
-    @Override
-    public void onClick(View v) {
-        int tag = (int) v.getTag();
-        switch (tag) {
-            case BACK_LEFT:
-                popupBack.dismiss();
-                finish();
-                break;
-            case BACK_RIGHT:
-            case SAVE_LEFT:
-                toDoSubmit("3");
-                popupSave.dismiss();
-                tipDialog = new QMUITipDialog.Builder(this)
-                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                        .setTipWord("正在加载")
-                        .create();
-                tipDialog.show();
-                break;
-            case SAVE_RIGHT:
-                toDoSubmit("4");
-                popupSave.dismiss();
-                tipDialog = new QMUITipDialog.Builder(this)
-                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                        .setTipWord("正在加载")
-                        .create();
-                tipDialog.show();
-                break;
+    //要跳转时传递的数据
+    private void setIntentData() {
+        LoginBean user = (LoginBean) SharedPreferencesUtils.getBean(Utils.getApp(), SharedPreferencesUtils.USER_INFO);
+        String id = getIntent().getStringExtra("id");
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("access_token", user.getToken());
+        builder.addFormDataPart("version", ConstantParam.SERVER_VERSION);
+        builder.addFormDataPart("id", id);
+        builder.addFormDataPart("data[status]", status);
+        //设置状态
+        //第一次版本五个开始
+        //症状
+        if (View.VISIBLE == llSymptom.getVisibility()) {
+            StringBuilder sbSymptom = new StringBuilder();
+            for (int i = 0; i < selectDatas.size(); i++) {
+                sbSymptom.append(selectDatas.get(i));
+                sbSymptom.append(",");
+            }
+            if (sbSymptom.length() > 0) {
+                String symptom = sbSymptom.substring(0, sbSymptom.length() - 1);
+                builder.addFormDataPart("data[symptom]", symptom);
+            }
         }
+        //体征
+        if (View.VISIBLE == llPhysicalSign.getVisibility()) {
+            String systolic = etPhysicalSignHigh.getText().toString().trim();
+            String diastolic = etPhysicalSignLow.getText().toString().trim();
+            String height = etHeight.getText().toString().trim();
+            String weight = etWeight.getText().toString().trim();
+            builder.addFormDataPart("data[systolic]", systolic);
+            builder.addFormDataPart("data[diastolic]", diastolic);
+            builder.addFormDataPart("data[height]", height);
+            builder.addFormDataPart("data[weight]", weight);
+            if (rbPhysicalSignNot.isChecked()) {
+                builder.addFormDataPart("data[pulsation]", "1");
+            } else if (rbPhysicalSignHave.isChecked()) {
+                builder.addFormDataPart("data[pulsation]", "2");
+            } else if (rbPhysicalSignNotSecond.isChecked()) {
+                builder.addFormDataPart("data[pulsation]", "3");
+            }
+            String other = etPhysicalOther.getText().toString().trim();
+            builder.addFormDataPart("data[other]", other);
+        }
+        //生活方式
+        if (View.VISIBLE == llLifeStyle.getVisibility()) {
+            String smoke = etSmoke.getText().toString().trim();
+            builder.addFormDataPart("data[smok]", smoke);
+            String drink = etDrink.getText().toString().trim();
+            builder.addFormDataPart("data[drink]", drink);
+            String sportCount = etSportCount.getText().toString().trim();
+            builder.addFormDataPart("data[sportnum]", sportCount);
+            String sportTime = etSportTime.getText().toString().trim();
+            builder.addFormDataPart("data[sporttime]", sportTime);
+            String mainFood = etMainFood.getText().toString().trim();
+            builder.addFormDataPart("data[mainfood]", mainFood);
+            //心理状态1:良好 2：一般 3：差
+            if (rbPsychologicalAdjustWell.isChecked()) {
+                builder.addFormDataPart("data[psychological]", "1");
+            } else if (rbPsychologicalAdjustCommon.isChecked()) {
+                builder.addFormDataPart("data[psychological]", "2");
+            } else if (rbPsychologicalAdjustBad.isChecked()) {
+                builder.addFormDataPart("data[psychological]", "3");
+            }
+            //（遵医行为）1良好2一般3差
+            if (rbFollowDoctorWell.isChecked()) {
+                builder.addFormDataPart("data[behavior]", "1");
+            } else if (rbFollowDoctorCommon.isChecked()) {
+                builder.addFormDataPart("data[behavior]", "2");
+            } else if (rbFollowDoctorBad.isChecked()) {
+                builder.addFormDataPart("data[behavior]", "3");
+            }
+        }
+        //辅助检查
+        if (View.VISIBLE == llExamine.getVisibility()) {
+            String emptySugar = etEmptySugar.getText().toString().trim();
+            builder.addFormDataPart("data[fastingbloodsugar]", emptySugar);
+            String bloodRed = etBloodRed.getText().toString().trim();
+            builder.addFormDataPart("data[hemoglobin]", bloodRed);
+            String checkTime = tvCheckTime.getText().toString().trim();
+            builder.addFormDataPart("data[examinetime]", checkTime);
+        }
+        //用药情况
+        //用药依从性 1规律2不间断3不服药
+        if (View.VISIBLE == llDrugUse.getVisibility()) {
+            if (rbDrugUseYieldRule.isChecked()) {
+                builder.addFormDataPart("data[compliance]", "1");
+            } else if (rbDrugUseYieldGap.isChecked()) {
+                builder.addFormDataPart("data[compliance]", "2");
+            } else if (rbDrugUseYieldNotTakeMedicine.isChecked()) {
+                builder.addFormDataPart("data[compliance]", "3");
+            }
+            if (rgAdverseDrugReactionHave.isChecked()) {
+                builder.addFormDataPart("data[drugreactions]", "2");
+            } else if (rgAdverseDrugReactionNot.isChecked()) {
+                builder.addFormDataPart("data[drugreactions]", "1");
+            }
+            if (rbHypoglycemicReactionNot.isChecked()) {
+                builder.addFormDataPart("data[reaction]", "1");
+            } else if (rbHypoglycemicReactionOnce.isChecked()) {
+                builder.addFormDataPart("data[reaction]", "2");
+            } else if (rbHypoglycemicReactionOften.isChecked()) {
+                builder.addFormDataPart("data[reaction]", "3");
+            }
+            if (rbClassifySatisfaction.isChecked()) {
+                builder.addFormDataPart("data[followstyle]", "1");
+            } else if (rbClassifySatisfactionNot.isChecked()) {
+                builder.addFormDataPart("data[followstyle]", "2");
+            } else if (rbClassifyAdverseReaction.isChecked()) {
+                builder.addFormDataPart("data[followstyle]", "3");
+            } else if (rbClassifyComplication.isChecked()) {
+                builder.addFormDataPart("data[followstyle]", "4");
+            }
+
+            String insulin = etInsulin.getText().toString().trim();
+            String insulinDosage = etInsulinDosage.getText().toString().trim();
+            builder.addFormDataPart("data[insulin]", insulin);
+            builder.addFormDataPart("data[insulinnum]", insulinDosage);
+            //无限添加的药品
+            HashMap<Integer, String> saveMapName = medicineAddAdapter.saveMapName;
+            HashMap<Integer, String> saveMapCount = medicineAddAdapter.saveMapCount;
+            HashMap<Integer, String> saveMapDosage = medicineAddAdapter.saveMapDosage;
+            for (int i = 0; i < saveMapName.size(); i++) {
+                String name = saveMapName.get(i);
+                String count = saveMapCount.get(i);
+                String dosage = saveMapDosage.get(i);
+                builder.addFormDataPart("medicdetail[]", defaultValue(name));
+                builder.addFormDataPart("medicdetail[]", defaultValue(count));
+                builder.addFormDataPart("medicdetail[]", defaultValue(dosage));
+            }
+        }
+        //第一次版本五个结束
+        //第二次十个开始
+        //血糖
+        if (View.VISIBLE == llBloodSugar.getVisibility()) {
+            for (int i = 0; i < sevenSugarList.size(); i++) {
+                FollowUpVisitBloodSugarAddBean bean = sevenSugarList.get(i);
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getOne()));
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getTwo()));
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getThree()));
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getFour()));
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getFive()));
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getSix()));
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getSeven()));
+                builder.addFormDataPart("sugars[]", defaultValue(bean.getEight()));
+            }
+        }
+        //尿常规
+        if (View.VISIBLE == llPissCommon.getVisibility()) {
+            String One = etPissCommonOneLeft.getText().toString().trim();
+            String Two = etPissCommonOneRight.getText().toString().trim();
+            String Three = etPissCommonTwoLeft.getText().toString().trim();
+            String Four = etPissCommonTwoRight.getText().toString().trim();
+            String Five = etPissCommonThreeLeft.getText().toString().trim();
+            String Six = etPissCommonThreeRight.getText().toString().trim();
+            String Seven = etPissCommonFourLeft.getText().toString().trim();
+            String Eight = etPissCommonFourRight.getText().toString().trim();
+            String Nine = etPissCommonFiveLeft.getText().toString().trim();
+            String Ten = etPissCommonFiveRight.getText().toString().trim();
+            String Elven = etPissCommonSixLeft.getText().toString().trim();
+            builder.addFormDataPart("data[routine][]", defaultValue(One));
+            builder.addFormDataPart("data[routine][]", defaultValue(Two));
+            builder.addFormDataPart("data[routine][]", defaultValue(Three));
+            builder.addFormDataPart("data[routine][]", defaultValue(Four));
+            builder.addFormDataPart("data[routine][]", defaultValue(Five));
+            builder.addFormDataPart("data[routine][]", defaultValue(Six));
+            builder.addFormDataPart("data[routine][]", defaultValue(Seven));
+            builder.addFormDataPart("data[routine][]", defaultValue(Eight));
+            builder.addFormDataPart("data[routine][]", defaultValue(Nine));
+            builder.addFormDataPart("data[routine][]", defaultValue(Ten));
+            builder.addFormDataPart("data[routine][]", defaultValue(Elven));
+        }
+        //血脂
+        if (View.VISIBLE == llBloodFat.getVisibility()) {
+            String one = etBloodFatOne.getText().toString().trim();
+            String two = etBloodFatTwo.getText().toString().trim();
+            String three = etBloodFatThree.getText().toString().trim();
+            String four = etBloodFatFour.getText().toString().trim();
+            builder.addFormDataPart("data[bloodfat][]", defaultValue(one));
+            builder.addFormDataPart("data[bloodfat][]", defaultValue(two));
+            builder.addFormDataPart("data[bloodfat][]", defaultValue(three));
+            builder.addFormDataPart("data[bloodfat][]", defaultValue(four));
+        }
+        //尿微量白蛋白
+        if (View.VISIBLE == llPissTinyAlbumin.getVisibility()) {
+            String urinemicro = etPissTinyAlbumin.getText().toString().trim();
+            builder.addFormDataPart("data[urinemicro]", urinemicro);
+        }
+        //血清肌酐
+        if (View.VISIBLE == llSerum.getVisibility()) {
+            String creatinine = etSerum.getText().toString().trim();
+            builder.addFormDataPart("data[creatinine]", creatinine);
+        }
+        //上传肝功能照片
+        if (View.VISIBLE == llLiver.getVisibility()) {
+            if (liverPics != null) {
+                if (liverPics.size() > 0) {
+                    if (liverPics.get(0).contains("http:")) {
+                        builder.addFormDataPart("liverfun1", liverPics.get(0));
+                    } else {
+                        File file = new File(liverPics.get(0));
+                        builder.addFormDataPart("liverfun1", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("liverfun1", "");
+                }
+                if (liverPics.size() > 1) {
+                    if (liverPics.get(1).contains("http:")) {
+                        builder.addFormDataPart("liverfun2", liverPics.get(1));
+                    } else {
+                        File file = new File(liverPics.get(1));
+                        builder.addFormDataPart("liverfun2", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("liverfun2", "");
+                }
+                if (liverPics.size() > 2) {
+                    if (liverPics.get(2).contains("http:")) {
+                        builder.addFormDataPart("liverfun3", liverPics.get(2));
+                    } else {
+                        File file = new File(liverPics.get(2));
+                        builder.addFormDataPart("liverfun3", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("liverfun3", "");
+                }
+            }
+            String liverDesc = tvLiverDesc.getText().toString().trim();
+            builder.addFormDataPart("data[livercon]", liverDesc);
+        }
+        //促甲状腺激素
+        if (View.VISIBLE == llTsh.getVisibility()) {
+            String stimulating = etTsh.getText().toString().trim();
+            builder.addFormDataPart("data[stimulating]", stimulating);
+        }
+        //心电图
+        if (View.VISIBLE == llHeart.getVisibility()) {
+            if (heartPics != null) {
+                if (heartPics.size() > 0) {
+                    if (heartPics.get(0).contains("http:")) {
+                        builder.addFormDataPart("heartpic1", heartPics.get(0));
+                    } else {
+                        File file = new File(heartPics.get(0));
+                        builder.addFormDataPart("heartpic1", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("heartpic1", "");
+                }
+                if (heartPics.size() > 1) {
+                    if (heartPics.get(1).contains("http:")) {
+                        builder.addFormDataPart("heartpic2", heartPics.get(1));
+                    } else {
+                        File file = new File(heartPics.get(1));
+                        builder.addFormDataPart("heartpic2", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("heartpic2", "");
+                }
+                if (heartPics.size() > 2) {
+                    if (heartPics.get(2).contains("http:")) {
+                        builder.addFormDataPart("heartpic3", heartPics.get(2));
+                    } else {
+                        File file = new File(heartPics.get(2));
+                        builder.addFormDataPart("heartpic3", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("heartpic3", "");
+                }
+            }
+            String heartcontent = tvHeartDesc.getText().toString().trim();
+            builder.addFormDataPart("data[heartcontent]", heartcontent);
+        }
+        //眼底检查
+        if (View.VISIBLE == llEyes.getVisibility()) {
+            if (eyesPics != null) {
+                if (eyesPics.size() > 0) {
+                    if (eyesPics.get(0).contains("http:")) {
+                        builder.addFormDataPart("eyespic1", eyesPics.get(0));
+                    } else {
+                        File file = new File(eyesPics.get(0));
+                        builder.addFormDataPart("eyespic1", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("eyespic1", "");
+                }
+                if (eyesPics.size() > 1) {
+                    if (eyesPics.get(1).contains("http:")) {
+                        builder.addFormDataPart("eyespic2", eyesPics.get(1));
+                    } else {
+                        File file = new File(eyesPics.get(1));
+                        builder.addFormDataPart("eyespic2", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("eyespic2", "");
+                }
+                if (eyesPics.size() > 2) {
+                    if (eyesPics.get(2).contains("http:")) {
+                        builder.addFormDataPart("eyespic3", eyesPics.get(2));
+                    } else {
+                        File file = new File(eyesPics.get(2));
+                        builder.addFormDataPart("eyespic3", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("eyespic3", "");
+                }
+            }
+            String eyescontent = tvEyesDesc.getText().toString().trim();
+            builder.addFormDataPart("data[eyescontent]", eyescontent);
+        }
+        //神经病变相关
+        if (View.VISIBLE == llNeuropathy.getVisibility()) {
+            if (neuropathyPics != null) {
+                if (neuropathyPics.size() > 0) {
+                    if (neuropathyPics.get(0).contains("http:")) {
+                        builder.addFormDataPart("neuropathypic1", neuropathyPics.get(0));
+                    } else {
+                        File file = new File(neuropathyPics.get(0));
+                        builder.addFormDataPart("neuropathypic1", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("neuropathypic1", "");
+                }
+                if (neuropathyPics.size() > 1) {
+                    if (neuropathyPics.get(1).contains("http:")) {
+                        builder.addFormDataPart("neuropathypic2", neuropathyPics.get(1));
+                    } else {
+                        File file = new File(neuropathyPics.get(1));
+                        builder.addFormDataPart("neuropathypic2", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("neuropathypic2", "");
+                }
+                if (neuropathyPics.size() > 2) {
+                    if (neuropathyPics.get(2).contains("http:")) {
+                        builder.addFormDataPart("neuropathypic3", neuropathyPics.get(2));
+                    } else {
+                        File file = new File(neuropathyPics.get(2));
+                        builder.addFormDataPart("neuropathypic3", file.getName(), RequestBody.create(MediaType.parse("image"), file));
+                    }
+                } else {
+                    builder.addFormDataPart("neuropathypic3", "");
+                }
+            }
+            String neuropathycontent = tvNeuropathyDesc.getText().toString().trim();
+            builder.addFormDataPart("data[neuropathycontent]", neuropathycontent);
+
+
+
+        }
+        Log.i("yys", "builder==" + builder.toString());
+        Intent intent = new Intent(getPageContext(), FollowUpVisitBloodTipsActivity.class);
+        intent.putExtra("builder", String.valueOf(builder.build()));
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -1704,43 +1992,7 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
         });
 
 
-
-//        DialogUtils.getInstance().showDecimalNumberInputDialog(getPageContext(), "血糖",
-//                "请输入血糖", text1 -> {
-//                    switch (timeHorizontal) {
-//                        case 0:
-//                            bean.setOne(text1);
-//                            break;
-//                        case 1:
-//                            bean.setTwo(text1);
-//                            break;
-//                        case 2:
-//                            bean.setThree(text1);
-//                            break;
-//                        case 3:
-//                            bean.setFour(text1);
-//                            break;
-//                        case 4:
-//                            bean.setFive(text1);
-//                            break;
-//                        case 5:
-//                            bean.setSix(text1);
-//                            break;
-//                        case 6:
-//                            bean.setSeven(text1);
-//                            break;
-//                        case 7:
-//                            bean.setEight(text1);
-//                            break;
-//                        default:
-//                            break;
-//
-//                    }
-//                    sugarAddAdapter.notifyDataSetChanged();
-//                });
-
     }
-
 
 
     @Override
@@ -1764,7 +2016,7 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
                 }
                 break;
             case ADD_FOLLOW_OVER:
-                tipDialog.dismiss();
+                //                tipDialog.dismiss();
                 //清除压缩文件
                 FileUtils.deleteAllInDir("/storage/emulated/0/Android/data/com.vice.bloodpressure/cache/luban_disk_cache/");
                 ToastUtils.showShort("获取成功");
@@ -1900,7 +2152,7 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
      * 知乎选择照片
      */
     private void selectPhoto(int type) {
-        Matisse.from(FollowUpVisitBloodSugarSubmitActivity.this)
+        Matisse.from(FollowUpVisitBloodSugarSubmit2Activity.this)
                 .choose(MimeType.ofImage(), false)
                 .countable(true)
                 .capture(true)
@@ -1939,7 +2191,6 @@ public class FollowUpVisitBloodSugarSubmitActivity extends BaseHandlerActivity i
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CAMERA:
-                    photoPopu.dismiss();
                     if (file != null) {
                         String path = file.getPath();
                         liverPics.add(path);

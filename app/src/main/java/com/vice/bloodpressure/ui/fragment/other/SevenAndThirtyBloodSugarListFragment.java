@@ -239,7 +239,9 @@ public class SevenAndThirtyBloodSugarListFragment extends BaseEventBusFragment i
 //                });
                 break;
             case R.id.tv_add://选择结束时间
-                startActivity(new Intent(getPageContext(), BloodSugarAddActivity.class));
+                Intent intent = new Intent(getPageContext(), BloodSugarAddActivity.class);
+                intent.putExtra("from","3");
+                startActivity(intent);
                 break;
         }
     }

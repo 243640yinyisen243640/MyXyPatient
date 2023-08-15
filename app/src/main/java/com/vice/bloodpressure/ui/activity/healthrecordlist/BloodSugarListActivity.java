@@ -74,6 +74,11 @@ public class BloodSugarListActivity extends BaseHandlerEventBusActivity implemen
         getList();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getList();
+    }
 
     @Override
     protected View addContentLayout() {
@@ -214,7 +219,9 @@ public class BloodSugarListActivity extends BaseHandlerEventBusActivity implemen
 
     @OnClick(R.id.tv_add)
     public void onViewClicked() {
-        startActivity(new Intent(getPageContext(), BloodSugarAddActivity.class));
+        Intent intent = new Intent(getPageContext(), BloodSugarAddActivity.class);
+        intent.putExtra("from","7");
+        startActivity(intent);
     }
 
     @Override

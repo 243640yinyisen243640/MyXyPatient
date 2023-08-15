@@ -1,10 +1,12 @@
 package com.vice.bloodpressure.ui.activity.followupvisit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +40,6 @@ import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.MyListView;
-import com.vice.bloodpressure.view.popu.FollowUpVisitSavePopup;
 import com.wei.android.lib.colorview.view.ColorEditText;
 
 import java.text.DecimalFormat;
@@ -56,7 +57,7 @@ import butterknife.OnClick;
  * 作者: LYD
  * 创建日期: 2019/7/19 16:19
  */
-public class FollowUpVisitBloodPressureSubmitActivity extends BaseHandlerActivity {
+public class FollowUpVisitBloodPressureSubmit2Activity extends BaseHandlerActivity {
     private static final int GET_FOLLOW_UP_VISIT_DETAIL = 10010;
     private static final String TAG = "FollowUpVisitBloodSugarSubmitActivity";
     //标题开始
@@ -170,17 +171,15 @@ public class FollowUpVisitBloodPressureSubmitActivity extends BaseHandlerActivit
     private FollowUpVisitRvAdapter adapter;
     private List<String> selectDatas = new ArrayList<>();
     private FollowUpVisitLvAdapterFour lvAdapter;
-    private FollowUpVisitSavePopup popupBack;
-    private FollowUpVisitSavePopup popupSave;
     private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("yys","onCreatestatus======"+status);
         hideTitleBar();
         initTitle();
         getFollowUpVisitDetail();
-        initPopup();
         setRadioGroup();
         setHeightAndWeightListener();
         KeyboardUtils.fixAndroidBug5497(this);
@@ -275,54 +274,6 @@ public class FollowUpVisitBloodPressureSubmitActivity extends BaseHandlerActivit
         });
     }
 
-    private void initPopup() {
-        popupBack = new FollowUpVisitSavePopup(getPageContext());
-        popupSave = new FollowUpVisitSavePopup(getPageContext());
-        TextView tvContentTopBack = popupBack.findViewById(R.id.tv_content_top);
-        TextView tvContentBottomBack = popupBack.findViewById(R.id.tv_content_bottom);
-        TextView tvLeftBack = popupBack.findViewById(R.id.tv_left);
-        TextView tvRightBack = popupBack.findViewById(R.id.tv_right);
-        TextView tvContentTopSave = popupSave.findViewById(R.id.tv_content_top);
-        TextView tvContentBottomSave = popupSave.findViewById(R.id.tv_content_bottom);
-        TextView tvLeftSave = popupSave.findViewById(R.id.tv_left);
-        TextView tvRightSave = popupSave.findViewById(R.id.tv_right);
-        tvContentTopBack.setText("您还未完成管理问卷填写");
-        tvContentBottomBack.setText("是否保存");
-        tvLeftBack.setText("不保存");
-        tvRightBack.setText("保存草稿");
-        tvContentTopSave.setText("您已完成管理问卷填写");
-        tvContentBottomSave.setText("是否提交");
-        tvLeftSave.setText("保存草稿");
-        tvRightSave.setText("完成提交");
-        tvLeftBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupBack.dismiss();
-                finish();
-            }
-        });
-        tvRightBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //保存草稿
-                toDoSubmit("3");
-            }
-        });
-        tvLeftSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //保存草稿
-                toDoSubmit("3");
-            }
-        });
-        tvRightSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //提交
-                toDoSubmit("4");
-            }
-        });
-    }
 
     /**
      * 查看随访管理
@@ -837,14 +788,187 @@ public class FollowUpVisitBloodPressureSubmitActivity extends BaseHandlerActivit
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //如果返回键按下 //此处写退向后台的处理
+            Log.i("yys","status==="+status);
             if ("2".equals(status) || "3".equals(status)) {
-                showPopupWindow(popupBack);
+                setIntentData();
             } else {
                 finish();
             }
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    //点击保存草稿的时候，要传到下个页面的数据
+    private void setIntentData() {
+        //设置ID
+        String id = getIntent().getStringExtra("id");
+        //最后需要转换的Bean
+        FollowUpVisitAddBean postData = new FollowUpVisitAddBean();
+        postData.setId(id);
+        //设置数据Bean
+        FollowUpVisitAddBean.DataBean dataBean = new FollowUpVisitAddBean.DataBean();
+        //设置状态
+        dataBean.setStatus(status);
+        //症状
+        StringBuilder sbSymptom = new StringBuilder();
+        for (int i = 0; i < selectDatas.size(); i++) {
+            sbSymptom.append(selectDatas.get(i));
+            sbSymptom.append(",");
+        }
+        if (sbSymptom.length() > 0) {
+            String sbSymptomSub = sbSymptom.substring(0, sbSymptom.length() - 1);
+            dataBean.setSymptom(sbSymptomSub);
+        }
+        //体征
+        String systolic = etPhysicalSignHigh.getText().toString().trim();
+        dataBean.setSystolic(systolic);//收缩压
+        String diastolic = etPhysicalSignLow.getText().toString().trim();
+        dataBean.setDiastolic(diastolic);//收缩压
+        String height = etHeight.getText().toString().trim();
+        dataBean.setHeight(height);//身高
+        String weight = etWeight.getText().toString().trim();
+        dataBean.setWeight(weight);//体重
+        String bpm = etBpm.getText().toString().trim();
+        dataBean.setHeartrate(bpm);//心率
+        String other = etPhysicalOther.getText().toString().trim();
+        dataBean.setOther(other);//其它
+        //生活方式
+        String smoke = etSmoke.getText().toString().trim();
+        dataBean.setSmok(smoke);
+        String drink = etDrink.getText().toString().trim();
+        dataBean.setDrink(drink);
+        String sportCount = etSportCount.getText().toString().trim();
+        dataBean.setSportnum(sportCount);
+        String sportTime = etSportTime.getText().toString().trim();
+        dataBean.setSporttime(sportTime);
+        if (rbTakeSaltLight.isChecked()) {
+            dataBean.setSaltrelated(1);//涉盐情况（1轻2中3重）
+        } else if (rbTakeSaltCenter.isChecked()) {
+            dataBean.setSaltrelated(2);//涉盐情况（1轻2中3重）
+        } else if (rbTakeSaltWeight.isChecked()) {
+            dataBean.setSaltrelated(3);//涉盐情况（1轻2中3重）
+        }
+        if (rbPsychologicalAdjustWell.isChecked()) {
+            dataBean.setPsychological(1);//心理状态1:良好 2：一般 3：差
+        } else if (rbPsychologicalAdjustCommon.isChecked()) {
+            dataBean.setPsychological(2);//心理状态1:良好 2：一般 3：差
+        } else if (rbPsychologicalAdjustBad.isChecked()) {
+            dataBean.setPsychological(3);//心理状态1:良好 2：一般 3：差
+        }
+        if (rbFollowDoctorWell.isChecked()) {
+            dataBean.setBehavior(1);//（遵医行为）1良好2一般3差
+        } else if (rbFollowDoctorCommon.isChecked()) {
+            dataBean.setBehavior(2);//（遵医行为）1良好2一般3差
+        } else if (rbFollowDoctorBad.isChecked()) {
+            dataBean.setBehavior(3);//（遵医行为）1良好2一般3差
+        }
+        //辅助检查
+        //用药情况
+        if (rbDrugUseYieldRule.isChecked()) {
+            dataBean.setCompliance(1);//用药依从性 1规律2不间断3不服药
+        } else if (rbDrugUseYieldGap.isChecked()) {
+            dataBean.setCompliance(2);//用药依从性 1规律2不间断3不服药
+        } else if (rbDrugUseYieldNotTakeMedicine.isChecked()) {
+            dataBean.setCompliance(3);//用药依从性 1规律2不间断3不服药
+        }
+        if (rgAdverseDrugReactionHave.isChecked()) {
+            dataBean.setDrugreactions(2);
+        } else if (rgAdverseDrugReactionNot.isChecked()) {
+            dataBean.setDrugreactions(1);
+        }
+        if (rbClassifySatisfaction.isChecked()) {
+            dataBean.setFollowstyle(1);
+        } else if (rbClassifySatisfactionNot.isChecked()) {
+            dataBean.setFollowstyle(2);
+        } else if (rbClassifyAdverseReaction.isChecked()) {
+            dataBean.setFollowstyle(3);
+        } else if (rbClassifyComplication.isChecked()) {
+            dataBean.setFollowstyle(4);
+        }
+        //四种药物
+        HashMap<Integer, String> saveMapName = lvAdapter.saveMapName;
+        HashMap<Integer, String> saveMapCount = lvAdapter.saveMapCount;
+        HashMap<Integer, String> saveMapDosage = lvAdapter.saveMapDosage;
+        List<String> firstList = new ArrayList<>();
+        List<String> secondList = new ArrayList<>();
+        List<String> thirdList = new ArrayList<>();
+        List<String> fourList = new ArrayList<>();
+        for (Map.Entry<Integer, String> entrySelect : saveMapName.entrySet()) {
+            String value = entrySelect.getValue();
+            int key = entrySelect.getKey();
+            switch (key) {
+                case 0:
+                    firstList.add(value);
+                    break;
+                case 1:
+                    secondList.add(value);
+                    break;
+                case 2:
+                    thirdList.add(value);
+                    break;
+                case 3:
+                    fourList.add(value);
+                    break;
+
+            }
+        }
+        for (Map.Entry<Integer, String> entrySelect : saveMapCount.entrySet()) {
+            String value = entrySelect.getValue();
+            int key = entrySelect.getKey();
+            switch (key) {
+                case 0:
+                    firstList.add(value);
+                    break;
+                case 1:
+                    secondList.add(value);
+                    break;
+                case 2:
+                    thirdList.add(value);
+                    break;
+                case 3:
+                    fourList.add(value);
+                    break;
+            }
+        }
+        for (Map.Entry<Integer, String> entrySelect : saveMapDosage.entrySet()) {
+            String value = entrySelect.getValue();
+            int key = entrySelect.getKey();
+            switch (key) {
+                case 0:
+                    firstList.add(value);
+                    break;
+                case 1:
+                    secondList.add(value);
+                    break;
+                case 2:
+                    thirdList.add(value);
+                    break;
+                case 3:
+                    fourList.add(value);
+                    break;
+            }
+        }
+        List<String> postMedicList = new ArrayList<>();
+        postMedicList.addAll(firstList);
+        postMedicList.addAll(secondList);
+        postMedicList.addAll(thirdList);
+        postMedicList.addAll(fourList);
+        LogUtils.e(firstList);
+        LogUtils.e(secondList);
+        LogUtils.e(thirdList);
+        LogUtils.e(fourList);
+        LogUtils.e(postMedicList);
+        postData.setMedicdetail(postMedicList);
+        //最后数据提交
+        postData.setData(dataBean);
+        String jsonResult = JSON.toJSONString(postData);
+
+        Log.i("yys","jsonResult==="+jsonResult);
+        Intent intent = new Intent(getPageContext(), FollowUpVisitPressureTipsActivity.class);
+        intent.putExtra("jsonResult", jsonResult);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -920,15 +1044,16 @@ public class FollowUpVisitBloodPressureSubmitActivity extends BaseHandlerActivit
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_back_new:
+                Log.i("yys","bt_back_new"+status);
                 if ("2".equals(status) || "3".equals(status)) {
-                    showPopupWindow(popupBack);
+                   setIntentData();
                 } else {
                     finish();
                 }
                 break;
             case R.id.tv_save:
                 if ("2".equals(status) || "3".equals(status)) {
-                    showPopupWindow(popupSave);
+                    toDoSubmit("4");
                 }
                 break;
         }

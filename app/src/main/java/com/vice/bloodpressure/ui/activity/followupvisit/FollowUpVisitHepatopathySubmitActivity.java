@@ -259,14 +259,14 @@ public class FollowUpVisitHepatopathySubmitActivity extends BaseHandlerActivity 
         switch (view.getId()) {
             case R.id.bt_back_new:
                 if ("2".equals(status) || "3".equals(status)) {
-                    popupBack.showPopupWindow();
+                    showPopupWindow(popupBack);
                 } else {
                     finish();
                 }
                 break;
             case R.id.tv_more_new:
                 if ("2".equals(status) || "3".equals(status)) {
-                    popupSave.showPopupWindow();
+                    showPopupWindow(popupSave);
                 }
                 break;
         }
@@ -284,7 +284,7 @@ public class FollowUpVisitHepatopathySubmitActivity extends BaseHandlerActivity 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             //如果返回键按下
             if ("2".equals(status) || "3".equals(status)) {
-                popupBack.showPopupWindow();
+                showPopupWindow(popupBack);
             } else {
                 finish();
             }

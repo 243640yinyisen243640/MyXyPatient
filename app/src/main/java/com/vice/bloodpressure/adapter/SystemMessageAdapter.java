@@ -157,6 +157,7 @@ public class SystemMessageAdapter extends BaseQuickAdapter<SystemMsgListBean, Ba
                     //添加血糖
                     case 18:
                         intent = new Intent(v.getContext(), BloodSugarAddActivity.class);
+                        intent.putExtra("from","1");
                         break;
                     //血糖每月分析报告
                     case 20:

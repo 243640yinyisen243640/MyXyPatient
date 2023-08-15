@@ -7,7 +7,6 @@ import android.widget.ImageView;
 
 import com.vice.bloodpressure.R;
 
-import razerdp.basepopup.BasePopupWindow;
 
 public class FollowUpVisitSavePopup extends BasePopupWindow {
     public FollowUpVisitSavePopup(Context context) {

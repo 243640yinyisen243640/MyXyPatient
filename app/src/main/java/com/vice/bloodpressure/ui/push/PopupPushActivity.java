@@ -155,6 +155,7 @@ public class PopupPushActivity extends AndroidPopupActivity {
             //添加血糖
             case 18:
                 intent = new Intent(this, BloodSugarAddActivity.class);
+                intent.putExtra("from","5");
                 break;
             //血糖每月分析报告
             case 20:

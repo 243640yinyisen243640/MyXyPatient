@@ -16,6 +16,10 @@ import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.ui.activity.MainActivity;
+import com.vice.bloodpressure.ui.activity.healthrecordlist.BloodSugarListActivity;
+import com.vice.bloodpressure.ui.activity.healthrecordlist.HealthActivity;
+import com.vice.bloodpressure.ui.activity.healthrecordlist.HealthRecordBloodSugarMainActivity;
+import com.vice.bloodpressure.ui.activity.sysmsg.SystemMsgListActivity;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -24,6 +28,7 @@ import retrofit2.Call;
  * 作者: beauty
  * 类名:
  * 传参:type 1:偏高   2：偏低
+ * from 1：消息列表  2：健康记录  3:7天或30天血糖  4：首页血糖的Fragment中进来的  5：推送进来的  6：也是阿里推送（不理解为啥）
  * contentDouble  上传的值
  * 描述:
  */
@@ -47,6 +52,10 @@ public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
      */
     private String type;
     /**
+     * 1：消息列表  2：健康记录  3:7天或30天血糖  4：首页血糖的Fragment中进来的  5：推送进来的  6：也是阿里推送（不理解为啥）
+     */
+    private String from;
+    /**
      * 上传的值
      */
     private String result;
@@ -57,10 +66,13 @@ public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("预警提示");
+
         type = getIntent().getStringExtra("type");
+        from = getIntent().getStringExtra("from");
         result = getIntent().getStringExtra("result");
         time = getIntent().getStringExtra("time");
         selectPosition = getIntent().getStringExtra("selectPosition");
+        Log.i("yys","type=="+type+"from==="+from);
         setValues();
         setListener();
     }
@@ -75,7 +87,7 @@ public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
     }
 
     private void setValues() {
-        Log.i("yys","type=="+type+"result=="+result+"time=="+time+"selectPosition=="+selectPosition);
+        Log.i("yys", "type==" + type + "result==" + result + "time==" + time + "selectPosition==" + selectPosition);
         descTv.setText(result);
         if ("1".equals(type)) {
             unitTitleTv.setTextColor(Color.parseColor("#FF0000"));
@@ -95,18 +107,31 @@ public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
     private void save() {
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         Call<String> requestCall = DataManager.saveXuetang(result, selectPosition, time, userLogin.getToken(), (call, response) -> {
-            if (response.code==200){
-//                finish();
-                Intent intent = new Intent(this, MainActivity.class);
+            if (response.code == 200) {
+                //                finish();
+              //  1：消息列表  2：健康记录  3:7天或30天血糖  4：首页血糖的Fragment中进来的  5：推送进来的  6：也是阿里推送（不理解为啥）
+                Toast.makeText(getPageContext(), "添加成功", Toast.LENGTH_SHORT).show();
+                Intent intent = null;
+                if ("1".equals(from)){
+                    intent  = new Intent(this, SystemMsgListActivity.class);
+                }else if ("2".equals(type)){
+                    intent  = new Intent(this, HealthActivity.class);
+                }else if ("3".equals(from)){
+                    intent  = new Intent(this, HealthRecordBloodSugarMainActivity.class);
+                }else if ("7".equals(from)){
+                    intent  = new Intent(this, BloodSugarListActivity.class);
+                }else {
+                    intent  = new Intent(this, MainActivity.class);
+                }
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
-            }else {
-                Toast.makeText(getPageContext(),"添加失败",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getPageContext(), "添加失败", Toast.LENGTH_SHORT).show();
             }
 
         }, (call, t) -> {
-            Toast.makeText(getPageContext(),"网络连接异常，请稍后重试",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getPageContext(), "网络连接异常，请稍后重试", Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -337,6 +337,7 @@ public class XueTangFragment extends BaseEventBusFragment {
             case R.id.tv_add:
                 intent = new Intent(getActivity(), BloodSugarAddActivity.class);
                 intent.putExtra("position", 0);
+                intent.putExtra("from","4");
                 startActivity(intent);
                 break;
         }

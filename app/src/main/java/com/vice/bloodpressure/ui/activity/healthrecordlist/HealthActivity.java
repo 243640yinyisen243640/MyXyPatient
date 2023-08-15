@@ -450,6 +450,7 @@ public class HealthActivity extends BaseActivity {
                 switch (position) {
                     case 0:
                         intent = new Intent(getPageContext(), BloodSugarAddActivity.class);//添加血糖
+                        intent.putExtra("from","2");
                         break;
                     case 1:
                         intent = new Intent(getPageContext(), BloodPressureAddActivity.class);//添加血压

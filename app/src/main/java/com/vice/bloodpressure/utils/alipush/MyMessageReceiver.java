@@ -154,6 +154,7 @@ public class MyMessageReceiver extends MessageReceiver {
             //添加血糖
             case 18:
                 intent = new Intent(context, BloodSugarAddActivity.class);
+                intent.putExtra("from","6");
                 break;
             //血糖每月分析报告
             case 20:

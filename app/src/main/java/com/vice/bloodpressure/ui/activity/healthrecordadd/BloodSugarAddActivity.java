@@ -48,6 +48,7 @@ import retrofit2.Call;
 /**
  * 描述: 添加血糖
  * 作者: LYD
+ * 传参  from 1：消息列表  2：健康记录  3:7天或30天血糖  4：首页血糖的Fragment中进来的  5：推送进来的  6：也是阿里推送（不理解为啥） 7:
  * 创建日期: 2019/6/18 9:49
  */
 public class BloodSugarAddActivity extends BaseHandlerActivity implements View.OnClickListener {
@@ -80,9 +81,13 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
     private XueTangFailedPopup failedPopup;
 
 
+    private String from;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        from = getIntent().getStringExtra("from");
+        Log.i("yys","onCreatefrom==="+from);
         setTitleBar();
         initPopu();
         getTarget();
@@ -237,6 +242,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
                 intent.putExtra("time", tvCheckTime.getText().toString().trim());
                 intent.putExtra("result", tvResult.getText().toString().trim());
                 intent.putExtra("selectPosition", (selectPosition+1)+"");
+                intent.putExtra("from",from);
                 startActivity(intent);
 //                finish();
             } else if (contentDouble < sugarLowDouble) {
@@ -245,6 +251,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
                 intent.putExtra("time", tvCheckTime.getText().toString().trim());
                 intent.putExtra("result", tvResult.getText().toString().trim());
                 intent.putExtra("selectPosition", (selectPosition+1)+"");
+                intent.putExtra("from",from);
                 startActivity(intent);
 //                finish();
             } else {
@@ -303,6 +310,7 @@ public class BloodSugarAddActivity extends BaseHandlerActivity implements View.O
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         Call<String> requestCall = DataManager.saveXuetang(sugarValue, (selectPosition + 1) + "", time, userLogin.getToken(), (call, response) -> {
             if (response.code==200){
+                Toast.makeText(getPageContext(),"添加成功",Toast.LENGTH_SHORT).show();
                 finish();
             }else {
                 Toast.makeText(getPageContext(),"添加失败",Toast.LENGTH_SHORT).show();
