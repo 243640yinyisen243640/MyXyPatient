@@ -28,7 +28,7 @@ import retrofit2.Call;
  * 作者: beauty
  * 类名:
  * 传参:type 1:偏高   2：偏低
- * from 1：消息列表  2：健康记录  3:7天或30天血糖  4：首页血糖的Fragment中进来的  5：推送进来的  6：也是阿里推送（不理解为啥）
+ * from 1：消息列表  2：健康记录  3:7天或30天血糖  4：首页血糖的Fragment中进来的  5：推送进来的  6：也是阿里推送（不理解为啥）7：新的血糖记录
  * contentDouble  上传的值
  * 描述:
  */
@@ -114,7 +114,7 @@ public class BloodSugarAddUnNormalActivity extends BaseHandlerActivity {
                 Intent intent = null;
                 if ("1".equals(from)){
                     intent  = new Intent(this, SystemMsgListActivity.class);
-                }else if ("2".equals(type)){
+                }else if ("2".equals(from)){
                     intent  = new Intent(this, HealthActivity.class);
                 }else if ("3".equals(from)){
                     intent  = new Intent(this, HealthRecordBloodSugarMainActivity.class);
