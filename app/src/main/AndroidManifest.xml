@@ -119,8 +119,9 @@
         <activity android:name=".ui.activity.setting.AboutUsActivity" />
         <activity android:name=".ui.activity.setting.SettingActivity" />
         <activity android:name=".ui.activity.healthrecordlist.BloodOxygenListActivity" />
-        <activity android:name=".ui.activity.healthrecordlist.TemperatureListActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.healthrecordlist.TemperatureListActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.healthrecordadd.BloodOxygenAddActivity" />
         <activity android:name=".ui.activity.healthrecordlist.WeightListActivity" />
         <activity android:name=".ui.activity.healthrecordadd.WeightAddActivity" />
@@ -221,8 +222,8 @@
         <activity android:name=".ui.activity.healthrecordlist.BmiDetailActivity" /> <!-- 添加血压 -->
         <activity android:name=".ui.activity.healthrecordadd.BloodPressureAddActivity" /> <!-- 食物相关 -->
 
-        <activity android:name=".ui.activity.followupvisit.FollowUpVisitBloodTipsActivity"/>
-        <activity android:name=".ui.activity.followupvisit.FollowUpVisitPressureTipsActivity"/>
+        <activity android:name=".ui.activity.followupvisit.FollowUpVisitBloodTipsActivity" />
+        <activity android:name=".ui.activity.followupvisit.FollowUpVisitPressureTipsActivity" />
         <activity
             android:name=".ui.activity.food.FoodWarehouseActivity"
             android:windowSoftInputMode="stateHidden" />
@@ -282,8 +283,8 @@
             android:name=".ui.activity.healthrecordadd.BloodSugarAddActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <activity android:name=".ui.activity.healthrecordadd.BloodSugarAddUnNormalActivity"/>
-        <activity android:name=".ui.activity.healthrecordadd.MainSugarAddActivity"/>
+        <activity android:name=".ui.activity.healthrecordadd.BloodSugarAddUnNormalActivity" />
+        <activity android:name=".ui.activity.healthrecordadd.MainSugarAddActivity" />
         <activity
             android:name=".ui.activity.im.DoctorAdviceActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -373,12 +374,21 @@
         <!-- 药品库 搜素结果 -->
         <activity android:name=".ui.activity.medicinestore.MedicineSearchResultListActivity" /> <!-- 融云开始 -->
 
+
+        <!-- 快舒尔-->
+
+        <activity android:name=".ui.activity.injection.HealthRecordInjectioneDetailActivity"/>
+        <activity android:name=".ui.activity.injection.HealthRecordInjectioneInfoActivity"/>
+        <activity android:name=".ui.activity.injection.HealthRecordInjectioneListActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionDataAddActivity"/>
+
         <activity
             android:name=".base.activity.WebHelperActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activity.smartmakepolicy.loadPdfActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.smartmakepolicy.loadPdfActivity"
+            android:screenOrientation="portrait" />
 
         <!--首页选择时间-->
         <activity
@@ -464,10 +474,10 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="0TNU2gINttTz3uHKHuP4nNVHDgGhwT4z" />
 
-<!--        <service-->
-<!--            android:name="com.baidu.location.f"-->
-<!--            android:enabled="true"-->
-<!--            android:process=":remote" /> &lt;!&ndash; 计步Service &ndash;&gt;-->
+        <!--        <service-->
+        <!--            android:name="com.baidu.location.f"-->
+        <!--            android:enabled="true"-->
+        <!--            android:process=":remote" /> &lt;!&ndash; 计步Service &ndash;&gt;-->
         <service
             android:name="com.lyd.libsteps.StepService"
             android:enabled="true"
