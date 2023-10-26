@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_injection_begin_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="00:00"
+                android:textColor="#333333"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/inhection_arrow_right_bottom"
+                android:textColor="#333333"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_injection_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:text="09:59"
+                android:textColor="#333333"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="22dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <View
+                    android:id="@+id/v_injection_line_top"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"
+                    android:background="@drawable/_line" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_injection_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/program_sun" />
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/v_injection_line_bottom"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/_line" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/_11"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_injection_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="优思灵R"
+                android:textSize="15sp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#333333"/>
+
+            <TextView
+                android:id="@+id/tv_injection_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:includeFontPadding="false"
+                android:layout_marginEnd="15dp"
+                android:layout_gravity="end"
+                android:textSize="30sp"
+                android:textColor="#FF564F"/>
+
+            <TextView
+                android:id="@+id/tv_injection_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="第一针(单位)"
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="13sp"
+                android:textColor="#9D9D9D"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

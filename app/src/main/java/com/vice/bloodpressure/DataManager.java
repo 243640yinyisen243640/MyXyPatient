@@ -1,14 +1,20 @@
 package com.vice.bloodpressure;
 
+import com.blankj.utilcode.util.SPStaticUtils;
 import com.vice.bloodpressure.bean.AdverInfo;
 import com.vice.bloodpressure.bean.DietPlanAddSuccessBean;
 import com.vice.bloodpressure.bean.PhysicalExaminationDoctorInfoAllInfo;
 import com.vice.bloodpressure.bean.ScheduleInfoBean;
+import com.vice.bloodpressure.bean.injection.InjectionBaseData;
+import com.vice.bloodpressure.bean.injection.InjectionDataDetail;
+import com.vice.bloodpressure.bean.injection.InjectionDataListInfo;
+import com.vice.bloodpressure.bean.injection.InjectionHistoryInfo;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.retrofit.BaseNetworkUtils;
 import com.vice.bloodpressure.retrofit.HHSoftBaseResponse;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.functions.BiConsumer;
 import retrofit2.Call;
@@ -160,4 +166,37 @@ public class DataManager {
         map.put("version", ConstantParam.SERVER_VERSION);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, DietPlanAddSuccessBean.class, "/port/Food/dietPlanAdd", map, successCallBack, failureCallBack);
     }
+
+    public static Call<String> getInjectionBaseInfo(String userid, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userid", userid);
+        map.put("access_token", SPStaticUtils.getString("token"));
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InjectionBaseData.class, "/userInsuliInfo", map, successCallBack, failureCallBack);
+    }
+
+    public static Call<String> getInjectionList(String userid, String beginTime, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userid", userid);
+        map.put("access_token", SPStaticUtils.getString("token"));
+        map.put("begin_time", beginTime);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InjectionDataListInfo.class, "/insulinList", map, successCallBack, failureCallBack);
+    }
+
+    public static Call<String> getInjectionDetail(String userid, String action_time, String isuse, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userid", userid);
+        map.put("access_token", SPStaticUtils.getString("token"));
+        map.put("action_time", action_time);
+        map.put("isuse", isuse);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InjectionDataDetail.class, "/planDetail", map, successCallBack, failureCallBack);
+    }
+
+    public static Call<String> getInjectionHistoryList(String userid, int page, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userid", userid);
+        map.put("access_token", SPStaticUtils.getString("token"));
+        map.put("page", page + "");
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InjectionHistoryInfo.class, "/planList", map, successCallBack, failureCallBack);
+    }
+
 }
