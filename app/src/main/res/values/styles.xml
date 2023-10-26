@@ -187,6 +187,12 @@
         <item name="android:background">@color/background</item>
     </style>
 
+    <style name="line_grey_1">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/base_line_grey</item>
+    </style>
+
     <style name="line_02_right">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0.2dp</item>
@@ -928,5 +934,18 @@
         <item name="android:drawablePadding">2dp</item>
         <item name="android:textColor">@color/black_text</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="user_add_type">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/shape_green_0_</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:paddingBottom">9dp</item>
+        <item name="android:textColor">@color/injection_green</item>
+        <item name="android:textSize">13sp</item>
     </style>
 </resources>
