@@ -96,6 +96,8 @@ dependencies {
     //OpenInstall安装
     implementation files('libs/OpenInstall_v2.6.3.jar')
 
+    implementation files('libs/quniovaresdk.jar')
+
     implementation project(path: ':libpickers')
     implementation project(path: ':libchart')
     implementation project(path: ':libsteps')
@@ -227,5 +229,6 @@ dependencies {
     //pdf
 
     implementation 'com.wdeo3601:pdf-view:1.0.4'
-
+//图片选择
+    implementation 'com.github.LuckSiege:PictureSelectorLight:v2.1.1'
 }

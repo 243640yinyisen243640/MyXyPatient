@@ -102,6 +102,7 @@ public class InjectionDataListInfo implements Serializable {
         private String date;
         private String time;
         private String type;
+        private int injection_id;
 
         public String getValue() {
             return value;
@@ -133,6 +134,14 @@ public class InjectionDataListInfo implements Serializable {
 
         public void setTime(String time) {
             this.time = time;
+        }
+
+        public int getInjection_id() {
+            return injection_id;
+        }
+
+        public void setInjection_id(int injection_id) {
+            this.injection_id = injection_id;
         }
     }
 }

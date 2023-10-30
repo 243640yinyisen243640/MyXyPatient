@@ -1,6 +1,7 @@
 package com.vice.bloodpressure.adapter.injection;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.bean.injection.InjectionDataListInfo;
+import com.vice.bloodpressure.ui.activity.injection.InjectionDataAddActivity;
 
 import java.util.List;
 
@@ -52,6 +54,15 @@ public class InjectionDetailAdapter extends RecyclerView.Adapter<InjectionDetail
         }
         holder.tvDate.setText(listInfos.get(position).getDate());
         holder.tvTime.setText(listInfos.get(position).getTime());
+        holder.tvEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(context, InjectionDataAddActivity.class);
+            intent.putExtra("isAdd",false);
+            intent.putExtra("data",listInfos.get(position).getDate());
+            intent.putExtra("time",listInfos.get(position).getTime());
+            intent.putExtra("value",listInfos.get(position).getValue());
+            intent.putExtra("injection_id",listInfos.get(position).getInjection_id());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -64,6 +75,7 @@ public class InjectionDetailAdapter extends RecyclerView.Adapter<InjectionDetail
         TextView tvIsAutomatic;
         TextView tvDate;
         TextView tvTime;
+        TextView tvEdit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,6 +83,7 @@ public class InjectionDetailAdapter extends RecyclerView.Adapter<InjectionDetail
             tvIsAutomatic = itemView.findViewById(R.id.tv_detail_item_is_auto);
             tvDate = itemView.findViewById(R.id.tv_detail_item_date);
             tvTime = itemView.findViewById(R.id.tv_detail_item_time);
+            tvEdit = itemView.findViewById(R.id.tv_detail_item_edit);
         }
     }
 }

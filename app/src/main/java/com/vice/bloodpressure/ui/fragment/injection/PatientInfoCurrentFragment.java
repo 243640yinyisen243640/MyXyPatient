@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.allen.library.utils.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.InjectionCurrentAdapter;
@@ -31,10 +33,11 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
     private RecyclerView recyclerView;
     private InjectionCurrentAdapter adapter;
     private InjectionDataDetail dataDetail;
+    private String action_time;
 
-    public static PatientInfoCurrentFragment newInstance(String userId) {
+    public static PatientInfoCurrentFragment newInstance() {
         Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
+        //        bundle.putString("userId", userId);
         PatientInfoCurrentFragment fragment = new PatientInfoCurrentFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -43,14 +46,15 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
     @Override
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
+        action_time = ((HealthRecordInjectioneListActivity) getActivity()).getTime();
         containerView().addView(initView());
         getData();
     }
 
     public void getData() {
-        String userId = getArguments().getString("userId");
-        String action_time = ((HealthRecordInjectioneListActivity) getActivity()).getTime();
-        Call<String> requestCall = DataManager.getInjectionDetail(userId, action_time, "1", (call, response) -> {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        Call<String> requestCall = DataManager.getInjectionDetail(action_time, "1", token, (call, response) -> {
             if (200 == response.code) {
                 dataDetail = (InjectionDataDetail) response.object;
                 setData();
@@ -63,11 +67,14 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
     }
 
     private void setData() {
-        tvName.setText(dataDetail.getPlan_name());
-        tvTime.setText(dataDetail.getAction_time() + "执行");
-        recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
-        adapter = new InjectionCurrentAdapter(getPageContext(), dataDetail.getDetail());
-        recyclerView.setAdapter(adapter);
+        if (!action_time.equals("/暂无")){
+            tvName.setText(dataDetail.getPlan_name());
+            tvTime.setText(dataDetail.getAction_time() + "执行");
+            recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
+            adapter = new InjectionCurrentAdapter(getPageContext(), dataDetail.getDetail());
+            recyclerView.setAdapter(adapter);
+        }
+
     }
 
 

@@ -26,11 +26,11 @@ public class PatientInfoProgrammeFragment extends XYBaseFragment implements TabF
     private TextView tvTitle;
     private ViewPager viewPager;
     private List<Fragment> fragments;
-    private String userId;
+//    private String userId;
 
-    public static PatientInfoProgrammeFragment newInstance(String userId) {
+    public static PatientInfoProgrammeFragment newInstance() {
         Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
+//        bundle.putString("userId", userId);
         PatientInfoProgrammeFragment fragment = new PatientInfoProgrammeFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -40,7 +40,7 @@ public class PatientInfoProgrammeFragment extends XYBaseFragment implements TabF
     @Override
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
-        userId = getArguments().getString("userId");
+//        userId = getArguments().getString("userId");
         initView();
     }
 
@@ -52,10 +52,10 @@ public class PatientInfoProgrammeFragment extends XYBaseFragment implements TabF
         containerView().addView(view);
 
         fragments = new ArrayList<>();
-        PatientInfoCurrentFragment currentFragment = PatientInfoCurrentFragment.newInstance(userId);
+        PatientInfoCurrentFragment currentFragment = PatientInfoCurrentFragment.newInstance();
         fragments.add(currentFragment);
 
-        PatientInfoHistoryFragment historyFragment = PatientInfoHistoryFragment.newInstance(userId);
+        PatientInfoHistoryFragment historyFragment = PatientInfoHistoryFragment.newInstance();
         fragments.add(historyFragment);
 
         viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager(), fragments));

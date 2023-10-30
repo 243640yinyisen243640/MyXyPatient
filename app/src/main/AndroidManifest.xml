@@ -48,6 +48,22 @@
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" /> <!-- vivo角标 -->
     <uses-permission android:name="com.vivo.notification.permission.BADGE_ICON" />
 
+    <!-- 在Android5.0之前，是默认申请GPS硬件功能的。而在Android 5.0 之后，需要在manifest 中申明GPS硬件模块功能的使用 -->
+    <uses-feature android:name="android.hardware.location.gps" />
+
+    <!-- 设置设备只支持 BLE -->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
+    <!--android6.0后需要搜索周边蓝牙设备，需要添加以下两个权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <!--打开蓝牙权限-->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -381,6 +397,13 @@
         <activity android:name=".ui.activity.injection.HealthRecordInjectioneInfoActivity"/>
         <activity android:name=".ui.activity.injection.HealthRecordInjectioneListActivity"/>
         <activity android:name=".ui.activity.injection.InjectionDataAddActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionProgramAddActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionProgramAddNameActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionProgramAddNumActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionProgramAddDeviceActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionProgramSearchDeviceActivity"/>
+        <activity android:name=".ui.activity.injection.MyBindDeviceListNewActivity"/>
+        <activity android:name=".ui.activity.injection.MyDeviceNewActivity"/>
 
         <activity
             android:name=".base.activity.WebHelperActivity"

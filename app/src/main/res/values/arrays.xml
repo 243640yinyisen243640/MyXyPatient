@@ -1163,10 +1163,20 @@
         <item>@drawable/my_bind_device_sugar</item>
         <item>@drawable/my_bind_device_bp</item>
     </array>
+    <array name="my_device_bind_list_pic_new">
+        <item>@drawable/my_bind_device_sugar</item>
+        <item>@drawable/my_bind_device_bp</item>
+        <item>@drawable/injection_add</item>
+    </array>
 
     <array name="my_device_bind_list_name">
         <item>血糖设备</item>
         <item>血压设备</item>
+    </array>
+    <array name="my_device_bind_list_name_new">
+        <item>血糖设备</item>
+        <item>血压设备</item>
+        <item>注射设备</item>
     </array>
 
     <array name="smart_education_class_detail">

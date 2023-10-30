@@ -16,6 +16,7 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.vice.bloodpressure.R;
+import com.vice.bloodpressure.imp.CallBackTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -265,5 +266,19 @@ public class PickerUtils {
         void execEvent(String content, int position);
     }
 
+    public static <T> void showChooseSinglePicker(Context context, String title, List<T> list, CallBackTime callBack) {
+        OptionsPickerView optionsPickerView = new OptionsPickerBuilder(context, (options1, options2, options3, v) -> {
+
+            callBack.callBack(options1);
+        }).setLineSpacingMultiplier(1.5f)
+                .setCancelColor(ContextCompat.getColor(context, R.color.gray_text))
+                .setSubmitColor(ContextCompat.getColor(context, R.color.main_green))
+                .setTitleText(title)
+                .setTitleBgColor(ContextCompat.getColor(context, R.color.white_text))
+                .setDividerColor(ContextCompat.getColor(context, R.color.gray_light))
+                .build();
+        optionsPickerView.setPicker(list);
+        optionsPickerView.show();
+    }
 
 }

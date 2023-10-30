@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.allen.library.utils.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.InjectionAdapter;
@@ -33,14 +35,14 @@ import retrofit2.Call;
 public class PatientInfoInjectionFragment extends XYBaseFragment implements TabFragmentAdapter.RefeshFragment {
     private TextView tvChange;
     private RecyclerView rvInjection;
-    private String userId;
+//    private String userId;
     private String beginTime;
     private InjectionAdapter adapter;
     private List<InjectionDataListInfo> listInfos = new ArrayList<>();
 
-    public static PatientInfoInjectionFragment newInstance(String userid) {
+    public static PatientInfoInjectionFragment newInstance() {
         Bundle bundle = new Bundle();
-        bundle.putString("userid", userid);
+//        bundle.putString("userid", userid);
         PatientInfoInjectionFragment fragment = new PatientInfoInjectionFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -50,7 +52,7 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
     @Override
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
-        userId = getArguments().getString("userid");
+//        userId = getArguments().getString("userid");
         initView();
         beginTime = DataUtils.convertDateToString(new Date(System.currentTimeMillis()), "YYYY-MM");
         adapter = new InjectionAdapter(getPageContext(), listInfos);
@@ -60,7 +62,9 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
     }
 
     private void getData() {
-        Call<String> requestCall = DataManager.getInjectionList(userId, beginTime, (call, response) -> {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        Call<String> requestCall = DataManager.getInjectionList(beginTime,token, (call, response) -> {
             if (200 == response.code) {
                 listInfos.clear();
                 listInfos.addAll((List<InjectionDataListInfo>) response.object);

@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.constant.PermissionConstants;
-import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPStaticUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -44,8 +42,8 @@ import com.vice.bloodpressure.bean.IsLiverFilesBean;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
+import com.vice.bloodpressure.ui.activity.injection.MyBindDeviceListNewActivity;
 import com.vice.bloodpressure.ui.activity.mydevice.MyBindDeviceListActivity;
-import com.vice.bloodpressure.ui.activity.mydevice.ScanActivity;
 import com.vice.bloodpressure.ui.activity.setting.AboutUsActivity;
 import com.vice.bloodpressure.ui.activity.setting.SettingActivity;
 import com.vice.bloodpressure.ui.activity.user.MeActivity;
@@ -352,21 +350,23 @@ public class UserFragment extends BaseFragment implements SimpleImmersionOwner {
                 break;
             //没有绑定设备
             case BIND_DEVICE_NOT:
-                PermissionUtils
-                        .permission(PermissionConstants.CAMERA)
-                        .callback(new PermissionUtils.SimpleCallback() {
-                            @Override
-                            public void onGranted() {
-                                Intent intent = new Intent(getPageContext(), ScanActivity.class);
-                                intent.putExtra("type", "user");
-                                startActivity(intent);
-                            }
+//                PermissionUtils
+//                        .permission(PermissionConstants.CAMERA)
+//                        .callback(new PermissionUtils.SimpleCallback() {
+//                            @Override
+//                            public void onGranted() {
+//                                Intent intent = new Intent(getPageContext(), ScanActivity.class);
+//                                intent.putExtra("type", "user");
+//                                startActivity(intent);
+//                            }
+//
+//                            @Override
+//                            public void onDenied() {
+//                                ToastUtils.showShort("请允许使用相机权限");
+//                            }
+//                        }).request();
 
-                            @Override
-                            public void onDenied() {
-                                ToastUtils.showShort("请允许使用相机权限");
-                            }
-                        }).request();
+                startActivity(new Intent(getPageContext(), MyBindDeviceListNewActivity.class));
                 break;
             case IS_LIVER_FILE:
                 IsLiverFilesBean isLiverFilesBean = (IsLiverFilesBean) msg.obj;

@@ -26,12 +26,12 @@ import java.util.List;
  */
 public class InjectionHistoryAdapter extends RecyclerView.Adapter<InjectionHistoryAdapter.ViewHolder> {
     private Context context;
-    private String userId;
+//    private String userId;
     private List<InjectionHistoryInfo> listInfos;
 
-    public InjectionHistoryAdapter(Context context,String userId, List<InjectionHistoryInfo> listInfos) {
+    public InjectionHistoryAdapter(Context context, List<InjectionHistoryInfo> listInfos) {
         this.context = context;
-        this.userId = userId;
+//        this.userId = userId;
         this.listInfos = listInfos;
     }
 
@@ -50,7 +50,7 @@ public class InjectionHistoryAdapter extends RecyclerView.Adapter<InjectionHisto
         holder.ivIsHistory.setVisibility(listInfos.get(position).getIsuse() == 1 ? View.VISIBLE : View.GONE);
         holder.tvDetail.setOnClickListener(v -> {
             Intent intent = new Intent(context, HealthRecordInjectioneDetailActivity.class);
-            intent.putExtra("userId", userId);
+//            intent.putExtra("userId", userId);
             intent.putExtra("action_time", listInfos.get(position).getAction_time());
             intent.putExtra("isuse", listInfos.get(position).getIsuse() + "");
             context.startActivity(intent);

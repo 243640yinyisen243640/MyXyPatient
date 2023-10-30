@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.allen.library.utils.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.InjectionCurrentAdapter;
@@ -41,10 +43,12 @@ public class HealthRecordInjectioneDetailActivity extends XYSoftUIBaseActivity {
     }
 
     public void getData() {
-        String userId = getIntent().getStringExtra("userId");
+//        String userId = getIntent().getStringExtra("userId");
         String action_time = getIntent().getStringExtra("action_time");
         String isuse = getIntent().getStringExtra("isuse");
-        Call<String> requestCall = DataManager.getInjectionDetail(userId, action_time, isuse, (call, response) -> {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        Call<String> requestCall = DataManager.getInjectionDetail( action_time, isuse,token, (call, response) -> {
             if (200 == response.code) {
                 dataDetail = (InjectionDataDetail) response.object;
                 setData();

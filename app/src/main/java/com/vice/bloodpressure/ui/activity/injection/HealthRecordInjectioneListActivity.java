@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity.injection;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.allen.library.utils.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.ViewPagerAdapter;
@@ -39,7 +42,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     private TextView tvTimeMonth;
     private ViewPager viewPager;
     private List<Fragment> fragments;
-    private String userId;
+    //    private String userId;
     private InjectionBaseData injectionBaseData;
 
 
@@ -48,15 +51,20 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         super.onCreate(savedInstanceState);
         topViewManager().titleTextView().setText("注射数据");
         containerView().addView(initView());
-        userId = getIntent().getStringExtra("userid");
-        userId = "129199";
+        topViewManager().moreTextView().setText("新增数据");
+        topViewManager().moreTextView().setOnClickListener(v -> {
+            Intent intent = new Intent(getPageContext(), InjectionDataAddActivity.class);
+            intent.putExtra("isAdd", true);
+            startActivity(intent);
+        });
+        //        userId = getIntent().getStringExtra("userid");
+        //        userId = "129199";
         initListener();
         getData();
     }
 
     private void initListener() {
         llPlan.setOnClickListener(this);
-        llProgramme.setOnClickListener(this);
     }
 
     private View initView() {
@@ -77,10 +85,10 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
 
     private void initValues() {
         fragments = new ArrayList<>();
-        PatientInfoInjectionFragment injectionFragment = PatientInfoInjectionFragment.newInstance(userId);
+        PatientInfoInjectionFragment injectionFragment = PatientInfoInjectionFragment.newInstance();
         fragments.add(injectionFragment);
 
-        PatientInfoProgrammeFragment programmeFragment = PatientInfoProgrammeFragment.newInstance(userId);
+        PatientInfoProgrammeFragment programmeFragment = PatientInfoProgrammeFragment.newInstance();
         fragments.add(programmeFragment);
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
@@ -98,9 +106,14 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
                 viewPager.setCurrentItem(0);
                 break;
             case R.id.ll_injection_programme:
-                llPlan.setBackground(getResources().getDrawable(R.color.transparent));
-                llProgramme.setBackground(getResources().getDrawable(R.drawable._2));
-                viewPager.setCurrentItem(1);
+                if ("暂无".equals(injectionBaseData.getAction_time())) {
+
+                } else {
+                    llPlan.setBackground(getResources().getDrawable(R.color.transparent));
+                    llProgramme.setBackground(getResources().getDrawable(R.drawable._2));
+                    viewPager.setCurrentItem(1);
+                }
+
                 break;
             default:
                 break;
@@ -112,11 +125,14 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     }
 
     private void getData() {
-        DataManager.getInjectionBaseInfo(userId, (call, response) -> {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        DataManager.getInjectionBaseInfo(token,(call, response) -> {
             if (response.code == 200) {
                 injectionBaseData = (InjectionBaseData) response.object;
                 setData();
                 initValues();
+                llProgramme.setOnClickListener(this);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");

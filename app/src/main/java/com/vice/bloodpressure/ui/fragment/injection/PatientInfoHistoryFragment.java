@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.allen.library.utils.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -35,12 +37,12 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
     private InjectionHistoryAdapter adapter;
     private List<InjectionHistoryInfo> infoList = new ArrayList<>();
     private List<InjectionHistoryInfo> infoListTemp = new ArrayList<>();
-    private String userId;
+    //    private String userId;
     private int page = 1;
 
-    public static PatientInfoHistoryFragment newInstance(String userId) {
+    public static PatientInfoHistoryFragment newInstance() {
         Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
+        //        bundle.putString("userId", userId);
         PatientInfoHistoryFragment fragment = new PatientInfoHistoryFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -50,26 +52,31 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
     @Override
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
-        userId = getArguments().getString("userId");
+        //        userId = getArguments().getString("userId");
         initView();
         initReFresh();
         getData();
     }
 
     private void getData() {
-        Call<String> requestCall = DataManager.getInjectionHistoryList(userId, page, (call, response) -> {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        Call<String> requestCall = DataManager.getInjectionHistoryList(page,token, (call, response) -> {
             if (200 == response.code) {
                 if (page == 1) {
                     infoList.clear();
                 }
-                infoListTemp = (List<InjectionHistoryInfo>) response.object;
-                if (infoListTemp.size() < 10) {
-                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
-                } else {
-                    smartRefreshLayout.finishLoadMore();
+                if (infoListTemp!=null&&infoListTemp.size()>0){
+                    infoListTemp = (List<InjectionHistoryInfo>) response.object;
+                    if (infoListTemp.size() < 10) {
+                        smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    } else {
+                        smartRefreshLayout.finishLoadMore();
+                    }
+                    infoList.addAll(infoListTemp);
+                    adapter.notifyDataSetChanged();
                 }
-                infoList.addAll(infoListTemp);
-                adapter.notifyDataSetChanged();
+
             } else {
                 ToastUtils.showToast("网络连接不可用，请稍后重试！");
             }
@@ -84,7 +91,7 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
         recyclerView = view.findViewById(R.id.rv_injection_history);
         smartRefreshLayout = view.findViewById(R.id.srl_history);
         containerView().addView(view);
-        adapter = new InjectionHistoryAdapter(getPageContext(), userId, infoList);
+        adapter = new InjectionHistoryAdapter(getPageContext(),  infoList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
         recyclerView.setAdapter(adapter);
     }

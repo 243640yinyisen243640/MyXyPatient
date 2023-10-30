@@ -100,6 +100,7 @@ import com.vice.bloodpressure.ui.activity.sport.SportTypeVideoActivity;
 import com.vice.bloodpressure.ui.activity.sysmsg.SystemMsgListActivity;
 import com.vice.bloodpressure.ui.activity.user.WarningRemindActivity;
 import com.vice.bloodpressure.ui.fragment.other.BmiFragment;
+import com.vice.bloodpressure.ui.fragment.injection.InjectionFragment;
 import com.vice.bloodpressure.ui.fragment.other.XueTangFragment;
 import com.vice.bloodpressure.ui.fragment.other.XueYaFragment;
 import com.vice.bloodpressure.utils.BadgeUtils;
@@ -702,10 +703,12 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
         list.add(new XueYaFragment());
         list.add(new XueTangFragment());
         list.add(new BmiFragment());
+        list.add(new InjectionFragment());
 
         list.add(new XueYaFragment());
         list.add(new XueTangFragment());
         list.add(new BmiFragment());
+        list.add(new InjectionFragment());
 
         list.add(new XueYaFragment());
         MyFragmentStatePagerAdapter adapter = new MyFragmentStatePagerAdapter(getChildFragmentManager(), list);
