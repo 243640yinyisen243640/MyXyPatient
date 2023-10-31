@@ -105,7 +105,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -239,7 +238,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -275,7 +273,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -324,7 +321,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -360,7 +356,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -409,7 +404,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -445,7 +439,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -494,7 +487,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 
@@ -530,7 +522,6 @@
                     android:drawableEnd="@drawable/right_arrow"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical|right"
-                    android:text="@string/app_name"
                     android:textColor="#545454"
                     android:textSize="17sp" />
 

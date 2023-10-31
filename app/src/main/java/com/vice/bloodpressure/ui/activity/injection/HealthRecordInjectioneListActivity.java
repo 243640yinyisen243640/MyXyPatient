@@ -107,7 +107,8 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
                 break;
             case R.id.ll_injection_programme:
                 if ("暂无".equals(injectionBaseData.getAction_time())) {
-
+                    Intent intent = new Intent(getPageContext(), InjectionProgramAddActivity.class);
+                    startActivity(intent);
                 } else {
                     llPlan.setBackground(getResources().getDrawable(R.color.transparent));
                     llProgramme.setBackground(getResources().getDrawable(R.drawable._2));
@@ -127,7 +128,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     private void getData() {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
-        DataManager.getInjectionBaseInfo(token,(call, response) -> {
+        DataManager.getInjectionBaseInfo(token, (call, response) -> {
             if (response.code == 200) {
                 injectionBaseData = (InjectionBaseData) response.object;
                 setData();

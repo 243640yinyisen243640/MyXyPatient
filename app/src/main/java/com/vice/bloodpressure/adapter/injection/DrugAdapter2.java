@@ -46,21 +46,25 @@ public class DrugAdapter2 extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_drug1, parent, false);
+//        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_drug2, parent, false);
             TextView textView = convertView.findViewById(R.id.v_drug_name);
             ImageView imageView = convertView.findViewById(R.id.iv_drug_check);
             textView.setText(list.get(position).getName());
             if (list.get(position).isCheck()) {
                 imageView.setVisibility(View.VISIBLE);
                 textView.setTextColor(Color.parseColor("#0CA25B"));
-                textView.setBackgroundColor(Color.parseColor("#330CA25B"));
+                if (position == 0){
+                    textView.setBackground(context.getDrawable(R.drawable.shape_drug2_10));
+                }else {
+                    textView.setBackgroundColor(Color.parseColor("#330CA25B"));
+                }
             } else {
                 imageView.setVisibility(View.GONE);
                 textView.setTextColor(Color.parseColor("#333333"));
                 textView.setBackgroundColor(Color.parseColor("#00000000"));
             }
-        }
+//        }
         return convertView;
     }
 

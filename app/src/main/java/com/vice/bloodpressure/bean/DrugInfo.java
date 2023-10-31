@@ -12,6 +12,7 @@ public class DrugInfo {
 
     public DrugInfo(String name) {
         this.name = name;
+        isCheck = false;
     }
 
     public String getName() {

@@ -114,7 +114,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             //选择结果
             PickerUtils.showChooseSinglePicker(getPageContext(), "", getList(), object -> {
                 tvAddValue.setText(getList().get(Integer.parseInt(String.valueOf(object))) + "单位");
-                unitValue = Integer.parseInt(String.valueOf(object)) + "";
+                unitValue = Integer.parseInt(String.valueOf(object)) + 1+"";
             });
         });
     }

@@ -3,6 +3,7 @@ package com.vice.bloodpressure.ui.activity.injection;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,9 +37,9 @@ import retrofit2.Call;
 public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
     private List<DrugListInfo> listInfos;
     private String value;
-    private List<DrugInfo> list1;
+    private final List<DrugInfo> list1 = new ArrayList<>();
     private DrugAdapter1 adapter1;
-    private List<DrugInfo> list2;
+    private final List<DrugInfo> list2 = new ArrayList<>();
     private DrugAdapter2 adapter2;
     private TextView tvValue;
     private TextView tvName;
@@ -61,8 +62,9 @@ public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
         tvValue.setOnClickListener(v -> {
             //选择结果
             PickerUtils.showChooseSinglePicker(getPageContext(), "", getList(), object -> {
-                tvValue.setText(getList().get(Integer.parseInt(String.valueOf(object))) + "单位");
-                value = Integer.parseInt(String.valueOf(object))+ "";
+                Log.i("yys","object==="+object);
+                tvValue.setText(getList().get(Integer.parseInt(String.valueOf(object))));
+                value = Integer.parseInt(String.valueOf(object))+ 1+"";
             });
         });
         tvName = view.findViewById(R.id.tv_program_drug_name);
@@ -79,6 +81,7 @@ public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
             }
             list1.get(position).setCheck(true);
             adapter1.notifyDataSetChanged();
+
             list2.clear();
             for (int i = 0; i < listInfos.get(position).getDrug_data().size(); i++) {
                 list2.add(new DrugInfo(listInfos.get(position).getDrug_data().get(i)));
@@ -121,7 +124,7 @@ public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
     private List<String> getList() {
         List<String> allList = new ArrayList<>();
         for (int i = 1; i < 51; i++) {
-            allList.add(i + "");
+            allList.add(i + "单位");
         }
         return allList;
     }
@@ -145,13 +148,13 @@ public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
         if (listInfos == null || listInfos.size() == 0) {
             return;
         }
-        list1 = new ArrayList<>();
+        list1.clear();
         for (int i = 0; i < listInfos.size(); i++) {
             list1.add(new DrugInfo(listInfos.get(i).getDrug_name()));
         }
         adapter1 = new DrugAdapter1(getPageContext(), list1);
         listView1.setAdapter(adapter1);
-        list2 = new ArrayList<>();
+        list2.clear();
         for (int i = 0; i < listInfos.get(0).getDrug_data().size(); i++) {
             list2.add(new DrugInfo(listInfos.get(0).getDrug_data().get(i)));
         }

@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.AddProgramInfo;
@@ -59,8 +62,23 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
 
     private void initData() {
         List<AddProgramInfo.plan> planList = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            planList.add(new AddProgramInfo.plan("", "", ""));
+        for (int i = 0; i < chooseNum; i++) {
+            if (i == 0) {
+                planList.add(new AddProgramInfo.plan("08:00", "", ""));
+                tvChooseTime1.setText(planList.get(0).getPlan_time());
+            }
+            if (i == 1) {
+                planList.add(new AddProgramInfo.plan("12:00", "", ""));
+                tvChooseTime2.setText(planList.get(1).getPlan_time());
+            }
+            if (i == 2) {
+                planList.add(new AddProgramInfo.plan("18:00", "", ""));
+                tvChooseTime3.setText(planList.get(2).getPlan_time());
+            }
+            if (i == 3) {
+                planList.add(new AddProgramInfo.plan("22:00", "", ""));
+                tvChooseTime4.setText(planList.get(3).getPlan_time());
+            }
         }
         info = new AddProgramInfo("", "", planList);
     }
@@ -121,7 +139,7 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     }
 
     private void chooseTime(int chooseTimePos, TextView textView) {
-
+        initTime(chooseTimePos, textView);
     }
 
     private void chooseNum(int num, TextView textView) {
@@ -141,6 +159,7 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         if (num > 3) {
             llNum4.setVisibility(View.VISIBLE);
         }
+        initData();
     }
 
     private void initChooseNum() {
@@ -181,5 +200,111 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
                     break;
             }
         }
+    }
+
+    private List<String> options1Items = new ArrayList<>();
+    private List<List<String>> options2Items = new ArrayList<>();
+
+
+    private void initTime(int chooseNum, TextView textView) {
+        List<String> times = new ArrayList<>();
+        for (int i = 0; i < 60; i++) {
+            if (i < 10) {
+                times.add("0" + i + "分");
+            } else {
+                times.add(i + "分");
+            }
+        }
+        if (info.getPlanList().size() == 0) {
+            return;
+        }
+        int start = 0;
+        int end = 0;
+        if (info.getPlanList().size() == 1 && chooseNum == 1) {
+            start = 0;
+            end = 23;
+        }
+        if (info.getPlanList().size() == 2) {
+            if (chooseNum == 1) {
+                start = 0;
+                String plan_time = info.getPlanList().get(1).getPlan_time();
+                String[] split = plan_time.split(":");
+                end = Integer.parseInt(split[0]) - 1;
+            }
+        }
+        if (info.getPlanList().size() == 3) {
+            if (chooseNum == 1) {
+                start = 0;
+                String plan_time = info.getPlanList().get(1).getPlan_time();
+                String[] split = plan_time.split(":");
+                end = Integer.parseInt(split[0]) - 1;
+            }
+            if (chooseNum == 2) {
+                String plan_time = info.getPlanList().get(0).getPlan_time();
+                String[] split = plan_time.split(":");
+                start = Integer.parseInt(split[0]) + 1;
+
+                String planTime = info.getPlanList().get(2).getPlan_time();
+                String[] splitTime = planTime.split(":");
+                end = Integer.parseInt(splitTime[0]) - 1;
+            }
+        }
+        if (info.getPlanList().size() == 4) {
+            if (chooseNum == 1) {
+                start = 0;
+                String plan_time = info.getPlanList().get(1).getPlan_time();
+                String[] split = plan_time.split(":");
+                end = Integer.parseInt(split[0]) - 1;
+            }
+            if (chooseNum == 2) {
+                String plan_time = info.getPlanList().get(0).getPlan_time();
+                String[] split = plan_time.split(":");
+                start = Integer.parseInt(split[0]) + 1;
+
+                String planTime = info.getPlanList().get(2).getPlan_time();
+                String[] splitTime = planTime.split(":");
+                end = Integer.parseInt(splitTime[0]) - 1;
+            }
+            if (chooseNum == 3) {
+                String plan_time = info.getPlanList().get(1).getPlan_time();
+                String[] split = plan_time.split(":");
+                start = Integer.parseInt(split[0]) + 1;
+
+                String planTime = info.getPlanList().get(3).getPlan_time();
+                String[] splitTime = planTime.split(":");
+                end = Integer.parseInt(splitTime[0]) - 1;
+            }
+            if (chooseNum == 4) {
+                String plan_time = info.getPlanList().get(2).getPlan_time();
+                String[] split = plan_time.split(":");
+                start = Integer.parseInt(split[0]) + 1;
+
+                end = 23;
+            }
+        }
+
+        for (int i = start; i <= end; i++) {
+            if (i < 10) {
+                options1Items.add("0" + i + "时");
+            } else {
+                options1Items.add(i + "时");
+            }
+            options2Items.add(times);
+        }
+
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                String time = options1Items.get(options1).replaceAll("时", "") + ":" + (options2Items.get(options1).get(options2).replaceAll("分", ""));
+                textView.setText(time);
+                info.getPlanList().get(chooseNum - 1).setPlan_time(time);
+            }
+        })
+                .setTitleText("")
+                .setContentTextSize(16)
+                .build();
+
+        pvOptions.setPicker(options1Items, options2Items);
+        pvOptions.show();
     }
 }

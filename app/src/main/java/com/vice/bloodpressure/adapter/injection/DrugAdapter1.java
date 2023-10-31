@@ -45,7 +45,7 @@ public class DrugAdapter1 extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+//        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_drug1, parent, false);
             View view = convertView.findViewById(R.id.v_drug_check);
             TextView textView = convertView.findViewById(R.id.v_drug_name);
@@ -57,7 +57,7 @@ public class DrugAdapter1 extends BaseAdapter {
                 view.setVisibility(View.INVISIBLE);
                 textView.setTextColor(Color.parseColor("#838383"));
             }
-        }
+//        }
         return convertView;
     }
 
