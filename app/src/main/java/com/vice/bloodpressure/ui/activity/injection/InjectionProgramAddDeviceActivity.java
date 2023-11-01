@@ -23,6 +23,7 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        topViewManager().titleTextView().setText("添加设备");
         containerView().addView(initView());
     }
 

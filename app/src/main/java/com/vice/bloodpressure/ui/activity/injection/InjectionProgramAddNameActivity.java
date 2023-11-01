@@ -34,6 +34,7 @@ public class InjectionProgramAddNameActivity extends XYSoftUIBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        topViewManager().titleTextView().setText("方案名称");
         containerView().addView(initView());
     }
 

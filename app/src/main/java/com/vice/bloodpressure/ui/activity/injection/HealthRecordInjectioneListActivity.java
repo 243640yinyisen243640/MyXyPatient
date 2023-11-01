@@ -31,6 +31,7 @@ import java.util.List;
  * 描述:
  */
 public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity implements View.OnClickListener {
+    private static final int REQUEST_CODE_FORPROGRAM = 10;
     private TextView tvNum;
     private TextView tvState;
     private TextView tvRank;
@@ -57,8 +58,6 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
             intent.putExtra("isAdd", true);
             startActivity(intent);
         });
-        //        userId = getIntent().getStringExtra("userid");
-        //        userId = "129199";
         initListener();
         getData();
     }
@@ -108,7 +107,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
             case R.id.ll_injection_programme:
                 if ("暂无".equals(injectionBaseData.getAction_time())) {
                     Intent intent = new Intent(getPageContext(), InjectionProgramAddActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_FORPROGRAM);
                 } else {
                     llPlan.setBackground(getResources().getDrawable(R.color.transparent));
                     llProgramme.setBackground(getResources().getDrawable(R.drawable._2));
@@ -118,6 +117,21 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
                 break;
             default:
                 break;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_FORPROGRAM:
+                    getData();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

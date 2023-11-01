@@ -3,7 +3,6 @@ package com.vice.bloodpressure.ui.activity.injection;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -52,6 +51,8 @@ public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int chooseDetailPos = getIntent().getIntExtra("chooseDetailPos", 0);
+        topViewManager().titleTextView().setText("第" + chooseDetailPos + "针");
         containerView().addView(initView());
         initData();
     }
@@ -62,9 +63,8 @@ public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
         tvValue.setOnClickListener(v -> {
             //选择结果
             PickerUtils.showChooseSinglePicker(getPageContext(), "", getList(), object -> {
-                Log.i("yys","object==="+object);
                 tvValue.setText(getList().get(Integer.parseInt(String.valueOf(object))));
-                value = Integer.parseInt(String.valueOf(object))+ 1+"";
+                value = Integer.parseInt(String.valueOf(object)) + 1 + "";
             });
         });
         tvName = view.findViewById(R.id.tv_program_drug_name);

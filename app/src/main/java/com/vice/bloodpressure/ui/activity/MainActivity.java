@@ -46,6 +46,8 @@ import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.lyd.modulemall.ui.activity.ProductDetailActivity;
 import com.lyd.modulemall.ui.activity.user.MyCouponListActivity;
 import com.lyd.modulemall.ui.fragment.MallHomeFragment;
+import com.quinovaresdk.bletransfer.BleTransfer;
+import com.quinovaresdk.bletransfer.Injection;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -61,6 +63,10 @@ import com.vice.bloodpressure.bean.RongYunBean;
 import com.vice.bloodpressure.bean.ShopTitleBean;
 import com.vice.bloodpressure.bean.UpdateBean;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.event.BlueBindEvent;
+import com.vice.bloodpressure.event.BlueConnectEvent;
+import com.vice.bloodpressure.event.BlueHistoryDataEvent;
+import com.vice.bloodpressure.event.BlueUnbindEvent;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.mydevice.InputImeiActivity;
@@ -72,6 +78,7 @@ import com.vice.bloodpressure.ui.fragment.main.RegistrationFragment;
 import com.vice.bloodpressure.ui.fragment.main.UserFragment;
 import com.vice.bloodpressure.utils.DialogUtils;
 import com.vice.bloodpressure.utils.NotificationUtils;
+import com.vice.bloodpressure.utils.SPUtils;
 import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.UpdateUtils;
 import com.vice.bloodpressure.view.NumberProgressBar;
@@ -220,6 +227,10 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String ally_key = "df44d3a6fc6a57e8f4b1d3b6f8e5b290";
+        BleTransfer.getInstance().init(getPageContext(), ally_key);
+        BleTransfer.getInstance().realInit();
+        blueCallBack();
         regToWx();
         //添加第一个Fragment
         addFirstFragment();
@@ -1178,5 +1189,230 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                 startActivity(new Intent(getPageContext(), MainActivity.class));
                 break;
         }
+    }
+
+    public static boolean isConnect = false;
+
+    private void blueCallBack() {
+        BleTransfer.getInstance().setOnDataCallBackListetner(new BleTransfer.OnDataCallListener() {
+            @Override
+            public void onSdkAuthcation(final int code, final String message) {
+
+            }
+
+            @Override
+            public void onDeviceAuthcation(final int code, final String message) {
+
+            }
+
+            @Override
+            public void onDeviceConnected() {
+                Log.i("yys", "已连接");
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //连接成功
+                        isConnect = true;
+                        getHandler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.i("yys", "bind");
+                                EventBusUtils.post(new BlueConnectEvent(true));
+                            }
+                        },1_000);
+                    }
+                });
+            }
+
+            @Override
+            public void onDeviceDisConnected() {
+                Log.i("yys", "连接断开");
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        isConnect = false;
+                        BleTransfer.getInstance().close();
+                    }
+                });
+            }
+
+            @Override
+            public void onServicesDisCovered() {
+
+            }
+
+            @Override
+            public void onDeviceNotSupport() {
+                BleTransfer.getInstance().disconnect();
+            }
+
+            @Override
+            public void onBindDeviceStatus(final String code, final String message) {
+                Log.i("yys", "绑定状态==" + code + "," + message);
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if ("00".equals(code)) {
+                            //绑定成功
+                            SPUtils.putBean("blueBindState",true);
+                            EventBusUtils.post(new BlueBindEvent(true));
+                        } else {
+
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onUnBindDeviceStatus(final String code, final String message) {
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Log.i("yys", "解绑状态==" + code + "," + message);
+                        if (TextUtils.equals("00",code)){
+                            SPUtils.putBean("blueBindState",false);
+                            EventBusUtils.post(new BlueUnbindEvent(true));
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onSetBuzzerParamStatus(final String code, final String message) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //                        tv_sendButton003.setText(code + "," + message);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onSetMedicinalType(final String code, final String message) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //                        tv_sendButton004.setText(code + "," + message);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onGetPressedStatus(final String code, final String message) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //                        tv_sendButton01.setText(code + "," + message);
+                    }
+                });
+            }
+
+            @Override
+            public void onBatteryVolStatus(final byte vol) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //获取设备电量
+                    }
+                });
+            }
+
+            @Override
+            public void onGetBuzzerParamStatus(final byte kaiguan, final byte jiange) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //                        tv_sendButton03.setText(kaiguan + "," + jiange);
+                    }
+                });
+            }
+
+            @Override
+            public void onGetDeviceInfo(final String vender, final String hardware, final float ver) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //获取设备信息
+
+                    }
+                });
+            }
+
+            @Override
+            public void onProductInfo(final byte vol, final short productType, final String productName) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //获取产品信息
+                        //                        tv_sendButton02_1.setText(vol + "," + productType + "," + productName);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onGetDeviceTime(final short year, final byte month, final byte day, final byte hour, final byte minute, final byte second) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //获取设备本地时间
+                        //                        tv_sendButton05.setText(year + "年" + month + "月" + day + "日"
+                        //                        + hour + "时" + minute + "分" + second + "秒");
+                    }
+                });
+            }
+
+            @Override
+            public void onSetDeviceTime() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //设置设备本地时间
+                        //                        tv_sendButton06.setText("成功");
+                    }
+                });
+            }
+
+            @Override
+            public void onHistoryInjection(final ArrayList<Injection> datas) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //获取历史注射记录
+                        StringBuffer stringBuffer = new StringBuffer();
+                        for (int i = 0; i < datas.size(); i++) {
+                            Injection injection = datas.get(i);
+                            String text = injection.getYear() + ","
+                                    + injection.getMonth() + ","
+                                    + injection.getDay() + ","
+                                    + injection.getHour() + ","
+                                    + injection.getMinute() + ","
+                                    + injection.getSecond() + ","
+                                    + injection.getDosage() + ","
+                                    + injection.getType();
+
+                            stringBuffer.append(text + "\n");
+                        }
+                        Log.i("yys", "获取历史注射记录=="+stringBuffer.toString());
+                        EventBusUtils.post(new BlueHistoryDataEvent(stringBuffer.toString()));
+                        //                        tv_sendButton08.setText("" + stringBuffer.toString());
+                    }
+                });
+            }
+
+
+            @Override
+            public void onInjection(final Injection injection) {
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //注射记录通知
+                        String text = injection.getYear() + ","
+                                + injection.getMonth() + ","
+                                + injection.getDay() + ","
+                                + injection.getHour() + ","
+                                + injection.getMinute() + ","
+                                + injection.getSecond() + ","
+                                + injection.getDosage() + ","
+                                + injection.getType();
+
+                        Log.i("yys", "注射记录通知=="+text);
+                        //                        tv_nofity_result.setText(text);
+                    }
+                });
+
+            }
+        });
     }
 }

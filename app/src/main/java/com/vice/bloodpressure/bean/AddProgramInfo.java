@@ -1,10 +1,10 @@
 package com.vice.bloodpressure.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AddProgramInfo {
+public class AddProgramInfo implements Serializable {
     private String plan_name;
-    private String access_token;
     private List<plan> planList;
 
     public String getPlan_name() {
@@ -15,13 +15,6 @@ public class AddProgramInfo {
         this.plan_name = plan_name;
     }
 
-    public String getAccess_token() {
-        return access_token;
-    }
-
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
-    }
 
     public List<plan> getPlanList() {
         return planList;
@@ -31,9 +24,8 @@ public class AddProgramInfo {
         this.planList = planList;
     }
 
-    public AddProgramInfo(String plan_name, String access_token, List<plan> planList) {
+    public AddProgramInfo(String plan_name, List<plan> planList) {
         this.plan_name = plan_name;
-        this.access_token = access_token;
         this.planList = planList;
     }
 

@@ -17,6 +17,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.injection.PlanNumInfo;
 import com.vice.bloodpressure.constant.DataFormatManager;
+import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
     private int check = 0;
     private int allType = 0;
     //    1~50单位
-    private String unitValue = "";
+    private String unitValue = "15";
 
 
     @Override
@@ -60,29 +61,18 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
     private void initValues() {
         isAdd = getIntent().getBooleanExtra("isAdd", false);
         if (isAdd) {
+
             //是添加
-            initData();
+            //            initData();
+
+            String time = DataUtils.currentDateString(DataFormatManager.TIME_FORMAT_Y_M_D);
+            getTimeData(time);
             tvAddDate.setOnClickListener(v -> {
                 //选择日期
                 PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
-                        //掉接口
-                        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
-                        String token = loginBean.getToken();
-                        // 2023-10-01
-                        Call<String> requestCall = DataManager.getPlanNum(content, token, (call, response) -> {
-                            if (200 == response.code) {
-                                PlanNumInfo info = (PlanNumInfo) response.object;
-                                tvAddDate.setText(content);
-                                allType = Integer.parseInt(info.getPlan_num());
-                                initData();
-                            } else {
-                                ToastUtils.showToast("网络连接不可用，请稍后重试！");
-                            }
-                        }, (call, t) -> {
-                            ToastUtils.showToast("网络连接不可用，请稍后重试！");
-                        });
+                        getTimeData(content);
                     }
                 });
 
@@ -113,15 +103,34 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
         tvAddValue.setOnClickListener(v -> {
             //选择结果
             PickerUtils.showChooseSinglePicker(getPageContext(), "", getList(), object -> {
-                tvAddValue.setText(getList().get(Integer.parseInt(String.valueOf(object))) + "单位");
-                unitValue = Integer.parseInt(String.valueOf(object)) + 1+"";
+                tvAddValue.setText(getList().get(Integer.parseInt(String.valueOf(object))));
+                unitValue = Integer.parseInt(String.valueOf(object)) + 1 + "";
             });
+        });
+    }
+
+    private void getTimeData(String content) {
+        //掉接口
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        // 2023-10-01
+        Call<String> requestCall = DataManager.getPlanNum(content, token, (call, response) -> {
+            if (200 == response.code) {
+                PlanNumInfo info = (PlanNumInfo) response.object;
+                tvAddDate.setText(content);
+                allType = Integer.parseInt(info.getPlan_num());
+                initData();
+            } else {
+                ToastUtils.showToast("网络连接不可用，请稍后重试！");
+            }
+        }, (call, t) -> {
+            ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
     }
 
     private void initData() {
         //获取数据
-        //allType赋值  1-4
+        //llType赋值  1-4
         check = 0;
         initType();
         setType();
@@ -133,7 +142,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
     private List<String> getList() {
         List<String> allList = new ArrayList<>();
         for (int i = 1; i < 51; i++) {
-            allList.add(i + "");
+            allList.add(i + "单位");
         }
         return allList;
     }
@@ -227,12 +236,12 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             String dataTime = date + " " + time;
 
             // 2023-10-01
-            Call<String> requestCall = DataManager.addInsulin(unitValue, dataTime, token, (call, response) -> {
+            Call<String> requestCall = DataManager.addInsulin("2", check + "", unitValue, dataTime, token, (call, response) -> {
                 if (200 == response.code) {
                     ToastUtils.showToast(response.msg);
                     finish();
                 } else {
-                    ToastUtils.showToast("网络连接不可用，请稍后重试！");
+                    ToastUtils.showToast(response.msg);
                 }
             }, (call, t) -> {
                 ToastUtils.showToast("网络连接不可用，请稍后重试！");

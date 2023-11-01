@@ -142,7 +142,6 @@ public class ConstantParam {
     //食物类型 选中发送
     public static final int FOOD_TYPE_SEND = 1049;
 
-
     /**
      * EventBus Code 结束
      */

@@ -402,6 +402,8 @@
         <activity android:name=".ui.activity.injection.InjectionProgramAddNumActivity"/>
         <activity android:name=".ui.activity.injection.InjectionProgramAddDeviceActivity"/>
         <activity android:name=".ui.activity.injection.InjectionProgramSearchDeviceActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionProgramBindDeviceActivity"/>
+        <activity android:name=".ui.activity.injection.InjectionProgramUnbindDeviceActivity"/>
         <activity android:name=".ui.activity.injection.MyBindDeviceListNewActivity"/>
         <activity android:name=".ui.activity.injection.MyDeviceNewActivity"/>
 

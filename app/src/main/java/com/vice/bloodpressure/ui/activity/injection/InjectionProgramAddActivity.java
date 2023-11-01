@@ -3,15 +3,22 @@ package com.vice.bloodpressure.ui.activity.injection;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.allen.library.utils.ToastUtils;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.google.gson.Gson;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.AddProgramInfo;
@@ -19,10 +26,13 @@ import com.vice.bloodpressure.bean.AddProgramInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+
 /**
  * 作者: beauty
  * 类名:
- * 传参:
+ * 传参: 是否新增  isAdd
+ * isAdd==false   需传info
  * 描述:方案添加
  */
 public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
@@ -30,7 +40,6 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     private static final int REQUEST_CODE_PROGRAM_NAME = 10;
     private static final int REQUEST_CODE_CHOOSE_DETAIL = 11;
     private int chooseNum;
-    private int chooseTimePos;
     private int chooseDetailPos;
     private TextView chooseDetailTextView;
     private TextView tvIsConnect;
@@ -52,12 +61,61 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     private TextView tvChooseDetail3;
     private TextView tvChooseDetail4;
     private TextView tvConfirm;
+    private boolean isAdd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        topViewManager().titleTextView().setText("方案编辑");
         containerView().addView(initView());
-        initData();
+        isAdd = getIntent().getBooleanExtra("isAdd", true);
+        if (isAdd) {
+            initData();
+        } else {
+            info = (AddProgramInfo) getIntent().getSerializableExtra("info");
+            tvName.setText(info.getPlan_name());
+
+            initDataEdit();
+        }
+    }
+
+    private void initDataEdit() {
+        chooseNum = info.getPlanList().size();
+        initChooseNum();
+        LinearLayout linearLayout = findViewById(R.id.ll_num);
+        TextView textView = (TextView) linearLayout.getChildAt(chooseNum - 1);
+        textView.setTextColor(Color.parseColor("#0CA25B"));
+        textView.setBackgroundColor(Color.parseColor("#4D0CA25B"));
+        if (chooseNum > 0) {
+            llNum1.setVisibility(View.VISIBLE);
+        }
+        if (chooseNum > 1) {
+            llNum2.setVisibility(View.VISIBLE);
+        }
+        if (chooseNum > 2) {
+            llNum3.setVisibility(View.VISIBLE);
+        }
+        if (chooseNum > 3) {
+            llNum4.setVisibility(View.VISIBLE);
+        }
+        for (int i = 0; i < chooseNum; i++) {
+            if (i == 0) {
+                tvChooseTime1.setText(info.getPlanList().get(0).getPlan_time());
+                tvChooseDetail1.setText(info.getPlanList().get(0).getDrug_name() + "," + info.getPlanList().get(0).getValue() + "单位");
+            }
+            if (i == 1) {
+                tvChooseTime2.setText(info.getPlanList().get(1).getPlan_time());
+                tvChooseDetail2.setText(info.getPlanList().get(1).getDrug_name() + "," + info.getPlanList().get(1).getValue() + "单位");
+            }
+            if (i == 2) {
+                tvChooseTime3.setText(info.getPlanList().get(2).getPlan_time());
+                tvChooseDetail3.setText(info.getPlanList().get(2).getDrug_name() + "," + info.getPlanList().get(2).getValue() + "单位");
+            }
+            if (i == 3) {
+                tvChooseTime4.setText(info.getPlanList().get(3).getPlan_time());
+                tvChooseDetail4.setText(info.getPlanList().get(3).getDrug_name() + "," + info.getPlanList().get(3).getValue() + "单位");
+            }
+        }
     }
 
     private void initData() {
@@ -80,7 +138,7 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
                 tvChooseTime4.setText(planList.get(3).getPlan_time());
             }
         }
-        info = new AddProgramInfo("", "", planList);
+        info = new AddProgramInfo("", planList);
     }
 
     private View initView() {
@@ -113,7 +171,40 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         tvChooseDetail4 = view.findViewById(R.id.tv_program_choose_detail_4);
         tvConfirm = view.findViewById(R.id.tv_program_confirm);
         tvConfirm.setOnClickListener(v -> {
+            String plan_name = info.getPlan_name();
+            if (TextUtils.isEmpty(plan_name)) {
+                ToastUtils.showToast("请填写方案名称");
+                return;
+            }
+            boolean isPass = true;
+            for (int i = 0; i < info.getPlanList().size(); i++) {
+                if (TextUtils.isEmpty(info.getPlanList().get(i).getDrug_name()) ||
+                        TextUtils.isEmpty(info.getPlanList().get(i).getPlan_time()) ||
+                        TextUtils.isEmpty(info.getPlanList().get(i).getValue())) {
+                    isPass = false;
+                    break;
+                }
+            }
+            if (!isPass) {
+                ToastUtils.showToast("请完善方案信息");
+                return;
+            }
+            String plan = new Gson().toJson(info.getPlanList());
+            Log.i("yys", "plan==" + plan);
             //提交
+            LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+            String token = loginBean.getToken();
+            Call<String> requestCall = DataManager.addPlan(token, plan_name, plan, (call, response) -> {
+                if (200 == response.code) {
+                    ToastUtils.showToast(response.msg);
+                    finish();
+                } else {
+                    ToastUtils.showToast("网络连接不可用，请稍后重试！");
+                }
+            }, (call, t) -> {
+                ToastUtils.showToast("网络连接不可用，请稍后重试！");
+            });
+
         });
 
         tvNum1.setOnClickListener(v -> chooseNum(1, tvNum1));
@@ -135,7 +226,9 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     private void chooseDetail(int chooseDetailPos, TextView textView) {
         this.chooseDetailPos = chooseDetailPos;
         chooseDetailTextView = textView;
-        startActivityForResult(new Intent(getPageContext(), InjectionProgramAddNumActivity.class), REQUEST_CODE_CHOOSE_DETAIL);
+        Intent intent = new Intent(getPageContext(), InjectionProgramAddNumActivity.class);
+        intent.putExtra("chooseDetailPos", chooseDetailPos);
+        startActivityForResult(intent, REQUEST_CODE_CHOOSE_DETAIL);
     }
 
     private void chooseTime(int chooseTimePos, TextView textView) {
@@ -193,8 +286,8 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
                     String drugName = data.getStringExtra("name");
                     String value = data.getStringExtra("value");
                     chooseDetailTextView.setText(drugName + "," + value + "单位");
-                    info.getPlanList().get(chooseDetailPos).setValue(value);
-                    info.getPlanList().get(chooseDetailPos).setDrug_name(drugName);
+                    info.getPlanList().get(chooseDetailPos - 1).setValue(value);
+                    info.getPlanList().get(chooseDetailPos - 1).setDrug_name(drugName);
                     break;
                 default:
                     break;

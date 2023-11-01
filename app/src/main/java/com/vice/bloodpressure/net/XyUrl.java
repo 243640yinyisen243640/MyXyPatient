@@ -282,6 +282,10 @@ public class XyUrl {
     public final static String GET_INDEX_BUSGAR_INDEX = HOST_URL + "/index/Busgar/index";
     //bmi折线图
     public final static String GET_INDEX_BMI_INDEX = HOST_URL + "/index/bmi/index";
+
+    //胰岛注射
+    public final static String GET_INDEX_INJECTION = HOST_URL + "/indexInfo";
+
     //处理医生添加消息  (医生添加患者无需患者同意)
     //public final static String GET__PORT_MESSAGE_EDITRELATION = HOST_URL + "/port/Message/editRelation";
     //小工具(6个)

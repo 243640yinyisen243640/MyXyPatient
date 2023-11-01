@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.fragment.injection;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,8 +16,13 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.InjectionCurrentAdapter;
 import com.vice.bloodpressure.base.TabFragmentAdapter;
 import com.vice.bloodpressure.base.fragment.XYBaseFragment;
+import com.vice.bloodpressure.bean.AddProgramInfo;
 import com.vice.bloodpressure.bean.injection.InjectionDataDetail;
 import com.vice.bloodpressure.ui.activity.injection.HealthRecordInjectioneListActivity;
+import com.vice.bloodpressure.ui.activity.injection.InjectionProgramAddActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -30,6 +36,7 @@ import retrofit2.Call;
 public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFragmentAdapter.RefeshFragment {
     private TextView tvName;
     private TextView tvTime;
+    private TextView tvEdit;
     private RecyclerView recyclerView;
     private InjectionCurrentAdapter adapter;
     private InjectionDataDetail dataDetail;
@@ -59,7 +66,7 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
                 dataDetail = (InjectionDataDetail) response.object;
                 setData();
             } else {
-                ToastUtils.showToast("网络连接不可用，请稍后重试！");
+                ToastUtils.showToast(response.msg);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
@@ -70,6 +77,22 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
         if (!action_time.equals("/暂无")){
             tvName.setText(dataDetail.getPlan_name());
             tvTime.setText(dataDetail.getAction_time() + "执行");
+            tvEdit.setVisibility(View.VISIBLE);
+            tvEdit.setOnClickListener(v -> {
+                Intent intent = new Intent(getPageContext(), InjectionProgramAddActivity.class);
+                intent.putExtra("isAdd",false);
+                List<AddProgramInfo.plan>plans = new ArrayList<>();
+                for (int i = 0; i < dataDetail.getDetail().size(); i++) {
+                    plans.add(new AddProgramInfo.plan(
+                            dataDetail.getDetail().get(i).getBegin(),
+                            dataDetail.getDetail().get(i).getDrug_name(),
+                            dataDetail.getDetail().get(i).getValue()+""));
+                }
+                AddProgramInfo info = new AddProgramInfo(dataDetail.getPlan_name(),plans);
+                info.setPlanList(plans);
+                intent.putExtra("info",info);
+                startActivity(intent);
+            });
             recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
             adapter = new InjectionCurrentAdapter(getPageContext(), dataDetail.getDetail());
             recyclerView.setAdapter(adapter);
@@ -82,6 +105,7 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
         View view = View.inflate(getPageContext(), R.layout._fragment_injection_currcnt, null);
         tvName = view.findViewById(R.id.tv_current_name);
         tvTime = view.findViewById(R.id.tv_current_time);
+        tvEdit =  view.findViewById(R.id.tv_program_edit);
         recyclerView = view.findViewById(R.id.rv_current);
         return view;
     }
