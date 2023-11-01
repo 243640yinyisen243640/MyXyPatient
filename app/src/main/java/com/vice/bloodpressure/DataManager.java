@@ -1,5 +1,7 @@
 package com.vice.bloodpressure;
 
+import android.text.TextUtils;
+
 import com.vice.bloodpressure.bean.AdverInfo;
 import com.vice.bloodpressure.bean.DietPlanAddSuccessBean;
 import com.vice.bloodpressure.bean.PhysicalExaminationDoctorInfoAllInfo;
@@ -175,7 +177,7 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InjectionBaseData.class, "/userInsuliInfo", map, successCallBack, failureCallBack);
     }
 
-    public static Call<String> getInjectionList(String beginTime,String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> getInjectionList(String beginTime, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         //        map.put("userid", userid);
         map.put("access_token", token);
@@ -183,7 +185,7 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InjectionDataListInfo.class, "/insulinList", map, successCallBack, failureCallBack);
     }
 
-    public static Call<String> getInjectionDetail(String action_time, String isuse,String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> getInjectionDetail(String action_time, String isuse, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         //        map.put("userid", userid);
         map.put("access_token", token);
@@ -208,7 +210,7 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, PlanNumInfo.class, "/getPlanNum", map, successCallBack, failureCallBack);
     }
 
-    public static Call<String> editInsulin(String value,String jection_id, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> editInsulin(String value, String jection_id, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
         map.put("value", value);
@@ -216,44 +218,55 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/editInsulin", map, successCallBack, failureCallBack);
     }
 
-    public static Call<String> addInsulin(String type,String times,String value,String datetime, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> addInsulin(String type, String times, String value, String datetime, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
         map.put("datetime", datetime);
         map.put("value", value);
-        map.put("times", times);
-        map.put("type", type);
+        if (!TextUtils.isEmpty(type)) {
+            map.put("type", type);
+        }
+        if (!TextUtils.isEmpty(times)) {
+            map.put("times", times);
+        }
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/addInsulin", map, successCallBack, failureCallBack);
     }
 
     public static Call<String> getDrugs(String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
-        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, DrugListInfo.class , "/getDrugs", map, successCallBack, failureCallBack);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, DrugListInfo.class, "/getDrugs", map, successCallBack, failureCallBack);
     }
 
 
-    public static Call<String> addPlan(String token,String plan_name,String plan, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> addPlan(String token, String plan_name, String plan, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("plan_name", plan_name);
         map.put("plan", plan);
         map.put("access_token", token);
-        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null , "/addPlan", map, successCallBack, failureCallBack);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/addPlan", map, successCallBack, failureCallBack);
     }
 
 
-    public static Call<String> bindInsulin(String mac,String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> bindInsulin(String mac, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("mac", mac);
         map.put("access_token", token);
-        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null , "/bindInsulin", map, successCallBack, failureCallBack);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/bindInsulin", map, successCallBack, failureCallBack);
     }
 
 
-    public static Call<String> unbindInsulin(String mac,String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> unbindInsulin(String mac, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("mac", mac);
         map.put("access_token", token);
-        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null , "/unbindInsulin", map, successCallBack, failureCallBack);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/unbindInsulin", map, successCallBack, failureCallBack);
+    }
+
+    public static Call<String> addInsulins(String token, String insulis, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("insulis", insulis);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/addInsulins", map, successCallBack, failureCallBack);
     }
 }

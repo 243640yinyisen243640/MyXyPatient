@@ -17,7 +17,7 @@ import com.vice.bloodpressure.ui.activity.injection.InjectionProgramAddDeviceAct
 import com.vice.bloodpressure.ui.activity.injection.InjectionProgramUnbindDeviceActivity;
 import com.vice.bloodpressure.ui.activity.mydevice.MyBindDeviceActivity;
 import com.vice.bloodpressure.ui.activity.mydevice.ScanActivity;
-import com.vice.bloodpressure.utils.SPUtils;
+import com.vice.bloodpressure.utils.BlueUtils;
 
 import java.util.List;
 
@@ -62,13 +62,13 @@ public class MyBindDeviceNewAdapter extends BaseQuickAdapter<String, BaseViewHol
                         Utils.getApp().startActivity(intent);
                         break;
                     case 2:
-                        boolean blueBindState = (boolean) SPUtils.getBean("blueBindState");
-                        if (blueBindState) {
+
+                        if (BlueUtils.isBind()) {
                             //已绑定
                             intent = new Intent(Utils.getApp(), InjectionProgramUnbindDeviceActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             Utils.getApp().startActivity(intent);
-                        }else {
+                        } else {
                             //未绑定
                             intent = new Intent(Utils.getApp(), InjectionProgramAddDeviceActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

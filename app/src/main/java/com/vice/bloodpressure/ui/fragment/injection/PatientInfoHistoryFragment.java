@@ -66,8 +66,8 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
                 if (page == 1) {
                     infoList.clear();
                 }
+                infoListTemp = (List<InjectionHistoryInfo>) response.object;
                 if (infoListTemp!=null&&infoListTemp.size()>0){
-                    infoListTemp = (List<InjectionHistoryInfo>) response.object;
                     if (infoListTemp.size() < 10) {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     } else {

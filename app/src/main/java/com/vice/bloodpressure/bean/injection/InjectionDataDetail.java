@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.bean.injection;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * 传参:
  * 描述:
  */
-public class InjectionDataDetail{
+public class InjectionDataDetail implements Serializable {
     private String plan_name;
     private String action_time;
     private int action_day;

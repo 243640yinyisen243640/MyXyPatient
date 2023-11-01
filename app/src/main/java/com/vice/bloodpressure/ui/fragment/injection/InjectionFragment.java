@@ -63,8 +63,6 @@ public class InjectionFragment extends BaseEventBusFragment {
 
     private void setData() {
         String planNum = data.getPlan_num();
-        Log.i("yys", "planNum===" + planNum);
-
         switch (planNum) {
             case "1":
                 ivFirst.setVisibility(View.VISIBLE);

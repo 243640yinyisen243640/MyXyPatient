@@ -14,9 +14,8 @@ import com.quinovaresdk.bletransfer.BleTransfer;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
-import com.vice.bloodpressure.event.BlueHistoryDataEvent;
 import com.vice.bloodpressure.event.BlueUnbindEvent;
-import com.vice.bloodpressure.utils.SPUtils;
+import com.vice.bloodpressure.utils.BlueUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,10 +40,7 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_device_unbind, null);
         findViewById(R.id.tv_device_unbind).setOnClickListener(v -> {
-            //获取历史记录
-            BleTransfer.getInstance().getHistoryInjection();
-
-//            BleTransfer.getInstance().unBindDevice();
+            BleTransfer.getInstance().unBindDevice();
         });
         return view;
     }
@@ -57,7 +53,7 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
             LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
             String token = loginBean.getToken();
 
-            String mac = (String) SPUtils.getBean("BlueDeviceMac");
+            String mac = BlueUtils.getBlueMac();
 
             Call<String> requestCall = DataManager.unbindInsulin(mac,token, (call, response) -> {
                 ToastUtils.showShort("解绑成功");
@@ -68,12 +64,6 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
             });
 
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(BlueHistoryDataEvent event) {
-        String historyData = event.getHistoryData();
-
     }
 
     @Override

@@ -118,7 +118,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_gravity="end"
                 android:textSize="30sp"
-                android:textColor="#FF564F"/>
+                android:textColor="#0CA25B"/>
 
             <TextView
                 android:id="@+id/tv_injection_times"

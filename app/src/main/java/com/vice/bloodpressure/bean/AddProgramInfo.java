@@ -29,7 +29,7 @@ public class AddProgramInfo implements Serializable {
         this.planList = planList;
     }
 
-    public static class plan {
+    public static class plan implements Serializable{
         private String plan_time;
         private String drug_name;
         private String value;

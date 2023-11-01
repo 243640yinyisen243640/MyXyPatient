@@ -167,7 +167,7 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(BlueConnectEvent event) {
         Log.i("yys", "onMessageEvent: ");
-        boolean bind = event.isBind();
+        boolean bind = event.isConnect();
         if (bind){
             startActivity(new Intent(getPageContext(),InjectionProgramBindDeviceActivity.class));
             BleTransfer.getInstance().bindDevice();

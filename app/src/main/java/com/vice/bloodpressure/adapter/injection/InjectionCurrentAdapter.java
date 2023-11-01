@@ -44,7 +44,7 @@ public class InjectionCurrentAdapter extends RecyclerView.Adapter<InjectionCurre
         holder.tvEndTime.setText(listInfos.get(position).getEnd());
         holder.tvName.setText(listInfos.get(position).getDrug_name());
         holder.tvValue.setText(listInfos.get(position).getValue() + "");
-        holder.tvTimes.setText(listInfos.get(position).getTimes() + "(单位)");
+        holder.tvTimes.setText("第"+listInfos.get(position).getTimes() + "针(单位)");
         if (listInfos.size() == 1) {
             holder.ivIcon.setVisibility(View.VISIBLE);
             holder.vLineTop.setVisibility(View.INVISIBLE);

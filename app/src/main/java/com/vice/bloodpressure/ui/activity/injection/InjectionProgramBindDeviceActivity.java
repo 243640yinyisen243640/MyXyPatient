@@ -14,7 +14,7 @@ import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.event.BlueBindEvent;
-import com.vice.bloodpressure.utils.SPUtils;
+import com.vice.bloodpressure.utils.BlueUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -49,7 +49,7 @@ public class InjectionProgramBindDeviceActivity extends XYSoftUIBaseActivity {
             LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
             String token = loginBean.getToken();
 
-            String mac = (String) SPUtils.getBean("BlueDeviceMac");
+            String mac = BlueUtils.getBlueMac();
 
             Call<String> requestCall = DataManager.bindInsulin(mac,token, (call, response) -> {
                 ToastUtils.showShort("绑定成功");

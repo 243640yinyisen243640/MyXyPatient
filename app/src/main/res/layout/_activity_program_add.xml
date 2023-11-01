@@ -368,8 +368,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -391,7 +391,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_program_choose_time_3"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -400,6 +399,7 @@
                     android:textSize="17sp" />
 
                 <TextView
+                    android:id="@+id/tv_program_choose_time_3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:drawableEnd="@drawable/right_arrow"

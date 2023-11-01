@@ -7,17 +7,17 @@ package com.vice.bloodpressure.event;
  * 描述:
  */
 public class BlueConnectEvent {
-    private boolean isBind;
+    private boolean isConnect;
 
-    public boolean isBind() {
-        return isBind;
+    public boolean isConnect() {
+        return isConnect;
     }
 
-    public void setBind(boolean bind) {
-        isBind = bind;
+    public void setConnect(boolean connect) {
+        isConnect = connect;
     }
 
     public BlueConnectEvent(boolean isBind) {
-        this.isBind = isBind;
+        this.isConnect = isBind;
     }
 }

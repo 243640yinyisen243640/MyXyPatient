@@ -36,7 +36,7 @@ import retrofit2.Call;
  * 描述:方案添加
  */
 public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
-    private AddProgramInfo info;
+    private AddProgramInfo info = new AddProgramInfo("", new ArrayList<>());
     private static final int REQUEST_CODE_PROGRAM_NAME = 10;
     private static final int REQUEST_CODE_CHOOSE_DETAIL = 11;
     private int chooseNum;
@@ -74,7 +74,6 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         } else {
             info = (AddProgramInfo) getIntent().getSerializableExtra("info");
             tvName.setText(info.getPlan_name());
-
             initDataEdit();
         }
     }
@@ -124,21 +123,26 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
             if (i == 0) {
                 planList.add(new AddProgramInfo.plan("08:00", "", ""));
                 tvChooseTime1.setText(planList.get(0).getPlan_time());
+                tvChooseDetail1.setText("");
             }
             if (i == 1) {
                 planList.add(new AddProgramInfo.plan("12:00", "", ""));
                 tvChooseTime2.setText(planList.get(1).getPlan_time());
+                tvChooseDetail2.setText("");
             }
             if (i == 2) {
                 planList.add(new AddProgramInfo.plan("18:00", "", ""));
                 tvChooseTime3.setText(planList.get(2).getPlan_time());
+                tvChooseDetail3.setText("");
             }
             if (i == 3) {
                 planList.add(new AddProgramInfo.plan("22:00", "", ""));
                 tvChooseTime4.setText(planList.get(3).getPlan_time());
+                tvChooseDetail4.setText("");
             }
         }
-        info = new AddProgramInfo("", planList);
+        info.getPlanList().clear();
+        info.getPlanList().addAll(planList);
     }
 
     private View initView() {
@@ -300,6 +304,8 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
 
 
     private void initTime(int chooseNum, TextView textView) {
+        options1Items.clear();
+        options2Items.clear();
         List<String> times = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
             if (i < 10) {
@@ -312,69 +318,24 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
             return;
         }
         int start = 0;
-        int end = 0;
-        if (info.getPlanList().size() == 1 && chooseNum == 1) {
-            start = 0;
+        int end = 23;
+
+        if (chooseNum == 1) {
+            if (info.getPlanList().size() > chooseNum) {
+                String plan_time = info.getPlanList().get(chooseNum).getPlan_time();
+                String[] split = plan_time.split(":");
+                end = Integer.parseInt(split[0]) - 1;
+            }
+        } else if (chooseNum == info.getPlanList().size()) {
             end = 23;
+            String plan_time = info.getPlanList().get(chooseNum - 2).getPlan_time();
+            String[] split = plan_time.split(":");
+            start = Integer.parseInt(split[0]) + 1;
+        } else {
+            start = Integer.parseInt(info.getPlanList().get(chooseNum - 2).getPlan_time().split(":")[0]) + 1;
+            end = Integer.parseInt(info.getPlanList().get(chooseNum).getPlan_time().split(":")[0]) - 1;
         }
-        if (info.getPlanList().size() == 2) {
-            if (chooseNum == 1) {
-                start = 0;
-                String plan_time = info.getPlanList().get(1).getPlan_time();
-                String[] split = plan_time.split(":");
-                end = Integer.parseInt(split[0]) - 1;
-            }
-        }
-        if (info.getPlanList().size() == 3) {
-            if (chooseNum == 1) {
-                start = 0;
-                String plan_time = info.getPlanList().get(1).getPlan_time();
-                String[] split = plan_time.split(":");
-                end = Integer.parseInt(split[0]) - 1;
-            }
-            if (chooseNum == 2) {
-                String plan_time = info.getPlanList().get(0).getPlan_time();
-                String[] split = plan_time.split(":");
-                start = Integer.parseInt(split[0]) + 1;
 
-                String planTime = info.getPlanList().get(2).getPlan_time();
-                String[] splitTime = planTime.split(":");
-                end = Integer.parseInt(splitTime[0]) - 1;
-            }
-        }
-        if (info.getPlanList().size() == 4) {
-            if (chooseNum == 1) {
-                start = 0;
-                String plan_time = info.getPlanList().get(1).getPlan_time();
-                String[] split = plan_time.split(":");
-                end = Integer.parseInt(split[0]) - 1;
-            }
-            if (chooseNum == 2) {
-                String plan_time = info.getPlanList().get(0).getPlan_time();
-                String[] split = plan_time.split(":");
-                start = Integer.parseInt(split[0]) + 1;
-
-                String planTime = info.getPlanList().get(2).getPlan_time();
-                String[] splitTime = planTime.split(":");
-                end = Integer.parseInt(splitTime[0]) - 1;
-            }
-            if (chooseNum == 3) {
-                String plan_time = info.getPlanList().get(1).getPlan_time();
-                String[] split = plan_time.split(":");
-                start = Integer.parseInt(split[0]) + 1;
-
-                String planTime = info.getPlanList().get(3).getPlan_time();
-                String[] splitTime = planTime.split(":");
-                end = Integer.parseInt(splitTime[0]) - 1;
-            }
-            if (chooseNum == 4) {
-                String plan_time = info.getPlanList().get(2).getPlan_time();
-                String[] split = plan_time.split(":");
-                start = Integer.parseInt(split[0]) + 1;
-
-                end = 23;
-            }
-        }
 
         for (int i = start; i <= end; i++) {
             if (i < 10) {

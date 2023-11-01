@@ -11,15 +11,24 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.allen.library.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.baselib.utils.eventbus.EventBusUtils;
+import com.quinovaresdk.bletransfer.BleTransfer;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.ViewPagerAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.injection.InjectionBaseData;
+import com.vice.bloodpressure.event.BlueConnectEvent;
+import com.vice.bloodpressure.event.BlueHistoryDataEvent;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoInjectionFragment;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoProgrammeFragment;
+import com.vice.bloodpressure.utils.BlueUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +50,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     private TextView tvPlanNum;
     private TextView tvTimeYear;
     private TextView tvTimeMonth;
+    private TextView tvIsConnect;
     private ViewPager viewPager;
     private List<Fragment> fragments;
     //    private String userId;
@@ -50,6 +60,9 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBusUtils.register(this);
+        //获取蓝牙历史数据
+        BleTransfer.getInstance().getHistoryInjection();
         topViewManager().titleTextView().setText("注射数据");
         containerView().addView(initView());
         topViewManager().moreTextView().setText("新增数据");
@@ -77,6 +90,15 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         tvPlanNum = view.findViewById(R.id.tv_injection_plan_num);
         tvTimeYear = view.findViewById(R.id.tv_injection_time_year);
         tvTimeMonth = view.findViewById(R.id.tv_injection_time_month);
+        tvIsConnect = view.findViewById(R.id.tv_blue_is_connect);
+
+        if (BlueUtils.isBind() && BlueUtils.isConnect) {
+            //已连接
+            setTextIsConnect(true);
+        } else {
+            //未连接
+            setTextIsConnect(false);
+        }
 
         viewPager = getViewByID(view, R.id.vp_injection);
         return view;
@@ -166,5 +188,71 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         tvPlanNum.setText(injectionBaseData.getIsshot_num() + "/" + injectionBaseData.getAll_times());
         tvTimeYear.setText(injectionBaseData.getAction_year());
         tvTimeMonth.setText(injectionBaseData.getAction_time());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(BlueHistoryDataEvent event) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        switch (event.getType()) {
+            case 1:
+                if (event.getInsulis() != null && event.getInsulis().size() != 0) {
+                    String insulis = new Gson().toJson(event.getInsulis());
+                    DataManager.addInsulins(token, insulis, (call, response) -> {
+
+                    }, (call, t) -> {
+
+                    });
+                }
+                break;
+            case 2:
+                BlueHistoryDataEvent.insulis insuli = event.getInsuli();
+                if (insuli != null) {
+                    //弹出弹窗
+                    String value = insuli.getValue();
+                    String datetime = insuli.getDatetime();
+                    DataManager.addInsulin("", "", value, datetime, token, (call, response) -> {
+                        if (200 == response.code) {
+
+                        } else {
+
+                        }
+                        ToastUtils.showToast(response.msg);
+                    }, (call, t) -> {
+                        ToastUtils.showToast("网络连接不可用，请稍后重试！");
+                    });
+                }
+
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BlueConnectEvent event) {
+        if (BlueUtils.isBind() && event.isConnect()) {
+            setTextIsConnect(true);
+        } else {
+            setTextIsConnect(false);
+        }
+    }
+
+    private void setTextIsConnect(boolean isConnect) {
+        tvIsConnect.setText(isConnect ? "已连接" : "未连接");
+
+        tvIsConnect.setOnClickListener(v -> {
+            if (!isConnect) {
+                BleTransfer.getInstance().connect(BlueUtils.getBlueMac());
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusUtils.unregister(this);
     }
 }
