@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.fragment.injection;
 
 import android.content.Intent;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,20 +63,22 @@ public class InjectionFragment extends BaseEventBusFragment {
 
     private void setData() {
         String planNum = data.getPlan_num();
+        Log.i("yys", "planNum===" + planNum);
+
         switch (planNum) {
             case "1":
                 ivFirst.setVisibility(View.VISIBLE);
-                ivSecond.setVisibility(View.GONE);
-                ivThird.setVisibility(View.GONE);
-                ivFourth.setVisibility(View.GONE);
+                ivSecond.setVisibility(View.INVISIBLE);
+                ivThird.setVisibility(View.INVISIBLE);
+                ivFourth.setVisibility(View.INVISIBLE);
                 //1高 2低 3正常 0无
                 setColorOne(data.getOne());
                 break;
             case "2":
                 ivFirst.setVisibility(View.VISIBLE);
                 ivSecond.setVisibility(View.VISIBLE);
-                ivThird.setVisibility(View.GONE);
-                ivFourth.setVisibility(View.GONE);
+                ivThird.setVisibility(View.INVISIBLE);
+                ivFourth.setVisibility(View.INVISIBLE);
                 setColorOne(data.getOne());
                 setColorTwo(data.getTwo());
                 break;
@@ -83,7 +86,7 @@ public class InjectionFragment extends BaseEventBusFragment {
                 ivFirst.setVisibility(View.VISIBLE);
                 ivSecond.setVisibility(View.VISIBLE);
                 ivThird.setVisibility(View.VISIBLE);
-                ivFourth.setVisibility(View.GONE);
+                ivFourth.setVisibility(View.INVISIBLE);
                 setColorOne(data.getOne());
                 setColorTwo(data.getTwo());
                 setColorThree(data.getThree());
