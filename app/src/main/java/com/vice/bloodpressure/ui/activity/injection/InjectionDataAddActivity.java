@@ -12,11 +12,13 @@ import androidx.annotation.Nullable;
 import com.allen.library.utils.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.injection.PlanNumInfo;
 import com.vice.bloodpressure.constant.DataFormatManager;
+import com.vice.bloodpressure.event.DataAddEvent;
 import com.vice.bloodpressure.utils.DataUtils;
 import com.vice.bloodpressure.utils.PickerUtils;
 
@@ -69,7 +71,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             getTimeData(time);
             tvAddDate.setOnClickListener(v -> {
                 //选择日期
-                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M, new PickerUtils.TimePickerCallBack() {
+                PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
                         getTimeData(content);
@@ -258,6 +260,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             // 2023-10-01
             Call<String> requestCall = DataManager.editInsulin(unitValue, jection_id, token, (call, response) -> {
                 if (200 == response.code) {
+                    EventBusUtils.post(new DataAddEvent());
                     ToastUtils.showToast(response.msg);
                     finish();
                 } else {

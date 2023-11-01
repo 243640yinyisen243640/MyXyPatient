@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.allen.library.utils.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.InjectionAdapter;
@@ -17,7 +18,12 @@ import com.vice.bloodpressure.base.TabFragmentAdapter;
 import com.vice.bloodpressure.base.fragment.XYBaseFragment;
 import com.vice.bloodpressure.bean.injection.InjectionDataListInfo;
 import com.vice.bloodpressure.constant.DataFormatManager;
+import com.vice.bloodpressure.event.DataAddEvent;
 import com.vice.bloodpressure.utils.DataUtils;
+import com.vice.bloodpressure.utils.PickerUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +64,7 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
         adapter = new InjectionAdapter(getPageContext(), listInfos);
         rvInjection.setLayoutManager(new LinearLayoutManager(getPageContext()));
         rvInjection.setAdapter(adapter);
+        EventBusUtils.register(this);
         getData();
     }
 
@@ -76,15 +83,29 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DataAddEvent event) {
+        getData();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBusUtils.unregister(this);
+    }
 
     private void initView() {
         View view = View.inflate(getPageContext(), R.layout._fragment_injection_list, null);
         tvChange = view.findViewById(R.id.tv_injection_change);
         tvChange.setOnClickListener(v -> {
             //选择时间
-            beginTime = DataUtils.currentDateString(DataFormatManager.TIME_FORMAT_Y_M);
-            getData();
+            PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, false, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M, new PickerUtils.TimePickerCallBack() {
+                @Override
+                public void execEvent(String content) {
+                    beginTime = content;
+                    getData();
+                }
+            });
+
         });
         rvInjection = view.findViewById(R.id.rv_injection);
         containerView().addView(view);
