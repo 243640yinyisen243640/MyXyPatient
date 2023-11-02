@@ -67,7 +67,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
             } else {
                 holder.tvOne.setText(value + "");
                 holder.tvOne.setOnClickListener(v -> {
-                    jumpDetail(position,0,"第一针");
+                    jumpDetail(position, 0, "第一针");
                 });
                 if (more > 0) {
                     //多个
@@ -108,7 +108,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
             } else {
                 holder.tvTwo.setText(value + "");
                 holder.tvTwo.setOnClickListener(v -> {
-                    jumpDetail(position,1,"第二针");
+                    jumpDetail(position, 1, "第二针");
                 });
                 if (more > 0) {
                     //多个
@@ -149,7 +149,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
             } else {
                 holder.tvThree.setText(value + "");
                 holder.tvThree.setOnClickListener(v -> {
-                    jumpDetail(position,2,"第三针");
+                    jumpDetail(position, 2, "第三针");
                 });
                 if (more > 0) {
                     //多个
@@ -190,7 +190,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
             } else {
                 holder.tvFour.setText(value + "");
                 holder.tvThree.setOnClickListener(v -> {
-                    jumpDetail(position,3,"第四针");
+                    jumpDetail(position, 3, "第四针");
                 });
                 if (more > 0) {
                     //多个
@@ -219,15 +219,18 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
         }
     }
 
-    private void jumpDetail(int position,int index,String numString) {
+    private void jumpDetail(int position, int index, String numString) {
+        //        为什么要传这么多数据，是因为我写完了，接口加了一个详情，我又懒得改了
         InjectDetailInfo info = new InjectDetailInfo();
         info.setDatetime(listInfos.get(position).getDatetime());
         info.setNum(numString);
+        info.setInjectionNum(position+1+"");
         info.setValue(listInfos.get(position).getJections().get(index).getValue() + "");
         info.setIshight(listInfos.get(position).getJections().get(index).getIshight() + "");
-        info.setDataList(listInfos.get(position).getJections().get(index).getJection_data());
+        info.setJection_data(listInfos.get(position).getJections().get(index).getJection_data());
         Intent intent = new Intent(context, HealthRecordInjectioneInfoActivity.class);
-        intent.putExtra("data",info);
+        intent.putExtra("data", info);
+        intent.putExtra("data", info);
         context.startActivity(intent);
     }
 

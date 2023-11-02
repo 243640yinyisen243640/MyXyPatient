@@ -8,6 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.allen.library.utils.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.InjectionDetailAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
@@ -32,7 +36,21 @@ public class HealthRecordInjectioneInfoActivity extends XYSoftUIBaseActivity {
         topViewManager().titleTextView().setText("注射详情");
         containerView().addView(initView());
         info = (InjectDetailInfo) getIntent().getSerializableExtra("data");
-        setData();
+        getData();
+    }
+
+    private void getData() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        DataManager.getInjectionDetails(token, info.getDatetime(), info.getInjectionNum(), (call, response) -> {
+            ToastUtils.showToast(response.msg);
+            if (response.code == 200) {
+                InjectDetailInfo injectionBaseData = (InjectDetailInfo) response.object;
+                setData(injectionBaseData);
+            }
+        }, (call, t) -> {
+            ToastUtils.showToast("网络连接不可用，请稍后重试！");
+        });
     }
 
     private View initView() {
@@ -44,21 +62,21 @@ public class HealthRecordInjectioneInfoActivity extends XYSoftUIBaseActivity {
         return view;
     }
 
-    private void setData() {
-        tvDate.setText(info.getDatetime()+" "+info.getNum());
-        tvValue.setText(info.getValue());
-        String ishight = info.getIshight();
+    private void setData(InjectDetailInfo injectionBaseData) {
+        tvDate.setText(info.getDatetime() + " " + info.getNum());
+        tvValue.setText(injectionBaseData.getValue());
+        String ishight = injectionBaseData.getIshight();
         //1偏高 2偏低 3正常
         String isHeightData;
-        if (ishight.equals("1")){
+        if (ishight.equals("1")) {
             isHeightData = "剂量过高";
-        }else if (ishight.equals("2")){
+        } else if (ishight.equals("2")) {
             isHeightData = "剂量偏低";
-        }else {
+        } else {
             isHeightData = "剂量正常";
         }
         tvIsHeight.setText(isHeightData);
-        adapter=new InjectionDetailAdapter(getPageContext(),info.getDataList());
+        adapter = new InjectionDetailAdapter(getPageContext(), injectionBaseData.getJection_data());
         recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
         recyclerView.setAdapter(adapter);
     }

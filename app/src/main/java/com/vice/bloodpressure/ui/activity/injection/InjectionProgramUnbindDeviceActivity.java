@@ -41,6 +41,8 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
         View view = View.inflate(getPageContext(), R.layout._activity_device_unbind, null);
         findViewById(R.id.tv_device_unbind).setOnClickListener(v -> {
             BleTransfer.getInstance().unBindDevice();
+            //清楚绑定的缓存
+//            SPUtils.putBean("blueBindState", false);
         });
         return view;
     }

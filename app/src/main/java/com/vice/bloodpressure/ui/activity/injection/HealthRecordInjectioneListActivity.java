@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.activity.injection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,8 +22,10 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.ViewPagerAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.injection.InjectionBaseData;
+import com.vice.bloodpressure.event.BlueBindEvent;
 import com.vice.bloodpressure.event.BlueConnectEvent;
 import com.vice.bloodpressure.event.BlueHistoryDataEvent;
+import com.vice.bloodpressure.event.DataAddEvent;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoInjectionFragment;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoProgrammeFragment;
 import com.vice.bloodpressure.utils.BlueUtils;
@@ -208,16 +211,15 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
             case 2:
                 BlueHistoryDataEvent.insulis insuli = event.getInsuli();
                 if (insuli != null) {
-                    //弹出弹窗
+                    //注射成功以后刷新页面
                     String value = insuli.getValue();
                     String datetime = insuli.getDatetime();
                     DataManager.addInsulin("", "", value, datetime, token, (call, response) -> {
-                        if (200 == response.code) {
-
-                        } else {
-
-                        }
                         ToastUtils.showToast(response.msg);
+                        if (200 == response.code) {
+                            EventBusUtils.post(new DataAddEvent());
+                        }
+
                     }, (call, t) -> {
                         ToastUtils.showToast("网络连接不可用，请稍后重试！");
                     });
@@ -240,23 +242,39 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         }
     }
 
-    private void setTextIsConnect(boolean isConnect) {
-//        tvIsConnect.setText(isConnect ? "已连接" : "未连接");
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBind(BlueBindEvent event) {
+        if (event.isBind()) {
+            setTextIsConnect(true);
+        } else {
+            setTextIsConnect(false);
+        }
+    }
 
+    private void setTextIsConnect(boolean isConnect) {
+        //        tvIsConnect.setText(isConnect ? "已连接" : "未连接");
+        Log.i("yys", "isConnect==" + isConnect);
         if (isConnect) {
             tvIsConnect.setText("已连接");
             tvIsConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.injection_green_90, 0, 0, 0);
-            tvIsConnect.setBackground(getResources().getDrawable(R.drawable.injection_green_90));
+            tvIsConnect.setBackground(getResources().getDrawable(R.drawable.injection_green_90_tran));
             tvIsConnect.setCompoundDrawablePadding(5);
-        }else {
-            tvIsConnect.setText("未连接");
+            tvIsConnect.setTextColor(getResources().getColor(R.color.black_text));
+        } else {
+            tvIsConnect.setText("添加设备");
             tvIsConnect.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            tvIsConnect.setBackground(getDrawable(R.drawable.injection_green_90_tran));
+            tvIsConnect.setBackground(getDrawable(R.drawable.injection_green_90));
             tvIsConnect.setCompoundDrawablePadding(0);
+            tvIsConnect.setTextColor(getResources().getColor(R.color.white));
         }
         tvIsConnect.setOnClickListener(v -> {
             if (!isConnect) {
-                BleTransfer.getInstance().connect(BlueUtils.getBlueMac());
+                if (BlueUtils.isBind()) {
+                    BleTransfer.getInstance().realConnect(BlueUtils.getBlueMac());
+                }else {
+                    Intent intent = new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

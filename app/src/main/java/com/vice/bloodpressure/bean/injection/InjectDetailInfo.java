@@ -15,7 +15,16 @@ public class InjectDetailInfo implements Serializable {
     private String num;
     //值 1偏高 2偏低 3正常
     private String ishight;
-    private List<InjectionDataListInfo.InjectionData>dataList;
+    private String injectionNum;
+    private List<InjectionDataListInfo.InjectionData> jection_data;
+
+    public String getInjectionNum() {
+        return injectionNum;
+    }
+
+    public void setInjectionNum(String injectionNum) {
+        this.injectionNum = injectionNum;
+    }
 
     public String getDatetime() {
         return datetime;
@@ -49,11 +58,11 @@ public class InjectDetailInfo implements Serializable {
         this.ishight = ishight;
     }
 
-    public List<InjectionDataListInfo.InjectionData> getDataList() {
-        return dataList;
+    public List<InjectionDataListInfo.InjectionData> getJection_data() {
+        return jection_data;
     }
 
-    public void setDataList(List<InjectionDataListInfo.InjectionData> dataList) {
-        this.dataList = dataList;
+    public void setJection_data(List<InjectionDataListInfo.InjectionData> jection_data) {
+        this.jection_data = jection_data;
     }
 }

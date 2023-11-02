@@ -35,7 +35,7 @@ public class BlueUtils {
             public void run() {
                 if (!isConnect) {
                     if (!TextUtils.isEmpty(getBlueMac())) {
-                        BleTransfer.getInstance().connect(getBlueMac());
+                        BleTransfer.getInstance().realConnect(getBlueMac());
                     }
                 }
             }

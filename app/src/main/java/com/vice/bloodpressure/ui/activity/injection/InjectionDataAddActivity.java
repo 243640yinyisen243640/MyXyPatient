@@ -63,18 +63,20 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
     private void initValues() {
         isAdd = getIntent().getBooleanExtra("isAdd", false);
         if (isAdd) {
-
             //是添加
             //            initData();
-
-            String time = DataUtils.currentDateString(DataFormatManager.TIME_FORMAT_Y_M_D);
-            getTimeData(time);
+            String dataTime = DataUtils.currentDateString(DataFormatManager.TIME_FORMAT_Y_M_D_H_M);
+            String data = dataTime.split(" ")[0];
+            String time = dataTime.split(" ")[1];
+            tvAddDate.setText(data);
+            tvAddTime.setText(time);
+            getTimeData(data,time);
             tvAddDate.setOnClickListener(v -> {
                 //选择日期
                 PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
-                        getTimeData(content);
+                        getTimeData(content,tvAddTime.getText().toString().trim());
                     }
                 });
 
@@ -85,7 +87,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
                     @Override
                     public void execEvent(String content) {
                         //选择时间
-                        tvAddTime.setText(content);
+                        getTimeData(tvAddDate.getText().toString().trim(),content);
                     }
                 });
             });
@@ -97,8 +99,8 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
 
             String date = getIntent().getStringExtra("date");
             tvAddDate.setText(date);
-            String tiem = getIntent().getStringExtra("time");
-            tvAddTime.setText(tiem);
+            String time = getIntent().getStringExtra("time");
+            tvAddTime.setText(time);
             String value = getIntent().getStringExtra("value");
             tvAddValue.setText(value);
         }
@@ -111,19 +113,21 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
         });
     }
 
-    private void getTimeData(String content) {
+    private void getTimeData(String date,String time) {
         //掉接口
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
         // 2023-10-01
-        Call<String> requestCall = DataManager.getPlanNum(content, token, (call, response) -> {
+        Call<String> requestCall = DataManager.getPlanNum(date, time, token, (call, response) -> {
             if (200 == response.code) {
                 PlanNumInfo info = (PlanNumInfo) response.object;
-                tvAddDate.setText(content);
                 allType = Integer.parseInt(info.getPlan_num());
+                check = Integer.parseInt(info.getNow_num());
                 initData();
+                tvAddDate.setText(date);
+                tvAddTime.setText(time);
             } else {
-                ToastUtils.showToast("网络连接不可用，请稍后重试！");
+                ToastUtils.showToast(response.msg);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
@@ -131,9 +135,6 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
     }
 
     private void initData() {
-        //获取数据
-        //llType赋值  1-4
-        check = 0;
         initType();
         setType();
     }
@@ -167,15 +168,19 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
     private void setType() {
         if (allType > 0) {
             setTextView(tvAddType1, 1);
+            tvAddType1.setVisibility(View.VISIBLE);
         }
         if (allType > 1) {
             setTextView(tvAddType2, 2);
+            tvAddType2.setVisibility(View.VISIBLE);
         }
         if (allType > 2) {
             setTextView(tvAddType3, 3);
+            tvAddType3.setVisibility(View.VISIBLE);
         }
         if (allType > 3) {
             setTextView(tvAddType4, 4);
+            tvAddType4.setVisibility(View.VISIBLE);
         }
     }
 
@@ -189,9 +194,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
     private void initTextView(TextView textView) {
         textView.setBackground(getDrawable(R.drawable._shape_no_can_check));
         textView.setTextColor(Color.parseColor("#9D9D9D"));
-        textView.setOnClickListener(v -> {
-
-        });
+        textView.setVisibility(View.INVISIBLE);
     }
 
     private void setTextView(TextView textView, int currectNum) {
@@ -202,10 +205,6 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             textView.setBackground(getDrawable(R.drawable._shape_can_check));
             textView.setTextColor(Color.parseColor("#545454"));
         }
-        textView.setOnClickListener(v -> {
-            check = currectNum;
-            setType();
-        });
     }
 
     private void confirm() {
@@ -240,6 +239,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             // 2023-10-01
             Call<String> requestCall = DataManager.addInsulin("2", check + "", unitValue, dataTime, token, (call, response) -> {
                 if (200 == response.code) {
+                    EventBusUtils.post(new DataAddEvent());
                     ToastUtils.showToast(response.msg);
                     finish();
                 } else {
