@@ -16,6 +16,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.event.BlueUnbindEvent;
 import com.vice.bloodpressure.utils.BlueUtils;
+import com.vice.bloodpressure.utils.SPUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -33,16 +34,18 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        topViewManager().titleTextView().setText("注射设备");
         containerView().addView(initView());
         EventBusUtils.register(this);
     }
 
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_device_unbind, null);
-        findViewById(R.id.tv_device_unbind).setOnClickListener(v -> {
+        view.findViewById(R.id.tv_device_unbind).setOnClickListener(v -> {
+            Log.i("yys","=====");
             BleTransfer.getInstance().unBindDevice();
             //清楚绑定的缓存
-//            SPUtils.putBean("blueBindState", false);
+            SPUtils.putBean("blueBindState", false);
         });
         return view;
     }
