@@ -241,8 +241,19 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     }
 
     private void setTextIsConnect(boolean isConnect) {
-        tvIsConnect.setText(isConnect ? "已连接" : "未连接");
+//        tvIsConnect.setText(isConnect ? "已连接" : "未连接");
 
+        if (isConnect) {
+            tvIsConnect.setText("已连接");
+            tvIsConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.injection_green_90, 0, 0, 0);
+            tvIsConnect.setBackground(getResources().getDrawable(R.drawable.injection_green_90));
+            tvIsConnect.setCompoundDrawablePadding(5);
+        }else {
+            tvIsConnect.setText("未连接");
+            tvIsConnect.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            tvIsConnect.setBackground(getDrawable(R.drawable.injection_green_90_tran));
+            tvIsConnect.setCompoundDrawablePadding(0);
+        }
         tvIsConnect.setOnClickListener(v -> {
             if (!isConnect) {
                 BleTransfer.getInstance().connect(BlueUtils.getBlueMac());

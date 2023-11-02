@@ -21,9 +21,10 @@
 
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -105,7 +106,17 @@
                 android:id="@+id/tv_blue_is_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:layout_gravity="center"
+                android:background="@drawable/injection_green_90_tran"
+                android:drawableLeft="@drawable/injection_green_90"
+                android:drawablePadding="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="8dp"
+                android:text="未连接"
+                android:textColor="@color/black_text"
+                android:textSize="14sp" />
 
 
         </LinearLayout>
@@ -196,6 +207,6 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_injection"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
