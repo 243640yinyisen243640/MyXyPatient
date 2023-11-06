@@ -4,7 +4,19 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-
+    <TextView
+        android:id="@+id/tv_search_device_no_tips"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#FBF1E8"
+        android:drawableStart="@drawable/injection_tips_no_bind"
+        android:drawablePadding="7.5dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:text="没有搜索到蓝牙设备，点击重新搜索"
+        android:textColor="#D08D3F"
+        android:textSize="14sp"
+        android:visibility="gone"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="500dp">
@@ -28,8 +40,7 @@
             android:gravity="center"
             android:text="设备搜索中..."
             android:textColor="#333333"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
 
     </FrameLayout>
 

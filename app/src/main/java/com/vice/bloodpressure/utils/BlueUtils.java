@@ -23,6 +23,7 @@ import java.util.List;
  * 描述:
  */
 public class BlueUtils {
+    //判断是否连接
     public static boolean isConnect = false;
 
     public static void init(Activity activity, Handler handler) {
@@ -50,6 +51,7 @@ public class BlueUtils {
         return mac;
     }
 
+    //判断是否绑定
     public static boolean isBind() {
         boolean blueBindState = false;
         Object object = SPUtils.getBean("blueBindState");

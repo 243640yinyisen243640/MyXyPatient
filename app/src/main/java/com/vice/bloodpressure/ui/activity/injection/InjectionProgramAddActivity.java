@@ -21,6 +21,7 @@ import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.AddProgramInfo;
+import com.vice.bloodpressure.utils.BlueUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,12 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_program_add, null);
         tvIsConnect = view.findViewById(R.id.tv_program_is_connect);
+        Log.i("yys","BlueUtils.isBind()===="+BlueUtils.isBind());
+        if (BlueUtils.isBind()) {
+            tvIsConnect.setVisibility(View.GONE);
+        }else {
+            tvIsConnect.setVisibility(View.VISIBLE);
+        }
         tvIsConnect.setOnClickListener(v -> {
             //去链接蓝牙设备  eventBus接收连接结果
             startActivity(new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class));
@@ -154,9 +161,9 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         tvName = view.findViewById(R.id.tv_program_name);
         tvName.setOnClickListener(v -> {
             //编辑方案名称
-            Intent intent = new Intent(getPageContext(),InjectionProgramAddNameActivity.class);
-            intent.putExtra("name",info.getPlan_name()==null?"":info.getPlan_name());
-            startActivityForResult(intent,REQUEST_CODE_PROGRAM_NAME);
+            Intent intent = new Intent(getPageContext(), InjectionProgramAddNameActivity.class);
+            intent.putExtra("name", info.getPlan_name() == null ? "" : info.getPlan_name());
+            startActivityForResult(intent, REQUEST_CODE_PROGRAM_NAME);
         });
         tvNum1 = view.findViewById(R.id.tv_program_num_1);
         tvNum2 = view.findViewById(R.id.tv_program_num_2);

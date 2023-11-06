@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
     private static final int LOCATION_PERMISSIONS_REQUEST_CODE = 10;
     private static final int REQUEST_ENABLE_BT = 11;
     private ImageView ivGif;
+    private TextView  tvNoSearch;
     private BluetoothAdapter mAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
 
@@ -62,6 +64,11 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_device_search, null);
         ivGif = view.findViewById(R.id.iv_search_device_gif);
+        tvNoSearch = view.findViewById(R.id.tv_search_device_no_tips);
+        tvNoSearch.setOnClickListener(v -> {
+            tvNoSearch.setVisibility(View.GONE);
+            startScan();
+        });
         ivGif.setVisibility(View.GONE);
         Glide.with(getPageContext()).asGif().load(R.drawable.injection_device_search).into(ivGif);
         return view;
@@ -115,7 +122,7 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
             //没有扫描到设备
             ivGif.setVisibility(View.GONE);
             bluetoothLeScanner.stopScan(scanCallback);
-
+            tvNoSearch.setVisibility(View.VISIBLE);
             //弹出弹窗
             //再次扫描
             scanSuccess = false;
