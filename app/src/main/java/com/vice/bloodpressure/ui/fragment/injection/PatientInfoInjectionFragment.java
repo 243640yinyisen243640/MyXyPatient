@@ -77,7 +77,7 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
                 listInfos.addAll((List<InjectionDataListInfo>) response.object);
                 adapter.notifyDataSetChanged();
             } else {
-                ToastUtils.showToast("网络连接不可用，请稍后重试！");
+                ToastUtils.showToast(response.msg);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");

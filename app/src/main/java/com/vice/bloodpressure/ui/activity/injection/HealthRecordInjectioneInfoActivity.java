@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity.injection;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -23,26 +24,35 @@ import com.vice.bloodpressure.bean.injection.InjectDetailInfo;
  * 创建日期: 2019/3/6 17:07
  */
 public class HealthRecordInjectioneInfoActivity extends XYSoftUIBaseActivity {
-    private InjectDetailInfo info;
+    private static final int REAUEST_CODE_FOR_REFRESH = 10;
+    //    private InjectDetailInfo info;
     private TextView tvDate;
     private TextView tvValue;
     private TextView tvIsHeight;
     private RecyclerView recyclerView;
     private InjectionDetailAdapter adapter;
 
+    private String dataTime;
+    private String times;
+    private String numString;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         topViewManager().titleTextView().setText("注射详情");
         containerView().addView(initView());
-        info = (InjectDetailInfo) getIntent().getSerializableExtra("data");
+        //        info = (InjectDetailInfo) getIntent().getSerializableExtra("data");
+        dataTime = getIntent().getStringExtra("dataTime");
+        times = getIntent().getStringExtra("times");
+        numString = getIntent().getStringExtra("numString");
+
         getData();
     }
 
     private void getData() {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
-        DataManager.getInjectionDetails(token, info.getDatetime(), info.getInjectionNum(), (call, response) -> {
+        DataManager.getInjectionDetails(token, dataTime, times, (call, response) -> {
             ToastUtils.showToast(response.msg);
             if (response.code == 200) {
                 InjectDetailInfo injectionBaseData = (InjectDetailInfo) response.object;
@@ -63,7 +73,7 @@ public class HealthRecordInjectioneInfoActivity extends XYSoftUIBaseActivity {
     }
 
     private void setData(InjectDetailInfo injectionBaseData) {
-        tvDate.setText(info.getDatetime() + " " + info.getNum());
+        tvDate.setText(dataTime + " " + numString);
         tvValue.setText(injectionBaseData.getValue());
         String ishight = injectionBaseData.getIshight();
         //1偏高 2偏低 3正常
@@ -76,8 +86,37 @@ public class HealthRecordInjectioneInfoActivity extends XYSoftUIBaseActivity {
             isHeightData = "剂量正常";
         }
         tvIsHeight.setText(isHeightData);
-        adapter = new InjectionDetailAdapter(getPageContext(), injectionBaseData.getJection_data());
+        adapter = new InjectionDetailAdapter(getPageContext(), injectionBaseData.getJection_data(), (view, position) -> {
+            switch (view.getId()) {
+                case R.id.tv_detail_item_edit:
+                    Intent intent = new Intent(getPageContext(), InjectionDataAddActivity.class);
+                    intent.putExtra("isAdd", false);
+                    intent.putExtra("date", injectionBaseData.getJection_data().get(position).getDate());
+                    intent.putExtra("time", injectionBaseData.getJection_data().get(position).getTime());
+                    intent.putExtra("value", injectionBaseData.getJection_data().get(position).getValue());
+                    intent.putExtra("injection_id", injectionBaseData.getJection_data().get(position).getInjection_id() + "");
+                    startActivityForResult(intent, REAUEST_CODE_FOR_REFRESH);
+                    break;
+                default:
+                    break;
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
         recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REAUEST_CODE_FOR_REFRESH:
+                    getData();
+                    break;
+                default:
+            }
+        }
+
     }
 }

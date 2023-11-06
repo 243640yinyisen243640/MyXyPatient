@@ -31,10 +31,13 @@ public class InjectionProgramAddNameActivity extends XYSoftUIBaseActivity {
     private TextView tvNameNum;
     private TextView tvComplete;
 
+    private String name = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         topViewManager().titleTextView().setText("方案名称");
+        name = getIntent().getStringExtra("name");
         containerView().addView(initView());
     }
 
@@ -43,7 +46,6 @@ public class InjectionProgramAddNameActivity extends XYSoftUIBaseActivity {
         etName = view.findViewById(R.id.et_program_name);
         tvNameNum = view.findViewById(R.id.tv_program_name_num);
         tvComplete = view.findViewById(R.id.tv_program_name_complete);
-
         //限制只能输入中文，英文，数字
         InputFilter typeFilter = new InputFilter() {
             @Override
@@ -69,20 +71,31 @@ public class InjectionProgramAddNameActivity extends XYSoftUIBaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvNameNum.setText(s.toString().length()+"/10");
+                int length = s.toString().length();
+                tvNameNum.setText(length + "/10");
+                if (length > 0) {
+                    tvComplete.setEnabled(true);
+                    //设置可点击样式
+                    tvComplete.setBackground(getResources().getDrawable(R.drawable._shape_confirm));
+                } else {
+                    tvComplete.setEnabled(false);
+                    //设置不可点击样式
+                    tvComplete.setBackground(getResources().getDrawable(R.drawable.shape_grey_5));
+                }
             }
         });
         tvComplete.setOnClickListener(v -> {
             String name = etName.getText().toString().trim();
-            if (TextUtils.isEmpty(name)){
+            if (TextUtils.isEmpty(name)) {
                 ToastUtils.showShort("请输入方案名称");
                 return;
             }
             Intent intent = new Intent();
-            intent.putExtra("name",name);
-            setResult(RESULT_OK,intent);
+            intent.putExtra("name", name);
+            setResult(RESULT_OK, intent);
             finish();
         });
+        etName.setText(name);
         return view;
     }
 }

@@ -70,13 +70,13 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             String time = dataTime.split(" ")[1];
             tvAddDate.setText(data);
             tvAddTime.setText(time);
-            getTimeData(data,time);
+            getTimeData(data, time);
             tvAddDate.setOnClickListener(v -> {
                 //选择日期
                 PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
                     @Override
                     public void execEvent(String content) {
-                        getTimeData(content,tvAddTime.getText().toString().trim());
+                        getTimeData(content, tvAddTime.getText().toString().trim());
                     }
                 });
 
@@ -87,7 +87,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
                     @Override
                     public void execEvent(String content) {
                         //选择时间
-                        getTimeData(tvAddDate.getText().toString().trim(),content);
+                        getTimeData(tvAddDate.getText().toString().trim(), content);
                     }
                 });
             });
@@ -113,7 +113,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
         });
     }
 
-    private void getTimeData(String date,String time) {
+    private void getTimeData(String date, String time) {
         //掉接口
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
@@ -255,16 +255,15 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
                 ToastUtils.showToast("请选择注射值");
                 return;
             }
-            String jection_id = getIntent().getStringExtra("jection_id");
+            String jection_id = getIntent().getStringExtra("injection_id");
 
             // 2023-10-01
             Call<String> requestCall = DataManager.editInsulin(unitValue, jection_id, token, (call, response) -> {
                 if (200 == response.code) {
-                    EventBusUtils.post(new DataAddEvent());
                     ToastUtils.showToast(response.msg);
+                    EventBusUtils.post(new DataAddEvent());
+                    setResult(RESULT_OK);
                     finish();
-                } else {
-                    ToastUtils.showToast("网络连接不可用，请稍后重试！");
                 }
             }, (call, t) -> {
                 ToastUtils.showToast("网络连接不可用，请稍后重试！");

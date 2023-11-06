@@ -8,7 +8,7 @@ package com.vice.bloodpressure.bean.injection;
 public class InjectionBaseData {
     private int value;
     private int ishight;
-    private int times;
+    private String times;
     private int isshot;
     private int isshot_num;
     private int all_times;
@@ -47,11 +47,11 @@ public class InjectionBaseData {
         this.ishight = ishight;
     }
 
-    public int getTimes() {
+    public String getTimes() {
         return times;
     }
 
-    public void setTimes(int times) {
+    public void setTimes(String times) {
         this.times = times;
     }
 

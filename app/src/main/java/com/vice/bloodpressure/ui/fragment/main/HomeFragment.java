@@ -99,8 +99,8 @@ import com.vice.bloodpressure.ui.activity.sport.SportTypeManualAddActivity;
 import com.vice.bloodpressure.ui.activity.sport.SportTypeVideoActivity;
 import com.vice.bloodpressure.ui.activity.sysmsg.SystemMsgListActivity;
 import com.vice.bloodpressure.ui.activity.user.WarningRemindActivity;
-import com.vice.bloodpressure.ui.fragment.other.BmiFragment;
 import com.vice.bloodpressure.ui.fragment.injection.InjectionFragment;
+import com.vice.bloodpressure.ui.fragment.other.BmiFragment;
 import com.vice.bloodpressure.ui.fragment.other.XueTangFragment;
 import com.vice.bloodpressure.ui.fragment.other.XueYaFragment;
 import com.vice.bloodpressure.utils.BadgeUtils;
@@ -700,17 +700,17 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
      */
     private void setThreeFragment() {
         List<Fragment> list = new ArrayList<>();
-        list.add(new XueYaFragment());
         list.add(new XueTangFragment());
-        list.add(new BmiFragment());
-        list.add(new InjectionFragment());
-
         list.add(new XueYaFragment());
+        list.add(new InjectionFragment());
+        list.add(new BmiFragment());
+
         list.add(new XueTangFragment());
-        list.add(new BmiFragment());
-        list.add(new InjectionFragment());
-
         list.add(new XueYaFragment());
+        list.add(new InjectionFragment());
+        list.add(new BmiFragment());
+
+        list.add(new XueTangFragment());
         MyFragmentStatePagerAdapter adapter = new MyFragmentStatePagerAdapter(getChildFragmentManager(), list);
         vpThreeFragment.setOffscreenPageLimit(7);
         vpThreeFragment.setAdapter(adapter);
@@ -736,9 +736,9 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 if (currentPosition == 0) {
                     vpThreeFragment.setCurrentItem(list.size() / 2, false);
                 } else if (currentPosition == 1) {
-                    vpThreeFragment.setCurrentItem(list.size() - 3, false);
+                    vpThreeFragment.setCurrentItem(list.size() - 4, false);
                 } else if (currentPosition == list.size() - 2) {
-                    vpThreeFragment.setCurrentItem(2, false);
+                    vpThreeFragment.setCurrentItem(3, false);
                 } else if (currentPosition == list.size() - 1) {
                     vpThreeFragment.setCurrentItem(list.size() / 2, false);
                 }
@@ -746,7 +746,7 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
         });
         vpThreeFragment.setPageMargin(20);
         vpThreeFragment.setPageTransformer(true, new ScaleInTransformer());
-        vpThreeFragment.setCurrentItem(1);
+        vpThreeFragment.setCurrentItem(0);
     }
 
     /**

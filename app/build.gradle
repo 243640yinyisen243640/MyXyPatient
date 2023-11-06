@@ -229,6 +229,4 @@ dependencies {
     //pdf
 
     implementation 'com.wdeo3601:pdf-view:1.0.4'
-//图片选择
-    implementation 'com.github.LuckSiege:PictureSelectorLight:v2.1.1'
 }

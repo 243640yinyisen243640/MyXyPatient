@@ -40,7 +40,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:text="3"
-                android:textColor="#FF564F"
+                android:textColor="#0CA25B"
                 android:textSize="16sp" />
 
             <TextView

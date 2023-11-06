@@ -48,7 +48,7 @@ public class InjectionHistoryAdapter extends RecyclerView.Adapter<InjectionHisto
         holder.tvName.setText(listInfos.get(position).getPlan_name());
         holder.tvNum.setText(listInfos.get(position).getAction_day()+"");
         holder.ivIsHistory.setVisibility(listInfos.get(position).getIsuse() == 1 ? View.VISIBLE : View.GONE);
-        holder.tvDetail.setVisibility(listInfos.get(position).getIsuse() == 1 ? View.VISIBLE : View.GONE);
+//        holder.tvDetail.setVisibility(listInfos.get(position).getIsuse() == 1 ? View.VISIBLE : View.GONE);
         holder.tvDetail.setOnClickListener(v -> {
             Intent intent = new Intent(context, HealthRecordInjectioneDetailActivity.class);
             intent.putExtra("action_time", listInfos.get(position).getAction_time());

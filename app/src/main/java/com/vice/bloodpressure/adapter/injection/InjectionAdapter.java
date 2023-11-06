@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vice.bloodpressure.R;
-import com.vice.bloodpressure.bean.injection.InjectDetailInfo;
 import com.vice.bloodpressure.bean.injection.InjectionDataListInfo;
 import com.vice.bloodpressure.ui.activity.injection.HealthRecordInjectioneInfoActivity;
 
@@ -221,16 +220,17 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
 
     private void jumpDetail(int position, int index, String numString) {
         //        为什么要传这么多数据，是因为我写完了，接口加了一个详情，我又懒得改了
-        InjectDetailInfo info = new InjectDetailInfo();
-        info.setDatetime(listInfos.get(position).getDatetime());
-        info.setNum(numString);
-        info.setInjectionNum(position+1+"");
-        info.setValue(listInfos.get(position).getJections().get(index).getValue() + "");
-        info.setIshight(listInfos.get(position).getJections().get(index).getIshight() + "");
-        info.setJection_data(listInfos.get(position).getJections().get(index).getJection_data());
+//        InjectDetailInfo info = new InjectDetailInfo();
+//        info.setDatetime(listInfos.get(position).getDatetime());
+//        info.setNum(numString);
+//        info.setInjectionNum(position+1+"");
+//        info.setValue(listInfos.get(position).getJections().get(index).getValue() + "");
+//        info.setIshight(listInfos.get(position).getJections().get(index).getIshight() + "");
+//        info.setJection_data(listInfos.get(position).getJections().get(index).getJection_data());
         Intent intent = new Intent(context, HealthRecordInjectioneInfoActivity.class);
-        intent.putExtra("data", info);
-        intent.putExtra("data", info);
+        intent.putExtra("dataTime", listInfos.get(position).getDatetime());
+        intent.putExtra("times", index+1+"");
+        intent.putExtra("numString", numString);
         context.startActivity(intent);
     }
 

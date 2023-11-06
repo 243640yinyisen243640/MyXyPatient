@@ -270,7 +270,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         tvIsConnect.setOnClickListener(v -> {
             if (!isConnect) {
                 if (BlueUtils.isBind()) {
-                    BleTransfer.getInstance().realConnect(BlueUtils.getBlueMac());
+                    BleTransfer.getInstance().connect(BlueUtils.getBlueMac());
                 }else {
                     Intent intent = new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class);
                     startActivity(intent);

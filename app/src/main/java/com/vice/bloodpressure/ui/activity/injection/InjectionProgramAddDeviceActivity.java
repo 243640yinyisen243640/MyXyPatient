@@ -1,9 +1,12 @@
 package com.vice.bloodpressure.ui.activity.injection;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,6 +23,7 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
     //第几步
     private int step;
 
+    private TextView tvBleTips;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +57,49 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
         } else if (step == 2) {
             view = View.inflate(getPageContext(), R.layout._activity_device_add3, null);
             TextView textView = view.findViewById(R.id.tv_add_device);
+            tvBleTips  = view.findViewById(R.id.tv_device_add_ble_tip);
             textView.setOnClickListener(v -> {
-                Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
-                startActivity(intent);
-                finish();
+                if (initBlueBooth()) {
+                    Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             });
         }
         return view;
+    }
+
+    private BluetoothAdapter mAdapter;
+    private boolean initBlueBooth() {
+        if (mAdapter == null) {
+            mAdapter = BluetoothAdapter.getDefaultAdapter();
+        }
+        if (mAdapter == null) {
+            Toast.makeText(this, "当前设备不支持蓝牙功能", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!checkBle()) {
+            Toast.makeText(this, "当前设备不支持ble蓝牙功能", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!mAdapter.isEnabled()) {
+            //没有在开启中也没有打开
+            if (mAdapter.getState() == BluetoothAdapter.STATE_OFF) {
+                tvBleTips.setVisibility(View.VISIBLE);
+//                Toast.makeText(this, "蓝牙未开启", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkBle() {
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            return false;
+        }
+
+        return true;
     }
 }

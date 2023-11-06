@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 
 import com.allen.library.utils.ToastUtils;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.lyd.baselib.bean.LoginBean;
@@ -82,7 +81,7 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         chooseNum = info.getPlanList().size();
         initChooseNum();
         LinearLayout linearLayout = findViewById(R.id.ll_num);
-        TextView textView = (TextView) linearLayout.getChildAt(chooseNum - 1);
+        TextView textView = (TextView) linearLayout.getChildAt(chooseNum * 2 - 2);
         textView.setTextColor(Color.parseColor("#0CA25B"));
         textView.setBackgroundColor(Color.parseColor("#4D0CA25B"));
         if (chooseNum > 0) {
@@ -155,7 +154,9 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         tvName = view.findViewById(R.id.tv_program_name);
         tvName.setOnClickListener(v -> {
             //编辑方案名称
-            startActivityForResult(new Intent(getPageContext(), InjectionProgramAddNameActivity.class), REQUEST_CODE_PROGRAM_NAME);
+            Intent intent = new Intent(getPageContext(),InjectionProgramAddNameActivity.class);
+            intent.putExtra("name",info.getPlan_name()==null?"":info.getPlan_name());
+            startActivityForResult(intent,REQUEST_CODE_PROGRAM_NAME);
         });
         tvNum1 = view.findViewById(R.id.tv_program_num_1);
         tvNum2 = view.findViewById(R.id.tv_program_num_2);
@@ -199,11 +200,10 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
             LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
             String token = loginBean.getToken();
             Call<String> requestCall = DataManager.addPlan(token, plan_name, plan, (call, response) -> {
+                ToastUtils.showToast(response.msg);
                 if (200 == response.code) {
                     ToastUtils.showToast(response.msg);
                     finish();
-                } else {
-                    ToastUtils.showToast("网络连接不可用，请稍后重试！");
                 }
             }, (call, t) -> {
                 ToastUtils.showToast("网络连接不可用，请稍后重试！");
@@ -346,13 +346,10 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
             options2Items.add(times);
         }
 
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                String time = options1Items.get(options1).replaceAll("时", "") + ":" + (options2Items.get(options1).get(options2).replaceAll("分", ""));
-                textView.setText(time);
-                info.getPlanList().get(chooseNum - 1).setPlan_time(time);
-            }
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, (options1, options2, options3, v) -> {
+            String time = options1Items.get(options1).replaceAll("时", "") + ":" + (options2Items.get(options1).get(options2).replaceAll("分", ""));
+            textView.setText(time);
+            info.getPlanList().get(chooseNum - 1).setPlan_time(time);
         })
                 .setTitleText("")
                 .setContentTextSize(16)
