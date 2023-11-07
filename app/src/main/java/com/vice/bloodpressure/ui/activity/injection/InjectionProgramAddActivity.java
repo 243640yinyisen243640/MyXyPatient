@@ -373,11 +373,12 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         if (forPopupWindow == null) {
             forPopupWindow = new InjectionNoBindPopupWindow(getPageContext(),
 
-                    other -> {
-
+                    back -> {
+                        forPopupWindow.dismiss();
+                        finish();
                     },
-                    self -> {
-
+                    next -> {
+                        startActivity(new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class));
                     });
         }
         forPopupWindow.showAsDropDown(containerView(), 0, 0, Gravity.CENTER);
