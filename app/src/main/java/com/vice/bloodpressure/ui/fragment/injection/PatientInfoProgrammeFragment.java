@@ -10,7 +10,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.ViewPagerAdapter;
 import com.vice.bloodpressure.base.TabFragmentAdapter;
 import com.vice.bloodpressure.base.fragment.XYBaseFragment;
-import com.vice.bloodpressure.view.NoScrollViewPager;
+import com.vice.bloodpressure.view.CustomViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class PatientInfoProgrammeFragment extends XYBaseFragment implements TabFragmentAdapter.RefeshFragment {
     private TextView tvTitle;
-    private NoScrollViewPager viewPager;
+    private CustomViewPager viewPager;
     private List<Fragment> fragments;
 
     public static PatientInfoProgrammeFragment newInstance() {
@@ -46,7 +46,7 @@ public class PatientInfoProgrammeFragment extends XYBaseFragment implements TabF
         View view = View.inflate(getPageContext(), R.layout._fragment_data, null);
         tvTitle = view.findViewById(R.id.tv_injection_title);
         viewPager = view.findViewById(R.id.rv_injection);
-        viewPager.setNoScroll(false);
+//        viewPager.setNoScroll(false);
         containerView().addView(view);
 
         fragments = new ArrayList<>();

@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="15dp"/>
 
-            <com.vice.bloodpressure.view.NoScrollViewPager
+            <com.vice.bloodpressure.view.CustomViewPager
                 android:id="@+id/rv_injection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
