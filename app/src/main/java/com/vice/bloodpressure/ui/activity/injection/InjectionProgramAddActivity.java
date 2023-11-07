@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.AddProgramInfo;
 import com.vice.bloodpressure.utils.BlueUtils;
+import com.vice.bloodpressure.view.popu.InjectionNoBindPopupWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,7 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     private TextView tvChooseDetail4;
     private TextView tvConfirm;
     private boolean isAdd;
+    private InjectionNoBindPopupWindow forPopupWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,10 +151,10 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_program_add, null);
         tvIsConnect = view.findViewById(R.id.tv_program_is_connect);
-        Log.i("yys","BlueUtils.isBind()===="+BlueUtils.isBind());
+        Log.i("yys", "BlueUtils.isBind()====" + BlueUtils.isBind());
         if (BlueUtils.isBind()) {
             tvIsConnect.setVisibility(View.GONE);
-        }else {
+        } else {
             tvIsConnect.setVisibility(View.VISIBLE);
         }
         tvIsConnect.setOnClickListener(v -> {
@@ -364,5 +367,19 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
 
         pvOptions.setPicker(options1Items, options2Items);
         pvOptions.show();
+    }
+
+    private void pop() {
+        if (forPopupWindow == null) {
+            forPopupWindow = new InjectionNoBindPopupWindow(getPageContext(),
+
+                    other -> {
+
+                    },
+                    self -> {
+
+                    });
+        }
+        forPopupWindow.showAsDropDown(containerView(), 0, 0, Gravity.CENTER);
     }
 }
