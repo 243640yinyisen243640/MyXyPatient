@@ -204,7 +204,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <com.vice.bloodpressure.view.NoScrollViewPager
         android:id="@+id/vp_injection"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

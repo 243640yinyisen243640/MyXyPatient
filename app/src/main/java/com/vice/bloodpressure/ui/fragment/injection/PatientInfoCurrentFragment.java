@@ -44,7 +44,6 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
 
     public static PatientInfoCurrentFragment newInstance() {
         Bundle bundle = new Bundle();
-        //        bundle.putString("userId", userId);
         PatientInfoCurrentFragment fragment = new PatientInfoCurrentFragment();
         fragment.setArguments(bundle);
         return fragment;

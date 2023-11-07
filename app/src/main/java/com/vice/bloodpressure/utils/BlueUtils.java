@@ -31,6 +31,7 @@ public class BlueUtils {
         BleTransfer.getInstance().init(activity, ally_key);
 //        BleTransfer.getInstance().realInit();
         handler.postDelayed(new Runnable() {
+
             @Override
             public void run() {
                 if (!isConnect) {

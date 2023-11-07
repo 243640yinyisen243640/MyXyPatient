@@ -37,7 +37,6 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
     private InjectionHistoryAdapter adapter;
     private List<InjectionHistoryInfo> infoList = new ArrayList<>();
     private List<InjectionHistoryInfo> infoListTemp = new ArrayList<>();
-    //    private String userId;
     private int page = 1;
 
     public static PatientInfoHistoryFragment newInstance() {
@@ -51,7 +50,6 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
     @Override
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
-        //        userId = getArguments().getString("userId");
         initView();
         initReFresh();
         getData();

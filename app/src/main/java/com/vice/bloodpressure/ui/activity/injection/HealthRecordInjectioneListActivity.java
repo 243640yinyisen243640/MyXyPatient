@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -29,6 +28,7 @@ import com.vice.bloodpressure.event.DataAddEvent;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoInjectionFragment;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoProgrammeFragment;
 import com.vice.bloodpressure.utils.BlueUtils;
+import com.vice.bloodpressure.view.NoScrollViewPager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -54,7 +54,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     private TextView tvTimeYear;
     private TextView tvTimeMonth;
     private TextView tvIsConnect;
-    private ViewPager viewPager;
+    private NoScrollViewPager viewPager;
     private List<Fragment> fragments;
     //    private String userId;
     private InjectionBaseData injectionBaseData;
@@ -104,6 +104,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         }
 
         viewPager = getViewByID(view, R.id.vp_injection);
+        viewPager.setNoScroll(false);
         return view;
     }
 

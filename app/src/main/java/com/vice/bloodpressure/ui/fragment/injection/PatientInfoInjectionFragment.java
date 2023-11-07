@@ -41,14 +41,12 @@ import retrofit2.Call;
 public class PatientInfoInjectionFragment extends XYBaseFragment implements TabFragmentAdapter.RefeshFragment {
     private TextView tvChange;
     private RecyclerView rvInjection;
-//    private String userId;
     private String beginTime;
     private InjectionAdapter adapter;
     private List<InjectionDataListInfo> listInfos = new ArrayList<>();
 
     public static PatientInfoInjectionFragment newInstance() {
         Bundle bundle = new Bundle();
-//        bundle.putString("userid", userid);
         PatientInfoInjectionFragment fragment = new PatientInfoInjectionFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -58,7 +56,6 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
     @Override
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
-//        userId = getArguments().getString("userid");
         initView();
         beginTime = DataUtils.convertDateToString(new Date(System.currentTimeMillis()), "YYYY-MM");
         adapter = new InjectionAdapter(getPageContext(), listInfos);
@@ -98,7 +95,7 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
         tvChange = view.findViewById(R.id.tv_injection_change);
         tvChange.setOnClickListener(v -> {
             //选择时间
-            PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, false, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M, new PickerUtils.TimePickerCallBack() {
+            PickerUtils.showTimeWindow(getPageContext(), new boolean[]{true, true, false, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M,beginTime, new PickerUtils.TimePickerCallBack() {
                 @Override
                 public void execEvent(String content) {
                     beginTime = content;

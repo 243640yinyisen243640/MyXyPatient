@@ -26,12 +26,10 @@ import java.util.List;
  */
 public class InjectionHistoryAdapter extends RecyclerView.Adapter<InjectionHistoryAdapter.ViewHolder> {
     private Context context;
-//    private String userId;
     private List<InjectionHistoryInfo> listInfos;
 
     public InjectionHistoryAdapter(Context context, List<InjectionHistoryInfo> listInfos) {
         this.context = context;
-//        this.userId = userId;
         this.listInfos = listInfos;
     }
 
