@@ -102,7 +102,9 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
             String time = getIntent().getStringExtra("time");
             tvAddTime.setText(time);
             String value = getIntent().getStringExtra("value");
-            tvAddValue.setText(value);
+            //你没写这个
+            unitValue = value;
+            tvAddValue.setText(value+"单位");
         }
         tvAddValue.setOnClickListener(v -> {
             //选择结果
