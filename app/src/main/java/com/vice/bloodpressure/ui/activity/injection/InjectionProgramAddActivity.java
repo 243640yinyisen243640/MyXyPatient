@@ -151,39 +151,6 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_program_add, null);
         tvIsConnect = view.findViewById(R.id.tv_program_is_connect);
-        Log.i("yys", "BlueUtils.isBind()====" + BlueUtils.isBind());
-        if (BlueUtils.isBind()) {
-            tvIsConnect.setVisibility(View.GONE);
-        } else {
-            tvIsConnect.setVisibility(View.VISIBLE);
-        }
-        tvIsConnect.setOnClickListener(v -> {
-            //去链接蓝牙设备  eventBus接收连接结果
-            startActivity(new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class));
-        });
-        tvName = view.findViewById(R.id.tv_program_name);
-        tvName.setOnClickListener(v -> {
-            //编辑方案名称
-            Intent intent = new Intent(getPageContext(), InjectionProgramAddNameActivity.class);
-            intent.putExtra("name", info.getPlan_name() == null ? "" : info.getPlan_name());
-            startActivityForResult(intent, REQUEST_CODE_PROGRAM_NAME);
-        });
-        tvNum1 = view.findViewById(R.id.tv_program_num_1);
-        tvNum2 = view.findViewById(R.id.tv_program_num_2);
-        tvNum3 = view.findViewById(R.id.tv_program_num_3);
-        tvNum4 = view.findViewById(R.id.tv_program_num_4);
-        llNum1 = view.findViewById(R.id.ll_program_num_1);
-        llNum2 = view.findViewById(R.id.ll_program_num_2);
-        llNum3 = view.findViewById(R.id.ll_program_num_3);
-        llNum4 = view.findViewById(R.id.ll_program_num_4);
-        tvChooseTime1 = view.findViewById(R.id.tv_program_choose_time_1);
-        tvChooseTime2 = view.findViewById(R.id.tv_program_choose_time_2);
-        tvChooseTime3 = view.findViewById(R.id.tv_program_choose_time_3);
-        tvChooseTime4 = view.findViewById(R.id.tv_program_choose_time_4);
-        tvChooseDetail1 = view.findViewById(R.id.tv_program_choose_detail_1);
-        tvChooseDetail2 = view.findViewById(R.id.tv_program_choose_detail_2);
-        tvChooseDetail3 = view.findViewById(R.id.tv_program_choose_detail_3);
-        tvChooseDetail4 = view.findViewById(R.id.tv_program_choose_detail_4);
         tvConfirm = view.findViewById(R.id.tv_program_confirm);
         tvConfirm.setOnClickListener(v -> {
             String plan_name = info.getPlan_name();
@@ -220,6 +187,46 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
             });
 
         });
+        Log.i("yys", "BlueUtils.isBind()====" + BlueUtils.isBind());
+        if (BlueUtils.isBind()) {
+            tvIsConnect.setVisibility(View.GONE);
+            tvConfirm.setBackground(getResources().getDrawable(R.drawable._shape_confirm));
+            tvConfirm.setTextColor(getResources().getColor(R.color.white));
+            tvConfirm.setEnabled(true);
+        } else {
+            tvIsConnect.setVisibility(View.VISIBLE);
+            tvConfirm.setBackground(getResources().getDrawable(R.drawable.shape_grey_5));
+            tvConfirm.setTextColor(getResources().getColor(R.color.black_text));
+            tvConfirm.setEnabled(false);
+        }
+        tvIsConnect.setOnClickListener(v -> {
+            //去链接蓝牙设备  eventBus接收连接结果
+            startActivity(new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class));
+        });
+        tvName = view.findViewById(R.id.tv_program_name);
+        tvName.setOnClickListener(v -> {
+            //编辑方案名称
+            Intent intent = new Intent(getPageContext(), InjectionProgramAddNameActivity.class);
+            intent.putExtra("name", info.getPlan_name() == null ? "" : info.getPlan_name());
+            startActivityForResult(intent, REQUEST_CODE_PROGRAM_NAME);
+        });
+        tvNum1 = view.findViewById(R.id.tv_program_num_1);
+        tvNum2 = view.findViewById(R.id.tv_program_num_2);
+        tvNum3 = view.findViewById(R.id.tv_program_num_3);
+        tvNum4 = view.findViewById(R.id.tv_program_num_4);
+        llNum1 = view.findViewById(R.id.ll_program_num_1);
+        llNum2 = view.findViewById(R.id.ll_program_num_2);
+        llNum3 = view.findViewById(R.id.ll_program_num_3);
+        llNum4 = view.findViewById(R.id.ll_program_num_4);
+        tvChooseTime1 = view.findViewById(R.id.tv_program_choose_time_1);
+        tvChooseTime2 = view.findViewById(R.id.tv_program_choose_time_2);
+        tvChooseTime3 = view.findViewById(R.id.tv_program_choose_time_3);
+        tvChooseTime4 = view.findViewById(R.id.tv_program_choose_time_4);
+        tvChooseDetail1 = view.findViewById(R.id.tv_program_choose_detail_1);
+        tvChooseDetail2 = view.findViewById(R.id.tv_program_choose_detail_2);
+        tvChooseDetail3 = view.findViewById(R.id.tv_program_choose_detail_3);
+        tvChooseDetail4 = view.findViewById(R.id.tv_program_choose_detail_4);
+
 
         tvNum1.setOnClickListener(v -> chooseNum(1, tvNum1));
         tvNum2.setOnClickListener(v -> chooseNum(2, tvNum2));

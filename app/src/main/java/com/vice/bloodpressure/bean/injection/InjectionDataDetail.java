@@ -51,8 +51,17 @@ public class InjectionDataDetail implements Serializable {
         private String begin;
         private String end;
         private String drug_name;
+        private String plan_time;
         private int times;
         private int value;
+
+        public String getPlan_time() {
+            return plan_time;
+        }
+
+        public void setPlan_time(String plan_time) {
+            this.plan_time = plan_time;
+        }
 
         public String getBegin() {
             return begin;
@@ -94,4 +103,7 @@ public class InjectionDataDetail implements Serializable {
             this.value = value;
         }
     }
+
+
+
 }

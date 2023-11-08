@@ -67,7 +67,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         BleTransfer.getInstance().getHistoryInjection();
         topViewManager().titleTextView().setText("注射数据");
         containerView().addView(initView());
-        topViewManager().moreTextView().setText("新增数据");
+
         topViewManager().moreTextView().setOnClickListener(v -> {
             Intent intent = new Intent(getPageContext(), InjectionDataAddActivity.class);
             intent.putExtra("isAdd", true);
@@ -191,6 +191,9 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         tvPlanNum.setText(injectionBaseData.getIsshot_num() + "/" + injectionBaseData.getAll_times());
         tvTimeYear.setText(injectionBaseData.getAction_year());
         tvTimeMonth.setText(injectionBaseData.getAction_time());
+        if (!"暂无".equals(injectionBaseData.getAction_time())){
+            topViewManager().moreTextView().setText("新增数据");
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

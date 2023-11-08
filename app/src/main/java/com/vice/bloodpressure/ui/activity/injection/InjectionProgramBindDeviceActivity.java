@@ -10,11 +10,13 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
+import com.quinovaresdk.bletransfer.BleTransfer;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.event.BlueBindEvent;
 import com.vice.bloodpressure.utils.BlueUtils;
+import com.vice.bloodpressure.utils.SPUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,21 +43,32 @@ public class InjectionProgramBindDeviceActivity extends XYSoftUIBaseActivity {
         View view = View.inflate(getPageContext(), R.layout._activity_device_bind, null);
         return view;
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(BlueBindEvent event) {
         Log.i("yys", "onMessageEvent: ");
         boolean bind = event.isBind();
-        if (bind){
+        if (bind) {
             LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
             String token = loginBean.getToken();
 
             String mac = BlueUtils.getBlueMac();
 
-            Call<String> requestCall = DataManager.bindInsulin(mac,token, (call, response) -> {
-                ToastUtils.showShort("绑定成功");
-                finish();
+            Call<String> requestCall = DataManager.bindInsulin(mac, token, (call, response) -> {
+                ToastUtils.showShort(response.msg);
+                if (200 == response.code) {
+                    finish();
+                } else {
+                    BleTransfer.getInstance().unBindDevice();
+                    //清楚绑定的缓存
+                    SPUtils.putBean("blueBindState", false);
+                    finish();
+                }
             }, (call, t) -> {
-                ToastUtils.showShort("绑定成功");
+                ToastUtils.showShort("网络连接失败，请稍后重试");
+                BleTransfer.getInstance().unBindDevice();
+                //清楚绑定的缓存
+                SPUtils.putBean("blueBindState", false);
                 finish();
             });
 

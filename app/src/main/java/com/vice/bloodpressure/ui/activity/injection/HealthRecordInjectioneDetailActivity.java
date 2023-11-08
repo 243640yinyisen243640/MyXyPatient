@@ -43,17 +43,15 @@ public class HealthRecordInjectioneDetailActivity extends XYSoftUIBaseActivity {
     }
 
     public void getData() {
-//        String userId = getIntent().getStringExtra("userId");
         String action_time = getIntent().getStringExtra("action_time");
         String isuse = getIntent().getStringExtra("isuse");
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
         Call<String> requestCall = DataManager.getInjectionDetail( action_time, isuse,token, (call, response) -> {
+            ToastUtils.showToast(response.msg);
             if (200 == response.code) {
                 dataDetail = (InjectionDataDetail) response.object;
                 setData();
-            } else {
-                ToastUtils.showToast("网络连接不可用，请稍后重试！");
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");

@@ -172,12 +172,27 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, DietPlanAddSuccessBean.class, "/port/Food/dietPlanAdd", map, successCallBack, failureCallBack);
     }
 
+    /**
+     * 用户注射数据基础信息
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
     public static Call<String> getInjectionBaseInfo(String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InjectionBaseData.class, "/userInsuliInfo", map, successCallBack, failureCallBack);
     }
 
+    /**
+     * 获取用户胰岛素注射数据列表
+     * @param beginTime
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
     public static Call<String> getInjectionList(String beginTime, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
@@ -185,6 +200,15 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InjectionDataListInfo.class, "/insulinList", map, successCallBack, failureCallBack);
     }
 
+    /**
+     * 获取方案详情
+     * @param action_time
+     * @param isuse
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
     public static Call<String> getInjectionDetail(String action_time, String isuse, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
@@ -193,6 +217,14 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InjectionDataDetail.class, "/planDetail", map, successCallBack, failureCallBack);
     }
 
+    /**
+     * 获取方案列表
+     * @param page
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
     public static Call<String> getInjectionHistoryList(int page, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
@@ -248,7 +280,14 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/addPlan", map, successCallBack, failureCallBack);
     }
 
-
+    /**
+     * 绑定设备
+     * @param mac
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
     public static Call<String> bindInsulin(String mac, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("mac", mac);
@@ -256,7 +295,14 @@ public class DataManager {
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/bindInsulin", map, successCallBack, failureCallBack);
     }
 
-
+    /**
+     * 解绑设备
+     * @param mac
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
     public static Call<String> unbindInsulin(String mac, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("mac", mac);

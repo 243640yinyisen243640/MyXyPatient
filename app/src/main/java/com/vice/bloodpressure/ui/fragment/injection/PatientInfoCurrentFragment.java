@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,8 @@ import java.util.List;
 
 import retrofit2.Call;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * 类描述：治疗方案
  * 类传参：
@@ -34,6 +37,7 @@ import retrofit2.Call;
  * @date 2021/1/15
  */
 public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFragmentAdapter.RefeshFragment {
+    private static final int REQUEST_CODE_FORPROGRAM = 10;
     private TextView tvName;
     private TextView tvTime;
     private TextView tvEdit;
@@ -83,14 +87,14 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
                 List<AddProgramInfo.plan>plans = new ArrayList<>();
                 for (int i = 0; i < dataDetail.getDetail().size(); i++) {
                     plans.add(new AddProgramInfo.plan(
-                            dataDetail.getDetail().get(i).getBegin(),
+                            dataDetail.getDetail().get(i).getPlan_time(),
                             dataDetail.getDetail().get(i).getDrug_name(),
                             dataDetail.getDetail().get(i).getValue()+""));
                 }
                 AddProgramInfo info = new AddProgramInfo(dataDetail.getPlan_name(),plans);
                 info.setPlanList(plans);
                 intent.putExtra("info",info);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE_FORPROGRAM);
             });
             recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
             adapter = new InjectionCurrentAdapter(getPageContext(), dataDetail.getDetail());
@@ -99,6 +103,19 @@ public class PatientInfoCurrentFragment extends XYBaseFragment implements TabFra
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_FORPROGRAM:
+                    getData();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._fragment_injection_currcnt, null);

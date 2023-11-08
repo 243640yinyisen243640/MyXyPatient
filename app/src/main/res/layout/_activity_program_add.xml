@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_program_add_all"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F4F4F4"
@@ -19,7 +20,7 @@
             android:drawablePadding="7.5dp"
             android:gravity="center_vertical"
             android:paddingStart="25dp"
-            android:text="当前未连接上Qlink"
+            android:text="当前未连接上Qlink,点击添加"
             android:textColor="#D08D3F"
             android:textSize="14sp"
             android:visibility="gone"/>
@@ -36,6 +37,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
                 android:text="注射用途"
+                android:visibility="gone"
                 android:textColor="#333333"
                 android:textSize="17sp" />
 
@@ -45,6 +47,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
+                android:visibility="gone"
                 android:layout_marginBottom="15dp"
                 android:orientation="horizontal">
 

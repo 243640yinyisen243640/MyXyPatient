@@ -65,34 +65,33 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                             case 0:
                                 if (TextUtils.isEmpty(deviceBean.getImei())) {
                                     intent = new Intent(getPageContext(), ScanActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), MyBindDeviceActivity.class);
                                     intent.putExtra("position", position);
                                     startActivity(intent);
                                 }
-                                startActivity(intent);
                                 break;
                             case 1:
                                 if (TextUtils.isEmpty(deviceBean.getSnnum())) {
                                     intent = new Intent(getPageContext(), ScanActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), MyBindDeviceActivity.class);
                                     intent.putExtra("position", position);
                                     startActivity(intent);
                                 }
-                                startActivity(intent);
                                 break;
                             case 2:
                                 if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
                                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), InjectionProgramUnbindDeviceActivity.class);
                                     intent.putExtra("position", position);
                                     startActivity(intent);
                                 }
-                                startActivity(intent);
                                 break;
-
                             default:
                                 break;
                         }
@@ -119,6 +118,11 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getIsBindDevice();
+    }
 
     @Override
     protected View addContentLayout() {

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -33,6 +34,7 @@ import retrofit2.Call;
  * 描述:解绑
  */
 public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
+    private TextView tipsTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,23 +46,25 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
 
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_device_unbind, null);
+        tipsTv = view.findViewById(R.id.tv_unbind_device_ble);
         view.findViewById(R.id.tv_device_unbind).setOnClickListener(v -> {
-            Log.i("yys","=====");
+            Log.i("yys", "=====");
             BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
 
             if (mAdapter == null) {
                 Toast.makeText(this, "当前设备不支持蓝牙功能", Toast.LENGTH_SHORT).show();
-                return ;
+                return;
             }
 
             if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
                 Toast.makeText(this, "当前设备不支持ble蓝牙功能", Toast.LENGTH_SHORT).show();
-                return ;
+                return;
             }
 
             if (!mAdapter.isEnabled()) {
-                Toast.makeText(this, "当前蓝牙没有开启", Toast.LENGTH_SHORT).show();
-                return ;
+                //                Toast.makeText(this, "当前蓝牙没有开启", Toast.LENGTH_SHORT).show();
+                tipsTv.setVisibility(View.VISIBLE);
+                return;
             }
             BleTransfer.getInstance().unBindDevice();
             //清楚绑定的缓存
@@ -73,13 +77,13 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
     public void onMessageEvent(BlueUnbindEvent event) {
         Log.i("yys", "onMessageEvent: ");
         boolean bind = event.isUnBind();
-        if (bind){
+        if (bind) {
             LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
             String token = loginBean.getToken();
 
             String mac = BlueUtils.getBlueMac();
 
-            Call<String> requestCall = DataManager.unbindInsulin(mac,token, (call, response) -> {
+            Call<String> requestCall = DataManager.unbindInsulin(mac, token, (call, response) -> {
                 ToastUtils.showShort("解绑成功");
                 finish();
             }, (call, t) -> {
