@@ -341,4 +341,19 @@ public class DataManager {
         map.put("access_token", token);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, DeviceChangeBean.class, "/port/Personal/personalimei", map, successCallBack, failureCallBack);
     }
+
+    /**
+     * checkMac
+     * @param token
+     * @param mac
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> checkMac(String token,String mac, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("mac", mac);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, DeviceChangeBean.class, "/checkMac", map, successCallBack, failureCallBack);
+    }
 }

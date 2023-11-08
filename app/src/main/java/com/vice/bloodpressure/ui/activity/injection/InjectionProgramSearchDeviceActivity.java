@@ -26,8 +26,11 @@ import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.quinovaresdk.bletransfer.BleTransfer;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.event.BlueConnectEvent;
@@ -46,7 +49,7 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
     private static final int LOCATION_PERMISSIONS_REQUEST_CODE = 10;
     private static final int REQUEST_ENABLE_BT = 11;
     private ImageView ivGif;
-    private TextView  tvNoSearch;
+    private TextView tvNoSearch;
     private BluetoothAdapter mAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
 
@@ -102,7 +105,7 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
 
     private void startScan() {
         Log.i("yys", "开始扫描");
-        if (mAdapter.isDiscovering()){
+        if (mAdapter.isDiscovering()) {
             bluetoothLeScanner.stopScan(scanCallback);
         }
         mHandler.postDelayed(new Runnable() {
@@ -152,8 +155,9 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
                                 if (TextUtils.isEmpty(deviceAddress)) {
                                     return;
                                 }
-                                SPUtils.putBean("BlueDeviceMac", deviceAddress);
-                                BleTransfer.getInstance().connect(deviceAddress);
+                                checkMac(deviceAddress);
+                                //                                SPUtils.putBean("BlueDeviceMac", deviceAddress);
+                                //                                BleTransfer.getInstance().connect(deviceAddress);
                             }
                         });
                     }
@@ -161,6 +165,25 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
             }
         }
     };
+
+
+    private void checkMac(String deviceAddress) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        DataManager.checkMac(token, deviceAddress, (call, response) -> {
+            ToastUtils.showShort(response.msg);
+            if (response.code == 200) {
+                SPUtils.putBean("BlueDeviceMac", deviceAddress);
+                BleTransfer.getInstance().connect(deviceAddress);
+            } else {
+                finish();
+
+            }
+        }, (call, t) -> {
+            ToastUtils.showShort("网络连接失败请稍后重试！");
+            finish();
+        });
+    }
 
     private boolean initBlueBooth() {
         if (mAdapter == null) {

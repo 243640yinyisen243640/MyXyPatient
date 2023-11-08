@@ -18,10 +18,12 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.AddProgramInfo;
+import com.vice.bloodpressure.event.AddProgramEventBus;
 import com.vice.bloodpressure.utils.BlueUtils;
 import com.vice.bloodpressure.view.popu.InjectionNoBindPopupWindow;
 
@@ -201,7 +203,9 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
                 ToastUtils.showToast(response.msg);
                 if (200 == response.code) {
                     ToastUtils.showToast(response.msg);
+                    setResult(RESULT_OK);
                     finish();
+                    EventBusUtils.post(new AddProgramEventBus("success"));
                 }
             }, (call, t) -> {
                 ToastUtils.showToast("网络连接不可用，请稍后重试！");

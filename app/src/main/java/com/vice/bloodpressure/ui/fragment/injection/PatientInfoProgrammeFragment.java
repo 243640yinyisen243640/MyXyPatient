@@ -46,7 +46,7 @@ public class PatientInfoProgrammeFragment extends XYBaseFragment implements TabF
         View view = View.inflate(getPageContext(), R.layout._fragment_data, null);
         tvTitle = view.findViewById(R.id.tv_injection_title);
         viewPager = view.findViewById(R.id.rv_injection);
-//        viewPager.setNoScroll(false);
+        //        viewPager.setNoScroll(false);
         containerView().addView(view);
 
         fragments = new ArrayList<>();
@@ -61,9 +61,8 @@ public class PatientInfoProgrammeFragment extends XYBaseFragment implements TabF
         viewPager.setOffscreenPageLimit(fragments.size());
         tvTitle.setOnClickListener(v -> {
             viewPager.setCurrentItem(viewPager.getCurrentItem() == 0 ? 1 : 0);
-            tvTitle.setText(viewPager.getCurrentItem() == 0 ?  "查看历史": "查看当前");
+            tvTitle.setText(viewPager.getCurrentItem() == 0 ? "查看历史" : "查看当前");
         });
     }
-
 
 }

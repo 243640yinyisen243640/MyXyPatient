@@ -25,6 +25,7 @@ import com.vice.bloodpressure.event.BlueBindEvent;
 import com.vice.bloodpressure.event.BlueConnectEvent;
 import com.vice.bloodpressure.event.BlueHistoryDataEvent;
 import com.vice.bloodpressure.event.DataAddEvent;
+import com.vice.bloodpressure.ui.fragment.injection.PatientInfoCurrentFragment;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoInjectionFragment;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoProgrammeFragment;
 import com.vice.bloodpressure.utils.BlueUtils;
@@ -138,7 +139,6 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
                     llProgramme.setBackground(getResources().getDrawable(R.drawable._2));
                     viewPager.setCurrentItem(1);
                 }
-
                 break;
             default:
                 break;
@@ -184,17 +184,17 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         if (injectionBaseData.getIsshot() == 0) {
             tvState.setText("待注射");
         } else {
-//            tvState.setText("已注射");
+            //            tvState.setText("已注射");
             //剂量状态 1偏高 2偏低 3正常
-            if (injectionBaseData.getIshight()==1) {
+            if (injectionBaseData.getIshight() == 1) {
                 tvNum.setTextColor(getResources().getColor(R.color.injection_red));
                 tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_red_tran_2));
                 tvState.setText("偏高");
-            }else if (injectionBaseData.getIshight()==2){
+            } else if (injectionBaseData.getIshight() == 2) {
                 tvNum.setTextColor(getResources().getColor(R.color.injection_yellow));
                 tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_yellow_tran_2));
                 tvState.setText("偏低");
-            }else {
+            } else {
                 tvNum.setTextColor(getResources().getColor(R.color.injection_green));
                 tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_main_green_tran_2));
                 tvState.setText("正常");
