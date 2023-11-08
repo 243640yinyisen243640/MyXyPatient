@@ -148,6 +148,23 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         info.getPlanList().addAll(planList);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("yys", "BlueUtils.isBind()====" + BlueUtils.isBind());
+        if (BlueUtils.isBind()) {
+            tvIsConnect.setVisibility(View.GONE);
+            tvConfirm.setBackground(getResources().getDrawable(R.drawable._shape_confirm));
+            tvConfirm.setTextColor(getResources().getColor(R.color.white));
+            tvConfirm.setEnabled(true);
+        } else {
+            tvIsConnect.setVisibility(View.VISIBLE);
+            tvConfirm.setBackground(getResources().getDrawable(R.drawable.shape_grey_5));
+            tvConfirm.setTextColor(getResources().getColor(R.color.black_text));
+            tvConfirm.setEnabled(false);
+        }
+    }
+
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout._activity_program_add, null);
         tvIsConnect = view.findViewById(R.id.tv_program_is_connect);
@@ -156,6 +173,10 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
             String plan_name = info.getPlan_name();
             if (TextUtils.isEmpty(plan_name)) {
                 ToastUtils.showToast("请填写方案名称");
+                return;
+            }
+            if (info.getPlanList().size()==0){
+                ToastUtils.showToast("请选择针数");
                 return;
             }
             boolean isPass = true;
@@ -187,18 +208,7 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
             });
 
         });
-        Log.i("yys", "BlueUtils.isBind()====" + BlueUtils.isBind());
-        if (BlueUtils.isBind()) {
-            tvIsConnect.setVisibility(View.GONE);
-            tvConfirm.setBackground(getResources().getDrawable(R.drawable._shape_confirm));
-            tvConfirm.setTextColor(getResources().getColor(R.color.white));
-            tvConfirm.setEnabled(true);
-        } else {
-            tvIsConnect.setVisibility(View.VISIBLE);
-            tvConfirm.setBackground(getResources().getDrawable(R.drawable.shape_grey_5));
-            tvConfirm.setTextColor(getResources().getColor(R.color.black_text));
-            tvConfirm.setEnabled(false);
-        }
+
         tvIsConnect.setOnClickListener(v -> {
             //去链接蓝牙设备  eventBus接收连接结果
             startActivity(new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class));

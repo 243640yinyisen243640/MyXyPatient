@@ -184,14 +184,29 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         if (injectionBaseData.getIsshot() == 0) {
             tvState.setText("待注射");
         } else {
-            tvState.setText("已注射");
+//            tvState.setText("已注射");
+            //剂量状态 1偏高 2偏低 3正常
+            if (injectionBaseData.getIshight()==1) {
+                tvNum.setTextColor(getResources().getColor(R.color.injection_red));
+                tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_red_tran_2));
+                tvState.setText("偏高");
+            }else if (injectionBaseData.getIshight()==2){
+                tvNum.setTextColor(getResources().getColor(R.color.injection_yellow));
+                tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_yellow_tran_2));
+                tvState.setText("偏低");
+            }else {
+                tvNum.setTextColor(getResources().getColor(R.color.injection_green));
+                tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_main_green_tran_2));
+                tvState.setText("正常");
+            }
         }
+
         tvRank.setText("第" + injectionBaseData.getTimes() + "针");
         tvCompany.setText(injectionBaseData.getDrug_name());
         tvPlanNum.setText(injectionBaseData.getIsshot_num() + "/" + injectionBaseData.getAll_times());
         tvTimeYear.setText(injectionBaseData.getAction_year());
         tvTimeMonth.setText(injectionBaseData.getAction_time());
-        if (!"暂无".equals(injectionBaseData.getAction_time())){
+        if (!"暂无".equals(injectionBaseData.getAction_time())) {
             topViewManager().moreTextView().setText("新增数据");
         }
     }
@@ -274,7 +289,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
             if (!isConnect) {
                 if (BlueUtils.isBind()) {
                     BleTransfer.getInstance().connect(BlueUtils.getBlueMac());
-                }else {
+                } else {
                     Intent intent = new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class);
                     startActivity(intent);
                 }
