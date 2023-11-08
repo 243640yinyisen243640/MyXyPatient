@@ -6,7 +6,7 @@ package com.vice.bloodpressure.bean.injection;
  * Description:
  */
 public class InjectionBaseData {
-    private int value;
+    private String value;
     private int ishight;
     private String times;
     private int isshot;
@@ -31,11 +31,11 @@ public class InjectionBaseData {
                 '}';
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

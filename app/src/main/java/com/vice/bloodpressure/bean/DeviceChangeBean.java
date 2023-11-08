@@ -7,6 +7,10 @@ public class DeviceChangeBean {
 
     private String imei;
     private String snnum;
+    /**
+     * 快舒尔的设备码
+     */
+    private String insulinnum;
 
     public String getImei() {
         return imei;
@@ -23,5 +27,13 @@ public class DeviceChangeBean {
 
     public void setSnnum(String snnum) {
         this.snnum = snnum;
+    }
+
+    public String getInsulinnum() {
+        return insulinnum;
+    }
+
+    public void setInsulinnum(String insulinnum) {
+        this.insulinnum = insulinnum;
     }
 }

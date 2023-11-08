@@ -156,7 +156,8 @@ public class UserFragment extends BaseFragment implements SimpleImmersionOwner {
                         getDoctorInfo();
                         break;
                     case 2:
-                        getIsHaveBind();
+                        //                        getIsHaveBind();
+                        startActivity(new Intent(getPageContext(), MyBindDeviceListNewActivity.class));
                         break;
                     //关于我们
                     case 3:
@@ -350,28 +351,28 @@ public class UserFragment extends BaseFragment implements SimpleImmersionOwner {
                 break;
             //没有绑定设备
             case BIND_DEVICE_NOT:
-//                PermissionUtils
-//                        .permission(PermissionConstants.CAMERA)
-//                        .callback(new PermissionUtils.SimpleCallback() {
-//                            @Override
-//                            public void onGranted() {
-//                                Intent intent = new Intent(getPageContext(), ScanActivity.class);
-//                                intent.putExtra("type", "user");
-//                                startActivity(intent);
-//                            }
-//
-//                            @Override
-//                            public void onDenied() {
-//                                ToastUtils.showShort("请允许使用相机权限");
-//                            }
-//                        }).request();
+                //                PermissionUtils
+                //                        .permission(PermissionConstants.CAMERA)
+                //                        .callback(new PermissionUtils.SimpleCallback() {
+                //                            @Override
+                //                            public void onGranted() {
+                //                                Intent intent = new Intent(getPageContext(), ScanActivity.class);
+                //                                intent.putExtra("type", "user");
+                //                                startActivity(intent);
+                //                            }
+                //
+                //                            @Override
+                //                            public void onDenied() {
+                //                                ToastUtils.showShort("请允许使用相机权限");
+                //                            }
+                //                        }).request();
 
                 startActivity(new Intent(getPageContext(), MyBindDeviceListNewActivity.class));
                 break;
             case IS_LIVER_FILE:
                 IsLiverFilesBean isLiverFilesBean = (IsLiverFilesBean) msg.obj;
                 String archivestyle = isLiverFilesBean.getArchivestyle();
-//                String archivestyle = "2";
+                //                String archivestyle = "2";
 
                 if ("2".equals(archivestyle)) {
                     intent = new Intent(getPageContext(), MyLiverFilesActivity.class);

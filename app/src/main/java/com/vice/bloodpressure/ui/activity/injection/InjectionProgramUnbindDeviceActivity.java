@@ -1,8 +1,11 @@
 package com.vice.bloodpressure.ui.activity.injection;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -43,6 +46,22 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
         View view = View.inflate(getPageContext(), R.layout._activity_device_unbind, null);
         view.findViewById(R.id.tv_device_unbind).setOnClickListener(v -> {
             Log.i("yys","=====");
+            BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
+
+            if (mAdapter == null) {
+                Toast.makeText(this, "当前设备不支持蓝牙功能", Toast.LENGTH_SHORT).show();
+                return ;
+            }
+
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+                Toast.makeText(this, "当前设备不支持ble蓝牙功能", Toast.LENGTH_SHORT).show();
+                return ;
+            }
+
+            if (!mAdapter.isEnabled()) {
+                Toast.makeText(this, "当前蓝牙没有开启", Toast.LENGTH_SHORT).show();
+                return ;
+            }
             BleTransfer.getInstance().unBindDevice();
             //清楚绑定的缓存
             SPUtils.putBean("blueBindState", false);

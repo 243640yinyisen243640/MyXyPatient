@@ -188,7 +188,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 holder.tvFour.setBackgroundColor(Color.parseColor("#F9EBEA"));
             } else {
                 holder.tvFour.setText(value + "");
-                holder.tvThree.setOnClickListener(v -> {
+                holder.tvFour.setOnClickListener(v -> {
                     jumpDetail(position, 3, "第四针");
                 });
                 if (more > 0) {

@@ -3,6 +3,7 @@ package com.vice.bloodpressure;
 import android.text.TextUtils;
 
 import com.vice.bloodpressure.bean.AdverInfo;
+import com.vice.bloodpressure.bean.DeviceChangeBean;
 import com.vice.bloodpressure.bean.DietPlanAddSuccessBean;
 import com.vice.bloodpressure.bean.PhysicalExaminationDoctorInfoAllInfo;
 import com.vice.bloodpressure.bean.ScheduleInfoBean;
@@ -262,8 +263,8 @@ public class DataManager {
         map.put("access_token", token);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/unbindInsulin", map, successCallBack, failureCallBack);
     }
+
     /**
-     *
      * @param token
      * @param insulis
      * @param successCallBack
@@ -286,5 +287,12 @@ public class DataManager {
         map.put("day_time", day_time);
         map.put("times", times);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InjectDetailInfo.class, "/insulinDetail", map, successCallBack, failureCallBack);
+    }
+
+
+    public static Call<String> getDeviceIsBind(String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, DeviceChangeBean.class, "/port/Personal/personalimei", map, successCallBack, failureCallBack);
     }
 }

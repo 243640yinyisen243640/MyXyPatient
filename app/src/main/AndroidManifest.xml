@@ -52,11 +52,13 @@
     <uses-feature android:name="android.hardware.location.gps" />
 
     <!-- 设置设备只支持 BLE -->
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
     <!--android6.0后需要搜索周边蓝牙设备，需要添加以下两个权限-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!--打开蓝牙权限-->
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
@@ -393,19 +395,20 @@
 
         <!-- 快舒尔-->
 
-        <activity android:name=".ui.activity.injection.HealthRecordInjectioneDetailActivity"/>
-        <activity android:name=".ui.activity.injection.HealthRecordInjectioneInfoActivity"/>
-        <activity android:name=".ui.activity.injection.HealthRecordInjectioneListActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionDataAddActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionProgramAddActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionProgramAddNameActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionProgramAddNumActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionProgramAddDeviceActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionProgramSearchDeviceActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionProgramBindDeviceActivity"/>
-        <activity android:name=".ui.activity.injection.InjectionProgramUnbindDeviceActivity"/>
-        <activity android:name=".ui.activity.injection.MyBindDeviceListNewActivity"/>
-        <activity android:name=".ui.activity.injection.MyDeviceNewActivity"/>
+        <activity android:name=".ui.activity.injection.HealthRecordInjectioneDetailActivity" />
+        <activity android:name=".ui.activity.injection.HealthRecordInjectioneInfoActivity" />
+        <activity android:name=".ui.activity.injection.HealthRecordInjectioneListActivity" />
+        <activity android:name=".ui.activity.injection.InjectionDataAddActivity" />
+        <activity android:name=".ui.activity.injection.InjectionProgramAddActivity" />
+        <activity android:name=".ui.activity.injection.InjectionProgramAddNameActivity" />
+        <activity android:name=".ui.activity.injection.InjectionProgramAddNumActivity" />
+        <activity android:name=".ui.activity.injection.InjectionProgramAddDeviceActivity" />
+        <activity android:name=".ui.activity.injection.InjectionProgramSearchDeviceActivity" />
+        <activity android:name=".ui.activity.injection.InjectionAddDeviceNoActivity" />
+        <activity android:name=".ui.activity.injection.InjectionProgramBindDeviceActivity" />
+        <activity android:name=".ui.activity.injection.InjectionProgramUnbindDeviceActivity" />
+        <activity android:name=".ui.activity.injection.MyBindDeviceListNewActivity" />
+        <activity android:name=".ui.activity.injection.MyDeviceNewActivity" />
 
         <activity
             android:name=".base.activity.WebHelperActivity"
