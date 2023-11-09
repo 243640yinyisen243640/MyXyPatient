@@ -2,7 +2,6 @@ package com.vice.bloodpressure.ui.activity.injection;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import com.vice.bloodpressure.event.BlueBindEvent;
 import com.vice.bloodpressure.event.BlueConnectEvent;
 import com.vice.bloodpressure.event.BlueHistoryDataEvent;
 import com.vice.bloodpressure.event.DataAddEvent;
-import com.vice.bloodpressure.ui.fragment.injection.PatientInfoCurrentFragment;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoInjectionFragment;
 import com.vice.bloodpressure.ui.fragment.injection.PatientInfoProgrammeFragment;
 import com.vice.bloodpressure.utils.BlueUtils;
@@ -94,14 +92,14 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         tvTimeYear = view.findViewById(R.id.tv_injection_time_year);
         tvTimeMonth = view.findViewById(R.id.tv_injection_time_month);
         tvIsConnect = view.findViewById(R.id.tv_blue_is_connect);
+        setTextIsConnect();
 
-        if (BlueUtils.isBind() && BlueUtils.isConnect) {
-            //已连接
-            setTextIsConnect(true);
-        } else {
-            //未连接
-            setTextIsConnect(false);
-        }
+//        if (BlueUtils.isBind()) {
+//            //已连接
+//            setTextIsConnect();
+//        } else {
+//            //未连接
+//        }
 
         viewPager = getViewByID(view, R.id.vp_injection);
 
@@ -190,14 +188,17 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
                 tvNum.setTextColor(getResources().getColor(R.color.injection_red));
                 tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_red_tran_2));
                 tvState.setText("偏高");
+                tvState.setTextColor(getResources().getColor(R.color.injection_red));
             } else if (injectionBaseData.getIshight() == 2) {
                 tvNum.setTextColor(getResources().getColor(R.color.injection_yellow));
                 tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_yellow_tran_2));
                 tvState.setText("偏低");
+                tvState.setTextColor(getResources().getColor(R.color.injection_yellow));
             } else {
                 tvNum.setTextColor(getResources().getColor(R.color.injection_green));
                 tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_main_green_tran_2));
                 tvState.setText("正常");
+                tvState.setTextColor(getResources().getColor(R.color.injection_green));
             }
         }
 
@@ -253,31 +254,26 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BlueConnectEvent event) {
-        if (BlueUtils.isBind() && event.isConnect()) {
-            setTextIsConnect(true);
-        } else {
-            setTextIsConnect(false);
-        }
+        setTextIsConnect();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventBind(BlueBindEvent event) {
-        if (event.isBind()) {
-            setTextIsConnect(true);
-        } else {
-            setTextIsConnect(false);
-        }
+        setTextIsConnect();
     }
 
-    private void setTextIsConnect(boolean isConnect) {
+    private void setTextIsConnect() {
         //        tvIsConnect.setText(isConnect ? "已连接" : "未连接");
-        Log.i("yys", "isConnect==" + isConnect);
-        if (isConnect) {
-            tvIsConnect.setText("已连接");
-            tvIsConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.injection_green_90, 0, 0, 0);
-            tvIsConnect.setBackground(getResources().getDrawable(R.drawable.injection_green_90_tran));
-            tvIsConnect.setCompoundDrawablePadding(5);
-            tvIsConnect.setTextColor(getResources().getColor(R.color.black_text));
+        if (BlueUtils.isBind()) {
+            if (BlueUtils.isConnect) {
+                tvIsConnect.setText("已连接");
+                tvIsConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.injection_green_90, 0, 0, 0);
+                tvIsConnect.setBackground(getResources().getDrawable(R.drawable.injection_green_90_tran));
+                tvIsConnect.setCompoundDrawablePadding(5);
+                tvIsConnect.setTextColor(getResources().getColor(R.color.black_text));
+            } else {
+                tvIsConnect.setText("重新连接");
+            }
         } else {
             tvIsConnect.setText("添加设备");
             tvIsConnect.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -286,13 +282,13 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
             tvIsConnect.setTextColor(getResources().getColor(R.color.white));
         }
         tvIsConnect.setOnClickListener(v -> {
-            if (!isConnect) {
-                if (BlueUtils.isBind()) {
+            if (BlueUtils.isBind()) {
+                if (!BlueUtils.isConnect){
                     BleTransfer.getInstance().connect(BlueUtils.getBlueMac());
-                } else {
-                    Intent intent = new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class);
-                    startActivity(intent);
                 }
+            } else {
+                Intent intent = new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class);
+                startActivity(intent);
             }
         });
     }

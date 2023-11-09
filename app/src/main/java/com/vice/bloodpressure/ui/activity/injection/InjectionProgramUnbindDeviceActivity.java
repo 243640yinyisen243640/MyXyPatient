@@ -82,7 +82,6 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
             String token = loginBean.getToken();
 
             String mac = BlueUtils.getBlueMac();
-
             Call<String> requestCall = DataManager.unbindInsulin(mac, token, (call, response) -> {
                 ToastUtils.showShort("解绑成功");
                 finish();
