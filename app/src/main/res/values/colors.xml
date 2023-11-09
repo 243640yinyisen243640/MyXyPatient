@@ -143,7 +143,8 @@
     <color name="hospital_appointment_status_failed">#FFAE2E</color>
     <color name="hospital_appointment_status_success">#FFAE2E</color>
     <color name="injection_green">#0CA25B</color>
-    <color name="injection_red">#BF5144</color>
-    <color name="injection_yellow">#DEA353</color>
+    <color name="injection_red">#BE3721</color>
+    <color name="injection_yellow">#D68A2C</color>
+    <color name="injection_green_1">#00C27F</color>
 
 </resources>

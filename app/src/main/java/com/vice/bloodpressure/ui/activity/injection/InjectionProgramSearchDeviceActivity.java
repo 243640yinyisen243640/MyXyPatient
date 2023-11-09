@@ -157,7 +157,7 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
                                 }
                                 checkMac(deviceAddress);
                                 //                                SPUtils.putBean("BlueDeviceMac", deviceAddress);
-                                //                                BleTransfer.getInstance().connect(deviceAddress);
+                                //                                BleTransfer.getInstance().realConnect(deviceAddress);
                             }
                         });
                     }
@@ -174,7 +174,7 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
             ToastUtils.showShort(response.msg);
             if (response.code == 200) {
                 SPUtils.putBean("BlueDeviceMac", deviceAddress);
-                BleTransfer.getInstance().connect(deviceAddress);
+                BleTransfer.getInstance().realConnect(deviceAddress);
             } else {
                 finish();
 

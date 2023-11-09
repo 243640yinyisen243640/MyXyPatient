@@ -3,13 +3,18 @@ package com.vice.bloodpressure.ui.activity.injection;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 
@@ -22,8 +27,10 @@ import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
     //第几步
     private int step;
+    private final int BLUETOOTH_PERMISSIONS_REQUEST_CODE = 10;
 
     private TextView tvBleTips;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +64,34 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
         } else if (step == 2) {
             view = View.inflate(getPageContext(), R.layout._activity_device_add3, null);
             TextView textView = view.findViewById(R.id.tv_add_device);
-            tvBleTips  = view.findViewById(R.id.tv_device_add_ble_tip);
+            tvBleTips = view.findViewById(R.id.tv_device_add_ble_tip);
             textView.setOnClickListener(v -> {
                 if (initBlueBooth()) {
-                    Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
-                    startActivity(intent);
-                    finish();
+                    //Android12以上获取权限
+                    if (Build.VERSION.SDK_INT > 30) {
+                        if (ContextCompat.checkSelfPermission(this,
+                                "android.permission.BLUETOOTH_SCAN")
+                                != PackageManager.PERMISSION_GRANTED
+                                || ContextCompat.checkSelfPermission(this,
+                                "android.permission.BLUETOOTH_ADVERTISE")
+                                != PackageManager.PERMISSION_GRANTED
+                                || ContextCompat.checkSelfPermission(this,
+                                "android.permission.BLUETOOTH_CONNECT")
+                                != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(this, new String[]{
+                                    "android.permission.BLUETOOTH_SCAN",
+                                    "android.permission.BLUETOOTH_ADVERTISE",
+                                    "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
+                        } else {
+                            Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             });
         }
@@ -70,6 +99,7 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
     }
 
     private BluetoothAdapter mAdapter;
+
     private boolean initBlueBooth() {
         if (mAdapter == null) {
             mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -88,7 +118,7 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
             //没有在开启中也没有打开
             if (mAdapter.getState() == BluetoothAdapter.STATE_OFF) {
                 tvBleTips.setVisibility(View.VISIBLE);
-//                Toast.makeText(this, "蓝牙未开启", Toast.LENGTH_SHORT).show();
+                //                Toast.makeText(this, "蓝牙未开启", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
@@ -101,5 +131,24 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            //调用系统相机申请拍照权限回调
+            case BLUETOOTH_PERMISSIONS_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    ToastUtils.showShort("请先开启权限");
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

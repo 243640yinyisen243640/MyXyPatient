@@ -29,14 +29,14 @@ public class BlueUtils {
     public static void init(Activity activity, Handler handler) {
         String ally_key = "f793807d88871d1684617915991b245c";
         BleTransfer.getInstance().init(activity, ally_key);
-//        BleTransfer.getInstance().realInit();
+        BleTransfer.getInstance().realInit();
         handler.postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 if (!isConnect) {
                     if (!TextUtils.isEmpty(getBlueMac())) {
-                        BleTransfer.getInstance().connect(getBlueMac());
+                        BleTransfer.getInstance().realConnect(getBlueMac());
                     }
                 }
             }

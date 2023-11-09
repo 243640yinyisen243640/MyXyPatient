@@ -195,10 +195,10 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
                 tvState.setText("偏低");
                 tvState.setTextColor(getResources().getColor(R.color.injection_yellow));
             } else {
-                tvNum.setTextColor(getResources().getColor(R.color.injection_green));
-                tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_main_green_tran_2));
-                tvState.setText("正常");
-                tvState.setTextColor(getResources().getColor(R.color.injection_green));
+                tvNum.setTextColor(getResources().getColor(R.color.injection_green_1));
+                tvState.setBackground(getResources().getDrawable(R.drawable.shape_bg_green_tran_2));
+                tvState.setText("达标");
+                tvState.setTextColor(getResources().getColor(R.color.injection_green_1));
             }
         }
 
@@ -284,7 +284,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         tvIsConnect.setOnClickListener(v -> {
             if (BlueUtils.isBind()) {
                 if (!BlueUtils.isConnect){
-                    BleTransfer.getInstance().connect(BlueUtils.getBlueMac());
+                    BleTransfer.getInstance().realConnect(BlueUtils.getBlueMac());
                 }
             } else {
                 Intent intent = new Intent(getPageContext(), InjectionProgramAddDeviceActivity.class);

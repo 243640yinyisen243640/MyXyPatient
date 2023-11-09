@@ -62,7 +62,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 //缺
                 holder.tvOne.setText("缺");
                 holder.tvOne.setTextColor(Color.parseColor("#BD3620"));
-                holder.tvOne.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                holder.tvOne.setBackground(context.getDrawable(R.drawable._4));
             } else {
                 holder.tvOne.setText(value + "");
                 holder.tvOne.setOnClickListener(v -> {
@@ -77,14 +77,14 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 if (ishight == 1) {
                     //偏高
                     holder.tvOne.setTextColor(Color.parseColor("#BD3620"));
-                    holder.tvOne.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                    holder.tvOne.setBackground(context.getDrawable(R.drawable._4));
                     holder.tvOneState.setText("偏高");
                     holder.tvOneState.setVisibility(View.VISIBLE);
                     holder.tvOneState.setBackground(context.getDrawable(R.drawable._6));
                 } else if (ishight == 2) {
                     //偏低
                     holder.tvOne.setTextColor(Color.parseColor("#D68A2C"));
-                    holder.tvOne.setBackgroundColor(Color.parseColor("#F4EAE1"));
+                    holder.tvOne.setBackground(context.getDrawable(R.drawable._5));
                     holder.tvOneState.setText("偏低");
                     holder.tvOneState.setVisibility(View.VISIBLE);
                     holder.tvOneState.setBackground(context.getDrawable(R.drawable._7));
@@ -103,7 +103,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 //缺
                 holder.tvTwo.setText("缺");
                 holder.tvTwo.setTextColor(Color.parseColor("#BD3620"));
-                holder.tvTwo.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                holder.tvTwo.setBackground(context.getDrawable(R.drawable._4));
             } else {
                 holder.tvTwo.setText(value + "");
                 holder.tvTwo.setOnClickListener(v -> {
@@ -118,14 +118,14 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 if (ishight == 1) {
                     //偏高
                     holder.tvTwo.setTextColor(Color.parseColor("#BD3620"));
-                    holder.tvTwo.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                    holder.tvTwo.setBackground(context.getDrawable(R.drawable._4));
                     holder.tvTwoState.setText("偏高");
                     holder.tvTwoState.setVisibility(View.VISIBLE);
                     holder.tvTwoState.setBackground(context.getDrawable(R.drawable._6));
                 } else if (ishight == 2) {
                     //偏低
                     holder.tvTwo.setTextColor(Color.parseColor("#D68A2C"));
-                    holder.tvTwo.setBackgroundColor(Color.parseColor("#F4EAE1"));
+                    holder.tvTwo.setBackground(context.getDrawable(R.drawable._5));
                     holder.tvTwoState.setText("偏低");
                     holder.tvTwoState.setVisibility(View.VISIBLE);
                     holder.tvTwoState.setBackground(context.getDrawable(R.drawable._7));
@@ -144,7 +144,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 //缺
                 holder.tvThree.setText("缺");
                 holder.tvThree.setTextColor(Color.parseColor("#BD3620"));
-                holder.tvThree.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                holder.tvThree.setBackground(context.getDrawable(R.drawable._4));
             } else {
                 holder.tvThree.setText(value + "");
                 holder.tvThree.setOnClickListener(v -> {
@@ -159,14 +159,14 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 if (ishight == 1) {
                     //偏高
                     holder.tvThree.setTextColor(Color.parseColor("#BD3620"));
-                    holder.tvThree.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                    holder.tvThree.setBackground(context.getDrawable(R.drawable._4));
                     holder.tvThreeState.setText("偏高");
                     holder.tvThreeState.setVisibility(View.VISIBLE);
                     holder.tvThreeState.setBackground(context.getDrawable(R.drawable._6));
                 } else if (ishight == 2) {
                     //偏低
                     holder.tvThree.setTextColor(Color.parseColor("#D68A2C"));
-                    holder.tvThree.setBackgroundColor(Color.parseColor("#F4EAE1"));
+                    holder.tvThree.setBackground(context.getDrawable(R.drawable._5));
                     holder.tvThreeState.setText("偏低");
                     holder.tvThreeState.setVisibility(View.VISIBLE);
                     holder.tvThreeState.setBackground(context.getDrawable(R.drawable._7));
@@ -185,7 +185,7 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 //缺
                 holder.tvFour.setText("缺");
                 holder.tvFour.setTextColor(Color.parseColor("#BD3620"));
-                holder.tvFour.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                holder.tvFour.setBackground(context.getDrawable(R.drawable._4));
             } else {
                 holder.tvFour.setText(value + "");
                 holder.tvFour.setOnClickListener(v -> {
@@ -200,14 +200,14 @@ public class InjectionAdapter extends RecyclerView.Adapter<InjectionAdapter.View
                 if (ishight == 1) {
                     //偏高
                     holder.tvFour.setTextColor(Color.parseColor("#BD3620"));
-                    holder.tvFour.setBackgroundColor(Color.parseColor("#F9EBEA"));
+                    holder.tvFour.setBackground(context.getDrawable(R.drawable._4));
                     holder.tvFourState.setText("偏高");
                     holder.tvFourState.setVisibility(View.VISIBLE);
                     holder.tvFourState.setBackground(context.getDrawable(R.drawable._6));
                 } else if (ishight == 2) {
                     //偏低
                     holder.tvFour.setTextColor(Color.parseColor("#D68A2C"));
-                    holder.tvFour.setBackgroundColor(Color.parseColor("#F4EAE1"));
+                    holder.tvFour.setBackground(context.getDrawable(R.drawable._5));
                     holder.tvFourState.setText("偏低");
                     holder.tvFourState.setVisibility(View.VISIBLE);
                     holder.tvFourState.setBackground(context.getDrawable(R.drawable._7));

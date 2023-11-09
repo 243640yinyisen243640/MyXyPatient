@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.vice.bloodpressure">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="com.vice.bloodpressure.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" /> <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -64,7 +66,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
+
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+<!--        android:usesPermissionFlags="neverForLocation"-->
+<!--        tools:targetApi="31" -->
+
 
     <application
         android:name=".App"

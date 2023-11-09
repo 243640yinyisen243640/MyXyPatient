@@ -41,7 +41,6 @@ public class HealthRecordInjectioneInfoActivity extends XYSoftUIBaseActivity {
         super.onCreate(savedInstanceState);
         topViewManager().titleTextView().setText("注射详情");
         containerView().addView(initView());
-        //        info = (InjectDetailInfo) getIntent().getSerializableExtra("data");
         dataTime = getIntent().getStringExtra("dataTime");
         times = getIntent().getStringExtra("times");
         numString = getIntent().getStringExtra("numString");
@@ -79,13 +78,19 @@ public class HealthRecordInjectioneInfoActivity extends XYSoftUIBaseActivity {
         //1偏高 2偏低 3正常
         String isHeightData;
         if (ishight.equals("1")) {
-            isHeightData = "剂量过高";
+//            isHeightData = "剂量过高";
+            tvIsHeight.setBackground(getResources().getDrawable(R.drawable.jiliang_2_red));
+            tvIsHeight.setText("剂量偏高");
         } else if (ishight.equals("2")) {
-            isHeightData = "剂量偏低";
+//            isHeightData = "剂量偏低";
+            tvIsHeight.setBackground(getResources().getDrawable(R.drawable.jiliang_2_yellow));
+            tvIsHeight.setText("剂量偏低");
         } else {
-            isHeightData = "剂量正常";
+//            isHeightData = "剂量正常";
+            tvIsHeight.setBackground(getResources().getDrawable(R.drawable.jiliang_2_green));
+            tvIsHeight.setText("剂量达标");
         }
-        tvIsHeight.setText(isHeightData);
+
         adapter = new InjectionDetailAdapter(getPageContext(), injectionBaseData.getJection_data(), (view, position) -> {
             switch (view.getId()) {
                 case R.id.tv_detail_item_edit:

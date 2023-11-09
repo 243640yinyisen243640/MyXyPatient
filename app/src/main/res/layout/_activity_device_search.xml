@@ -25,6 +25,7 @@
             android:id="@+id/iv_search_device_gif"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:src="@drawable/injection_device_search" />
 
         <ImageView
