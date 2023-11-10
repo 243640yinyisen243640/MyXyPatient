@@ -70,7 +70,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         topViewManager().moreTextView().setOnClickListener(v -> {
             Intent intent = new Intent(getPageContext(), InjectionDataAddActivity.class);
             intent.putExtra("isAdd", true);
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_CODE_FORPROGRAM);
         });
         initListener();
         getData();

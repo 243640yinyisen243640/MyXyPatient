@@ -243,6 +243,7 @@ public class InjectionDataAddActivity extends XYSoftUIBaseActivity {
                 if (200 == response.code) {
                     EventBusUtils.post(new DataAddEvent());
                     ToastUtils.showToast(response.msg);
+                    setResult(RESULT_OK);
                     finish();
                 } else {
                     ToastUtils.showToast(response.msg);

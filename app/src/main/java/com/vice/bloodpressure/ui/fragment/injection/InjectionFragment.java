@@ -2,7 +2,6 @@ package com.vice.bloodpressure.ui.fragment.injection;
 
 import android.content.Intent;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -209,5 +208,11 @@ public class InjectionFragment extends BaseEventBusFragment {
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 }
