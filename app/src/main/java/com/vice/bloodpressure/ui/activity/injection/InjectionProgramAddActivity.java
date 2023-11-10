@@ -156,14 +156,8 @@ public class InjectionProgramAddActivity extends XYSoftUIBaseActivity {
         Log.i("yys", "BlueUtils.isBind()====" + BlueUtils.isBind());
         if (BlueUtils.isBind()) {
             tvIsConnect.setVisibility(View.GONE);
-            tvConfirm.setBackground(getResources().getDrawable(R.drawable._shape_confirm));
-            tvConfirm.setTextColor(getResources().getColor(R.color.white));
-            tvConfirm.setEnabled(true);
         } else {
             tvIsConnect.setVisibility(View.VISIBLE);
-            tvConfirm.setBackground(getResources().getDrawable(R.drawable.shape_grey_5));
-            tvConfirm.setTextColor(getResources().getColor(R.color.black_text));
-            tvConfirm.setEnabled(false);
         }
     }
 
