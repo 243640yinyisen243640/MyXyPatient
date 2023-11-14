@@ -39,14 +39,13 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setTitle("我的设备");
 
-        getIsBindDevice();
+//        getIsBindDevice();
         setRv();
     }
 
     private void getIsBindDevice() {
         LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         Call<String> requestCall = DataManager.getDeviceIsBind(userLogin.getToken(), (call, response) -> {
-            ToastUtils.showToast(response.msg);
             if (200 == response.code) {
                 deviceBean = (DeviceChangeBean) response.object;
                 //保存血糖设备码
@@ -98,11 +97,16 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                     }
 
                 }));
+            }else {
+                ToastUtils.showToast(response.msg);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
     }
+
+
+
 
     private void setRv() {
         //        String[] stringArray = getResources().getStringArray(R.array.my_device_bind_list_name_new);
@@ -115,13 +119,70 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getPageContext());
         rvList.setLayoutManager(linearLayoutManager);
+        rvList.setAdapter(new MyBindDeviceListAdapter(getPageContext(), list, (view, position) -> {
+            LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+            Call<String> requestCall = DataManager.getDeviceIsBind(userLogin.getToken(), (call, response) -> {
+                ToastUtils.showToast(response.msg);
+                if (200 == response.code) {
+                    deviceBean = (DeviceChangeBean) response.object;
+                    //保存血糖设备码
+                    String imei = deviceBean.getImei();
+                    SPStaticUtils.put("imei", imei);
+                    //保存血压设备码
+                    String snnum = deviceBean.getSnnum();
+                    SPStaticUtils.put("snnum", snnum);
+                    //保存快舒尔设备码
+                    String insulinnum = deviceBean.getInsulinnum();
+                    SPStaticUtils.put("insulinnum", insulinnum);
+                    if (deviceBean != null) {
+                        Intent intent;
+                        switch (position) {
+                            case 0:
+                                if (TextUtils.isEmpty(deviceBean.getImei())) {
+                                    intent = new Intent(getPageContext(), ScanActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    intent = new Intent(getPageContext(), MyBindDeviceActivity.class);
+                                    intent.putExtra("position", position);
+                                    startActivity(intent);
+                                }
+                                break;
+                            case 1:
+                                if (TextUtils.isEmpty(deviceBean.getSnnum())) {
+                                    intent = new Intent(getPageContext(), ScanActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    intent = new Intent(getPageContext(), MyBindDeviceActivity.class);
+                                    intent.putExtra("position", position);
+                                    startActivity(intent);
+                                }
+                                break;
+                            case 2:
+                                if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
+                                    intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    intent = new Intent(getPageContext(), InjectionProgramUnbindDeviceActivity.class);
+                                    intent.putExtra("position", position);
+                                    startActivity(intent);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }, (call, t) -> {
+                ToastUtils.showToast("网络连接不可用，请稍后重试！");
+            });
 
+        }));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getIsBindDevice();
+        setRv();
     }
 
     @Override
