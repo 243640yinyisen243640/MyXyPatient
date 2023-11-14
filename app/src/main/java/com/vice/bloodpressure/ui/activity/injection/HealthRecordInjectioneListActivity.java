@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.activity.injection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,14 +64,19 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         super.onCreate(savedInstanceState);
         EventBusUtils.register(this);
         //获取蓝牙历史数据
-        BleTransfer.getInstance().getHistoryInjection();
+        Log.i("yys", "isBind=="+BlueUtils.isBind());
+        Log.i("yys", "isConnect=="+BlueUtils.isConnect);
+        if (BlueUtils.isBind() && BlueUtils.isConnect) {
+            Log.i("yys", "getHistoryInjection");
+            BleTransfer.getInstance().getHistoryInjection();
+        }
         topViewManager().titleTextView().setText("注射数据");
         containerView().addView(initView());
 
         topViewManager().moreTextView().setOnClickListener(v -> {
             Intent intent = new Intent(getPageContext(), InjectionDataAddActivity.class);
             intent.putExtra("isAdd", true);
-            startActivityForResult(intent,REQUEST_CODE_FORPROGRAM);
+            startActivityForResult(intent, REQUEST_CODE_FORPROGRAM);
         });
         initListener();
         getData();
@@ -94,12 +100,12 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         tvIsConnect = view.findViewById(R.id.tv_blue_is_connect);
         setTextIsConnect();
 
-//        if (BlueUtils.isBind()) {
-//            //已连接
-//            setTextIsConnect();
-//        } else {
-//            //未连接
-//        }
+        //        if (BlueUtils.isBind()) {
+        //            //已连接
+        //            setTextIsConnect();
+        //        } else {
+        //            //未连接
+        //        }
 
         viewPager = getViewByID(view, R.id.vp_injection);
 
@@ -216,6 +222,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
     public void onMessageEvent(BlueHistoryDataEvent event) {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
+        Log.i("yys", "event.getType()==" + event.getType());
         switch (event.getType()) {
             case 1:
                 if (event.getInsulis() != null && event.getInsulis().size() != 0) {
@@ -262,6 +269,11 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         setTextIsConnect();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DataAddEvent event) {
+        getData();
+    }
+
     private void setTextIsConnect() {
         //        tvIsConnect.setText(isConnect ? "已连接" : "未连接");
         if (BlueUtils.isBind()) {
@@ -283,7 +295,7 @@ public class HealthRecordInjectioneListActivity extends XYSoftUIBaseActivity imp
         }
         tvIsConnect.setOnClickListener(v -> {
             if (BlueUtils.isBind()) {
-                if (!BlueUtils.isConnect){
+                if (!BlueUtils.isConnect) {
                     BleTransfer.getInstance().realConnect(BlueUtils.getBlueMac());
                 }
             } else {

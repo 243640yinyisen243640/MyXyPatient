@@ -242,7 +242,6 @@ public class DataManager {
         }
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, PlanNumInfo.class, "/getPlanNum", map, successCallBack, failureCallBack);
     }
-
     public static Call<String> editInsulin(String value, String jection_id, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);

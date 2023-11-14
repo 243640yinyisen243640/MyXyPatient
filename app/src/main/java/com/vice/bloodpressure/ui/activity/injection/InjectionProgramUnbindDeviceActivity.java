@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
@@ -20,7 +21,6 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.event.BlueUnbindEvent;
 import com.vice.bloodpressure.utils.BlueUtils;
-import com.vice.bloodpressure.utils.SPUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -68,7 +68,7 @@ public class InjectionProgramUnbindDeviceActivity extends XYSoftUIBaseActivity {
             }
             BleTransfer.getInstance().unBindDevice();
             //清楚绑定的缓存
-            SPUtils.putBean("blueBindState", false);
+            BlueUtils.putBoolean(Utils.getApp(),"blueBindState",false);
         });
         return view;
     }

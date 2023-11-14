@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.allen.library.utils.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -18,6 +19,10 @@ import com.vice.bloodpressure.adapter.injection.InjectionHistoryAdapter;
 import com.vice.bloodpressure.base.TabFragmentAdapter;
 import com.vice.bloodpressure.base.fragment.XYBaseFragment;
 import com.vice.bloodpressure.bean.injection.InjectionHistoryInfo;
+import com.vice.bloodpressure.event.AddProgramEventBus;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +58,7 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
         initView();
         initReFresh();
         getData();
+        EventBusUtils.register(this);
     }
 
     private void getData() {
@@ -81,7 +87,10 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AddProgramEventBus event) {
+        getData();
+    }
 
     private void initView() {
         View view = View.inflate(getPageContext(), R.layout._fragment_injection_history, null);
@@ -104,5 +113,11 @@ public class PatientInfoHistoryFragment extends XYBaseFragment implements TabFra
                 getData();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBusUtils.unregister(this);
     }
 }

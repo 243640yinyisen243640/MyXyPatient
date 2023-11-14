@@ -150,7 +150,11 @@ public class InjectionProgramAddNumActivity extends XYSoftUIBaseActivity {
         }
         list1.clear();
         for (int i = 0; i < listInfos.size(); i++) {
-            list1.add(new DrugInfo(listInfos.get(i).getDrug_name()));
+            DrugInfo drugInfo = new DrugInfo(listInfos.get(i).getDrug_name());
+            if (i == 0) {
+                drugInfo.setCheck(true);
+            }
+            list1.add(drugInfo);
         }
         adapter1 = new DrugAdapter1(getPageContext(), list1);
         listView1.setAdapter(adapter1);

@@ -1,10 +1,13 @@
 package com.vice.bloodpressure.utils;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.blankj.utilcode.util.Utils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.quinovaresdk.bletransfer.BleTransfer;
 import com.quinovaresdk.bletransfer.Injection;
@@ -54,11 +57,7 @@ public class BlueUtils {
 
     //判断是否绑定
     public static boolean isBind() {
-        boolean blueBindState = false;
-        Object object = SPUtils.getBean("blueBindState");
-        if (object != null) {
-            blueBindState = (boolean) object;
-        }
+        boolean blueBindState = BlueUtils.getBoolean(Utils.getApp(),"blueBindState",false);
         return blueBindState;
     }
 
@@ -121,7 +120,7 @@ public class BlueUtils {
                     public void run() {
                         if ("00".equals(code)) {
                             //绑定成功
-                            SPUtils.putBean("blueBindState", true);
+                            BlueUtils.putBoolean(Utils.getApp(),"blueBindState",true);
                             EventBusUtils.post(new BlueBindEvent(true));
                         } else {
 
@@ -138,7 +137,7 @@ public class BlueUtils {
                     public void run() {
                         Log.i("yys", "解绑状态==" + code + "," + message);
                         if (TextUtils.equals("00", code)) {
-                            SPUtils.putBean("blueBindState", false);
+                            BlueUtils.putBoolean(Utils.getApp(),"blueBindState",false);
                             EventBusUtils.post(new BlueUnbindEvent(true));
                         }
                     }
@@ -239,6 +238,7 @@ public class BlueUtils {
             public void onHistoryInjection(final ArrayList<Injection> datas) {
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
+                        Log.i("yys", "onHistoryInjection");
                         //获取历史注射记录
                         //                        StringBuffer stringBuffer = new StringBuffer();
                         List<BlueHistoryDataEvent.insulis> list = new ArrayList<>();
@@ -297,5 +297,25 @@ public class BlueUtils {
             }
         });
 
+    }
+
+
+    private static final String SP_NAME = "sp_name_blue";
+
+    private static SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+    }
+
+    private static SharedPreferences.Editor getSharedPreferencesEditor(Context context) {
+        SharedPreferences.Editor edit = getSharedPreferences(context).edit();
+        return edit;
+    }
+
+    public static boolean getBoolean(Context context, String key, boolean value) {
+        return getSharedPreferences(context).getBoolean(key, value);
+    }
+
+    public static void putBoolean(Context context, String key, boolean value) {
+        getSharedPreferencesEditor(context).putBoolean(key, value).commit();
     }
 }
