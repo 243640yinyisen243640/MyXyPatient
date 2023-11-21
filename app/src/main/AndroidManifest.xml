@@ -68,8 +68,8 @@
 
 
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-<!--        android:usesPermissionFlags="neverForLocation"-->
-<!--        tools:targetApi="31" -->
+    <!--        android:usesPermissionFlags="neverForLocation"-->
+    <!--        tools:targetApi="31" -->
 
 
     <application
@@ -416,6 +416,12 @@
         <activity android:name=".ui.activity.injection.MyBindDeviceListNewActivity" />
         <activity android:name=".ui.activity.injection.MyDeviceNewActivity" />
 
+        <!--胰岛素泵开始-->
+
+        <activity android:name=".ui.activity.insulin.InsulinChooseDeviceActivity" />
+        <activity android:name=".ui.activity.insulin.InsulinAddDeviceActivity" />
+
+        <!--胰岛素泵结束-->
         <activity
             android:name=".base.activity.WebHelperActivity"
             android:screenOrientation="portrait" />

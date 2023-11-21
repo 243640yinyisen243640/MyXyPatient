@@ -2,7 +2,6 @@ package com.vice.bloodpressure.utils;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,6 +169,9 @@ public class PickerUtils {
                 .setDate(currentDate)
                 .setRangDate(startDate, endDate)
                 .setType(booleans)
+                .setItemVisibleCount(9)
+                .setContentTextSize(15)
+                .setLineSpacingMultiplier(2.0f)
                 .setSubmitColor(ContextCompat.getColor(context, R.color.main_green))
                 .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
                 .build();
