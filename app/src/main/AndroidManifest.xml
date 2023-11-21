@@ -420,6 +420,8 @@
 
         <activity android:name=".ui.activity.insulin.InsulinChooseDeviceActivity" />
         <activity android:name=".ui.activity.insulin.InsulinAddDeviceActivity" />
+        <activity android:name=".ui.activity.insulin.InsulinInfusionRecordListActivity" />
+        <activity android:name=".ui.activity.insulin.InsulinBaseModeListActivity" />
 
         <!--胰岛素泵结束-->
         <activity
