@@ -40,7 +40,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="12dp"
             android:paddingBottom="10dp"
-            android:text="设备管理"
+            android:text="基础模式"
             android:textColor="#00C17E"
             android:textSize="13sp" />
 
@@ -141,7 +141,7 @@
 
 
     <ListView
-        android:id="@+id/lv_insulin_add_device"
+        android:id="@+id/lv_insulin_base_info_list"
         style="@style/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

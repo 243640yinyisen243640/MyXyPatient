@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,9 +67,11 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
             TextView textView = view.findViewById(R.id.tv_add_device);
             tvBleTips = view.findViewById(R.id.tv_device_add_ble_tip);
             textView.setOnClickListener(v -> {
+                //这个走了，因为我关掉蓝牙，他提示我开了
                 if (initBlueBooth()) {
                     //Android12以上获取权限
                     if (Build.VERSION.SDK_INT > 30) {
+                        Log.i("yys", "Build.VERSION.SDK_INT==" + Build.VERSION.SDK_INT);
                         if (ContextCompat.checkSelfPermission(this,
                                 "android.permission.BLUETOOTH_SCAN")
                                 != PackageManager.PERMISSION_GRANTED
@@ -83,6 +86,7 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
                                     "android.permission.BLUETOOTH_ADVERTISE",
                                     "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
                         } else {
+                            Log.i("yys", "有权限");
                             Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
                             startActivity(intent);
                             finish();
@@ -139,6 +143,8 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
         switch (requestCode) {
             //调用系统相机申请拍照权限回调
             case BLUETOOTH_PERMISSIONS_REQUEST_CODE:
+                Log.i("yys", "grantResults.length=="+grantResults.length);
+                Log.i("yys", "grantResults[0]=="+grantResults[0]);
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(getPageContext(), InjectionProgramSearchDeviceActivity.class);
                     startActivity(intent);

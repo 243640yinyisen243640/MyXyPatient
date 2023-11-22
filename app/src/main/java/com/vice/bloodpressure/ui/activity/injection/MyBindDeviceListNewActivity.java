@@ -18,6 +18,7 @@ import com.vice.bloodpressure.adapter.injection.MyBindDeviceListAdapter;
 import com.vice.bloodpressure.base.activity.BaseActivity;
 import com.vice.bloodpressure.bean.DeviceChangeBean;
 import com.vice.bloodpressure.bean.injection.InjectionBaseInfo;
+import com.vice.bloodpressure.ui.activity.insulin.InsulinDeviceListActivity;
 import com.vice.bloodpressure.ui.activity.mydevice.MyBindDeviceActivity;
 import com.vice.bloodpressure.ui.activity.mydevice.ScanActivity;
 
@@ -32,14 +33,14 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
     RecyclerView rvList;
 
     private DeviceChangeBean deviceBean;
-    private  List<InjectionBaseInfo> list;
+    private List<InjectionBaseInfo> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("我的设备");
 
-//        getIsBindDevice();
+        //        getIsBindDevice();
         setRv();
     }
 
@@ -84,6 +85,7 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                             case 2:
                                 if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
                                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
+                                    intent.putExtra("type","1");
                                     startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), InjectionProgramUnbindDeviceActivity.class);
@@ -97,15 +99,13 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                     }
 
                 }));
-            }else {
+            } else {
                 ToastUtils.showToast(response.msg);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
     }
-
-
 
 
     private void setRv() {
@@ -116,6 +116,7 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
         list.add(new InjectionBaseInfo("血糖设备", R.drawable.my_bind_device_sugar));
         list.add(new InjectionBaseInfo("血压设备", R.drawable.my_bind_device_bp));
         list.add(new InjectionBaseInfo("注射设备", R.drawable.injection_add));
+        list.add(new InjectionBaseInfo("胰岛素泵", R.drawable.insulin_add));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getPageContext());
         rvList.setLayoutManager(linearLayoutManager);
@@ -160,9 +161,21 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                             case 2:
                                 if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
                                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
+                                    intent.putExtra("type","1");
                                     startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), InjectionProgramUnbindDeviceActivity.class);
+                                    intent.putExtra("position", position);
+                                    startActivity(intent);
+                                }
+                                break;
+                            case 3:
+                                if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
+                                    intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
+                                    intent.putExtra("type","2");
+                                    startActivity(intent);
+                                } else {
+                                    intent = new Intent(getPageContext(), InsulinDeviceListActivity.class);
                                     intent.putExtra("position", position);
                                     startActivity(intent);
                                 }

@@ -32,6 +32,7 @@ import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
@@ -100,6 +101,7 @@ import com.vice.bloodpressure.ui.activity.sport.SportTypeVideoActivity;
 import com.vice.bloodpressure.ui.activity.sysmsg.SystemMsgListActivity;
 import com.vice.bloodpressure.ui.activity.user.WarningRemindActivity;
 import com.vice.bloodpressure.ui.fragment.injection.InjectionFragment;
+import com.vice.bloodpressure.ui.fragment.insulin.InsulinFragment;
 import com.vice.bloodpressure.ui.fragment.other.BmiFragment;
 import com.vice.bloodpressure.ui.fragment.other.XueTangFragment;
 import com.vice.bloodpressure.ui.fragment.other.XueYaFragment;
@@ -169,6 +171,8 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
     ViewPager vpThreeFragment;
     @BindView(R.id.ll_three_fragment)
     LinearLayout llThreeFragment;
+    @BindView(R.id.ll_three_fragment_indicator)
+    LinearLayout llIndicator;
     @BindView(R.id.rv_eight_module)
     RecyclerView rvEightModule;
     @BindView(R.id.rv_two_goods)
@@ -704,11 +708,13 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
         list.add(new XueYaFragment());
         list.add(new InjectionFragment());
         list.add(new BmiFragment());
+        list.add(new InsulinFragment());
 
         list.add(new XueTangFragment());
         list.add(new XueYaFragment());
         list.add(new InjectionFragment());
         list.add(new BmiFragment());
+        list.add(new InsulinFragment());
 
         list.add(new XueTangFragment());
         MyFragmentStatePagerAdapter adapter = new MyFragmentStatePagerAdapter(getChildFragmentManager(), list);
@@ -725,10 +731,11 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
             @Override
             public void onPageSelected(int i) {
                 currentPosition = i;
+                setIndicator(i%5);
             }
 
             @Override
-            public void onPageScrollStateChanged(int i) {
+           public void onPageScrollStateChanged(int i) {
                 //ViewPager.SCROLL_STATE_IDLE 标识的状态是当前页面完全展现，并且没有动画正在进行中，如果不
                 //是此状态下执行setCurrentItem方法回在首位替换的时候会出现跳动！
                 if (i != ViewPager.SCROLL_STATE_IDLE)
@@ -736,17 +743,38 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 if (currentPosition == 0) {
                     vpThreeFragment.setCurrentItem(list.size() / 2, false);
                 } else if (currentPosition == 1) {
-                    vpThreeFragment.setCurrentItem(list.size() - 4, false);
+                    vpThreeFragment.setCurrentItem(list.size() - 5, false);
                 } else if (currentPosition == list.size() - 2) {
-                    vpThreeFragment.setCurrentItem(3, false);
+                    vpThreeFragment.setCurrentItem(4, false);
                 } else if (currentPosition == list.size() - 1) {
                     vpThreeFragment.setCurrentItem(list.size() / 2, false);
                 }
+
             }
         });
         vpThreeFragment.setPageMargin(20);
         vpThreeFragment.setPageTransformer(true, new ScaleInTransformer());
         vpThreeFragment.setCurrentItem(0);
+        setIndicator(0);
+    }
+
+    private void setIndicator(int pos) {
+        llIndicator.removeAllViews();
+        for (int j = 0; j < 5; j++) {
+            View view = new View(getPageContext());
+            llIndicator.addView(view);
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+            if (pos==j){
+                layoutParams.width = SizeUtils.dp2px(17);
+                view.setBackground(getPageContext().getDrawable(R.drawable.shape_white_90));
+            }else {
+                layoutParams.width = SizeUtils.dp2px(7);
+                view.setBackground(getPageContext().getDrawable(R.drawable.shape_white_90_50));
+            }
+            layoutParams.height = SizeUtils.dp2px(7);
+            layoutParams.leftMargin = SizeUtils.dp2px(5);
+            layoutParams.rightMargin = SizeUtils.dp2px(5);
+        }
     }
 
     /**

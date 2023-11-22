@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.insulin.InsulinInfusionRecordAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
+import com.vice.bloodpressure.ui.activity.injection.InjectionAddDeviceNoActivity;
 
 import java.util.ArrayList;
 
@@ -52,7 +54,25 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity {
         tvInfoBig = view.findViewById(R.id.tv_infusion_info_big);
         tvBaseRate = view.findViewById(R.id.tv_infusion_info_base_rate);
         tvWarning = view.findViewById(R.id.tv_infusion_info_warning);
-        lvDataInfo = view.findViewById(R.id.lv_insulin_add_device);
+        lvDataInfo = view.findViewById(R.id.lv_insulin_base_info_list);
+
+        tvDeviceManage.setOnClickListener(v -> {
+
+            String type = "1";
+            Intent intent;
+            if ("1".equals(type)) {
+                intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
+                startActivity(intent);
+            } else {
+                intent = new Intent(getPageContext(), InsulinDeviceListActivity.class);
+                startActivity(intent);
+            }
+
+        });
+        tvBaseMode.setOnClickListener(v -> {
+            Intent intent = new Intent(getPageContext(), InsulinBaseModeListActivity.class);
+            startActivity(intent);
+        });
         return view;
     }
 
