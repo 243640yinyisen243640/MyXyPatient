@@ -5,12 +5,30 @@
     android:background="#F4F4F4"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/lv_insulin_device_list"
-        style="@style/listView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/insulin_add_device_logo_with_shalow" />
+
+        <TextView
+            android:id="@+id/tv_insulin_device_list_num"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="AI220312123"
+            android:textColor="@color/black_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_insulin_break_device"

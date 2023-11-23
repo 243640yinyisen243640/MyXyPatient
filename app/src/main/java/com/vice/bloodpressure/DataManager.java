@@ -14,6 +14,8 @@ import com.vice.bloodpressure.bean.injection.InjectionDataDetail;
 import com.vice.bloodpressure.bean.injection.InjectionDataListInfo;
 import com.vice.bloodpressure.bean.injection.InjectionHistoryInfo;
 import com.vice.bloodpressure.bean.injection.PlanNumInfo;
+import com.vice.bloodpressure.bean.insulin.InsulinDeviceAllInfo;
+import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.retrofit.BaseNetworkUtils;
 import com.vice.bloodpressure.retrofit.HHSoftBaseResponse;
@@ -174,6 +176,7 @@ public class DataManager {
 
     /**
      * 用户注射数据基础信息
+     *
      * @param token
      * @param successCallBack
      * @param failureCallBack
@@ -187,6 +190,7 @@ public class DataManager {
 
     /**
      * 获取用户胰岛素注射数据列表
+     *
      * @param beginTime
      * @param token
      * @param successCallBack
@@ -202,6 +206,7 @@ public class DataManager {
 
     /**
      * 获取方案详情
+     *
      * @param action_time
      * @param isuse
      * @param token
@@ -219,6 +224,7 @@ public class DataManager {
 
     /**
      * 获取方案列表
+     *
      * @param page
      * @param token
      * @param successCallBack
@@ -242,6 +248,7 @@ public class DataManager {
         }
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, PlanNumInfo.class, "/getPlanNum", map, successCallBack, failureCallBack);
     }
+
     public static Call<String> editInsulin(String value, String jection_id, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
@@ -281,6 +288,7 @@ public class DataManager {
 
     /**
      * 绑定设备
+     *
      * @param mac
      * @param token
      * @param successCallBack
@@ -296,6 +304,7 @@ public class DataManager {
 
     /**
      * 解绑设备
+     *
      * @param mac
      * @param token
      * @param successCallBack
@@ -343,16 +352,115 @@ public class DataManager {
 
     /**
      * checkMac
+     *
      * @param token
      * @param mac
      * @param successCallBack
      * @param failureCallBack
      * @return
      */
-    public static Call<String> checkMac(String token,String mac, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> checkMac(String token, String mac, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
         map.put("mac", mac);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, DeviceChangeBean.class, "/checkMac", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * @param token
+     * @param eqcode
+     * @param power
+     * @param dosage
+     * @param status
+     * @param worning
+     * @param model
+     * @param base_rate
+     * @param value
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> updateeqinfo(String token, String eqcode, String power, String dosage, String status, String worning, String model, String base_rate, String value, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("eqcode", eqcode);
+        map.put("power", power);
+        map.put("dosage", dosage);
+        map.put("status", status);
+        map.put("worning", worning);
+        map.put("model", model);
+        map.put("base_rate", base_rate);
+        map.put("value", value);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InsulinDeviceInfo.class, "/updateeqinfo", map, successCallBack, failureCallBack);
+    }
+
+    public static Call<String> geteqinsulins(String token, String type, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("type", type);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InsulinDeviceInfo.class, "/geteqinsulins", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * 添加设备数据
+     *
+     * @param token
+     * @param type
+     * @param data
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> addeqinsulins(String token, String type, String data, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("type", type);
+        map.put("data", data);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InsulinDeviceInfo.class, "/geteqinsulins", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * 获取基础率信息
+     *
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> getuserbase(String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, InsulinDeviceAllInfo.class, "/getuserbase", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * 解绑设备
+     *
+     * @param eqcode
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> unbindeqinsulin(String eqcode, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("eqcode", eqcode);
+        map.put("access_token", token);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/unbindeqinsulin", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * 设备绑定
+     * @param eqcode
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> bindeqinsulin(String eqcode, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("eqcode", eqcode);
+        map.put("access_token", token);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/bindeqinsulin", map, successCallBack, failureCallBack);
     }
 }

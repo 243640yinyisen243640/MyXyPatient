@@ -85,7 +85,7 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                             case 2:
                                 if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
                                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
-                                    intent.putExtra("type","1");
+                                    intent.putExtra("type", "1");
                                     startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), InjectionProgramUnbindDeviceActivity.class);
@@ -135,6 +135,9 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                     //保存快舒尔设备码
                     String insulinnum = deviceBean.getInsulinnum();
                     SPStaticUtils.put("insulinnum", insulinnum);
+                    //保存快舒尔设备码
+                    String eqinsulinnum = deviceBean.getEqinsulinnum();
+                    SPStaticUtils.put("eqinsulinnum", eqinsulinnum);
                     if (deviceBean != null) {
                         Intent intent;
                         switch (position) {
@@ -161,7 +164,7 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                             case 2:
                                 if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
                                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
-                                    intent.putExtra("type","1");
+                                    intent.putExtra("type", "1");
                                     startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), InjectionProgramUnbindDeviceActivity.class);
@@ -170,9 +173,9 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                                 }
                                 break;
                             case 3:
-                                if (TextUtils.isEmpty(deviceBean.getInsulinnum())) {
+                                if (TextUtils.isEmpty(deviceBean.getEqinsulinnum())) {
                                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
-                                    intent.putExtra("type","2");
+                                    intent.putExtra("type", "2");
                                     startActivity(intent);
                                 } else {
                                     intent = new Intent(getPageContext(), InsulinDeviceListActivity.class);

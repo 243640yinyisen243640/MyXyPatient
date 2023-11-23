@@ -68,7 +68,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/tv_infusion_info_refresh"
+            android:id="@+id/iv_infusion_info_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
@@ -145,7 +145,31 @@
         style="@style/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_insulin_infusion_last"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="已经到底啦"
+        android:textColor="@color/green_text_666"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_insulin_base_info_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:drawableTop="@drawable/insulin_add_device_no_data"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:paddingBottom="50dp"
+        android:text="暂无数据"
+        android:textColor="@color/green_text_666"
+        android:textSize="14sp" />
 
 
 </LinearLayout>

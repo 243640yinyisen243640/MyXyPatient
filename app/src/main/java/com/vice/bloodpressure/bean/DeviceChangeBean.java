@@ -11,6 +11,18 @@ public class DeviceChangeBean {
      * 快舒尔的设备码
      */
     private String insulinnum;
+    /**
+     * 胰岛素泵的设备码
+     */
+    private String eqinsulinnum;
+
+    public String getEqinsulinnum() {
+        return eqinsulinnum;
+    }
+
+    public void setEqinsulinnum(String eqinsulinnum) {
+        this.eqinsulinnum = eqinsulinnum;
+    }
 
     public String getImei() {
         return imei;

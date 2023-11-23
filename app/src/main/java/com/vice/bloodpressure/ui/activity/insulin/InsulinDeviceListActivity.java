@@ -2,16 +2,18 @@ package com.vice.bloodpressure.ui.activity.insulin;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
-import com.vice.bloodpressure.adapter.insulin.InsulinDeviceListAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 
-import java.util.ArrayList;
+import retrofit2.Call;
 
 /**
  * 作者: beauty
@@ -23,7 +25,7 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
 
 
     private TextView tvBreak;
-    private ListView lvDataInfo;
+    private TextView tvDeviceNum;
 
 
     @Override
@@ -31,23 +33,31 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
         super.onCreate(savedInstanceState);
         topViewManager().topView().removeAllViews();
         containerView().addView(initView());
-        initValues();
-    }
-
-
-
-    private void initValues() {
-        InsulinDeviceListAdapter deviceListAdapter = new InsulinDeviceListAdapter(getPageContext(), new ArrayList<>());
-        lvDataInfo.setAdapter(deviceListAdapter);
     }
 
 
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout.activity_insulin_device_list, null);
         tvBreak = view.findViewById(R.id.tv_insulin_break_device);
-        lvDataInfo = view.findViewById(R.id.lv_insulin_device_list);
+        tvDeviceNum = view.findViewById(R.id.tv_insulin_device_list_num);
+        tvBreak.setOnClickListener(v -> {
+            breakDevice();
+        });
         return view;
     }
 
+    private void breakDevice() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        String eqcode="";
+        //        String mac = BlueUtils.getBlueMac();
+        Call<String> requestCall = DataManager.unbindeqinsulin(eqcode, token, (call, response) -> {
+            ToastUtils.showShort("解绑成功");
+            finish();
+        }, (call, t) -> {
+            ToastUtils.showShort("解绑成功");
+            finish();
+        });
+    }
 
 }

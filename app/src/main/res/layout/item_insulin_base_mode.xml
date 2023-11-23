@@ -12,6 +12,7 @@
         android:padding="20dp">
 
         <TextView
+            android:id="@+id/tv_insulin_base_mode_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -20,6 +21,7 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/tv_insulin_base_mode_values"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5.40U"

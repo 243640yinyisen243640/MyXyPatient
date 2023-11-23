@@ -1,16 +1,14 @@
 package com.vice.bloodpressure.adapter.insulin;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vice.bloodpressure.R;
-import com.vice.bloodpressure.bean.DrugInfo;
+import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
 
 import java.util.List;
 
@@ -22,9 +20,9 @@ import java.util.List;
  */
 public class InsulinInfusionRecordAdapter extends BaseAdapter {
     private Context context;
-    private List<DrugInfo> list;
+    private List<InsulinDeviceInfo> list;
 
-    public InsulinInfusionRecordAdapter(Context context, List<DrugInfo> list) {
+    public InsulinInfusionRecordAdapter(Context context, List<InsulinDeviceInfo> list) {
         this.context = context;
         this.list = list;
     }
@@ -46,25 +44,11 @@ public class InsulinInfusionRecordAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //        if (convertView == null) {
         convertView = LayoutInflater.from(context).inflate(R.layout.item_insulin_infusion_record, parent, false);
-        TextView textView = convertView.findViewById(R.id.v_drug_name);
-        ImageView imageView = convertView.findViewById(R.id.iv_drug_check);
-        textView.setText(list.get(position).getName());
-        if (list.get(position).isCheck()) {
-            imageView.setVisibility(View.VISIBLE);
-            textView.setTextColor(Color.parseColor("#0CA25B"));
-            if (position == 0) {
-                textView.setBackground(context.getDrawable(R.drawable.shape_drug2_10));
-            } else {
-                textView.setBackgroundColor(Color.parseColor("#330CA25B"));
-            }
-        } else {
-            imageView.setVisibility(View.GONE);
-            textView.setTextColor(Color.parseColor("#333333"));
-            textView.setBackgroundColor(Color.parseColor("#00000000"));
-        }
-        //        }
+        TextView tvTime = convertView.findViewById(R.id.tv_insulin_infusion_record_time);
+        TextView tvValues = convertView.findViewById(R.id.tv_insulin_infusion_record_values);
+        tvTime.setText(list.get(position).getDatetime());
+        tvValues.setText(list.get(position).getValue());
         return convertView;
     }
 

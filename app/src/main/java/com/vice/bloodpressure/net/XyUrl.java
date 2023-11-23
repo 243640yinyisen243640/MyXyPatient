@@ -283,8 +283,10 @@ public class XyUrl {
     //bmi折线图
     public final static String GET_INDEX_BMI_INDEX = HOST_URL + "/index/bmi/index";
 
-    //胰岛注射
+    //胰岛注射快舒尔
     public final static String GET_INDEX_INJECTION = HOST_URL + "/indexInfo";
+    //胰岛泵注射
+    public final static String GET_EQ_INFO = HOST_URL + "/geteqinfo";
 
     //处理医生添加消息  (医生添加患者无需患者同意)
     //public final static String GET__PORT_MESSAGE_EDITRELATION = HOST_URL + "/port/Message/editRelation";
