@@ -416,7 +416,16 @@ public class DataManager {
         map.put("access_token", token);
         map.put("type", type);
         map.put("data", data);
-        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InsulinDeviceInfo.class, "/geteqinsulins", map, successCallBack, failureCallBack);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, InsulinDeviceInfo.class, "/addeqinsulins", map, successCallBack, failureCallBack);
+    }
+
+
+    public static Call<String> adduserbase(String token, String base_rate1, String base_rate2, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("base_rate1", base_rate1);
+        map.put("base_rate1", base_rate2);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, null, "/adduserbase", map, successCallBack, failureCallBack);
     }
 
     /**

@@ -67,7 +67,6 @@ public class InjectionProgramAddDeviceActivity extends XYSoftUIBaseActivity {
             TextView textView = view.findViewById(R.id.tv_add_device);
             tvBleTips = view.findViewById(R.id.tv_device_add_ble_tip);
             textView.setOnClickListener(v -> {
-                //这个走了，因为我关掉蓝牙，他提示我开了
                 if (initBlueBooth()) {
                     //Android12以上获取权限
                     if (Build.VERSION.SDK_INT > 30) {

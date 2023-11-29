@@ -423,6 +423,7 @@
         <activity android:name=".ui.activity.insulin.InsulinInfusionRecordListActivity" />
         <activity android:name=".ui.activity.insulin.InsulinBaseModeListActivity" />
         <activity android:name=".ui.activity.insulin.InsulinDeviceListActivity" />
+        <activity android:name=".ui.activity.insulin.ScanBlueActivity" />
 
         <!--胰岛素泵结束-->
         <activity

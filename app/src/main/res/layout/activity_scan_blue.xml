@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_send_0"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="序列号"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_send_1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传泵工作状态"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_send_2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传基础模式、当前时段基础率、本时段已输注基础量"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_send_3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传基础率1"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_send_4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传基础率2"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_send_5"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传日总量记录"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_send_6"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传大剂量记录"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/tv_send_7"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传基础量记录"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/tv_send_8"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="回传报警记录"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_close"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="断开"
+        android:textColor="#000000"
+        android:textSize="18sp"/>
+</LinearLayout>

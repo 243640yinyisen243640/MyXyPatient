@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.activity.insulin;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -10,14 +11,21 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.allen.library.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.insulin.InsulinBaseModeAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
+import com.vice.bloodpressure.bean.BaseRateBean;
 import com.vice.bloodpressure.bean.insulin.InsulinDeviceAllInfo;
+import com.vice.bloodpressure.utils.BleUtils;
+import com.vice.bloodpressure.utils.MySPUtils;
 import com.vice.bloodpressure.utils.StatusBarUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 作者: beauty
@@ -47,6 +55,9 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
     //1：模式1  2：模式2
     private String type = "1";
 
+    private String mac;
+    private List<String> baseList1;
+    private List<String> baseList2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +67,88 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
         containerView().addView(initView());
         initListener();
         getData();
+
+    }
+
+    private void getBaseData1() {
+        //回传基础率1
+        BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+            @Override
+            public void connect() {
+                super.connect();
+                runOnUiThread(() -> {
+                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A3332B"), 1_000);
+                });
+            }
+
+            @Override
+            public void onBaseRate(List<String> baseRateList) {
+                super.onBaseRate(baseRateList);
+                //基础率1
+                runOnUiThread(() -> {
+                    baseList1 = baseRateList;
+                    BleUtils.getInstance().disConnect();
+                    getBaseData2();
+                });
+            }
+        });
+    }
+
+    private void getBaseData2() {
+        try {
+            Thread.sleep(2_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //回传基础率2
+        BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+            @Override
+            public void connect() {
+                super.connect();
+                runOnUiThread(() -> {
+                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A443CC"), 1_000);
+                });
+            }
+
+            @Override
+            public void onBaseRate(List<String> baseRateList) {
+                super.onBaseRate(baseRateList);
+                //基础率2
+                runOnUiThread(() -> {
+                    baseList2 = baseRateList;
+                    BleUtils.getInstance().disConnect();
+                    setBaseData();
+                });
+            }
+        });
+    }
+
+    private String list2String(List<String> strings) {
+        List<BaseRateBean> list = new ArrayList<>();
+        for (int i = 0; i < strings.size(); i++) {
+            String time;
+            if (i < 10) {
+                time = "0" + i + ":" + "00";
+            } else {
+                time = "i" + ":00";
+            }
+            list.add(new BaseRateBean(time, BleUtils.hexToInt(strings.get(i)) + ""));
+        }
+        return new Gson().toJson(list);
+    }
+
+    private void setBaseData() {
+        String base_rate1 = list2String(baseList1);
+        String base_rate2 = list2String(baseList2);
+
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        DataManager.adduserbase(loginBean.getToken(), base_rate1, base_rate2, (call, response) -> {
+            if (response.code == 200) {
+                getData();
+            }
+        }, (call, t) -> {
+
+        });
     }
 
     private void getData() {
@@ -136,7 +229,11 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                 setBg(tvModeSecond, tvModeFirst);
                 break;
             case R.id.iv_base_mode_refresh:
-                getData();
+                mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                if (mac == null) {
+                    return;
+                }
+                getBaseData1();
                 break;
             default:
                 break;

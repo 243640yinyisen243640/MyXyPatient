@@ -32,10 +32,10 @@
                 android:id="@+id/tv_main_insulin_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:drawableStart="@drawable/main_insulin_logo_small"
                 android:drawablePadding="8dp"
                 android:text="AI220312123"
-                android:layout_marginTop="20dp"
                 android:textColor="@color/black_text"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -45,8 +45,8 @@
             android:id="@+id/iv_main_insulin_refresh"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingLeft="15dp"
             android:layout_gravity="center"
+            android:paddingLeft="15dp"
             android:src="@drawable/insulin_refresh_green" />
 
 
@@ -117,6 +117,7 @@
                 android:text="正常"
                 android:textColor="@color/black_text"
                 android:textSize="11sp" />
+
             <TextView
                 android:id="@+id/tv_main_insulin_record"
                 android:layout_width="wrap_content"
@@ -139,9 +140,8 @@
 
             <TextView
                 android:id="@+id/tv_main_insulin_mode"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:drawableLeft="@drawable/main_insulin_base_mode"
                 android:drawablePadding="3dp"
                 android:text="基础模式1"
@@ -150,9 +150,9 @@
 
             <TextView
                 android:id="@+id/tv_main_insulin_rate"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
                 android:drawableLeft="@drawable/main_insulin_base_rate"
                 android:drawablePadding="3dp"
                 android:text="当前基础率0.40"
@@ -161,9 +161,9 @@
 
             <TextView
                 android:id="@+id/tv_main_insulin_injction"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
                 android:drawableLeft="@drawable/main_insulin_injction"
                 android:drawablePadding="3dp"
                 android:text="已输注0.10"
@@ -172,8 +172,6 @@
 
 
         </LinearLayout>
-
-
 
 
     </LinearLayout>

@@ -4,13 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+    <TextView
+        android:id="@+id/tv_insulin_add_ble_tips"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#FBF1E8"
+        android:drawableStart="@drawable/injection_tips_no_bind"
+        android:drawablePadding="7.5dp"
+        android:gravity="center_vertical"
+        android:paddingStart="25dp"
+        android:text="请确保蓝牙以及扫描权限开启"
+        android:textColor="#D08D3F"
+        android:textSize="14sp"
+        android:visibility="gone"/>
     <LinearLayout
         android:id="@+id/ll_insulin_add_device_no_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:paddingBottom="50dp"
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -44,11 +57,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:visibility="visible" />
+        android:background="@color/white_text"
+        android:visibility="gone" />
 
-
-    <TextView
-        android:id="@+id/tv_insulin_add_device_search"
+    <LinearLayout
+        android:id="@+id/ll_insulin_add_device_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -57,11 +70,26 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/shape_bg_main_green_90"
         android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="搜索"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:orientation="horizontal">
 
+        <com.vice.bloodpressure.view.LoadingImageView
+            android:id="@+id/lim_insulin_add_device_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_insulin_add_device_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginStart="6dp"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
 
 </FrameLayout>

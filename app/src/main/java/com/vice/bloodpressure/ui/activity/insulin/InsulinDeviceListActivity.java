@@ -1,6 +1,7 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +13,8 @@ import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
+import com.vice.bloodpressure.utils.MySPUtils;
+import com.vice.bloodpressure.view.popu.InsulinBreakDeviceWindow;
 
 import retrofit2.Call;
 
@@ -23,7 +26,7 @@ import retrofit2.Call;
  */
 public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
 
-
+    private InsulinBreakDeviceWindow breakDeviceWindow;
     private TextView tvBreak;
     private TextView tvDeviceNum;
 
@@ -31,8 +34,13 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        topViewManager().topView().removeAllViews();
+        topViewManager().titleTextView().setText("设备管理");
         containerView().addView(initView());
+        initValues();
+    }
+
+    private void initValues() {
+        tvDeviceNum.setText(MySPUtils.getString(getPageContext(), MySPUtils.DEVICE_NAME));
     }
 
 
@@ -41,7 +49,15 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
         tvBreak = view.findViewById(R.id.tv_insulin_break_device);
         tvDeviceNum = view.findViewById(R.id.tv_insulin_device_list_num);
         tvBreak.setOnClickListener(v -> {
-            breakDevice();
+            if (breakDeviceWindow == null) {
+                breakDeviceWindow = new InsulinBreakDeviceWindow(getPageContext(),
+
+                        sure -> {
+                            breakDevice();
+                        });
+            }
+            breakDeviceWindow.showAsDropDown(containerView(), 0, 0, Gravity.CENTER);
+
         });
         return view;
     }
@@ -49,14 +65,19 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
     private void breakDevice() {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
-        String eqcode="";
+        String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.DEVICE_NAME);
         //        String mac = BlueUtils.getBlueMac();
         Call<String> requestCall = DataManager.unbindeqinsulin(eqcode, token, (call, response) -> {
-            ToastUtils.showShort("解绑成功");
-            finish();
+            if (response.code == 200) {
+                breakDeviceWindow.dismiss();
+                MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, "");
+                MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, "");
+                MySPUtils.putString(getPageContext(), MySPUtils.SERIAL_NUMBER, "");
+                MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, "");
+                finish();
+            }
         }, (call, t) -> {
-            ToastUtils.showShort("解绑成功");
-            finish();
+            ToastUtils.showShort("网络连接异常");
         });
     }
 

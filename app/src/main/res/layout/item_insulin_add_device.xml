@@ -2,36 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_insulin_add_device_click"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:orientation="horizontal"
-    android:paddingStart="20dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="20dp"
-    android:paddingBottom="8dp">
+    android:layout_height="100dp"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/insulin_add_device_logo" />
-
-    <TextView
-        android:id="@+id/tv_insulin_add_device_num"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="12dp"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:text="AI220312123"
-        android:textColor="@color/black_text"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/cb_insulin_add_device_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/selector_add_check_uncheck"
-        android:button="@null" />
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/insulin_add_device_logo" />
 
+        <TextView
+            android:id="@+id/tv_insulin_add_device_num"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="AI220312123"
+            android:textColor="@color/black_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/cb_insulin_add_device_check"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/insulin_device_aad_check" />
+
+    </LinearLayout>
 </LinearLayout>

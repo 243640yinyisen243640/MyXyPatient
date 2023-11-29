@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:drawableBottom="@drawable/shape_white_30_2_1"
                 android:drawablePadding="8dp"
+                android:paddingStart="15dp"
                 android:text="模式1"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -37,7 +38,8 @@
                 android:id="@+id/tv_base_mode_second"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="30dp"
+                android:paddingStart="20dp"
                 android:drawablePadding="8dp"
                 android:text="模式2"
                 android:textColor="@color/white"
@@ -86,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible" />
+
         <TextView
             android:id="@+id/tv_insulin_base_mode_last"
             android:layout_width="match_parent"

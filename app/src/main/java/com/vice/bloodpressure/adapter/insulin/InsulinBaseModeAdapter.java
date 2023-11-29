@@ -50,7 +50,7 @@ public class InsulinBaseModeAdapter extends BaseAdapter {
         TextView tvValues = convertView.findViewById(R.id.tv_insulin_base_mode_values);
 
         tvTime.setText(list.get(position).getTime());
-        tvValues.setText(list.get(position).getValue());
+        tvValues.setText(list.get(position).getValue() + "U/小时");
         //        }
         return convertView;
     }

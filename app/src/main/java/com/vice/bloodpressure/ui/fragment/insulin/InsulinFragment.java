@@ -1,7 +1,10 @@
 package com.vice.bloodpressure.ui.fragment.insulin;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,11 +22,16 @@ import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.insulin.InsulinDeviceListActivity;
 import com.vice.bloodpressure.ui.activity.insulin.InsulinInfusionRecordListActivity;
+import com.vice.bloodpressure.ui.activity.insulin.ScanBlueActivity;
+import com.vice.bloodpressure.utils.BleUtils;
+import com.vice.bloodpressure.utils.MySPUtils;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static me.devilsen.czxing.thread.ExecutorUtil.runOnUiThread;
 
 
 public class InsulinFragment extends BaseEventBusFragment {
@@ -77,31 +85,39 @@ public class InsulinFragment extends BaseEventBusFragment {
 
     private void setData() {
         tvDeviceNum.setText(data.getEq_code());
-        if (!"暂无".equals(data.getEq_code())){
-            tvDeviceNum.setText(data.getEq_code());
-            //电量
+        tvElectricity.setText(data.getPower());
+        tvMedicine.setText(data.getDosage());
+        tvSwitch.setText(data.getStatus());
+        tvWarning.setText(data.getWorning());
+        tvMode.setText("基础模式" + data.getModel());
+        tvRate.setText("当前基础率" + data.getBase_rate());
+        tvInjction.setText("已输注" + data.getValue());
+        tvTime.setText("最近同步时间：" + data.getUpdatetime());
 
-            tvElectricity.setText(data.getPower());
-            //61~100 蓝色  31~60黄色 0~30黄色
-            int power = Integer.getInteger(data.getPower());
+
+        if (!"--".equals(data.getPower())) {
+            tvElectricity.setText(data.getPower() + "%");
+            int power = Integer.parseInt(data.getPower());
             if (power >= 60) {
                 tvElectricity.setCompoundDrawablesWithIntrinsicBounds(R.drawable.electricity_full, 0, 0, 0);
-            } else if (power > 30 && power < 61){
+            } else if (power > 30 && power < 61) {
                 tvElectricity.setCompoundDrawablesWithIntrinsicBounds(R.drawable.electricity_normal, 0, 0, 0);
-            }else {
+            } else {
                 tvElectricity.setCompoundDrawablesWithIntrinsicBounds(R.drawable.electricity_warning, 0, 0, 0);
             }
-
-            tvMedicine.setText(data.getDosage());
-            int dosage = Integer.getInteger(data.getDosage());
-            if (dosage >= 300) {
+        }
+        if (!"--".equals(data.getDosage())) {
+            double dosage = Double.valueOf(data.getDosage());
+            if (dosage >= 300.00) {
                 tvMedicine.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medicine_full, 0, 0, 0);
-            } else if (dosage > 101 && dosage < 200) {
+            } else if (dosage > 101.00 && dosage < 200.00) {
                 tvMedicine.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medicine_normal, 0, 0, 0);
             } else {
                 tvMedicine.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medicine_warning, 0, 0, 0);
             }
+        }
 
+        if (!"--".equals(data.getStatus())) {
             //开关状态 1开 2关
             if ("1".equals(data.getStatus())) {
                 tvSwitch.setText("开");
@@ -110,6 +126,8 @@ public class InsulinFragment extends BaseEventBusFragment {
                 tvSwitch.setText("关");
                 tvSwitch.setCompoundDrawablesWithIntrinsicBounds(R.drawable.insulin_off, 0, 0, 0);
             }
+        }
+        if (!"--".equals(data.getWorning())) {
             //异常
             if ("1".equals(data.getWorning())) {
                 tvWarning.setText("正常");
@@ -118,24 +136,28 @@ public class InsulinFragment extends BaseEventBusFragment {
                 tvWarning.setText("异常");
                 tvWarning.setCompoundDrawablesWithIntrinsicBounds(R.drawable.insulin_warning_un, 0, 0, 0);
             }
-
-            tvMode.setText("1".equals(data.getModel()) ? "基础模式1" : "基础模式2");
-            tvRate.setText("当前基础率" + data.getBase_rate());
-            tvInjction.setText("已输注" + data.getValue());
-            tvTime.setText(data.getUpdatetime());
-        }else {
-            tvDeviceNum.setText(data.getEq_code());
-            //电量
-
-            tvElectricity.setText(data.getPower());
-            tvMedicine.setText(data.getDosage());
-            tvSwitch.setText(data.getStatus());
-            tvWarning.setText(data.getWorning());
-            tvMode.setText("暂无");
-            tvRate.setText("暂无");
-            tvInjction.setText("暂无");
-            tvTime.setText("最近同步时间："+data.getUpdatetime());
         }
+
+        if (!"--".equals(data.getModel())) {
+            tvMode.setText("1".equals(data.getModel()) ? "基础模式1" : "基础模式2");
+        } else {
+            tvMode.setText("暂无");
+
+        }
+
+        if (!"--".equals(data.getBase_rate())) {
+            tvRate.setText("当前基础率" + data.getBase_rate());
+        } else {
+            tvRate.setText("暂无");
+
+        }
+        if (!"--".equals(data.getValue())) {
+            tvInjction.setText("已输注" + data.getValue());
+        } else {
+            tvInjction.setText("暂无");
+        }
+
+
     }
 
 
@@ -176,7 +198,24 @@ public class InsulinFragment extends BaseEventBusFragment {
         }
     }
 
-    @OnClick({R.id.tv_main_insulin_record, R.id.iv_main_insulin_refresh})
+    //电量
+    String power;
+    //药量
+    String dosage;
+    //开关
+    String status;
+    //worning
+    String worning;
+    //基础模式类型 1 2
+    String model;
+    //基础率
+    String base_rate;
+    //已注射总量
+    String value;
+
+    private boolean isRefult = false;
+
+    @OnClick({R.id.tv_main_insulin_record, R.id.iv_main_insulin_refresh, R.id.tv_main_insulin_num})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -194,25 +233,53 @@ public class InsulinFragment extends BaseEventBusFragment {
                 break;
 
             case R.id.iv_main_insulin_refresh:
+                if (isRefult) {
+                    ToastUtils.showToast("请稍后");
+                    return;
+                }
+                isRefult = true;
 
-                //点击刷新按钮以后，先去获取设备的信息，然后掉接口，把设备信息传给接口，刷新数据
-                //设备号
-                String eqcode;
-                //设备号
-                String power;
-                //药量
-                String dosage;
-                //开关
-                String status;
-                //worning
-                String worning;
-                //基础模式类型 1 2
-                String model;
-                //基础率
-                String base_rate;
-                //已注射总量
-                String value;
+                String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                //                String eqcode = "E4:89:98:3C:D9:8D";
 
+                Log.i("yys", "eqcode===" + eqcode);
+                if (TextUtils.isEmpty(eqcode)) {
+                    isRefult = false;
+                    ToastUtils.showToast("请先绑定蓝牙");
+                    return;
+                }
+                BleUtils.getInstance().connect(getPageContext(), eqcode, new BleUtils.OnDataCallBackImpl() {
+                    @Override
+                    public void connect() {
+                        super.connect();
+                        runOnUiThread(() -> {
+                            new Handler().postDelayed(() -> {
+                                boolean b = BleUtils.getInstance().sendData("0577A11369");
+                                if (!b) {
+                                    isRefult = false;
+                                }
+                            }, 1_000);
+                        });
+                    }
+
+                    @Override
+                    public void onWorkState(String ele, byte drugHeight, byte drugLow, String isBlock, String infuSwitch) {
+                        //电量  药高位  药低位  阻塞标志阻塞 0A 0B  输注开关 开（A5) 关（B5)
+                        runOnUiThread(() -> {
+                            power = BleUtils.hexToInt(ele) + "";
+                            Log.i("yys", "drugHeight==" + drugHeight);
+                            Log.i("yys", "drugLow==" + drugLow);
+                            dosage = BleUtils.byte2double(drugHeight, drugLow) + "";
+                            status = TextUtils.equals("infuSwitch", "A5") ? "1" : "2";
+                            worning = TextUtils.equals("isBlock", "0B") ? "1" : "2";
+                            BleUtils.getInstance().disConnect();
+                            getBaseData(eqcode);
+                        });
+                    }
+                });
+                break;
+            case R.id.tv_main_insulin_num:
+                startActivity(new Intent(getPageContext(), ScanBlueActivity.class));
                 break;
             default:
                 break;
@@ -220,11 +287,53 @@ public class InsulinFragment extends BaseEventBusFragment {
         }
     }
 
-    private void updateDevice(String eqcode, String power, String dosage, String status, String worning, String model, String base_rate, String value) {
-        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getActivity(), SharedPreferencesUtils.USER_INFO);
-        DataManager.updateeqinfo(loginBean.getToken(), eqcode, power, dosage, status, worning, model, base_rate, value, (call, response) -> {
-            if (response.code == 200) {
+    private void getBaseData(String eqcode) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //回传基础模式、当前时段基础率、本时段已输注基础量
+        BleUtils.getInstance().connect(getPageContext(), eqcode, new BleUtils.OnDataCallBackImpl() {
+            @Override
+            public void connect() {
+                super.connect();
+                runOnUiThread(() -> {
+                    new Handler().postDelayed(() -> {
+                        boolean b = BleUtils.getInstance().sendData("0577A2230A");
+                        if (!b) {
+                            isRefult = false;
+                        }
+                    }, 1_000);
+                });
+            }
 
+            @Override
+            public void onBaseData(String baseState, String baseValue, String baseValueAll) {
+                //基础模式  当前时段基础率  本时段已输注基础量
+                runOnUiThread(() -> {
+                    Log.i("yys", "onBaseData: ");
+                    model = BleUtils.hexToInt(baseState) + "";
+                    base_rate = BleUtils.hexToInt(baseValue) + "";
+                    value = BleUtils.hexToInt(baseValueAll) + "";
+                    BleUtils.getInstance().disConnect();
+                    updateDevice(eqcode);
+                });
+            }
+        });
+    }
+
+
+    private void updateDevice(String eqcode) {
+        isRefult = false;
+
+        Log.i("yys", "updateDevice: ");
+        //        String mac = MySPUtils.getString(getPageContext(), MySPUtils.SERIAL_NUMBER);
+        String deviceName = MySPUtils.getString(getPageContext(), MySPUtils.DEVICE_NAME);
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getActivity(), SharedPreferencesUtils.USER_INFO);
+        DataManager.updateeqinfo(loginBean.getToken(), deviceName, power, dosage, status, worning, model, base_rate, value, (call, response) -> {
+            if (response.code == 200) {
+                getData();
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");

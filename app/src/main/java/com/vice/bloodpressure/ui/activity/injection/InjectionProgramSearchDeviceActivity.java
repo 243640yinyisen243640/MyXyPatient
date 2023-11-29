@@ -167,23 +167,6 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
     };
 
 
-    private void checkMac(String deviceAddress) {
-        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
-        String token = loginBean.getToken();
-        DataManager.checkMac(token, deviceAddress, (call, response) -> {
-            ToastUtils.showShort(response.msg);
-            if (response.code == 200) {
-                SPUtils.putBean("BlueDeviceMac", deviceAddress);
-                BleTransfer.getInstance().realConnect(deviceAddress);
-            } else {
-                finish();
-
-            }
-        }, (call, t) -> {
-            ToastUtils.showShort("网络连接失败请稍后重试！");
-            finish();
-        });
-    }
 
     private boolean initBlueBooth() {
         if (mAdapter == null) {
@@ -302,4 +285,23 @@ public class InjectionProgramSearchDeviceActivity extends XYSoftUIBaseActivity {
             }
         }
     };
+
+
+    private void checkMac(String deviceAddress) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        DataManager.checkMac(token, deviceAddress, (call, response) -> {
+            ToastUtils.showShort(response.msg);
+            if (response.code == 200) {
+                SPUtils.putBean("BlueDeviceMac", deviceAddress);
+                BleTransfer.getInstance().realConnect(deviceAddress);
+            } else {
+                finish();
+
+            }
+        }, (call, t) -> {
+            ToastUtils.showShort("网络连接失败请稍后重试！");
+            finish();
+        });
+    }
 }

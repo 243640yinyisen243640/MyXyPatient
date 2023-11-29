@@ -11,7 +11,7 @@ public class InsulinDeviceInfo {
     private String eqcode;
     //设备号
     private String eq_code;
-    //设备号
+    //电量
     private String power;
     //药量
     private String dosage;

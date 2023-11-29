@@ -17,6 +17,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.event.BlueBindEvent;
 import com.vice.bloodpressure.utils.BlueUtils;
+import com.vice.bloodpressure.utils.MySPUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -61,14 +62,14 @@ public class InjectionProgramBindDeviceActivity extends XYSoftUIBaseActivity {
                 } else {
                     BleTransfer.getInstance().unBindDevice();
                     //清楚绑定的缓存
-                    BlueUtils.putBoolean(Utils.getApp(),"blueBindState",false);
+                    MySPUtils.putBoolean(Utils.getApp(),"blueBindState",false);
                     finish();
                 }
             }, (call, t) -> {
                 ToastUtils.showShort("网络连接失败，请稍后重试");
                 BleTransfer.getInstance().unBindDevice();
                 //清楚绑定的缓存
-                BlueUtils.putBoolean(Utils.getApp(),"blueBindState",false);
+                MySPUtils.putBoolean(Utils.getApp(),"blueBindState",false);
                 finish();
             });
 
