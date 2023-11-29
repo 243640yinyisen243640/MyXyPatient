@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,7 +48,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
     private TextView tvBaseRate;
     private TextView tvWarning;
     private ListView lvDataInfo;
-    private TextView tvLast;
+    private LinearLayout llLast;
     private TextView tvNoData;
     /**
      * 1日总量 2大剂量 3基础率 4报警记录
@@ -81,14 +82,14 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         DataManager.geteqinsulins(loginBean.getToken(), type, (call, response) -> {
             if (response.code == 200) {
                 lvDataInfo.setVisibility(View.VISIBLE);
-                tvLast.setVisibility(View.VISIBLE);
+                llLast.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);
                 List<InsulinDeviceInfo> list = (List<InsulinDeviceInfo>) response.object;
-                InsulinInfusionRecordAdapter deviceListAdapter = new InsulinInfusionRecordAdapter(getPageContext(), list);
+                InsulinInfusionRecordAdapter deviceListAdapter = new InsulinInfusionRecordAdapter(getPageContext(), list,type);
                 lvDataInfo.setAdapter(deviceListAdapter);
             } else if (response.code == 30002) {
                 lvDataInfo.setVisibility(View.GONE);
-                tvLast.setVisibility(View.GONE);
+                llLast.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
         }, (call, t) -> {
@@ -107,7 +108,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         tvBaseRate = view.findViewById(R.id.tv_infusion_info_base_rate);
         tvWarning = view.findViewById(R.id.tv_infusion_info_warning);
         lvDataInfo = view.findViewById(R.id.lv_insulin_base_info_list);
-        tvLast = view.findViewById(R.id.tv_insulin_infusion_last);
+        llLast = view.findViewById(R.id.ll_insulin_infusion_last);
         tvNoData = view.findViewById(R.id.tv_insulin_base_info_no_data);
         return view;
     }

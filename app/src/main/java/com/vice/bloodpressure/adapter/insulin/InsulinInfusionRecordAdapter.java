@@ -21,10 +21,12 @@ import java.util.List;
 public class InsulinInfusionRecordAdapter extends BaseAdapter {
     private Context context;
     private List<InsulinDeviceInfo> list;
+    private String type;
 
-    public InsulinInfusionRecordAdapter(Context context, List<InsulinDeviceInfo> list) {
+    public InsulinInfusionRecordAdapter(Context context, List<InsulinDeviceInfo> list, String type) {
         this.context = context;
         this.list = list;
+        this.type = type;
     }
 
     @Override
@@ -48,7 +50,12 @@ public class InsulinInfusionRecordAdapter extends BaseAdapter {
         TextView tvTime = convertView.findViewById(R.id.tv_insulin_infusion_record_time);
         TextView tvValues = convertView.findViewById(R.id.tv_insulin_infusion_record_values);
         tvTime.setText(list.get(position).getDatetime());
-        tvValues.setText(list.get(position).getValue());
+        if ("4".equals(type)) {
+            tvValues.setText(list.get(position).getValue());
+        } else {
+            tvValues.setText(list.get(position).getValue() + "U");
+        }
+
         return convertView;
     }
 
