@@ -239,7 +239,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
             ivLoadRefresh.setVisibility(View.GONE);
             ivLoadRefresh.stopLoaddingAnim();
             bleTips.setVisibility(View.VISIBLE);
-            bleTips.setText("数据同步失败,请点击刷新按钮重试");
+            bleTips.setText("同步失败,请稍后重试");
         }
     }
 
@@ -288,7 +288,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                             List<RecordDataInfo> list = new ArrayList<>();
                             for (int i = 0; i < recordInfoList.size(); i++) {
                                 String dataTime = recordInfoList.get(i).getMonth() + "-" + recordInfoList.get(i).getDate();
-                                String value = BleUtils.byte2double(recordInfoList.get(i).getDataHeight(), recordInfoList.get(i).getDataLow()) + "";
+                                String value = BleUtils.byte2double(recordInfoList.get(i).getDataHeight(), recordInfoList.get(i).getDataLow(), 100) + "";
                                 list.add(new RecordDataInfo(dataTime, value));
                             }
                             setLvDataInfo(list);
@@ -334,7 +334,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                             for (int i = 0; i < recordBigInfoList.size(); i++) {
                                 String dataTime = recordBigInfoList.get(i).getMonth() + "-" + recordBigInfoList.get(i).getDate() + " " +
                                         recordBigInfoList.get(i).getHour() + ":" + recordBigInfoList.get(i).getMinute();
-                                String value = BleUtils.byte2double(recordBigInfoList.get(i).getDataHeight(), recordBigInfoList.get(i).getDataLow()) + "";
+                                String value = BleUtils.byte2double(recordBigInfoList.get(i).getDataHeight(), recordBigInfoList.get(i).getDataLow(), 100) + "";
                                 list.add(new RecordDataInfo(dataTime, value));
                             }
                             setLvDataInfo(list);
@@ -378,7 +378,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                             List<RecordDataInfo> list = new ArrayList<>();
                             for (int i = 0; i < recordInfoList.size(); i++) {
                                 String dataTime = recordInfoList.get(i).getMonth() + "-" + recordInfoList.get(i).getDate();
-                                String value = BleUtils.byte2double(recordInfoList.get(i).getDataHeight(), recordInfoList.get(i).getDataLow()) + "";
+                                String value = BleUtils.byte2double(recordInfoList.get(i).getDataHeight(), recordInfoList.get(i).getDataLow(), 100) + "";
                                 list.add(new RecordDataInfo(dataTime, value));
                             }
                             setLvDataInfo(list);
@@ -421,7 +421,8 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                             time = -1;
                             List<RecordDataInfo> list = new ArrayList<>();
                             for (int i = 0; i < recordErrorInfos.size(); i++) {
-                                String dataTime = recordErrorInfos.get(i).getMonth() + "-" + recordErrorInfos.get(i).getDate();
+                                String dataTime = recordErrorInfos.get(i).getMonth() + "-" + recordErrorInfos.get(i).getDate()
+                                        + " " + recordErrorInfos.get(i).getHour() + ":" + recordErrorInfos.get(i).getMinute();
                                 String value = BleUtils.hexToInt(recordErrorInfos.get(i).getType()) + "";
                                 list.add(new RecordDataInfo(dataTime, value));
                             }

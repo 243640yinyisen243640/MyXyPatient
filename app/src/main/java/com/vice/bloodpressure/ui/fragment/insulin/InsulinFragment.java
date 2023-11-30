@@ -101,7 +101,7 @@ public class InsulinFragment extends BaseEventBusFragment {
                     ivLoadRefresh.setVisibility(View.GONE);
                     ivLoadRefresh.stopLoaddingAnim();
                     mainBleTips.setVisibility(View.VISIBLE);
-                    mainBleTips.setText("同步失败,点击刷新重试");
+                    mainBleTips.setText("同步失败,请稍后重试");
                 }
                 break;
             default:

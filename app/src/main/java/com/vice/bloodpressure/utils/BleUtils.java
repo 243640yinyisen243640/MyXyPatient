@@ -477,4 +477,10 @@ public class BleUtils {
         double a = (double) value / 10;
         return a;
     }
+
+    public static double byte2double(byte b1, byte b2,int num) {
+        short value = (short) ((b1 << 8) | (b2 & 0xFF));
+        double a = (double) value / num;
+        return a;
+    }
 }

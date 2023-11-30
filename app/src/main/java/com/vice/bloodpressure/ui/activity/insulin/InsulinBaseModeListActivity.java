@@ -246,7 +246,7 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
             ivLoadRefresh.setVisibility(View.GONE);
             ivLoadRefresh.stopLoaddingAnim();
             bleTips.setVisibility(View.VISIBLE);
-            bleTips.setText("数据同步失败,请点击刷新按钮重试");
+            bleTips.setText("同步失败,请稍后重试");
         }
     }
 
