@@ -1,7 +1,6 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -49,15 +48,15 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
         tvBreak = view.findViewById(R.id.tv_insulin_break_device);
         tvDeviceNum = view.findViewById(R.id.tv_insulin_device_list_num);
         tvBreak.setOnClickListener(v -> {
-            if (breakDeviceWindow == null) {
-                breakDeviceWindow = new InsulinBreakDeviceWindow(getPageContext(),
-
-                        sure -> {
-                            breakDevice();
-                        });
-            }
-            breakDeviceWindow.showAsDropDown(containerView(), 0, 0, Gravity.CENTER);
-
+//            if (breakDeviceWindow == null) {
+//                breakDeviceWindow = new InsulinBreakDeviceWindow(getPageContext(),
+//
+//                        sure -> {
+//                            breakDevice();
+//                        });
+//            }
+//            breakDeviceWindow.showAsDropDown(containerView(), 0, 0, Gravity.CENTER);
+            breakDevice();
         });
         return view;
     }
@@ -69,7 +68,7 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
         //        String mac = BlueUtils.getBlueMac();
         Call<String> requestCall = DataManager.unbindeqinsulin(eqcode, token, (call, response) -> {
             if (response.code == 200) {
-                breakDeviceWindow.dismiss();
+//                breakDeviceWindow.dismiss();
                 MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, "");
                 MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, "");
                 MySPUtils.putString(getPageContext(), MySPUtils.SERIAL_NUMBER, "");

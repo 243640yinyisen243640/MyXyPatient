@@ -9,6 +9,8 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,11 +25,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class BleUtils {
+    BluetoothGattCharacteristic mCharacteristic;
     private Context context;
+    private boolean isConnectSuccess;
     private BluetoothGatt gatt;
     private onDataCallBack callBack;
     private static BleUtils instance;
     private boolean isCanSend = true;
+
 
     private BleUtils() {
     }
@@ -41,43 +46,32 @@ public class BleUtils {
                 }
             }
         }
-
         return instance;
     }
 
-    public void connect(Context context, String mac, onDataCallBack callBack) {
+    public void connect(boolean isConnectSuccess, Context context, String mac, onDataCallBack callBack) {
+        Log.i("yys", "开始链接");
         this.context = context;
+        this.isConnectSuccess = isConnectSuccess;
         this.callBack = callBack;
         BluetoothDevice bluetoothDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(mac);
         if (bluetoothDevice == null) {
             return;
         }
-        gatt = bluetoothDevice.connectGatt(context, false, gattCallback);
+//        bluetoothDevice.connectGatt(context, false, gattCallback);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            bluetoothDevice.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE, BluetoothDevice.PHY_LE_1M_MASK);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+           bluetoothDevice.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE);
+        } else {
+             bluetoothDevice.connectGatt(context, false, gattCallback);
+        }
+
     }
 
     public boolean sendData(String param) {
-        if (gatt == null) {
-            Toast.makeText(context, "请进行蓝牙链接", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (!isCanSend) {
-            return false;
-        }
-        isCanSend = false;
-        BluetoothGattService service = gatt.getService(UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb"));
-        if (service == null) {
-            Toast.makeText(context, "蓝牙写入服务未发现", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        BluetoothGattCharacteristic writeCharacteristic = service.getCharacteristic(UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb"));
-        if (writeCharacteristic == null) {
-            Toast.makeText(context, "蓝牙写入特征未发现", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        Log.i("yys", "发送数据成功");
-        writeCharacteristic.setValue(hex2byte(param));
-        writeCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-        gatt.writeCharacteristic(writeCharacteristic);
+        mCharacteristic.setValue(hex2byte(param));
+        gatt.writeCharacteristic(mCharacteristic);
         return true;
     }
 
@@ -90,14 +84,17 @@ public class BleUtils {
                 Log.i("yys", "onConnectionStateChange: ==" + "已链接");
                 // 连接成功，进行服务发现
                 gatt.discoverServices();
+                BleUtils.this.gatt = gatt;
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.i("yys", "onConnectionStateChange: ==" + "已断开");
                 // 连接断开，处理断开逻辑
                 isCanSend = true;
-                if (BleUtils.this.gatt != null) {
-                    BleUtils.this.gatt.close();
+                BleUtils.this.gatt = gatt;
+                BleUtils.this.gatt.close();
+//                isConnectSuccess = false;
+                if (callBack != null) {
+                    callBack.onDisConnect(isConnectSuccess);
                 }
-                gatt.close();
             }
         }
 
@@ -106,31 +103,19 @@ public class BleUtils {
             super.onServicesDiscovered(gatt, status);
             Log.i("yys", "onServicesDiscovered==" + BluetoothGatt.GATT_SUCCESS);
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                //进行读的服务发现
-                // 服务发现成功，处理服务和特征值
-                if (gatt == null) {
-                    Log.i("yys", "请进行蓝牙链接");
-                } else {
-                    BluetoothGattService service = gatt.getService(UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb"));
-                    if (service == null) {
-                        Log.i("yys", "蓝牙读取服务未发现");
-                    } else {
-                        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb"));
-                        if (characteristic == null) {
-                            Log.i("yys", "蓝牙读取特征未发现");
-                        } else {
-                            gatt.setCharacteristicNotification(characteristic, true);
-                            List<BluetoothGattDescriptor> descriptors = characteristic.getDescriptors();
-                            Log.i("yys", "descriptors.size==" + descriptors.size());
-                            for (int j = 0; j < descriptors.size(); j++) {
-                                BluetoothGattDescriptor bluetoothGattDescriptor = descriptors.get(j);
-                                bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                                gatt.writeDescriptor(bluetoothGattDescriptor);
-                            }
-                            callBack.connect();
-                        }
+                BluetoothGattService service = gatt.getService(UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb"));
+                mCharacteristic = service.getCharacteristic(UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb"));
+                gatt.setCharacteristicNotification(mCharacteristic, true);
+
+                for (BluetoothGattDescriptor descriptor : mCharacteristic.getDescriptors()) {
+                    if ((mCharacteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                    } else if ((mCharacteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                        descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
                     }
+                    gatt.writeDescriptor(descriptor);
                 }
+                callBack.onConnect();
             } else {
                 // 服务发现失败
                 Log.i("yys", "发现服务失败"
@@ -143,12 +128,11 @@ public class BleUtils {
                 characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
             byte[] value = characteristic.getValue();
-
             Log.i("yys", "读取成功==onCharacteristicChanged==" + value);
             Log.i("yys", "receiveData.length==" + value.length);
             String hexString = bytesToHex(value);
-            Log.d("yys", "读取成功==onCharacteristicChanged==" + hexString);
-
+            Log.i("yys", "读取成功==onCharacteristicChanged==" + hexString);
+            isConnectSuccess = true;
             ByteBuffer buf = ByteBuffer.wrap(value);
             byte byte01;
             byte byte02;
@@ -377,7 +361,12 @@ public class BleUtils {
     public static class OnDataCallBackImpl implements onDataCallBack {
 
         @Override
-        public void connect() {
+        public void onDisConnect(boolean isSuccess) {
+
+        }
+
+        @Override
+        public void onConnect() {
 
         }
 
@@ -418,7 +407,9 @@ public class BleUtils {
     }
 
     public interface onDataCallBack {
-        void connect();
+        void onDisConnect(boolean isSuccess);
+
+        void onConnect();
 
         void onSerialNum(String serialNum);
 
@@ -433,8 +424,39 @@ public class BleUtils {
         void onRecordBigInfoList(List<RecordBigInfo> recordInfoList);
 
         void onRecordErrorList(List<RecordErrorInfo> recordInfoList);
+
     }
 
+
+    public boolean initBlueBooth(Context context) {
+        BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (mAdapter == null) {
+            Toast.makeText(context, "当前设备不支持蓝牙功能", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!checkBle(context)) {
+            Toast.makeText(context, "当前设备不支持ble蓝牙功能", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!mAdapter.isEnabled()) {
+            //没有在开启中也没有打开
+            if (mAdapter.getState() == BluetoothAdapter.STATE_OFF) {
+                Toast.makeText(context, "请打开手机蓝牙 ", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkBle(Context context) {
+        if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            return false;
+        }
+        return true;
+    }
 
     public void disConnect() {
         gatt.disconnect();

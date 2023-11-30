@@ -1,6 +1,8 @@
 package com.vice.bloodpressure.ui.fragment.insulin;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -8,6 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
 import com.allen.library.utils.ToastUtils;
@@ -25,6 +30,7 @@ import com.vice.bloodpressure.ui.activity.insulin.InsulinInfusionRecordListActiv
 import com.vice.bloodpressure.ui.activity.insulin.ScanBlueActivity;
 import com.vice.bloodpressure.utils.BleUtils;
 import com.vice.bloodpressure.utils.MySPUtils;
+import com.vice.bloodpressure.view.LoadingImageView;
 
 import java.util.HashMap;
 
@@ -37,8 +43,13 @@ import static me.devilsen.czxing.thread.ExecutorUtil.runOnUiThread;
 public class InsulinFragment extends BaseEventBusFragment {
     private static final int GET_DATA = 0x002998;
     private static final int NO_DATA = 0x001998;
+    private static final int BLUETOOTH_PERMISSIONS_REQUEST_CODE = 20;
     @BindView(R.id.iv_main_insulin_refresh)
     ImageView ivRefresh;
+    @BindView(R.id.iv_main_insulin_refresh_trends)
+    LoadingImageView ivLoadRefresh;
+    @BindView(R.id.tv_insulin_main_ble_tips)
+    TextView mainBleTips;
     @BindView(R.id.tv_main_insulin_num)
     TextView tvDeviceNum;
     @BindView(R.id.tv_main_insulin_time)
@@ -76,6 +87,22 @@ public class InsulinFragment extends BaseEventBusFragment {
         switch (msg.what) {
             case GET_DATA:
                 setData();
+                break;
+            case 10:
+                time--;
+                if (time > 0) {
+                    getHandler().sendEmptyMessageDelayed(10, 1000);
+                    Log.i("yys", "time==" + time);
+                } else if (time == 0) {
+                    time = 60;
+                    //倒计时结束
+                    isRefult = false;
+                    ivRefresh.setVisibility(View.VISIBLE);
+                    ivLoadRefresh.setVisibility(View.GONE);
+                    ivLoadRefresh.stopLoaddingAnim();
+                    mainBleTips.setVisibility(View.VISIBLE);
+                    mainBleTips.setText("同步失败,点击刷新重试");
+                }
                 break;
             default:
                 break;
@@ -233,50 +260,83 @@ public class InsulinFragment extends BaseEventBusFragment {
                 break;
 
             case R.id.iv_main_insulin_refresh:
-                if (isRefult) {
-                    ToastUtils.showToast("请稍后");
+                if (!BleUtils.getInstance().initBlueBooth(getPageContext())) {
+                    mainBleTips.setVisibility(View.VISIBLE);
+                    mainBleTips.setText("请开启蓝牙和扫描设备权限");
                     return;
                 }
-                isRefult = true;
+                if (Build.VERSION.SDK_INT > 30) {
+                    Log.i("yys", "Build.VERSION.SDK_INT==" + Build.VERSION.SDK_INT);
+                    if (ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_SCAN")
+                            != PackageManager.PERMISSION_GRANTED
+                            || ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_ADVERTISE")
+                            != PackageManager.PERMISSION_GRANTED
+                            || ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_CONNECT")
+                            != PackageManager.PERMISSION_GRANTED) {
+                        mainBleTips.setVisibility(View.VISIBLE);
+                        mainBleTips.setText("请开启蓝牙和扫描设备权限");
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{
+                                "android.permission.BLUETOOTH_SCAN",
+                                "android.permission.BLUETOOTH_ADVERTISE",
+                                "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
+                    } else {
+                        if (isRefult) {
+                            return;
+                        }
 
-                String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
-                //                String eqcode = "E4:89:98:3C:D9:8D";
+                        isRefult = true;
 
-                Log.i("yys", "eqcode===" + eqcode);
-                if (TextUtils.isEmpty(eqcode)) {
-                    isRefult = false;
-                    ToastUtils.showToast("请先绑定蓝牙");
-                    return;
+                        String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                        //                String eqcode = "E4:89:98:3C:D9:8D";
+
+                        Log.i("yys", "eqcode===" + eqcode);
+                        if (TextUtils.isEmpty(eqcode)) {
+                            isRefult = false;
+                            mainBleTips.setVisibility(View.VISIBLE);
+                            mainBleTips.setText("请先绑定设备");
+                            return;
+                        }
+                        ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
+                        ivRefresh.setVisibility(View.GONE);
+                        ivLoadRefresh.setVisibility(View.VISIBLE);
+                        ivLoadRefresh.startLoadingAnim();
+                        mainBleTips.setVisibility(View.VISIBLE);
+                        mainBleTips.setText("正在同步数据,请您稍等片刻");
+                        getBaseData1(eqcode);
+                        getHandler().sendEmptyMessage(10);
+                        time = 60;
+                    }
+
+                } else {
+                    if (isRefult) {
+                        return;
+                    }
+
+                    isRefult = true;
+
+                    String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                    //                String eqcode = "E4:89:98:3C:D9:8D";
+
+                    Log.i("yys", "eqcode===" + eqcode);
+                    if (TextUtils.isEmpty(eqcode)) {
+                        isRefult = false;
+                        mainBleTips.setVisibility(View.VISIBLE);
+                        mainBleTips.setText("请先绑定设备");
+                        return;
+                    }
+                    ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
+                    ivRefresh.setVisibility(View.GONE);
+                    ivLoadRefresh.setVisibility(View.VISIBLE);
+                    ivLoadRefresh.startLoadingAnim();
+                    mainBleTips.setVisibility(View.VISIBLE);
+                    mainBleTips.setText("正在同步数据,请您稍等片刻");
+                    getBaseData1(eqcode);
+                    getHandler().sendEmptyMessage(10);
+                    time = 60;
                 }
-                BleUtils.getInstance().connect(getPageContext(), eqcode, new BleUtils.OnDataCallBackImpl() {
-                    @Override
-                    public void connect() {
-                        super.connect();
-                        runOnUiThread(() -> {
-                            new Handler().postDelayed(() -> {
-                                boolean b = BleUtils.getInstance().sendData("0577A11369");
-                                if (!b) {
-                                    isRefult = false;
-                                }
-                            }, 1_000);
-                        });
-                    }
-
-                    @Override
-                    public void onWorkState(String ele, byte drugHeight, byte drugLow, String isBlock, String infuSwitch) {
-                        //电量  药高位  药低位  阻塞标志阻塞 0A 0B  输注开关 开（A5) 关（B5)
-                        runOnUiThread(() -> {
-                            power = BleUtils.hexToInt(ele) + "";
-                            Log.i("yys", "drugHeight==" + drugHeight);
-                            Log.i("yys", "drugLow==" + drugLow);
-                            dosage = BleUtils.byte2double(drugHeight, drugLow) + "";
-                            status = TextUtils.equals("infuSwitch", "A5") ? "1" : "2";
-                            worning = TextUtils.equals("isBlock", "0B") ? "1" : "2";
-                            BleUtils.getInstance().disConnect();
-                            getBaseData(eqcode);
-                        });
-                    }
-                });
                 break;
             case R.id.tv_main_insulin_num:
                 startActivity(new Intent(getPageContext(), ScanBlueActivity.class));
@@ -287,23 +347,88 @@ public class InsulinFragment extends BaseEventBusFragment {
         }
     }
 
+    private int time = 60;
+
+
+    private void getBaseData1(String eqcode) {
+        if (time <= 0) {
+            return;
+        }
+        BleUtils.getInstance().connect(false, getPageContext(), eqcode, new BleUtils.OnDataCallBackImpl() {
+
+            @Override
+            public void onDisConnect(boolean isSuccess) {
+                super.onDisConnect(isSuccess);
+                runOnUiThread(() -> {
+                    if (!isSuccess) {
+                        try {
+                            Thread.sleep(2_000);
+                            getBaseData1(eqcode);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onConnect() {
+                super.onConnect();
+                runOnUiThread(() -> {
+                    new Handler().postDelayed(() -> {
+                        BleUtils.getInstance().sendData("0577A11369");
+                        isRefult = true;
+                    }, 2_000);
+                });
+            }
+
+            @Override
+            public void onWorkState(String ele, byte drugHeight, byte drugLow, String isBlock, String infuSwitch) {
+                //电量  药高位  药低位  阻塞标志阻塞 0A 0B  输注开关 开（A5) 关（B5)
+                runOnUiThread(() -> {
+                    power = BleUtils.hexToInt(ele) + "";
+                    Log.i("yys", "drugHeight==" + drugHeight);
+                    Log.i("yys", "drugLow==" + drugLow);
+                    dosage = BleUtils.byte2double(drugHeight, drugLow) + "";
+                    status = TextUtils.equals(infuSwitch, "A5") ? "1" : "2";
+                    worning = TextUtils.equals(isBlock, "0B") ? "1" : "2";
+                    BleUtils.getInstance().disConnect();
+                    getBaseData(eqcode);
+                });
+            }
+        });
+    }
+
     private void getBaseData(String eqcode) {
+        if (time <= 0) {
+            return;
+        }
+        Log.i("yys", "getBaseData: ");
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         //回传基础模式、当前时段基础率、本时段已输注基础量
-        BleUtils.getInstance().connect(getPageContext(), eqcode, new BleUtils.OnDataCallBackImpl() {
+        BleUtils.getInstance().connect(false, getPageContext(), eqcode, new BleUtils.OnDataCallBackImpl() {
             @Override
-            public void connect() {
-                super.connect();
+            public void onDisConnect(boolean isSuccess) {
+                super.onDisConnect(isSuccess);
+                Log.i("yys", "onDisConnect: ");
+                runOnUiThread(() -> {
+                    if (!isSuccess) {
+                        getBaseData(eqcode);
+                    }
+                });
+            }
+
+            @Override
+            public void onConnect() {
+                super.onConnect();
                 runOnUiThread(() -> {
                     new Handler().postDelayed(() -> {
-                        boolean b = BleUtils.getInstance().sendData("0577A2230A");
-                        if (!b) {
-                            isRefult = false;
-                        }
+                        BleUtils.getInstance().sendData("0577A2230A");
+                        isRefult = true;
                     }, 1_000);
                 });
             }
@@ -314,19 +439,23 @@ public class InsulinFragment extends BaseEventBusFragment {
                 runOnUiThread(() -> {
                     Log.i("yys", "onBaseData: ");
                     model = BleUtils.hexToInt(baseState) + "";
-                    base_rate = BleUtils.hexToInt(baseValue) + "";
-                    value = BleUtils.hexToInt(baseValueAll) + "";
+                    base_rate = ((double) BleUtils.hexToInt(baseValue) / 10) + "";
+                    value = ((double) BleUtils.hexToInt(baseValueAll) / 100) + "";
                     BleUtils.getInstance().disConnect();
-                    updateDevice(eqcode);
+                    time = -1;
+                    updateDevice();
                 });
             }
         });
     }
 
 
-    private void updateDevice(String eqcode) {
+    private void updateDevice() {
         isRefult = false;
-
+        ivRefresh.setVisibility(View.VISIBLE);
+        ivLoadRefresh.setVisibility(View.GONE);
+        ivLoadRefresh.stopLoaddingAnim();
+        mainBleTips.setVisibility(View.GONE);
         Log.i("yys", "updateDevice: ");
         //        String mac = MySPUtils.getString(getPageContext(), MySPUtils.SERIAL_NUMBER);
         String deviceName = MySPUtils.getString(getPageContext(), MySPUtils.DEVICE_NAME);

@@ -1,9 +1,13 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -28,6 +34,7 @@ import com.vice.bloodpressure.bean.insulin.RecordInfo;
 import com.vice.bloodpressure.ui.activity.injection.InjectionAddDeviceNoActivity;
 import com.vice.bloodpressure.utils.BleUtils;
 import com.vice.bloodpressure.utils.MySPUtils;
+import com.vice.bloodpressure.view.LoadingImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +47,12 @@ import java.util.List;
  */
 public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity implements View.OnClickListener {
 
+    private static final int BLUETOOTH_PERMISSIONS_REQUEST_CODE = 20;
     private TextView tvDeviceManage;
     private TextView tvBaseMode;
     private ImageView ivRefresh;
+    private TextView bleTips;
+    private LoadingImageView ivLoadRefresh;
     private TextView tvDayAll;
     private TextView tvInfoBig;
     private TextView tvBaseRate;
@@ -85,7 +95,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 llLast.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);
                 List<InsulinDeviceInfo> list = (List<InsulinDeviceInfo>) response.object;
-                InsulinInfusionRecordAdapter deviceListAdapter = new InsulinInfusionRecordAdapter(getPageContext(), list,type);
+                InsulinInfusionRecordAdapter deviceListAdapter = new InsulinInfusionRecordAdapter(getPageContext(), list, type);
                 lvDataInfo.setAdapter(deviceListAdapter);
             } else if (response.code == 30002) {
                 lvDataInfo.setVisibility(View.GONE);
@@ -103,6 +113,8 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         tvDeviceManage = view.findViewById(R.id.tv_infusion_device_manage);
         tvBaseMode = view.findViewById(R.id.tv_infusion_base_mode);
         ivRefresh = view.findViewById(R.id.iv_infusion_info_refresh);
+        bleTips = view.findViewById(R.id.tv_infusion_base_ble_tips);
+        ivLoadRefresh = view.findViewById(R.id.iv_infusion_info_refresh_trends);
         tvDayAll = view.findViewById(R.id.tv_infusion_info_day_all);
         tvInfoBig = view.findViewById(R.id.tv_infusion_info_big);
         tvBaseRate = view.findViewById(R.id.tv_infusion_info_base_rate);
@@ -133,7 +145,58 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 startActivity(intent);
                 break;
             case R.id.iv_infusion_info_refresh:
-                refreshDeviceInfo();
+                if (!BleUtils.getInstance().initBlueBooth(getPageContext())) {
+                    bleTips.setVisibility(View.VISIBLE);
+                    bleTips.setText("请开启蓝牙和扫描设备权限");
+                    return;
+                }
+                if (Build.VERSION.SDK_INT > 30) {
+                    Log.i("yys", "Build.VERSION.SDK_INT==" + Build.VERSION.SDK_INT);
+                    if (ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_SCAN")
+                            != PackageManager.PERMISSION_GRANTED
+                            || ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_ADVERTISE")
+                            != PackageManager.PERMISSION_GRANTED
+                            || ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_CONNECT")
+                            != PackageManager.PERMISSION_GRANTED) {
+                        bleTips.setVisibility(View.VISIBLE);
+                        bleTips.setText("请开启蓝牙和扫描设备权限");
+                        ActivityCompat.requestPermissions(this, new String[]{
+                                "android.permission.BLUETOOTH_SCAN",
+                                "android.permission.BLUETOOTH_ADVERTISE",
+                                "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
+                    } else {
+                        if (!isClick) {
+                            return;
+                        }
+                        bleTips.setVisibility(View.VISIBLE);
+                        bleTips.setText("正在同步数据,请您稍等片刻");
+                        ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
+                        ivRefresh.setVisibility(View.GONE);
+                        ivLoadRefresh.setVisibility(View.VISIBLE);
+                        ivLoadRefresh.startLoadingAnim();
+                        mHandler.sendEmptyMessage(1);
+                        refreshDeviceInfo();
+                        time = 60;
+                    }
+                } else {
+                    if (!isClick) {
+                        return;
+                    }
+                    bleTips.setVisibility(View.VISIBLE);
+                    bleTips.setText("正在同步数据,请您稍等片刻");
+                    ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
+                    ivRefresh.setVisibility(View.GONE);
+                    ivLoadRefresh.setVisibility(View.VISIBLE);
+                    ivLoadRefresh.startLoadingAnim();
+                    mHandler.sendEmptyMessage(1);
+                    refreshDeviceInfo();
+                    time = 60;
+                }
+
+
                 break;
             case R.id.tv_infusion_info_day_all:
                 setBg(tvDayAll, tvInfoBig, tvBaseRate, tvWarning);
@@ -160,17 +223,56 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         }
     }
 
+    private int time = 60;
+
+    @Override
+    protected void processHandlerMsg(Message msg) {
+        super.processHandlerMsg(msg);
+        time--;
+        if (time > 0) {
+            mHandler.sendEmptyMessageDelayed(1, 1000);
+        } else if (time == 0) {
+            time = 60;
+            //倒计时结束
+            isClick = true;
+            ivRefresh.setVisibility(View.VISIBLE);
+            ivLoadRefresh.setVisibility(View.GONE);
+            ivLoadRefresh.stopLoaddingAnim();
+            bleTips.setVisibility(View.VISIBLE);
+            bleTips.setText("数据同步失败,请点击刷新按钮重试");
+        }
+    }
+
     private boolean isClick = true;
 
     private void refreshDeviceInfo() {
+        if (time <= 0) {
+            return;
+        }
         isClick = false;
         switch (type) {
             case "1":
                 //回传日总量记录
-                BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+                BleUtils.getInstance().connect(false, getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+
                     @Override
-                    public void connect() {
-                        super.connect();
+                    public void onDisConnect(boolean isSuccess) {
+                        super.onDisConnect(isSuccess);
+                        runOnUiThread(() -> {
+                            if (!isSuccess) {
+                                try {
+                                    Thread.sleep(2_000);
+                                    refreshDeviceInfo();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onConnect() {
+                        super.onConnect();
                         runOnUiThread(() -> {
                             new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A88240"), 1_000);
                         });
@@ -182,6 +284,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         runOnUiThread(() -> {
                             BleUtils.getInstance().disConnect();
                             isClick = true;
+                            time = -1;
                             List<RecordDataInfo> list = new ArrayList<>();
                             for (int i = 0; i < recordInfoList.size(); i++) {
                                 String dataTime = recordInfoList.get(i).getMonth() + "-" + recordInfoList.get(i).getDate();
@@ -195,10 +298,26 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 break;
             case "2":
                 //回传大剂量记录
-                BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+                BleUtils.getInstance().connect(false, getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+
                     @Override
-                    public void connect() {
-                        super.connect();
+                    public void onDisConnect(boolean isSuccess) {
+                        super.onDisConnect(isSuccess);
+                        runOnUiThread(() -> {
+                            if (!isSuccess) {
+                                try {
+                                    Thread.sleep(2_000);
+                                    refreshDeviceInfo();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onConnect() {
+                        super.onConnect();
                         runOnUiThread(() -> {
                             new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A99261"), 1_000);
                         });
@@ -210,6 +329,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         runOnUiThread(() -> {
                             BleUtils.getInstance().disConnect();
                             isClick = true;
+                            time = -1;
                             List<RecordDataInfo> list = new ArrayList<>();
                             for (int i = 0; i < recordBigInfoList.size(); i++) {
                                 String dataTime = recordBigInfoList.get(i).getMonth() + "-" + recordBigInfoList.get(i).getDate() + " " +
@@ -224,10 +344,25 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 break;
             case "3":
                 //基础量记录
-                BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+                BleUtils.getInstance().connect(false, getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
                     @Override
-                    public void connect() {
-                        super.connect();
+                    public void onDisConnect(boolean isSuccess) {
+                        super.onDisConnect(isSuccess);
+                        runOnUiThread(() -> {
+                            if (!isSuccess) {
+                                try {
+                                    Thread.sleep(2_000);
+                                    refreshDeviceInfo();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onConnect() {
+                        super.onConnect();
                         runOnUiThread(() -> {
                             new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577AAA202"), 1_000);
                         });
@@ -239,6 +374,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         runOnUiThread(() -> {
                             BleUtils.getInstance().disConnect();
                             isClick = true;
+                            time = -1;
                             List<RecordDataInfo> list = new ArrayList<>();
                             for (int i = 0; i < recordInfoList.size(); i++) {
                                 String dataTime = recordInfoList.get(i).getMonth() + "-" + recordInfoList.get(i).getDate();
@@ -252,10 +388,25 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 break;
             case "4":
                 //回传报警记录
-                BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+                BleUtils.getInstance().connect(false, getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
                     @Override
-                    public void connect() {
-                        super.connect();
+                    public void onDisConnect(boolean isSuccess) {
+                        super.onDisConnect(isSuccess);
+                        runOnUiThread(() -> {
+                            if (!isSuccess) {
+                                try {
+                                    Thread.sleep(2_000);
+                                    refreshDeviceInfo();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onConnect() {
+                        super.onConnect();
                         runOnUiThread(() -> {
                             new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577ABB223"), 1_000);
                         });
@@ -267,6 +418,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         runOnUiThread(() -> {
                             BleUtils.getInstance().disConnect();
                             isClick = true;
+                            time = -1;
                             List<RecordDataInfo> list = new ArrayList<>();
                             for (int i = 0; i < recordErrorInfos.size(); i++) {
                                 String dataTime = recordErrorInfos.get(i).getMonth() + "-" + recordErrorInfos.get(i).getDate();
@@ -286,6 +438,10 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
     private void setLvDataInfo(List<RecordDataInfo> list) {
         String data = new Gson().toJson(list);
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        bleTips.setVisibility(View.INVISIBLE);
+        ivRefresh.setVisibility(View.VISIBLE);
+        ivLoadRefresh.setVisibility(View.GONE);
+        ivLoadRefresh.stopLoaddingAnim();
         DataManager.addeqinsulins(loginBean.getToken(), type, data, (call, response) -> {
             if (response.code == 200) {
                 getData();

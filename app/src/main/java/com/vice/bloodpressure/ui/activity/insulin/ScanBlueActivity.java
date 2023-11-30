@@ -27,9 +27,9 @@ public class ScanBlueActivity extends Activity {
         });
 
         findViewById(R.id.tv_send_0).setOnClickListener(view -> {
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
+                public void onConnect() {
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A00348"), 1_000);
                     });
@@ -47,10 +47,10 @@ public class ScanBlueActivity extends Activity {
             });
         });
         findViewById(R.id.tv_send_1).setOnClickListener(view -> {
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A11369"), 1_000);
                     });
@@ -69,10 +69,10 @@ public class ScanBlueActivity extends Activity {
         });
         findViewById(R.id.tv_send_2).setOnClickListener(view -> {
             //回传基础模式、当前时段基础率、本时段已输注基础量
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A2230A"), 1_000);
                     });
@@ -91,10 +91,10 @@ public class ScanBlueActivity extends Activity {
         });
         findViewById(R.id.tv_send_3).setOnClickListener(view -> {
             //回传基础率1
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A3332B"), 1_000);
                     });
@@ -114,10 +114,10 @@ public class ScanBlueActivity extends Activity {
         });
         findViewById(R.id.tv_send_4).setOnClickListener(view -> {
             //回传基础率2
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A443CC"), 1_000);
                     });
@@ -137,10 +137,10 @@ public class ScanBlueActivity extends Activity {
         });
         findViewById(R.id.tv_send_5).setOnClickListener(view -> {
             //回传日总量记录
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A88240"), 1_000);
                     });
@@ -160,10 +160,10 @@ public class ScanBlueActivity extends Activity {
         });
         findViewById(R.id.tv_send_6).setOnClickListener(view -> {
             //回传大剂量记录
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A99261"), 1_000);
                     });
@@ -182,10 +182,10 @@ public class ScanBlueActivity extends Activity {
         });
         findViewById(R.id.tv_send_7).setOnClickListener(view -> {
             //基础量记录
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577AAA202"), 1_000);
                     });
@@ -204,10 +204,10 @@ public class ScanBlueActivity extends Activity {
         });
         findViewById(R.id.tv_send_8).setOnClickListener(view -> {
             //回传报警记录
-            BleUtils.getInstance().connect(getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
+            BleUtils.getInstance().connect(false,getPageContext(), "D0:FB:6F:A0:D9:8D", new BleUtils.OnDataCallBackImpl() {
                 @Override
-                public void connect() {
-                    super.connect();
+                public void onConnect() {
+                    super.onConnect();
                     runOnUiThread(() -> {
                         new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577ABB223"), 1_000);
                     });

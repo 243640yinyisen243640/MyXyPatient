@@ -424,7 +424,7 @@ public class DataManager {
         Map<String, String> map = new HashMap<>();
         map.put("access_token", token);
         map.put("base_rate1", base_rate1);
-        map.put("base_rate1", base_rate2);
+        map.put("base_rate2", base_rate2);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_ARRAY, null, "/adduserbase", map, successCallBack, failureCallBack);
     }
 

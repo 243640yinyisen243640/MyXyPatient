@@ -1,14 +1,22 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -20,9 +28,11 @@ import com.vice.bloodpressure.adapter.insulin.InsulinBaseModeAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.BaseRateBean;
 import com.vice.bloodpressure.bean.insulin.InsulinDeviceAllInfo;
+import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
 import com.vice.bloodpressure.utils.BleUtils;
 import com.vice.bloodpressure.utils.MySPUtils;
 import com.vice.bloodpressure.utils.StatusBarUtils;
+import com.vice.bloodpressure.view.LoadingImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +45,7 @@ import java.util.List;
  */
 public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements View.OnClickListener {
 
+    private static final int BLUETOOTH_PERMISSIONS_REQUEST_CODE = 20;
     /**
      * 头部
      */
@@ -49,12 +60,13 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
 
     private TextView tvDayAll;
     private ImageView ivRefresh;
+    private LoadingImageView ivLoadRefresh;
+    private TextView bleTips;
     private ListView lvDataInfo;
-    private TextView tvLast;
+    private LinearLayout llLast;
     private TextView tvNoData;
-    //1：模式1  2：模式2
-    private String type = "1";
 
+    private String type = "1";
     private String mac;
     private List<String> baseList1;
     private List<String> baseList2;
@@ -70,14 +82,31 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
 
     }
 
+
     private void getBaseData1() {
         //回传基础率1
-        BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+        BleUtils.getInstance().connect(false, getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+
             @Override
-            public void connect() {
-                super.connect();
+            public void onDisConnect(boolean isSuccess) {
+                super.onDisConnect(isSuccess);
                 runOnUiThread(() -> {
-                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A3332B"), 1_000);
+                    try {
+                        Thread.sleep(2_000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (!isSuccess) {
+                        getBaseData1();
+                    }
+                });
+            }
+
+            @Override
+            public void onConnect() {
+                super.onConnect();
+                runOnUiThread(() -> {
+                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A3332B"), 2_000);
                 });
             }
 
@@ -101,12 +130,22 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
             e.printStackTrace();
         }
         //回传基础率2
-        BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+        BleUtils.getInstance().connect(false, getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
             @Override
-            public void connect() {
-                super.connect();
+            public void onDisConnect(boolean isSuccess) {
+                super.onDisConnect(isSuccess);
                 runOnUiThread(() -> {
-                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A443CC"), 1_000);
+                    if (!isSuccess) {
+                        getBaseData2();
+                    }
+                });
+            }
+
+            @Override
+            public void onConnect() {
+                super.onConnect();
+                runOnUiThread(() -> {
+                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A443CC"), 2_000);
                 });
             }
 
@@ -130,7 +169,7 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
             if (i < 10) {
                 time = "0" + i + ":" + "00";
             } else {
-                time = "i" + ":00";
+                time = i + ":00";
             }
             list.add(new BaseRateBean(time, BleUtils.hexToInt(strings.get(i)) + ""));
         }
@@ -138,81 +177,77 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
     }
 
     private void setBaseData() {
+        time = -1;
+        //还有停止动画代码都可以写在这
+
         String base_rate1 = list2String(baseList1);
         String base_rate2 = list2String(baseList2);
-
+        bleTips.setVisibility(View.GONE);
+        ivRefresh.setVisibility(View.VISIBLE);
+        ivLoadRefresh.setVisibility(View.GONE);
+        ivLoadRefresh.stopLoaddingAnim();
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         DataManager.adduserbase(loginBean.getToken(), base_rate1, base_rate2, (call, response) -> {
             if (response.code == 200) {
                 getData();
             }
         }, (call, t) -> {
-
+            ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
     }
 
+    private InsulinBaseModeAdapter adapter;
+
+    private final List<InsulinDeviceInfo> list = new ArrayList<>();
+    private List<InsulinDeviceInfo> list1;
+    private List<InsulinDeviceInfo> list2;
+
     private void getData() {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        bleTips.setVisibility(View.GONE);
+        ivRefresh.setVisibility(View.VISIBLE);
+        ivLoadRefresh.setVisibility(View.GONE);
+        ivLoadRefresh.stopLoaddingAnim();
         DataManager.getuserbase(loginBean.getToken(), (call, response) -> {
             if (response.code == 200) {
                 InsulinDeviceAllInfo allInfo = (InsulinDeviceAllInfo) response.object;
                 tvDayAll.setText("当前累计注射日基础总量：" + allInfo.getNow_value());
-                if ("1".equals(type)) {
-                    if (allInfo.getType1() != null && allInfo.getType1().size() > 0) {
-                        lvDataInfo.setVisibility(View.VISIBLE);
-                        tvLast.setVisibility(View.VISIBLE);
-                        tvNoData.setVisibility(View.GONE);
-                        InsulinBaseModeAdapter deviceListAdapter = new InsulinBaseModeAdapter(getPageContext(), allInfo.getType1());
-                        lvDataInfo.setAdapter(deviceListAdapter);
-                    } else {
-                        lvDataInfo.setVisibility(View.GONE);
-                        tvLast.setVisibility(View.GONE);
-                        tvNoData.setVisibility(View.VISIBLE);
-                    }
+                list1 = allInfo.getType1();
+                list2 = allInfo.getType2();
+                list.clear();
+                if (TextUtils.equals("1", type)) {
+                    list.addAll(list1);
                 } else {
-                    if (allInfo.getType2() != null && allInfo.getType2().size() > 0) {
-                        lvDataInfo.setVisibility(View.VISIBLE);
-                        tvNoData.setVisibility(View.VISIBLE);
-                        tvNoData.setVisibility(View.GONE);
-                        InsulinBaseModeAdapter deviceListAdapter = new InsulinBaseModeAdapter(getPageContext(), allInfo.getType2());
-                        lvDataInfo.setAdapter(deviceListAdapter);
-                    } else {
-                        lvDataInfo.setVisibility(View.GONE);
-                        tvLast.setVisibility(View.GONE);
-                        tvNoData.setVisibility(View.VISIBLE);
-                    }
-
+                    list.addAll(list2);
                 }
+                adapter.notifyDataSetChanged();
 
             } else if (30002 == response.code) {
                 lvDataInfo.setVisibility(View.GONE);
-                tvLast.setVisibility(View.GONE);
+                llLast.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
     }
+    private int time = 60;
 
-    private void initListener() {
-        IvBack.setOnClickListener(this);
-        tvModeFirst.setOnClickListener(this);
-        tvModeSecond.setOnClickListener(this);
-        ivRefresh.setOnClickListener(this);
-    }
-
-    private View initView() {
-        View view = View.inflate(getPageContext(), R.layout.activity_insulin_base_mode, null);
-        IvBack = view.findViewById(R.id.iv_base_mode_back);
-        tvModeFirst = view.findViewById(R.id.tv_base_mode_first);
-        tvModeSecond = view.findViewById(R.id.tv_base_mode_second);
-
-        tvDayAll = view.findViewById(R.id.tv_base_mode_day_all);
-        ivRefresh = view.findViewById(R.id.iv_base_mode_refresh);
-        lvDataInfo = view.findViewById(R.id.lv_base_mode_list);
-        tvLast = view.findViewById(R.id.tv_insulin_base_mode_last);
-        tvNoData = view.findViewById(R.id.tv_insulin_base_mode_no_data);
-        return view;
+    @Override
+    protected void processHandlerMsg(Message msg) {
+        super.processHandlerMsg(msg);
+        time--;
+        if (time > 0) {
+            mHandler.sendEmptyMessageDelayed(1, 1000);
+        } else if (time == 0) {
+            time = 60;
+            //倒计时结束
+            ivRefresh.setVisibility(View.VISIBLE);
+            ivLoadRefresh.setVisibility(View.GONE);
+            ivLoadRefresh.stopLoaddingAnim();
+            bleTips.setVisibility(View.VISIBLE);
+            bleTips.setText("数据同步失败,请点击刷新按钮重试");
+        }
     }
 
 
@@ -223,17 +258,90 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                 finish();
                 break;
             case R.id.tv_base_mode_first:
+                type = "1";
                 setBg(tvModeFirst, tvModeSecond);
+                list.clear();
+                list.addAll(list1);
+                adapter.notifyDataSetChanged();
+                if (list1 != null && list1.size() > 0) {
+                    lvDataInfo.setVisibility(View.VISIBLE);
+                    llLast.setVisibility(View.VISIBLE);
+                    tvNoData.setVisibility(View.GONE);
+                } else {
+                    lvDataInfo.setVisibility(View.GONE);
+                    llLast.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.tv_base_mode_second:
                 setBg(tvModeSecond, tvModeFirst);
+                type = "1";
+                list.clear();
+                list.addAll(list2);
+                adapter.notifyDataSetChanged();
+                if (list2 != null && list2.size() > 0) {
+                    lvDataInfo.setVisibility(View.VISIBLE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                    tvNoData.setVisibility(View.GONE);
+                } else {
+                    lvDataInfo.setVisibility(View.GONE);
+                    llLast.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.iv_base_mode_refresh:
-                mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
-                if (mac == null) {
+                if (!BleUtils.getInstance().initBlueBooth(getPageContext())){
+                    bleTips.setVisibility(View.VISIBLE);
+                    bleTips.setText("请开启蓝牙和扫描设备权限");
                     return;
                 }
-                getBaseData1();
+                if (Build.VERSION.SDK_INT > 30) {
+                    Log.i("yys", "Build.VERSION.SDK_INT==" + Build.VERSION.SDK_INT);
+                    if (ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_SCAN")
+                            != PackageManager.PERMISSION_GRANTED
+                            || ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_ADVERTISE")
+                            != PackageManager.PERMISSION_GRANTED
+                            || ContextCompat.checkSelfPermission(getPageContext(),
+                            "android.permission.BLUETOOTH_CONNECT")
+                            != PackageManager.PERMISSION_GRANTED) {
+                        bleTips.setVisibility(View.VISIBLE);
+                        bleTips.setText("请开启蓝牙和扫描设备权限");
+                        ActivityCompat.requestPermissions(this, new String[]{
+                                "android.permission.BLUETOOTH_SCAN",
+                                "android.permission.BLUETOOTH_ADVERTISE",
+                                "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
+                    } else {
+                        mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                        if (mac == null) {
+                            return;
+                        }
+                        bleTips.setVisibility(View.VISIBLE);
+                        bleTips.setText("正在同步数据,请您稍等片刻");
+                        ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
+                        ivRefresh.setVisibility(View.GONE);
+                        ivLoadRefresh.setVisibility(View.VISIBLE);
+                        ivLoadRefresh.startLoadingAnim();
+                        mHandler.sendEmptyMessage(1);
+                        getBaseData1();
+                        time = 60;
+                    }
+                }else {
+                    mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                    if (mac == null) {
+                        return;
+                    }
+                    bleTips.setVisibility(View.VISIBLE);
+                    bleTips.setText("正在同步数据,请您稍等片刻");
+                    ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
+                    ivRefresh.setVisibility(View.GONE);
+                    ivLoadRefresh.setVisibility(View.VISIBLE);
+                    ivLoadRefresh.startLoadingAnim();
+                    mHandler.sendEmptyMessage(1);
+                    getBaseData1();
+                    time = 60;
+                }
                 break;
             default:
                 break;
@@ -249,5 +357,29 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
         tvUncheck.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
 
 
+    }
+    private void initListener() {
+        IvBack.setOnClickListener(this);
+        tvModeFirst.setOnClickListener(this);
+        tvModeSecond.setOnClickListener(this);
+        ivRefresh.setOnClickListener(this);
+    }
+
+    private View initView() {
+        View view = View.inflate(getPageContext(), R.layout.activity_insulin_base_mode, null);
+        IvBack = view.findViewById(R.id.iv_base_mode_back);
+        tvModeFirst = view.findViewById(R.id.tv_base_mode_first);
+        tvModeSecond = view.findViewById(R.id.tv_base_mode_second);
+
+        tvDayAll = view.findViewById(R.id.tv_base_mode_day_all);
+        ivRefresh = view.findViewById(R.id.iv_base_mode_refresh);
+        ivLoadRefresh = view.findViewById(R.id.iv_base_mode_refresh_trends);
+        bleTips = view.findViewById(R.id.tv_base_mode_ble_tips);
+        lvDataInfo = view.findViewById(R.id.lv_base_mode_list);
+        llLast = view.findViewById(R.id.ll_insulin_base_mode_last);
+        tvNoData = view.findViewById(R.id.tv_insulin_base_mode_no_data);
+        adapter = new InsulinBaseModeAdapter(getPageContext(), list);
+        lvDataInfo.setAdapter(adapter);
+        return view;
     }
 }
