@@ -260,11 +260,6 @@ public class InsulinFragment extends BaseEventBusFragment {
                 break;
 
             case R.id.iv_main_insulin_refresh:
-                if (!BleUtils.getInstance().initBlueBooth(getPageContext())) {
-                    mainBleTips.setVisibility(View.VISIBLE);
-                    mainBleTips.setText("请开启蓝牙和扫描设备权限");
-                    return;
-                }
                 if (Build.VERSION.SDK_INT > 30) {
                     Log.i("yys", "Build.VERSION.SDK_INT==" + Build.VERSION.SDK_INT);
                     if (ContextCompat.checkSelfPermission(getPageContext(),
@@ -283,6 +278,11 @@ public class InsulinFragment extends BaseEventBusFragment {
                                 "android.permission.BLUETOOTH_ADVERTISE",
                                 "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
                     } else {
+                        if (!BleUtils.getInstance().initBlueBooth(getActivity())) {
+                            mainBleTips.setVisibility(View.VISIBLE);
+                            mainBleTips.setText("请开启蓝牙和扫描设备权限");
+                            return;
+                        }
                         if (isRefult) {
                             return;
                         }
@@ -306,11 +306,16 @@ public class InsulinFragment extends BaseEventBusFragment {
                         mainBleTips.setVisibility(View.VISIBLE);
                         mainBleTips.setText("正在同步数据,请您稍等片刻");
                         getBaseData1(eqcode);
-                        getHandler().sendEmptyMessage(10);
                         time = 60;
+                        getHandler().sendEmptyMessage(10);
                     }
 
                 } else {
+                    if (!BleUtils.getInstance().initBlueBooth(getActivity())) {
+                        mainBleTips.setVisibility(View.VISIBLE);
+                        mainBleTips.setText("请开启蓝牙和扫描设备权限");
+                        return;
+                    }
                     if (isRefult) {
                         return;
                     }
@@ -334,8 +339,8 @@ public class InsulinFragment extends BaseEventBusFragment {
                     mainBleTips.setVisibility(View.VISIBLE);
                     mainBleTips.setText("正在同步数据,请您稍等片刻");
                     getBaseData1(eqcode);
-                    getHandler().sendEmptyMessage(10);
                     time = 60;
+                    getHandler().sendEmptyMessage(10);
                 }
                 break;
             case R.id.tv_main_insulin_num:

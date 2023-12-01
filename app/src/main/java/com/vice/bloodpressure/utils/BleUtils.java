@@ -1,5 +1,7 @@
 package com.vice.bloodpressure.utils;
 
+import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -8,12 +10,19 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.vice.bloodpressure.bean.insulin.RecordBigInfo;
 import com.vice.bloodpressure.bean.insulin.RecordErrorInfo;
@@ -58,13 +67,13 @@ public class BleUtils {
         if (bluetoothDevice == null) {
             return;
         }
-//        bluetoothDevice.connectGatt(context, false, gattCallback);
+        //        bluetoothDevice.connectGatt(context, false, gattCallback);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             bluetoothDevice.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE, BluetoothDevice.PHY_LE_1M_MASK);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-           bluetoothDevice.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            bluetoothDevice.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE);
         } else {
-             bluetoothDevice.connectGatt(context, false, gattCallback);
+            bluetoothDevice.connectGatt(context, false, gattCallback);
         }
 
     }
@@ -91,7 +100,7 @@ public class BleUtils {
                 isCanSend = true;
                 BleUtils.this.gatt = gatt;
                 BleUtils.this.gatt.close();
-//                isConnectSuccess = false;
+                //                isConnectSuccess = false;
                 if (callBack != null) {
                     callBack.onDisConnect(isConnectSuccess);
                 }
@@ -427,8 +436,10 @@ public class BleUtils {
 
     }
 
+    private BluetoothLeScanner bluetoothLeScanner;
+    private ScanCallback scanCallback;
 
-    public boolean initBlueBooth(Context context) {
+    public boolean initBlueBooth(Activity context) {
         BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (mAdapter == null) {
@@ -448,7 +459,35 @@ public class BleUtils {
                 return false;
             }
         }
+        //打开位置权限
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            return false;
+        } else {
+            //有权限  这里注释了
+            bluetoothLeScanner = mAdapter.getBluetoothLeScanner();
+            scanCallback = new ScanCallback() {
+                @Override
+                public void onScanResult(int callbackType, ScanResult result) {
+                    super.onScanResult(callbackType, result);
+                    if (result != null) {
+                        if (TextUtils.equals(result.getDevice().getAddress(), MySPUtils.getString(context, MySPUtils.BLUE_MAC))) {
+                            bluetoothLeScanner.stopScan(scanCallback);
+                        }
+                    }
+                }
+            };
+            bluetoothLeScanner.startScan(scanCallback);
+            new Handler().postDelayed(() -> stopScan(),30_000);
+        }
         return true;
+    }
+
+    public void stopScan(){
+        if (bluetoothLeScanner!=null&&scanCallback!=null){
+            bluetoothLeScanner.stopScan(scanCallback);
+        }
     }
 
     private boolean checkBle(Context context) {
@@ -478,7 +517,7 @@ public class BleUtils {
         return a;
     }
 
-    public static double byte2double(byte b1, byte b2,int num) {
+    public static double byte2double(byte b1, byte b2, int num) {
         short value = (short) ((b1 << 8) | (b2 & 0xFF));
         double a = (double) value / num;
         return a;

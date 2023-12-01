@@ -145,11 +145,6 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 startActivity(intent);
                 break;
             case R.id.iv_infusion_info_refresh:
-                if (!BleUtils.getInstance().initBlueBooth(getPageContext())) {
-                    bleTips.setVisibility(View.VISIBLE);
-                    bleTips.setText("请开启蓝牙和扫描设备权限");
-                    return;
-                }
                 if (Build.VERSION.SDK_INT > 30) {
                     Log.i("yys", "Build.VERSION.SDK_INT==" + Build.VERSION.SDK_INT);
                     if (ContextCompat.checkSelfPermission(getPageContext(),
@@ -168,6 +163,11 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                                 "android.permission.BLUETOOTH_ADVERTISE",
                                 "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
                     } else {
+                        if (!BleUtils.getInstance().initBlueBooth(this)) {
+                            bleTips.setVisibility(View.VISIBLE);
+                            bleTips.setText("请开启蓝牙和扫描设备权限");
+                            return;
+                        }
                         if (!isClick) {
                             return;
                         }
@@ -177,11 +177,16 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         ivRefresh.setVisibility(View.GONE);
                         ivLoadRefresh.setVisibility(View.VISIBLE);
                         ivLoadRefresh.startLoadingAnim();
+                        time = 60;
                         mHandler.sendEmptyMessage(1);
                         refreshDeviceInfo();
-                        time = 60;
                     }
                 } else {
+                    if (!BleUtils.getInstance().initBlueBooth(this)) {
+                        bleTips.setVisibility(View.VISIBLE);
+                        bleTips.setText("请开启蓝牙和扫描设备权限");
+                        return;
+                    }
                     if (!isClick) {
                         return;
                     }
@@ -191,12 +196,10 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                     ivRefresh.setVisibility(View.GONE);
                     ivLoadRefresh.setVisibility(View.VISIBLE);
                     ivLoadRefresh.startLoadingAnim();
+                    time = 60;
                     mHandler.sendEmptyMessage(1);
                     refreshDeviceInfo();
-                    time = 60;
                 }
-
-
                 break;
             case R.id.tv_infusion_info_day_all:
                 setBg(tvDayAll, tvInfoBig, tvBaseRate, tvWarning);

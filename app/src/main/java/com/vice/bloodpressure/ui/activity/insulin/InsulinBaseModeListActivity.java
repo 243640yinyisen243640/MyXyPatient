@@ -290,11 +290,7 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                 }
                 break;
             case R.id.iv_base_mode_refresh:
-                if (!BleUtils.getInstance().initBlueBooth(getPageContext())){
-                    bleTips.setVisibility(View.VISIBLE);
-                    bleTips.setText("请开启蓝牙和扫描设备权限");
-                    return;
-                }
+
                 if (Build.VERSION.SDK_INT > 30) {
                     Log.i("yys", "Build.VERSION.SDK_INT==" + Build.VERSION.SDK_INT);
                     if (ContextCompat.checkSelfPermission(getPageContext(),
@@ -313,6 +309,11 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                                 "android.permission.BLUETOOTH_ADVERTISE",
                                 "android.permission.BLUETOOTH_CONNECT"}, BLUETOOTH_PERMISSIONS_REQUEST_CODE);
                     } else {
+                        if (!BleUtils.getInstance().initBlueBooth(this)){
+                            bleTips.setVisibility(View.VISIBLE);
+                            bleTips.setText("请开启蓝牙和扫描设备权限");
+                            return;
+                        }
                         mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
                         if (mac == null) {
                             return;
@@ -323,11 +324,16 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                         ivRefresh.setVisibility(View.GONE);
                         ivLoadRefresh.setVisibility(View.VISIBLE);
                         ivLoadRefresh.startLoadingAnim();
+                        time = 60;
                         mHandler.sendEmptyMessage(1);
                         getBaseData1();
-                        time = 60;
                     }
                 }else {
+                    if (!BleUtils.getInstance().initBlueBooth(this)){
+                        bleTips.setVisibility(View.VISIBLE);
+                        bleTips.setText("请开启蓝牙和扫描设备权限");
+                        return;
+                    }
                     mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
                     if (mac == null) {
                         return;
@@ -338,9 +344,9 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                     ivRefresh.setVisibility(View.GONE);
                     ivLoadRefresh.setVisibility(View.VISIBLE);
                     ivLoadRefresh.startLoadingAnim();
+                    time = 60;
                     mHandler.sendEmptyMessage(1);
                     getBaseData1();
-                    time = 60;
                 }
                 break;
             default:
