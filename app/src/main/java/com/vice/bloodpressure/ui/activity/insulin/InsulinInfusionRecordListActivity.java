@@ -9,6 +9,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -50,6 +51,8 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
     private static final int BLUETOOTH_PERMISSIONS_REQUEST_CODE = 20;
     private TextView tvDeviceManage;
     private TextView tvBaseMode;
+    private FrameLayout flPlan;
+    private TextView tvPlanNum;
     private ImageView ivRefresh;
     private TextView bleTips;
     private LoadingImageView ivLoadRefresh;
@@ -79,6 +82,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
 
     private void initListner() {
         tvDeviceManage.setOnClickListener(this);
+        flPlan.setOnClickListener(this);
         tvBaseMode.setOnClickListener(this);
         ivRefresh.setOnClickListener(this);
         tvDayAll.setOnClickListener(this);
@@ -112,6 +116,8 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         View view = View.inflate(getPageContext(), R.layout.activity_insulin_infusion_record, null);
         tvDeviceManage = view.findViewById(R.id.tv_infusion_device_manage);
         tvBaseMode = view.findViewById(R.id.tv_infusion_base_mode);
+        flPlan = view.findViewById(R.id.fl_infusion_plan_num);
+        tvPlanNum = view.findViewById(R.id.tv_infusion_plan_num);
         ivRefresh = view.findViewById(R.id.iv_infusion_info_refresh);
         bleTips = view.findViewById(R.id.tv_infusion_base_ble_tips);
         ivLoadRefresh = view.findViewById(R.id.iv_infusion_info_refresh_trends);
@@ -142,6 +148,10 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 break;
             case R.id.tv_infusion_base_mode:
                 intent = new Intent(getPageContext(), InsulinBaseModeListActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.fl_infusion_plan_num:
+                intent = new Intent(getPageContext(), InsulinInfusionPlanListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.iv_infusion_info_refresh:

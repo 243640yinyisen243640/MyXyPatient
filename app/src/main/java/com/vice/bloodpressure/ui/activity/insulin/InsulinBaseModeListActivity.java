@@ -171,7 +171,8 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
             } else {
                 time = i + ":00";
             }
-            list.add(new BaseRateBean(time, BleUtils.hexToInt(strings.get(i)) + ""));
+            double value = BleUtils.hexToInt(strings.get(i)) / 10.0;
+            list.add(new BaseRateBean(time, value + ""));
         }
         return new Gson().toJson(list);
     }
@@ -275,7 +276,7 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                 break;
             case R.id.tv_base_mode_second:
                 setBg(tvModeSecond, tvModeFirst);
-                type = "1";
+                type = "2";
                 list.clear();
                 list.addAll(list2);
                 adapter.notifyDataSetChanged();
