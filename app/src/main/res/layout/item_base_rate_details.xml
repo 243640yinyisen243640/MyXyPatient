@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_infusion_base_rate_star_time_item"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="00:00"
+            android:textColor="@color/black_text"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_infusion_base_rate_end_time_item"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="01:00"
+            android:textColor="@color/black_text"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_infusion_base_rate_rate_item"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0.1U"
+            android:textColor="@color/black_text"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="#F0F0F0" />
+
+</LinearLayout>
