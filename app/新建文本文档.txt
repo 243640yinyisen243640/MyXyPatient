@@ -1,0 +1,143 @@
+  findViewById(R.id.tv_send_0).setOnClickListener(view -> {
+            BleMSTUtils.getInstance().connect(getPageContext(), "0C:EC:80:F8:8A:C5");
+
+            BleMSTUtils.getInstance().setOnDataCallBack(new BleMSTUtils.onDataCallBack() {
+
+                @Override
+                public void onDisConnect() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2_000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            BleMSTUtils.getInstance().connect(getPageContext(), "0C:EC:80:F8:8A:C5");
+                        }
+                    });
+                }
+
+                @Override
+                public void onStateData(List<String> list) {
+                    //读取系统运行状态数据
+                    if (list.size() == 80) {
+                        //获取需要的数据    +6
+                    }
+                    for (int i = 0; i < list.size(); i++) {
+                        Log.i("xjh", i + "==" + list.get(i));
+
+                    }
+                }
+
+                @Override
+                public void onBigRecord(List<RecordDataInfo> bigRecordInfo) {
+                    //大剂量
+                    for (int i = 0; i < bigRecordInfo.size(); i++) {
+                        Log.i("xjh", "bigRecordInfo==" + bigRecordInfo.get(i).toString());
+                    }
+                }
+
+                @Override
+                public void onSunRecord(List<RecordDataInfo> sunRecordInfos) {
+                    //日总量
+                    for (int i = 0; i < sunRecordInfos.size(); i++) {
+                        Log.i("xjh", "bigRecordInfo==" + sunRecordInfos.get(i).toString());
+                    }
+                }
+
+                @Override
+                public void onErrorRecord(List<RecordDataInfo> errorRecordInfos) {
+                    //警示数据
+                    for (int i = 0; i < errorRecordInfos.size(); i++) {
+                        Log.i("xjh", "bigRecordInfo==" + errorRecordInfos.get(i).toString());
+                    }
+                }
+
+                @Override
+                public void onBaseRecord(List<RecordDataInfo> baseRecordInfo) {
+                    //基础率数据
+                    for (int i = 0; i < baseRecordInfo.size(); i++) {
+                        Log.i("xjh", "bigRecordInfo==" + baseRecordInfo.get(i).toString());
+                    }
+                }
+            });
+        });
+
+        findViewById(R.id.tv_send_1).setOnClickListener(view -> {
+            //读取系统运行状态数据
+            if (!BleMSTUtils.getInstance().isConnect()) {
+                BleMSTUtils.getInstance().connect(getPageContext(), "0C:EC:80:F8:8A:C5");
+                return;
+            }
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            BleMSTUtils.getInstance().setRead();
+            BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 00 AA "));
+        });
+
+        findViewById(R.id.tv_send_2).setOnClickListener(view -> {
+            //读取大剂量回顾数据（所有）
+            if (!BleMSTUtils.getInstance().isConnect()) {
+                BleMSTUtils.getInstance().connect(getPageContext(), "0C:EC:80:F8:8A:C5");
+                return;
+            }
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            BleMSTUtils.getInstance().setRead();
+            BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 01 AA "));
+        });
+
+        findViewById(R.id.tv_send_3).setOnClickListener(view -> {
+            //读取基础率回顾数据
+            if (!BleMSTUtils.getInstance().isConnect()) {
+                BleMSTUtils.getInstance().connect(getPageContext(), "0C:EC:80:F8:8A:C5");
+                return;
+            }
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            BleMSTUtils.getInstance().setRead();
+            BleMSTUtils.getInstance().recordBaseInfos.clear();
+            BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 02 AA "));
+
+        });
+
+        findViewById(R.id.tv_send_4).setOnClickListener(view -> {
+            //读取警示回顾
+            if (!BleMSTUtils.getInstance().isConnect()) {
+                BleMSTUtils.getInstance().connect(getPageContext(), "0C:EC:80:F8:8A:C5");
+                return;
+            }
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            BleMSTUtils.getInstance().setRead();
+            BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 03 AA "));
+        });
+
+        findViewById(R.id.tv_send_5).setOnClickListener(view -> {
+            //读取日总量
+            if (!BleMSTUtils.getInstance().isConnect()) {
+                BleMSTUtils.getInstance().connect(getPageContext(), "0C:EC:80:F8:8A:C5");
+                return;
+            }
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            BleMSTUtils.getInstance().setRead();
+            BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 06 AA "));
+        });

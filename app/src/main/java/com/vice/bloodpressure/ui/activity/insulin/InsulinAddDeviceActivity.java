@@ -202,9 +202,15 @@ public class InsulinAddDeviceActivity extends XYSoftUIBaseActivity {
                 if (!TextUtils.isEmpty(result.getDevice().getName())) {
                     Log.i("yys", "onScanResult: " + result.getDevice().getName());
                     if (result.getDevice().getName().trim().contains("AI") || result.getDevice().getName().trim().contains("Ai")) {
-                        addDevice(result.getDevice());
+                        if (TextUtils.equals(keywords, "1")) {
+                            addDevice(result.getDevice());
+                        }
                     }
-
+                    if (result.getDevice().getName().trim().contains("IP4.")) {
+                        if (TextUtils.equals(keywords, "2")) {
+                            addDevice(result.getDevice());
+                        }
+                    }
                 }
             }
         }
@@ -385,24 +391,24 @@ public class InsulinAddDeviceActivity extends XYSoftUIBaseActivity {
 
         bindDevice(mac, deviceName);
 
-//        BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
-//            @Override
-//            public void connect() {
-//                runOnUiThread(() -> {
-//                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A00348"), 1_000);
-//                });
-//            }
-//
-//            @Override
-//            public void onSerialNum(String serialNum) {
-//                //获取设备号
-//                runOnUiThread(() -> {
-//                    isClick = true;
-//                    bindDevice(mac, serialNum);
-//                    BleUtils.getInstance().disConnect();
-//                });
-//            }
-//        });
+        //        BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
+        //            @Override
+        //            public void connect() {
+        //                runOnUiThread(() -> {
+        //                    new Handler().postDelayed(() -> BleUtils.getInstance().sendData("0577A00348"), 1_000);
+        //                });
+        //            }
+        //
+        //            @Override
+        //            public void onSerialNum(String serialNum) {
+        //                //获取设备号
+        //                runOnUiThread(() -> {
+        //                    isClick = true;
+        //                    bindDevice(mac, serialNum);
+        //                    BleUtils.getInstance().disConnect();
+        //                });
+        //            }
+        //        });
     }
 
     private void bindDevice(String mac, String eqcode) {
@@ -411,10 +417,17 @@ public class InsulinAddDeviceActivity extends XYSoftUIBaseActivity {
         Call<String> requestCall = DataManager.bindeqinsulin(eqcode, token, (call, response) -> {
             ToastUtils.showShort(response.msg);
             if (response.code == 200) {
-                MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, mac);
-//                MySPUtils.putString(getPageContext(), MySPUtils.SERIAL_NUMBER, eqcode);
-                MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, eqcode);
-                MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, keywords);
+                if (TextUtils.equals(keywords, "2")) {
+                    //这里跳页面吧
+                    Intent intent = new Intent(getPageContext(), InsulinInputNumActivity.class);
+                    intent.putExtra(MySPUtils.BLUE_MAC, mac);
+                    intent.putExtra(MySPUtils.DEVICE_NAME, eqcode);
+                    startActivity(intent);
+                } else {
+                    MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, mac);
+                    MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, eqcode);
+                    MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, keywords);
+                }
                 finish();
             }
         }, (call, t) -> {

@@ -15,10 +15,10 @@ public class MySPUtils {
     public static final String BLUE_MAC = "blue_mac";
     //1凯联  2迈士通
     public static final String BLUE_TYPE = "blue_type";
-    //序列号
-    public static final String SERIAL_NUMBER = "serial_number";
-    //序列号
+    //序列号  设备名称
     public static final String DEVICE_NAME = "device_name";
+    //设备编号  输入  用于迈士通蓝牙获取发送数据
+    public static final String DEVICE_NUM = "device_num";
 
 
     private static SharedPreferences getSharedPreferences(Context context) {

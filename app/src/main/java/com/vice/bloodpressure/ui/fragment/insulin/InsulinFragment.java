@@ -18,21 +18,26 @@ import com.alibaba.fastjson.JSONObject;
 import com.allen.library.utils.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
-import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.fragment.BaseEventBusFragment;
 import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
+import com.vice.bloodpressure.event.MSTBlueEventBus;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.insulin.InsulinDeviceListActivity;
 import com.vice.bloodpressure.ui.activity.insulin.InsulinInfusionRecordListActivity;
 import com.vice.bloodpressure.ui.activity.insulin.ScanBlueActivity;
+import com.vice.bloodpressure.utils.BleMSTUtils;
 import com.vice.bloodpressure.utils.BleUtils;
 import com.vice.bloodpressure.utils.MySPUtils;
 import com.vice.bloodpressure.view.LoadingImageView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -217,28 +222,47 @@ public class InsulinFragment extends BaseEventBusFragment {
         });
     }
 
-    @Override
-    protected void receiveEvent(EventMessage event) {
-        super.receiveEvent(event);
-        switch (event.getCode()) {
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBaseBlueData(MSTBlueEventBus event) {
+        if (event != null && event.getType() == 1) {
+            List<String> list = event.getStringList();
+            if (list.size() == 80) {
+                //48 49
+                int valueInt = BleMSTUtils.hexToInt(list.get(55) + list.get(54));
+                double valueDouble = valueInt/10.0;
+                value = valueDouble + "";
+                //70 71
+                int powerInt = BleMSTUtils.hexToInt(list.get(77) + list.get(76));
+                if (powerInt == 4){
+                    power = "100";
+                }else if (powerInt == 3){
+                    power = "75";
+                }else if (powerInt == 2){
+                    power = "50";
+                }else if (powerInt == 1){
+                    power = "25";
+                }else {
+                    power = "0";
+                }
+                updateDevice();
+            }
         }
     }
 
     //电量
-    String power;
+    String power = "";
     //药量
-    String dosage;
+    String dosage = "";
     //开关
-    String status;
+    String status = "";
     //worning
-    String worning;
+    String worning = "";
     //基础模式类型 1 2
-    String model;
+    String model = "";
     //基础率
-    String base_rate;
+    String base_rate = "";
     //已注射总量
-    String value;
+    String value = "";
 
     private boolean isRefult = false;
 
@@ -289,11 +313,11 @@ public class InsulinFragment extends BaseEventBusFragment {
 
                         isRefult = true;
 
-                        String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                        String mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
                         //                String eqcode = "E4:89:98:3C:D9:8D";
 
-                        Log.i("yys", "eqcode===" + eqcode);
-                        if (TextUtils.isEmpty(eqcode)) {
+                        Log.i("yys", "mac===" + mac);
+                        if (TextUtils.isEmpty(mac)) {
                             isRefult = false;
                             mainBleTips.setVisibility(View.VISIBLE);
                             mainBleTips.setText("请先绑定设备");
@@ -305,7 +329,10 @@ public class InsulinFragment extends BaseEventBusFragment {
                         ivLoadRefresh.startLoadingAnim();
                         mainBleTips.setVisibility(View.VISIBLE);
                         mainBleTips.setText("正在同步数据,请您稍等片刻");
-                        getBaseData1(eqcode);
+                        //凯联
+                        getBaseData1(mac);
+                        //迈士通
+                        getBaseDataMST(mac);
                         time = 60;
                         getHandler().sendEmptyMessage(10);
                     }
@@ -322,11 +349,11 @@ public class InsulinFragment extends BaseEventBusFragment {
 
                     isRefult = true;
 
-                    String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+                    String mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
                     //                String eqcode = "E4:89:98:3C:D9:8D";
 
-                    Log.i("yys", "eqcode===" + eqcode);
-                    if (TextUtils.isEmpty(eqcode)) {
+                    Log.i("yys", "mac===" + mac);
+                    if (TextUtils.isEmpty(mac)) {
                         isRefult = false;
                         mainBleTips.setVisibility(View.VISIBLE);
                         mainBleTips.setText("请先绑定设备");
@@ -338,7 +365,9 @@ public class InsulinFragment extends BaseEventBusFragment {
                     ivLoadRefresh.startLoadingAnim();
                     mainBleTips.setVisibility(View.VISIBLE);
                     mainBleTips.setText("正在同步数据,请您稍等片刻");
-                    getBaseData1(eqcode);
+                    getBaseData1(mac);
+                    //迈士通
+                    getBaseDataMST(mac);
                     time = 60;
                     getHandler().sendEmptyMessage(10);
                 }
@@ -350,6 +379,24 @@ public class InsulinFragment extends BaseEventBusFragment {
                 break;
 
         }
+    }
+
+    //获取蓝牙运行基础信息
+    private void getBaseDataMST(String mac) {
+        if (time <= 0) {
+            return;
+        }
+        if (!BleMSTUtils.getInstance().isConnect()) {
+            BleMSTUtils.getInstance().connect(getPageContext(), mac);
+            return;
+        }
+        try {
+            Thread.sleep(2_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        BleMSTUtils.getInstance().setRead();
+        BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 00 AA "));
     }
 
     private int time = 60;

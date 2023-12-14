@@ -71,7 +71,6 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
 //                breakDeviceWindow.dismiss();
                 MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, "");
                 MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, "");
-                MySPUtils.putString(getPageContext(), MySPUtils.SERIAL_NUMBER, "");
                 MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, "");
                 finish();
             }

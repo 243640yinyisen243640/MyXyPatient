@@ -59,6 +59,9 @@ public class BleUtils {
     }
 
     public void connect(boolean isConnectSuccess, Context context, String mac, onDataCallBack callBack) {
+        if (!TextUtils.equals(MySPUtils.getString(context,MySPUtils.BLUE_TYPE),"1")){
+            return;
+        }
         Log.i("yys", "开始链接");
         this.context = context;
         this.isConnectSuccess = isConnectSuccess;
@@ -79,6 +82,9 @@ public class BleUtils {
     }
 
     public boolean sendData(String param) {
+        if (!TextUtils.equals(MySPUtils.getString(context,MySPUtils.BLUE_TYPE),"1")){
+            return false;
+        }
         mCharacteristic.setValue(hex2byte(param));
         gatt.writeCharacteristic(mCharacteristic);
         return true;

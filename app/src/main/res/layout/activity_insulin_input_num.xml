@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/iv_insulin_input_img_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/insulin_connect_input_num" />
+
+
+    <com.wei.android.lib.colorview.view.ColorEditText
+        android:id="@+id/et_insulin_input_img_bg"
+        style="@style/et_base_style"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginRight="@dimen/size_20"
+        android:hint="请输入出厂编号"
+        android:paddingLeft="@dimen/dp_5"
+        android:textSize="@dimen/size_20"
+        app:borderColorNormal="@color/gray_text"
+        app:borderWidthNormal="1dp" />
+
+    <TextView
+        style="@style/text_gray_14_w_w"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_30"
+        android:text="请确定您输入正确的出厂编号" />
+
+    <com.wei.android.lib.colorview.view.ColorButton
+        android:id="@+id/tv_insulin_input_sure"
+        style="@style/text_white_16_f_w"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:text="确认绑定"
+        app:backgroundColorNormal="@color/main_home"
+        app:cornerRadiusNormal="4dp" />
+
+
+</LinearLayout>
+
+
+

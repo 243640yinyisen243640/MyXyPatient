@@ -39,7 +39,7 @@ public class InsulinChooseDeviceActivity extends XYSoftUIBaseActivity implements
     private TextView tvNext;
     private TextView bleTips;
 
-    private String isCheck = "1";
+    private String isCheck = "2";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class InsulinChooseDeviceActivity extends XYSoftUIBaseActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fl_insulin_choose_bg_first:
-                isCheck = "1";
+                isCheck = "2";
                 flAllFirst.setBackground(getResources().getDrawable(R.drawable.shape_green_tran_12_5));
                 cbCheckFirst.setVisibility(View.VISIBLE);
                 tvContentFirst.setTextColor(getResources().getColor(R.color.main_green));
@@ -83,7 +83,7 @@ public class InsulinChooseDeviceActivity extends XYSoftUIBaseActivity implements
                 tvContentSecond.setTextColor(getResources().getColor(R.color.black_text));
                 break;
             case R.id.fl_insulin_choose_bg_second:
-                isCheck = "2";
+                isCheck = "1";
                 flAllFirst.setBackground(getResources().getDrawable(R.drawable.shape_grey_f8_5));
                 cbCheckFirst.setVisibility(View.GONE);
                 tvContentFirst.setTextColor(getResources().getColor(R.color.black_text));

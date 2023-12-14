@@ -60,6 +60,7 @@ import com.vice.bloodpressure.bean.RongUserBean;
 import com.vice.bloodpressure.bean.RongYunBean;
 import com.vice.bloodpressure.bean.ShopTitleBean;
 import com.vice.bloodpressure.bean.UpdateBean;
+import com.vice.bloodpressure.bean.insulin.RecordDataInfo;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
@@ -70,8 +71,10 @@ import com.vice.bloodpressure.ui.fragment.main.OutOfHospitalBindFragment;
 import com.vice.bloodpressure.ui.fragment.main.OutOfHospitalFragment;
 import com.vice.bloodpressure.ui.fragment.main.RegistrationFragment;
 import com.vice.bloodpressure.ui.fragment.main.UserFragment;
+import com.vice.bloodpressure.utils.BleMSTUtils;
 import com.vice.bloodpressure.utils.BlueUtils;
 import com.vice.bloodpressure.utils.DialogUtils;
+import com.vice.bloodpressure.utils.MySPUtils;
 import com.vice.bloodpressure.utils.NotificationUtils;
 import com.vice.bloodpressure.utils.ScreenUtils;
 import com.vice.bloodpressure.utils.UpdateUtils;
@@ -222,6 +225,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BlueUtils.init(this,getHandler());
+        //迈士通蓝牙回调
+        initMSTBlue();
         BlueUtils.callBackListener(this,getHandler());
         regToWx();
         //添加第一个Fragment
@@ -243,6 +248,75 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         //设置用户信息代理
         setRongImUserInfo();
         ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.main_home).init();
+    }
+
+    private void initMSTBlue() {
+        String mac = MySPUtils.getString(getPageContext(),MySPUtils.BLUE_MAC);
+        if (!TextUtils.isEmpty(mac)){
+            BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
+        }
+
+        BleMSTUtils.getInstance().setOnDataCallBack(new BleMSTUtils.onDataCallBack() {
+
+            @Override
+            public void onDisConnect() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2_000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        BleMSTUtils.getInstance().connect(getPageContext(), mac);
+                    }
+                });
+            }
+
+            @Override
+            public void onStateData(List<String> list) {
+                //读取系统运行状态数据
+                if (list.size() == 80) {
+                    //获取需要的数据    +6
+                }
+                for (int i = 0; i < list.size(); i++) {
+                    Log.i("xjh", i + "==" + list.get(i));
+
+                }
+            }
+
+            @Override
+            public void onBigRecord(List<RecordDataInfo> bigRecordInfo) {
+                //大剂量
+                for (int i = 0; i < bigRecordInfo.size(); i++) {
+                    Log.i("xjh", "bigRecordInfo==" + bigRecordInfo.get(i).toString());
+                }
+            }
+
+            @Override
+            public void onSunRecord(List<RecordDataInfo> sunRecordInfos) {
+                //日总量
+                for (int i = 0; i < sunRecordInfos.size(); i++) {
+                    Log.i("xjh", "bigRecordInfo==" + sunRecordInfos.get(i).toString());
+                }
+            }
+
+            @Override
+            public void onErrorRecord(List<RecordDataInfo> errorRecordInfos) {
+                //警示数据
+                for (int i = 0; i < errorRecordInfos.size(); i++) {
+                    Log.i("xjh", "bigRecordInfo==" + errorRecordInfos.get(i).toString());
+                }
+            }
+
+            @Override
+            public void onBaseRecord(List<RecordDataInfo> baseRecordInfo) {
+                //基础率数据
+                for (int i = 0; i < baseRecordInfo.size(); i++) {
+                    Log.i("xjh", "bigRecordInfo==" + baseRecordInfo.get(i).toString());
+                }
+            }
+        });
     }
 
 

@@ -21,9 +21,7 @@ public abstract class BaseEventBusFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (this.getClass().isAnnotationPresent(BindEventBus.class)) {
-            EventBusUtils.register(this);
-        }
+        EventBusUtils.register(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -61,8 +59,6 @@ public abstract class BaseEventBusFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (this.getClass().isAnnotationPresent(BindEventBus.class)) {
-            EventBusUtils.unregister(this);
-        }
+        EventBusUtils.unregister(this);
     }
 }
