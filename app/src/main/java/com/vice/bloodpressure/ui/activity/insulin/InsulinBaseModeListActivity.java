@@ -320,7 +320,7 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                             return;
                         }
                         bleTips.setVisibility(View.VISIBLE);
-                        bleTips.setText("正在同步数据,请您稍等片刻");
+                        bleTips.setText("同步数据,请稍后");
                         ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
                         ivRefresh.setVisibility(View.GONE);
                         ivLoadRefresh.setVisibility(View.VISIBLE);
@@ -340,7 +340,7 @@ public class InsulinBaseModeListActivity extends XYSoftUIBaseActivity implements
                         return;
                     }
                     bleTips.setVisibility(View.VISIBLE);
-                    bleTips.setText("正在同步数据,请您稍等片刻");
+                    bleTips.setText("同步数据,请稍后");
                     ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
                     ivRefresh.setVisibility(View.GONE);
                     ivLoadRefresh.setVisibility(View.VISIBLE);

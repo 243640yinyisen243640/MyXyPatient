@@ -1,6 +1,6 @@
 package com.vice.bloodpressure.event;
 
-import com.vice.bloodpressure.bean.insulin.RecordDataInfo;
+import com.vice.bloodpressure.bean.insulin.MSTRecordDataInfo;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class MSTBlueEventBus {
     //4 警示数据
     //5 基础率数据
     private int type;
-    private List<RecordDataInfo> recordDataInfoList;
+    private List<MSTRecordDataInfo> recordDataInfoList;
     private List<String> stringList;
 
     public int getType() {
@@ -28,11 +28,11 @@ public class MSTBlueEventBus {
         this.type = type;
     }
 
-    public List<RecordDataInfo> getRecordDataInfoList() {
+    public List<MSTRecordDataInfo> getRecordDataInfoList() {
         return recordDataInfoList;
     }
 
-    public void setRecordDataInfoList(List<RecordDataInfo> recordDataInfoList) {
+    public void setRecordDataInfoList(List<MSTRecordDataInfo> recordDataInfoList) {
         this.recordDataInfoList = recordDataInfoList;
     }
 

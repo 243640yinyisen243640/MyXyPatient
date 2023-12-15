@@ -60,8 +60,9 @@ import com.vice.bloodpressure.bean.RongUserBean;
 import com.vice.bloodpressure.bean.RongYunBean;
 import com.vice.bloodpressure.bean.ShopTitleBean;
 import com.vice.bloodpressure.bean.UpdateBean;
-import com.vice.bloodpressure.bean.insulin.RecordDataInfo;
+import com.vice.bloodpressure.bean.insulin.MSTRecordDataInfo;
 import com.vice.bloodpressure.constant.ConstantParam;
+import com.vice.bloodpressure.event.MSTBlueEventBus;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.mydevice.InputImeiActivity;
@@ -268,7 +269,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        BleMSTUtils.getInstance().connect(getPageContext(), mac);
+                        BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
                     }
                 });
             }
@@ -276,45 +277,62 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             @Override
             public void onStateData(List<String> list) {
                 //读取系统运行状态数据
+                Log.i("xjh", "onStateData: ");
                 if (list.size() == 80) {
                     //获取需要的数据    +6
-                }
-                for (int i = 0; i < list.size(); i++) {
-                    Log.i("xjh", i + "==" + list.get(i));
-
+                    MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
+                    mstBlueEventBus.setType(1);
+                    mstBlueEventBus.setStringList(list);
+                    EventBusUtils.post(mstBlueEventBus);
                 }
             }
 
             @Override
-            public void onBigRecord(List<RecordDataInfo> bigRecordInfo) {
+            public void onBigRecord(List<MSTRecordDataInfo> bigRecordInfo) {
                 //大剂量
                 for (int i = 0; i < bigRecordInfo.size(); i++) {
                     Log.i("xjh", "bigRecordInfo==" + bigRecordInfo.get(i).toString());
                 }
+                MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
+                mstBlueEventBus.setType(2);
+                mstBlueEventBus.setRecordDataInfoList(bigRecordInfo);
+                EventBusUtils.post(mstBlueEventBus);
             }
 
             @Override
-            public void onSunRecord(List<RecordDataInfo> sunRecordInfos) {
+            public void onSunRecord(List<MSTRecordDataInfo> sunRecordInfos) {
                 //日总量
                 for (int i = 0; i < sunRecordInfos.size(); i++) {
                     Log.i("xjh", "bigRecordInfo==" + sunRecordInfos.get(i).toString());
                 }
+                MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
+                mstBlueEventBus.setType(3);
+                mstBlueEventBus.setRecordDataInfoList(sunRecordInfos);
+                EventBusUtils.post(mstBlueEventBus);
             }
 
             @Override
-            public void onErrorRecord(List<RecordDataInfo> errorRecordInfos) {
+            public void onErrorRecord(List<MSTRecordDataInfo> errorRecordInfos) {
                 //警示数据
                 for (int i = 0; i < errorRecordInfos.size(); i++) {
                     Log.i("xjh", "bigRecordInfo==" + errorRecordInfos.get(i).toString());
                 }
+                MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
+                mstBlueEventBus.setType(4);
+                mstBlueEventBus.setRecordDataInfoList(errorRecordInfos);
+                EventBusUtils.post(mstBlueEventBus);
             }
 
             @Override
-            public void onBaseRecord(List<RecordDataInfo> baseRecordInfo) {
+            public void onBaseRecord(List<MSTRecordDataInfo> baseRecordInfo) {
                 //基础率数据
                 for (int i = 0; i < baseRecordInfo.size(); i++) {
                     Log.i("xjh", "bigRecordInfo==" + baseRecordInfo.get(i).toString());
                 }
+                MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
+                mstBlueEventBus.setType(5);
+                mstBlueEventBus.setRecordDataInfoList(baseRecordInfo);
+                EventBusUtils.post(mstBlueEventBus);
             }
         });
     }

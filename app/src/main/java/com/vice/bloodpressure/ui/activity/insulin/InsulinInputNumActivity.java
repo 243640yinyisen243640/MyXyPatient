@@ -42,7 +42,7 @@ public class InsulinInputNumActivity extends XYSoftUIBaseActivity {
             MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, eqcode);
             MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, "2");
             MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NUM, num);
-            BleMSTUtils.getInstance().connect(getPageContext(), mac);
+            BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
             finish();
         });
     }

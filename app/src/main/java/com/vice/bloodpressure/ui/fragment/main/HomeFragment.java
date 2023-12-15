@@ -708,13 +708,13 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
         list.add(new XueYaFragment());
         list.add(new InjectionFragment());
         list.add(new BmiFragment());
-        list.add(new InsulinFragment());
+        list.add(InsulinFragment.getInstance(1));
 
         list.add(new XueTangFragment());
         list.add(new XueYaFragment());
         list.add(new InjectionFragment());
         list.add(new BmiFragment());
-        list.add(new InsulinFragment());
+        list.add(InsulinFragment.getInstance(2));
 
         list.add(new XueTangFragment());
         MyFragmentStatePagerAdapter adapter = new MyFragmentStatePagerAdapter(getChildFragmentManager(), list);

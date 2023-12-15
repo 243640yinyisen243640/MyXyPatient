@@ -23,19 +23,26 @@ import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.insulin.InsulinInfusionRecordAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
+import com.vice.bloodpressure.bean.insulin.MSTRecordDataInfo;
 import com.vice.bloodpressure.bean.insulin.RecordBigInfo;
 import com.vice.bloodpressure.bean.insulin.RecordDataInfo;
 import com.vice.bloodpressure.bean.insulin.RecordErrorInfo;
 import com.vice.bloodpressure.bean.insulin.RecordInfo;
+import com.vice.bloodpressure.event.MSTBlueEventBus;
 import com.vice.bloodpressure.ui.activity.injection.InjectionAddDeviceNoActivity;
+import com.vice.bloodpressure.utils.BleMSTUtils;
 import com.vice.bloodpressure.utils.BleUtils;
 import com.vice.bloodpressure.utils.MySPUtils;
 import com.vice.bloodpressure.view.LoadingImageView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +80,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBusUtils.register(this);
         topViewManager().titleTextView().setText("输注记录");
         containerView().addView(initView());
         initListner();
@@ -182,7 +190,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                             return;
                         }
                         bleTips.setVisibility(View.VISIBLE);
-                        bleTips.setText("正在同步数据,请您稍等片刻");
+                        bleTips.setText("同步数据,请稍后");
                         ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
                         ivRefresh.setVisibility(View.GONE);
                         ivLoadRefresh.setVisibility(View.VISIBLE);
@@ -201,7 +209,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         return;
                     }
                     bleTips.setVisibility(View.VISIBLE);
-                    bleTips.setText("正在同步数据,请您稍等片刻");
+                    bleTips.setText("同步数据,请稍后");
                     ivLoadRefresh.setBackgroundResource(R.drawable.loading_progress_bar);
                     ivRefresh.setVisibility(View.GONE);
                     ivLoadRefresh.setVisibility(View.VISIBLE);
@@ -308,6 +316,18 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         });
                     }
                 });
+                //读取日总量
+                if (!BleMSTUtils.getInstance().isConnect()) {
+                    BleMSTUtils.getInstance().connect(getPageContext(), mac);
+                    return;
+                }
+                BleMSTUtils.getInstance().setRead();
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 06 AA "));
                 break;
             case "2":
                 //回传大剂量记录
@@ -354,6 +374,19 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         });
                     }
                 });
+
+                //读取大剂量回顾数据（所有）
+                if (!BleMSTUtils.getInstance().isConnect()) {
+                    BleMSTUtils.getInstance().connect(getPageContext(), mac);
+                    return;
+                }
+                BleMSTUtils.getInstance().setRead();
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 01 AA "));
                 break;
             case "3":
                 //基础量记录
@@ -398,6 +431,20 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         });
                     }
                 });
+
+                //读取基础率回顾数据
+                if (!BleMSTUtils.getInstance().isConnect()) {
+                    BleMSTUtils.getInstance().connect(getPageContext(), mac);
+                    return;
+                }
+
+                BleMSTUtils.getInstance().setRead();
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 02 AA "));
                 break;
             case "4":
                 //回传报警记录
@@ -443,6 +490,19 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                         });
                     }
                 });
+
+                //读取警示回顾
+                if (!BleMSTUtils.getInstance().isConnect()) {
+                    BleMSTUtils.getInstance().connect(getPageContext(), mac);
+                    return;
+                }
+                BleMSTUtils.getInstance().setRead();
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 03 AA "));
                 break;
             default:
                 break;
@@ -465,6 +525,20 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBaseBlueData(MSTBlueEventBus event) {
+        if (event != null && event.getType() != 1) {
+            List<MSTRecordDataInfo> list = event.getRecordDataInfoList();
+            isClick = true;
+            time = -1;
+            List<RecordDataInfo>list1 = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                list1.add(new RecordDataInfo(list.get(i).getDatetime(),list.get(i).getValue()));
+            }
+            setLvDataInfo(list1);
+        }
+    }
+
     private void setBg(TextView tvCheck, TextView tvUncheck1, TextView tvUncheck2, TextView tvUncheck3) {
         tvCheck.setBackground(getResources().getDrawable(R.drawable.shape_bg_main_green_90));
         tvCheck.setTextColor(getResources().getColor(R.color.white));
@@ -477,4 +551,9 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusUtils.unregister(this);
+    }
 }

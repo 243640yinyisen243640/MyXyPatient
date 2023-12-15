@@ -3,6 +3,7 @@ package com.vice.bloodpressure.ui.fragment.insulin;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -81,6 +82,13 @@ public class InsulinFragment extends BaseEventBusFragment {
 
     private InsulinDeviceInfo data;
 
+    public static InsulinFragment getInstance(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
+        InsulinFragment insulinFragment = new InsulinFragment();
+        insulinFragment.setArguments(bundle);
+        return insulinFragment;
+    }
 
     @Override
     protected int getLayoutId() {
@@ -224,26 +232,32 @@ public class InsulinFragment extends BaseEventBusFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBaseBlueData(MSTBlueEventBus event) {
+        int type = getArguments().getInt("type");
+        if (type != 1) {
+            return;
+        }
         if (event != null && event.getType() == 1) {
+            Log.i("xjh", "onBaseBlueData: ");
             List<String> list = event.getStringList();
             if (list.size() == 80) {
                 //48 49
                 int valueInt = BleMSTUtils.hexToInt(list.get(55) + list.get(54));
-                double valueDouble = valueInt/10.0;
+                double valueDouble = valueInt / 10.0;
                 value = valueDouble + "";
                 //70 71
                 int powerInt = BleMSTUtils.hexToInt(list.get(77) + list.get(76));
-                if (powerInt == 4){
+                if (powerInt == 4) {
                     power = "100";
-                }else if (powerInt == 3){
+                } else if (powerInt == 3) {
                     power = "75";
-                }else if (powerInt == 2){
+                } else if (powerInt == 2) {
                     power = "50";
-                }else if (powerInt == 1){
+                } else if (powerInt == 1) {
                     power = "25";
-                }else {
+                } else {
                     power = "0";
                 }
+                time = -1;
                 updateDevice();
             }
         }
@@ -328,7 +342,7 @@ public class InsulinFragment extends BaseEventBusFragment {
                         ivLoadRefresh.setVisibility(View.VISIBLE);
                         ivLoadRefresh.startLoadingAnim();
                         mainBleTips.setVisibility(View.VISIBLE);
-                        mainBleTips.setText("正在同步数据,请您稍等片刻");
+                        mainBleTips.setText("同步数据,请稍后");
                         //凯联
                         getBaseData1(mac);
                         //迈士通
@@ -364,12 +378,12 @@ public class InsulinFragment extends BaseEventBusFragment {
                     ivLoadRefresh.setVisibility(View.VISIBLE);
                     ivLoadRefresh.startLoadingAnim();
                     mainBleTips.setVisibility(View.VISIBLE);
-                    mainBleTips.setText("正在同步数据,请您稍等片刻");
+                    mainBleTips.setText("同步数据,请稍后");
+                    time = 60;
+                    getHandler().sendEmptyMessage(10);
                     getBaseData1(mac);
                     //迈士通
                     getBaseDataMST(mac);
-                    time = 60;
-                    getHandler().sendEmptyMessage(10);
                 }
                 break;
             case R.id.tv_main_insulin_num:
@@ -387,15 +401,15 @@ public class InsulinFragment extends BaseEventBusFragment {
             return;
         }
         if (!BleMSTUtils.getInstance().isConnect()) {
-            BleMSTUtils.getInstance().connect(getPageContext(), mac);
+            BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
             return;
         }
+        BleMSTUtils.getInstance().setRead();
         try {
             Thread.sleep(2_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        BleMSTUtils.getInstance().setRead();
         BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 00 AA "));
     }
 

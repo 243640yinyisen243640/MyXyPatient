@@ -9,20 +9,17 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.vice.bloodpressure.bean.insulin.RecordDataInfo;
+import com.vice.bloodpressure.bean.insulin.MSTRecordDataInfo;
 
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static android.bluetooth.BluetoothDevice.PHY_LE_1M_MASK;
-import static android.bluetooth.BluetoothDevice.TRANSPORT_LE;
 
 /**
  * 迈世通蓝牙
@@ -70,13 +67,14 @@ public class BleMSTUtils {
         if (bluetoothDevice == null) {
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback, TRANSPORT_LE, PHY_LE_1M_MASK);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback, TRANSPORT_LE);
-        } else {
-            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback);
-        }
+        //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        //            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback, TRANSPORT_LE, PHY_LE_1M_MASK);
+        //        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        //            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback, TRANSPORT_LE);
+        //        } else {
+        //            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback);
+        //        }
+        bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback);
     }
 
     public void setOnDataCallBack(onDataCallBack callBack) {
@@ -117,7 +115,6 @@ public class BleMSTUtils {
     }
 
     private BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
-
 
 
         @Override
@@ -231,7 +228,7 @@ public class BleMSTUtils {
                 byte14 = buf.get();
 
                 if (TextUtils.equals("AA", bytesToHex(new byte[]{byte06}))) {
-                    List<RecordDataInfo> infos = new ArrayList<>();
+                    List<MSTRecordDataInfo> infos = new ArrayList<>();
                     infos.addAll(recordBigInfos);
                     recordBigInfos.clear();
                     //完成读取
@@ -239,6 +236,7 @@ public class BleMSTUtils {
                         callBack.onBigRecord(infos);
                     }
                 } else {
+                    String num = String.valueOf(hexToInt(bytesToHex(new byte[]{byte06})));
                     String year = String.valueOf(hexToInt(bytesToHex(new byte[]{byte07})));
                     String month = String.valueOf(hexToInt(bytesToHex(new byte[]{byte08})));
                     String date = String.valueOf(hexToInt(bytesToHex(new byte[]{byte09})));
@@ -250,7 +248,7 @@ public class BleMSTUtils {
                     String data2 = bytesToHex(new byte[]{byte14});
                     int data = hexToInt(data2 + data1);
                     double dataDouble = data / 10.0;
-                    RecordDataInfo recordInfo = new RecordDataInfo(datetime, dataDouble + "");
+                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, dataDouble + "");
                     recordBigInfos.add(recordInfo);
                 }
             }
@@ -268,7 +266,7 @@ public class BleMSTUtils {
                 byte14 = buf.get();
 
                 if (TextUtils.equals("AA", bytesToHex(new byte[]{byte06}))) {
-                    List<RecordDataInfo> infos = new ArrayList<>();
+                    List<MSTRecordDataInfo> infos = new ArrayList<>();
                     infos.addAll(recordErrorInfos);
                     recordErrorInfos.clear();
                     //完成读取
@@ -276,6 +274,7 @@ public class BleMSTUtils {
                         callBack.onErrorRecord(infos);
                     }
                 } else {
+                    String num = String.valueOf(hexToInt(bytesToHex(new byte[]{byte06})));
                     String year = String.valueOf(hexToInt(bytesToHex(new byte[]{byte07})));
                     String month = String.valueOf(hexToInt(bytesToHex(new byte[]{byte08})));
                     String date = String.valueOf(hexToInt(bytesToHex(new byte[]{byte09})));
@@ -286,7 +285,7 @@ public class BleMSTUtils {
                     String data1 = bytesToHex(new byte[]{byte13});
                     String data2 = bytesToHex(new byte[]{byte14});
                     int data = hexToInt(data2 + data1);
-                    RecordDataInfo recordInfo = new RecordDataInfo(datetime, data + "");
+                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, data + "");
                     recordErrorInfos.add(recordInfo);
                 }
             }
@@ -304,7 +303,7 @@ public class BleMSTUtils {
                 byte14 = buf.get();
 
                 if (TextUtils.equals("AA", bytesToHex(new byte[]{byte06}))) {
-                    List<RecordDataInfo> infos = new ArrayList<>();
+                    List<MSTRecordDataInfo> infos = new ArrayList<>();
                     infos.addAll(recordSunInfos);
                     recordSunInfos.clear();
                     //完成读取
@@ -312,6 +311,7 @@ public class BleMSTUtils {
                         callBack.onSunRecord(infos);
                     }
                 } else {
+                    String num = String.valueOf(hexToInt(bytesToHex(new byte[]{byte06})));
                     String year = String.valueOf(hexToInt(bytesToHex(new byte[]{byte07})));
                     String month = String.valueOf(hexToInt(bytesToHex(new byte[]{byte08})));
                     String date = String.valueOf(hexToInt(bytesToHex(new byte[]{byte09})));
@@ -323,7 +323,7 @@ public class BleMSTUtils {
                     String data2 = bytesToHex(new byte[]{byte14});
                     int data = hexToInt(data2 + data1);
                     double dataDouble = data / 10.0;
-                    RecordDataInfo recordInfo = new RecordDataInfo(datetime, dataDouble + "");
+                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, dataDouble + "");
                     recordSunInfos.add(recordInfo);
                 }
             }
@@ -334,7 +334,7 @@ public class BleMSTUtils {
                     byte06 = buf.get();
                     if (TextUtils.equals("AA", bytesToHex(new byte[]{byte06}))) {
                         //数据结束
-                        List<RecordDataInfo> infos = new ArrayList<>();
+                        List<MSTRecordDataInfo> infos = new ArrayList<>();
                         infos.addAll(recordBaseInfos);
                         recordBaseInfos.clear();
                         if (callBack != null) {
@@ -412,12 +412,13 @@ public class BleMSTUtils {
                         doubleList.add(dataDouble);
                     }
 
-                    double doubles = 0;
+                    BigDecimal doubles = new BigDecimal(0);
                     for (int i = 0; i < doubleList.size(); i++) {
-                        doubles = doubles + doubleList.get(i);
+                        doubles = doubles .add(BigDecimal.valueOf(doubleList.get(i)));
                     }
-                    double dataDouble = doubles / 48.0;
-                    RecordDataInfo recordInfo = new RecordDataInfo(datetime, dataDouble + "");
+                    //                    double dataDouble = doubles / 48.0;
+                    //                    String dataValue = new DecimalFormat("0.00").format(dataDouble);
+                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, doubles + "");
 
                     //一条记录
                     recordBaseInfos.add(recordInfo);
@@ -449,7 +450,7 @@ public class BleMSTUtils {
                     if (TextUtils.equals("AA", bytesToHex(new byte[]{byte16}))) {
                         //数据结束
                         stringList.clear();
-                        List<RecordDataInfo> infos = new ArrayList<>();
+                        List<MSTRecordDataInfo> infos = new ArrayList<>();
                         infos.addAll(recordBaseInfos);
                         recordBaseInfos.clear();
                         if (callBack != null) {
@@ -512,12 +513,13 @@ public class BleMSTUtils {
                         doubleList.add(dataDouble);
                     }
 
-                    double doubles = 0;
+                    BigDecimal doubles = new BigDecimal(0);
                     for (int i = 0; i < doubleList.size(); i++) {
-                        doubles = doubles + doubleList.get(i);
+                        doubles = doubles .add(BigDecimal.valueOf(doubleList.get(i)));
                     }
-                    double dataDouble = doubles / 48.0;
-                    RecordDataInfo recordInfo = new RecordDataInfo(datetime, dataDouble + "");
+//                    double dataDouble = doubles / 48.0;
+//                    String dataValue = new DecimalFormat("0.00").format(dataDouble);
+                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, doubles+"");
 
                     //一条记录
                     recordBaseInfos.add(recordInfo);
@@ -623,10 +625,10 @@ public class BleMSTUtils {
         recordSunInfos.clear();
     }
 
-    private final List<RecordDataInfo> recordBigInfos = new ArrayList<>();
-    private final List<RecordDataInfo> recordErrorInfos = new ArrayList<>();
-    private final List<RecordDataInfo> recordSunInfos = new ArrayList<>();
-    public final List<RecordDataInfo> recordBaseInfos = new ArrayList<>();
+    private final List<MSTRecordDataInfo> recordBigInfos = new ArrayList<>();
+    private final List<MSTRecordDataInfo> recordErrorInfos = new ArrayList<>();
+    private final List<MSTRecordDataInfo> recordSunInfos = new ArrayList<>();
+    public final List<MSTRecordDataInfo> recordBaseInfos = new ArrayList<>();
 
     private final List<String> stringList = new ArrayList<>();
 
@@ -673,16 +675,16 @@ public class BleMSTUtils {
         void onStateData(List<String> list);
 
         //大剂量
-        void onBigRecord(List<RecordDataInfo> bigRecordInfos);
+        void onBigRecord(List<MSTRecordDataInfo> bigRecordInfos);
 
         //日总量
-        void onSunRecord(List<RecordDataInfo> sunRecordInfos);
+        void onSunRecord(List<MSTRecordDataInfo> sunRecordInfos);
 
         //警示数据
-        void onErrorRecord(List<RecordDataInfo> errorRecordInfos);
+        void onErrorRecord(List<MSTRecordDataInfo> errorRecordInfos);
 
         //基础率数据
-        void onBaseRecord(List<RecordDataInfo> baseRecordInfo);
+        void onBaseRecord(List<MSTRecordDataInfo> baseRecordInfo);
 
     }
 
