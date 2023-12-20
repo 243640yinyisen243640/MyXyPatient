@@ -10,7 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vice.bloodpressure.R;
-import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
+import com.vice.bloodpressure.bean.insulin.PlanInfo;
+import com.vice.bloodpressure.imp.AdapterClickImp;
 
 import java.util.List;
 
@@ -22,13 +23,15 @@ import java.util.List;
  */
 public class InsulinInfusionPlanAdapter extends RecyclerView.Adapter<InsulinInfusionPlanAdapter.ViewHolder> {
     private Context context;
-    private List<InsulinDeviceInfo> list;
+    private List<PlanInfo> list;
     private String type;
+    private AdapterClickImp clickImp;
 
-    public InsulinInfusionPlanAdapter(Context context, List<InsulinDeviceInfo> list, String type) {
+    public InsulinInfusionPlanAdapter(Context context, List<PlanInfo> list, String type, AdapterClickImp clickImp) {
         this.context = context;
         this.list = list;
         this.type = type;
+        this.clickImp = clickImp;
     }
 
 
@@ -42,8 +45,8 @@ public class InsulinInfusionPlanAdapter extends RecyclerView.Adapter<InsulinInfu
 
     @Override
     public void onBindViewHolder(@NonNull InsulinInfusionPlanAdapter.ViewHolder holder, int position) {
-        holder.tvTime.setText(list.get(position).getTime());
-        holder.tvName.setText(list.get(position).getValue());
+        holder.tvTime.setText(list.get(position).getAddtime());
+        holder.tvValues.setText(list.get(position).getValue());
 
     }
 
@@ -55,12 +58,12 @@ public class InsulinInfusionPlanAdapter extends RecyclerView.Adapter<InsulinInfu
     protected class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTime;
-        TextView tvName;
+        TextView tvValues;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTime = itemView.findViewById(R.id.tv_insulin_infusion_plan_time);
-            tvName = itemView.findViewById(R.id.tv_insulin_infusion_plan_values);
+            tvValues = itemView.findViewById(R.id.tv_insulin_infusion_plan_values);
         }
     }
 

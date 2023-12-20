@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.insulin.InsulinInfusionPlanAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
-import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
+import com.vice.bloodpressure.bean.insulin.PlanInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,8 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
     private RecyclerView recyclerView;
     private SmartRefreshLayout smartRefreshLayout;
     private InsulinInfusionPlanAdapter adapter;
-    private List<InsulinDeviceInfo> infoList = new ArrayList<>();
-    private List<InsulinDeviceInfo> infoListTemp = new ArrayList<>();
+    private List<PlanInfo> infoList = new ArrayList<>();
+    private List<PlanInfo> infoListTemp = new ArrayList<>();
     private int page = 1;
 
     private LinearLayout llLargeDose;
@@ -64,6 +65,32 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
         getData();
     }
 
+
+    /**
+     * 获取方案未读数
+     */
+    private void getUnReadNum() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        DataManager.getusereqplanunread(loginBean.getToken(), (call, response) -> {
+            if (response.code == 200) {
+                PlanInfo planInfo = (PlanInfo) response.object;
+
+                int big = Integer.parseInt(planInfo.getBig());
+                int base_rate = Integer.parseInt(planInfo.getBase_rate());
+                if (big > 0) {
+                    tvLargeDoseNum.setVisibility(View.VISIBLE);
+                    tvLargeDoseNum.setText(String.valueOf(big));
+                }
+                if (base_rate > 0) {
+                    tvBasalRateNum.setVisibility(View.VISIBLE);
+                    tvBasalRateNum.setText(String.valueOf(big));
+                }
+            }
+        }, (call, t) -> {
+            //            ToastUtils.showToast("网络连接不可用，请稍后重试！");
+        });
+    }
+
     private void initReFresh() {
         //下拉刷新
         smartRefreshLayout.setEnableRefresh(false);
@@ -86,12 +113,13 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
     private void getData() {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
-        Call<String> requestCall = DataManager.getInjectionHistoryList(page, token, (call, response) -> {
+        Call<String> requestCall = DataManager.getusereqplan(token, type, page + "", (call, response) -> {
             if (200 == response.code) {
+                getUnReadNum();
                 if (page == 1) {
                     infoList.clear();
                 }
-                infoListTemp = (List<InsulinDeviceInfo>) response.object;
+                infoListTemp = (List<PlanInfo>) response.object;
                 if (infoListTemp != null && infoListTemp.size() > 0) {
                     if (infoListTemp.size() < 10) {
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
@@ -125,7 +153,18 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
         recyclerView = view.findViewById(R.id.rv_infusion_plan);
         llLast = view.findViewById(R.id.ll_insulin_infusion_plan_last);
         tvNoData = view.findViewById(R.id.tv_insulin_plan_no_data);
-        adapter = new InsulinInfusionPlanAdapter(getPageContext(), infoList, type);
+        adapter = new InsulinInfusionPlanAdapter(getPageContext(), infoList, type, (view1, position) -> {
+            switch (view1.getId()) {
+                case R.id.ll_insulin_infusion_plan_click:
+                    Intent intent = new Intent(getPageContext(), InsulinPlanDetailsActivity.class);
+                    intent.putExtra("type", type);
+                    intent.putExtra("time", infoList.get(position).getAddtime());
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getPageContext()));
         recyclerView.setAdapter(adapter);
         return view;

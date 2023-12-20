@@ -31,6 +31,18 @@ public class InsulinDeviceInfo {
     private String datetime;
 
     private String time;
+    /**
+     * 输注方案未读个数
+     */
+    private String eq_plan;
+
+    public String getEq_plan() {
+        return eq_plan;
+    }
+
+    public void setEq_plan(String eq_plan) {
+        this.eq_plan = eq_plan;
+    }
 
     public String getTime() {
         return time;

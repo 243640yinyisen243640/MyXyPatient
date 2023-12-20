@@ -51,8 +51,8 @@
             android:id="@+id/fl_infusion_plan_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginStart="13dp">
+            android:layout_marginStart="13dp"
+            android:visibility="visible">
 
 
             <TextView
@@ -80,7 +80,8 @@
                 android:gravity="center"
                 android:text="99+"
                 android:textColor="@color/white_text"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:visibility="gone" />
         </FrameLayout>
 
     </LinearLayout>

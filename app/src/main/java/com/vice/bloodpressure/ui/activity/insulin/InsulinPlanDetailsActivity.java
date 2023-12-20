@@ -27,7 +27,7 @@ import java.util.List;
  * 作者: beauty
  * 类名:
  * 传参:
- * 描述:
+ * 描述:方案详情
  */
 public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_FORPROGRAM = 10;
@@ -37,12 +37,17 @@ public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements 
     private CustomViewPager viewPager;
     private List<Fragment> fragments;
     private InjectionBaseData injectionBaseData;
+    /**
+     * 1大剂量 2基础率
+     */
+    private String type;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String time = getIntent().getStringExtra("time");
+        type = getIntent().getStringExtra("type");
         topViewManager().titleTextView().setText(time);
         containerView().addView(initView());
         initListener();
@@ -73,7 +78,7 @@ public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements 
         fragments.add(baseRateFragment);
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
-        viewPager.setCurrentItem(0);//默认选中项
+        viewPager.setCurrentItem(Integer.parseInt(type) - 1);//默认选中项
         viewPager.setOffscreenPageLimit(fragments.size());
     }
 

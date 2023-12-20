@@ -30,6 +30,7 @@ import com.vice.bloodpressure.adapter.insulin.InsulinInfusionRecordAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
 import com.vice.bloodpressure.bean.insulin.MSTRecordDataInfo;
+import com.vice.bloodpressure.bean.insulin.PlanInfo;
 import com.vice.bloodpressure.bean.insulin.RecordBigInfo;
 import com.vice.bloodpressure.bean.insulin.RecordDataInfo;
 import com.vice.bloodpressure.bean.insulin.RecordErrorInfo;
@@ -85,8 +86,32 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         containerView().addView(initView());
         initListner();
         mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+        getUnReadNum();
         getData();
     }
+
+    /**
+     * 获取方案未读数
+     */
+    private void getUnReadNum() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        DataManager.getusereqplanunread(loginBean.getToken(), (call, response) -> {
+            if (response.code == 200) {
+                PlanInfo planInfo = (PlanInfo) response.object;
+
+                int big = Integer.parseInt(planInfo.getBig());
+                int base_rate = Integer.parseInt(planInfo.getBase_rate());
+                int allNum = big + base_rate;
+                if (allNum > 0) {
+                    tvPlanNum.setVisibility(View.VISIBLE);
+                    tvPlanNum.setText(String.valueOf(allNum));
+                }
+            }
+        }, (call, t) -> {
+            ToastUtils.showToast("网络连接不可用，请稍后重试！");
+        });
+    }
+
 
     private void initListner() {
         tvDeviceManage.setOnClickListener(this);
@@ -531,9 +556,9 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
             List<MSTRecordDataInfo> list = event.getRecordDataInfoList();
             isClick = true;
             time = -1;
-            List<RecordDataInfo>list1 = new ArrayList<>();
+            List<RecordDataInfo> list1 = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
-                list1.add(new RecordDataInfo(list.get(i).getDatetime(),list.get(i).getValue()));
+                list1.add(new RecordDataInfo(list.get(i).getDatetime(), list.get(i).getValue()));
             }
             setLvDataInfo(list1);
         }

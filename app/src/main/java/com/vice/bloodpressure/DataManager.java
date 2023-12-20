@@ -16,6 +16,7 @@ import com.vice.bloodpressure.bean.injection.InjectionHistoryInfo;
 import com.vice.bloodpressure.bean.injection.PlanNumInfo;
 import com.vice.bloodpressure.bean.insulin.InsulinDeviceAllInfo;
 import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
+import com.vice.bloodpressure.bean.insulin.PlanInfo;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.retrofit.BaseNetworkUtils;
 import com.vice.bloodpressure.retrofit.HHSoftBaseResponse;
@@ -460,6 +461,7 @@ public class DataManager {
 
     /**
      * 设备绑定
+     *
      * @param eqcode
      * @param token
      * @param successCallBack
@@ -471,5 +473,36 @@ public class DataManager {
         map.put("eqcode", eqcode);
         map.put("access_token", token);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/bindeqinsulin", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * 获取方案未读数
+     *
+     * @param token
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> getusereqplanunread(String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, PlanInfo.class, "/getusereqplanunread", map, successCallBack, failureCallBack);
+    }
+
+    /**
+     * 方案列表
+     * @param token
+     * @param type 1大剂量 2基础率
+     * @param page
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+    public static Call<String> getusereqplan(String token,String type,String page, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("type", type);
+        map.put("page", page);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, PlanInfo.class, "/getusereqplan", map, successCallBack, failureCallBack);
     }
 }

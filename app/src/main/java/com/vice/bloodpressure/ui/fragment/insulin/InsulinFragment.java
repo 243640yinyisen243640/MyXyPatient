@@ -26,7 +26,6 @@ import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
 import com.vice.bloodpressure.event.MSTBlueEventBus;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
-import com.vice.bloodpressure.ui.activity.insulin.InsulinDeviceListActivity;
 import com.vice.bloodpressure.ui.activity.insulin.InsulinInfusionRecordListActivity;
 import com.vice.bloodpressure.ui.activity.insulin.ScanBlueActivity;
 import com.vice.bloodpressure.utils.BleMSTUtils;
@@ -286,15 +285,18 @@ public class InsulinFragment extends BaseEventBusFragment {
         switch (view.getId()) {
 
             case R.id.tv_main_insulin_record:
-                String type = "1";
-                if ("1".equals(type)) {
-                    intent = new Intent(getActivity(), InsulinInfusionRecordListActivity.class);
-                    startActivity(intent);
-                } else {
-                    intent = new Intent(getActivity(), InsulinDeviceListActivity.class);
-                    startActivity(intent);
-                }
-
+//                String type = "1";
+//                if ("1".equals(type)) {
+//                    intent = new Intent(getActivity(), InsulinInfusionRecordListActivity.class);
+//                    intent.putExtra("eq_plan", data.getEq_plan());
+//                    startActivity(intent);
+//                } else {
+//                    intent = new Intent(getActivity(), InsulinDeviceListActivity.class);
+//                    startActivity(intent);
+//                }
+                intent = new Intent(getActivity(), InsulinInfusionRecordListActivity.class);
+                intent.putExtra("eq_plan", data.getEq_plan());
+                startActivity(intent);
                 break;
 
             case R.id.iv_main_insulin_refresh:
