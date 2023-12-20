@@ -426,6 +426,7 @@
         <activity android:name=".ui.activity.insulin.ScanBlueActivity" />
         <activity android:name=".ui.activity.insulin.InsulinInfusionPlanListActivity" />
         <activity android:name=".ui.activity.insulin.InsulinInputNumActivity" />
+        <activity android:name=".ui.activity.insulin.InsulinPlanDetailsActivity" />
 
         <!--胰岛素泵结束-->
         <activity

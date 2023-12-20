@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.allen.library.utils.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
-import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.insulin.BaseRateDetailsAdapter;
@@ -39,8 +38,9 @@ public class InsulinBaseRateFragment extends XYBaseFragment implements TabFragme
     private BaseRateDetailsAdapter adapter;
     private List<InsulinDeviceInfo> listInfos = new ArrayList<>();
 
-    public static InsulinBaseRateFragment newInstance() {
+    public static InsulinBaseRateFragment newInstance(String plan_id) {
         Bundle bundle = new Bundle();
+        bundle.putString("plan_id", plan_id);
         InsulinBaseRateFragment fragment = new InsulinBaseRateFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -54,14 +54,13 @@ public class InsulinBaseRateFragment extends XYBaseFragment implements TabFragme
         adapter = new BaseRateDetailsAdapter(getPageContext(), listInfos);
         LvList.setLayoutManager(new LinearLayoutManager(getPageContext()));
         LvList.setAdapter(adapter);
-        EventBusUtils.register(this);
         getData();
     }
 
     private void getData() {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
-        Call<String> requestCall = DataManager.getInjectionList("", token, (call, response) -> {
+        Call<String> requestCall = DataManager.getusereqplandetailBase("", token, (call, response) -> {
             if (200 == response.code) {
                 listInfos.clear();
                 listInfos.addAll((List<InsulinDeviceInfo>) response.object);

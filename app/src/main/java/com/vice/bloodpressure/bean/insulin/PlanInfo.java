@@ -33,6 +33,62 @@ public class PlanInfo {
      */
     private String value;
 
+
+    private String big1;
+    private String big2;
+    private String big3;
+    private String big4;
+    private String begin;
+    private String end;
+
+    public String getBig1() {
+        return big1;
+    }
+
+    public void setBig1(String big1) {
+        this.big1 = big1;
+    }
+
+    public String getBig2() {
+        return big2;
+    }
+
+    public void setBig2(String big2) {
+        this.big2 = big2;
+    }
+
+    public String getBig3() {
+        return big3;
+    }
+
+    public void setBig3(String big3) {
+        this.big3 = big3;
+    }
+
+    public String getBig4() {
+        return big4;
+    }
+
+    public void setBig4(String big4) {
+        this.big4 = big4;
+    }
+
+    public String getBegin() {
+        return begin;
+    }
+
+    public void setBegin(String begin) {
+        this.begin = begin;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
     public String getValue() {
         return value;
     }

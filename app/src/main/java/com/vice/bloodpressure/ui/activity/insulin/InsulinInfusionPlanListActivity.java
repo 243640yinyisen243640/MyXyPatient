@@ -83,7 +83,7 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
                 }
                 if (base_rate > 0) {
                     tvBasalRateNum.setVisibility(View.VISIBLE);
-                    tvBasalRateNum.setText(String.valueOf(big));
+                    tvBasalRateNum.setText(String.valueOf(base_rate));
                 }
             }
         }, (call, t) -> {
@@ -116,22 +116,32 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
         Call<String> requestCall = DataManager.getusereqplan(token, type, page + "", (call, response) -> {
             if (200 == response.code) {
                 getUnReadNum();
+
                 if (page == 1) {
                     infoList.clear();
                 }
                 infoListTemp = (List<PlanInfo>) response.object;
                 if (infoListTemp != null && infoListTemp.size() > 0) {
+                    smartRefreshLayout.setVisibility(View.VISIBLE);
                     if (infoListTemp.size() < 10) {
+                        llLast.setVisibility(View.VISIBLE);
+                        tvNoData.setVisibility(View.GONE);
                         smartRefreshLayout.finishLoadMoreWithNoMoreData();
                     } else {
                         smartRefreshLayout.finishLoadMore();
                     }
                     infoList.addAll(infoListTemp);
                     adapter.notifyDataSetChanged();
+                } else {
+                    smartRefreshLayout.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                    llLast.setVisibility(View.GONE);
                 }
 
-            } else {
-                ToastUtils.showToast("网络连接不可用，请稍后重试！");
+            } else if (30002 == response.code) {
+                smartRefreshLayout.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
+                llLast.setVisibility(View.GONE);
             }
         }, (call, t) -> {
             ToastUtils.showToast("网络连接不可用，请稍后重试！");
@@ -159,6 +169,7 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
                     Intent intent = new Intent(getPageContext(), InsulinPlanDetailsActivity.class);
                     intent.putExtra("type", type);
                     intent.putExtra("time", infoList.get(position).getAddtime());
+                    intent.putExtra("plan_id", infoList.get(position).getPlan_id());
                     startActivity(intent);
                     break;
                 default:
@@ -175,9 +186,13 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_infusion_large_dose:
+                type = "1";
+                getData();
                 setBg(tvLargeDose, tvBasalRate);
                 break;
             case R.id.ll_infusion_basal_rate:
+                type = "2";
+                getData();
                 setBg(tvBasalRate, tvLargeDose);
                 break;
             default:

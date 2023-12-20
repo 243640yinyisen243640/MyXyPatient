@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.allen.library.utils.ToastUtils;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
@@ -16,6 +15,7 @@ import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.adapter.injection.ViewPagerAdapter;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.bean.injection.InjectionBaseData;
+import com.vice.bloodpressure.bean.insulin.PlanInfo;
 import com.vice.bloodpressure.ui.fragment.insulin.InsulinBaseRateFragment;
 import com.vice.bloodpressure.ui.fragment.insulin.InsulinLargeDoseFragment;
 import com.vice.bloodpressure.view.CustomViewPager;
@@ -34,6 +34,7 @@ public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements 
     private LinearLayout LLLargeDose;
     private LinearLayout LLBasalRate;
     private TextView tvRateNum;
+    private TextView tvBigNum;
     private CustomViewPager viewPager;
     private List<Fragment> fragments;
     private InjectionBaseData injectionBaseData;
@@ -41,6 +42,7 @@ public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements 
      * 1大剂量 2基础率
      */
     private String type;
+    private String plan_id;
 
 
     @Override
@@ -48,10 +50,12 @@ public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements 
         super.onCreate(savedInstanceState);
         String time = getIntent().getStringExtra("time");
         type = getIntent().getStringExtra("type");
+        plan_id = getIntent().getStringExtra("plan_id");
         topViewManager().titleTextView().setText(time);
         containerView().addView(initView());
         initListener();
-        getData();
+        initValues();
+        getUnReadNum();
     }
 
     private void initListener() {
@@ -64,17 +68,17 @@ public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements 
         LLLargeDose = view.findViewById(R.id.ll_details_large_dose);
         LLBasalRate = view.findViewById(R.id.ll_details_basal_rate);
         tvRateNum = view.findViewById(R.id.tv_details_base_rate_num);
+        tvBigNum = view.findViewById(R.id.tv_details_big_dose_num);
         viewPager = getViewByID(view, R.id.vp_insulin_details);
-
         return view;
     }
 
     private void initValues() {
         fragments = new ArrayList<>();
-        InsulinLargeDoseFragment largeDoseFragment = InsulinLargeDoseFragment.newInstance();
+        InsulinLargeDoseFragment largeDoseFragment = InsulinLargeDoseFragment.newInstance(plan_id);
         fragments.add(largeDoseFragment);
 
-        InsulinBaseRateFragment baseRateFragment = InsulinBaseRateFragment.newInstance();
+        InsulinBaseRateFragment baseRateFragment = InsulinBaseRateFragment.newInstance(plan_id);
         fragments.add(baseRateFragment);
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
@@ -98,22 +102,29 @@ public class InsulinPlanDetailsActivity extends XYSoftUIBaseActivity implements 
     }
 
 
-    private void getData() {
-        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
-        String token = loginBean.getToken();
-        DataManager.getInjectionBaseInfo(token, (call, response) -> {
+    /**
+     * 获取方案未读数
+     */
+    private void getUnReadNum() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        DataManager.getusereqplanunread(loginBean.getToken(), (call, response) -> {
             if (response.code == 200) {
-                injectionBaseData = (InjectionBaseData) response.object;
-                setData();
-                initValues();
+                PlanInfo planInfo = (PlanInfo) response.object;
+
+                int big = Integer.parseInt(planInfo.getBig());
+                int base_rate = Integer.parseInt(planInfo.getBase_rate());
+                if (big > 0) {
+                    tvBigNum.setVisibility(View.VISIBLE);
+                    tvBigNum.setText(String.valueOf(big));
+                }
+                if (base_rate > 0) {
+                    tvRateNum.setVisibility(View.VISIBLE);
+                    tvRateNum.setText(String.valueOf(base_rate));
+                }
             }
         }, (call, t) -> {
-            ToastUtils.showToast("网络连接不可用，请稍后重试！");
+            //            ToastUtils.showToast("网络连接不可用，请稍后重试！");
         });
-    }
-
-    private void setData() {
-
     }
 
 

@@ -28,8 +28,11 @@ public class InsulinLargeDoseFragment extends XYBaseFragment implements TabFragm
     private TextView tvMore;
     private TextView tvSure;
 
-    public static InsulinLargeDoseFragment newInstance() {
+    private String plan_id;
+
+    public static InsulinLargeDoseFragment newInstance(String plan_id) {
         Bundle bundle = new Bundle();
+        bundle.putString("plan_id", plan_id);
         InsulinLargeDoseFragment fragment = new InsulinLargeDoseFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -39,6 +42,7 @@ public class InsulinLargeDoseFragment extends XYBaseFragment implements TabFragm
     @Override
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
+
         initView();
         getData();
     }
@@ -46,7 +50,8 @@ public class InsulinLargeDoseFragment extends XYBaseFragment implements TabFragm
     private void getData() {
         LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
         String token = loginBean.getToken();
-        Call<String> requestCall = DataManager.getInjectionList("", token, (call, response) -> {
+        plan_id = getArguments().getString("plan_id");
+        Call<String> requestCall = DataManager.getusereqplandetail(token, plan_id, (call, response) -> {
             if (200 == response.code) {
 
             } else {

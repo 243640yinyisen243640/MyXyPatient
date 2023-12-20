@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,9 @@ public class InsulinInfusionPlanAdapter extends RecyclerView.Adapter<InsulinInfu
     public void onBindViewHolder(@NonNull InsulinInfusionPlanAdapter.ViewHolder holder, int position) {
         holder.tvTime.setText(list.get(position).getAddtime());
         holder.tvValues.setText(list.get(position).getValue());
-
+        holder.llClick.setOnClickListener(v -> {
+            clickImp.onAdapterClick(v, position);
+        });
     }
 
     @Override
@@ -59,11 +62,13 @@ public class InsulinInfusionPlanAdapter extends RecyclerView.Adapter<InsulinInfu
 
         TextView tvTime;
         TextView tvValues;
+        LinearLayout llClick;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTime = itemView.findViewById(R.id.tv_insulin_infusion_plan_time);
             tvValues = itemView.findViewById(R.id.tv_insulin_infusion_plan_values);
+            llClick = itemView.findViewById(R.id.ll_insulin_infusion_plan_click);
         }
     }
 
