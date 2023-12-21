@@ -10,6 +10,18 @@ import java.util.List;
  */
 public class PlanAllBaseInfo {
     private List<PlanInfo> data;
+    /**
+     * 方案确认 1是 2否
+     */
+    private String confirm;
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
+    }
 
     public List<PlanInfo> getData() {
         return data;

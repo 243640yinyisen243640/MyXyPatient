@@ -59,6 +59,10 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         topViewManager().titleTextView().setText("输注方案");
+        topViewManager().backTextView().setOnClickListener(v -> {
+            setResult(RESULT_OK);
+            finish();
+        });
         containerView().addView(initView());
         initListner();
         initReFresh();
@@ -166,11 +170,19 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
         adapter = new InsulinInfusionPlanAdapter(getPageContext(), infoList, type, (view1, position) -> {
             switch (view1.getId()) {
                 case R.id.ll_insulin_infusion_plan_click:
-                    Intent intent = new Intent(getPageContext(), InsulinPlanDetailsActivity.class);
-                    intent.putExtra("type", type);
-                    intent.putExtra("time", infoList.get(position).getAddtime());
-                    intent.putExtra("plan_id", infoList.get(position).getPlan_id());
-                    startActivity(intent);
+                    //1大剂量 2基础率
+                    if ("1".equals(type)) {
+                        Intent intent = new Intent(getPageContext(), InsulinDetailsLargeDoseActivity.class);
+                        intent.putExtra("time", infoList.get(position).getAddtime());
+                        intent.putExtra("plan_id", infoList.get(position).getPlan_id());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getPageContext(), InsulinDetailsBaseRateActivity.class);
+                        intent.putExtra("time", infoList.get(position).getAddtime());
+                        intent.putExtra("plan_id", infoList.get(position).getPlan_id());
+                        startActivity(intent);
+                    }
+
                     break;
                 default:
                     break;
@@ -210,4 +222,10 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
         tvUncheck1.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
+    }
 }

@@ -57,6 +57,7 @@ import java.util.List;
 public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity implements View.OnClickListener {
 
     private static final int BLUETOOTH_PERMISSIONS_REQUEST_CODE = 20;
+    private static final int RECODE_FOR_NUM_REFRESH = 10;
     private TextView tvDeviceManage;
     private TextView tvBaseMode;
     private FrameLayout flPlan;
@@ -185,7 +186,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 break;
             case R.id.fl_infusion_plan_num:
                 intent = new Intent(getPageContext(), InsulinInfusionPlanListActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, RECODE_FOR_NUM_REFRESH);
                 break;
             case R.id.iv_infusion_info_refresh:
                 if (Build.VERSION.SDK_INT > 30) {
@@ -581,4 +582,21 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         super.onDestroy();
         EventBusUtils.unregister(this);
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case RECODE_FOR_NUM_REFRESH:
+                    getUnReadNum();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
 }

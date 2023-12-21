@@ -9,6 +9,18 @@ package com.vice.bloodpressure.bean.insulin;
 public class PlanAllInfo {
     private PlanInfo data;
     private String picurl;
+    /**
+     * 方案确认 1是 2否
+     */
+    private String confirm;
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
+    }
 
     public PlanInfo getData() {
         return data;
