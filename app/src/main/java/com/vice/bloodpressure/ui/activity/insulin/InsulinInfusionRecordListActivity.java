@@ -91,6 +91,12 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         getData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUnReadNum();
+    }
+
     /**
      * 获取方案未读数
      */

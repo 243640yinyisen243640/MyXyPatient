@@ -152,6 +152,11 @@ public class InsulinInfusionPlanListActivity extends XYSoftUIBaseActivity implem
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUnReadNum();
+    }
 
     private View initView() {
         View view = View.inflate(getPageContext(), R.layout.activity_insulin_infusion_plan, null);

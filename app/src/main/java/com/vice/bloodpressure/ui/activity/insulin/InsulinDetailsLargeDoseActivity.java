@@ -1,6 +1,7 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -80,6 +81,7 @@ public class InsulinDetailsLargeDoseActivity extends XYSoftUIBaseActivity {
         tvMore = view.findViewById(R.id.tv_insulin_large_dose_more);
         tvSure = view.findViewById(R.id.tv_insulin_large_dose_sure);
         tvSure.setOnClickListener(v -> {
+            Log.i("yys", "click==");
             planSure();
         });
         containerView().addView(view);
