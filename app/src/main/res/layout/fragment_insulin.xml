@@ -96,110 +96,169 @@
             android:textColor="@color/green_text_666"
             android:textSize="13sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_main_insulin_electricity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/electricity_full"
-                android:drawablePadding="3dp"
-                android:text="90%"
-                android:textColor="@color/black_text"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/tv_main_insulin_medicine"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/medicine_full"
-                android:drawablePadding="3dp"
-                android:text="247.8"
-                android:textColor="@color/black_text"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/tv_main_insulin_switch"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/insulin_up"
-                android:drawablePadding="3dp"
-                android:text="开"
-                android:textColor="@color/black_text"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/tv_main_insulin_warning"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/insulin_warning_normal"
-                android:drawablePadding="3dp"
-                android:text="正常"
-                android:textColor="@color/black_text"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/tv_main_insulin_record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_bg_main_green_90"
-                android:paddingLeft="9dp"
-                android:paddingTop="8dp"
-                android:paddingRight="9dp"
-                android:paddingBottom="8dp"
-                android:text="输注记录"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
-        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_main_insulin_kl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/tv_main_insulin_mode"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/main_insulin_base_mode"
-                android:drawablePadding="3dp"
-                android:text="基础模式1"
-                android:textColor="@color/black_text"
-                android:textSize="11sp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_main_insulin_rate"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tv_main_insulin_electricity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/electricity_full"
+                    android:drawablePadding="3dp"
+                    android:text="90%"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_medicine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/medicine_full"
+                    android:drawablePadding="3dp"
+                    android:text="247.8"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/insulin_up"
+                    android:drawablePadding="3dp"
+                    android:text="开"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_warning"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/insulin_warning_normal"
+                    android:drawablePadding="3dp"
+                    android:text="正常"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_bg_main_green_90"
+                    android:paddingLeft="9dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="9dp"
+                    android:paddingBottom="8dp"
+                    android:text="输注记录"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:drawableLeft="@drawable/main_insulin_base_rate"
-                android:drawablePadding="3dp"
-                android:text="当前基础率0.40"
-                android:textColor="@color/black_text"
-                android:textSize="11sp" />
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_main_insulin_injction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:drawableLeft="@drawable/main_insulin_injction"
-                android:drawablePadding="3dp"
-                android:text="已输注0.10"
-                android:textColor="@color/black_text"
-                android:textSize="11sp" />
+                <TextView
+                    android:id="@+id/tv_main_insulin_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/main_insulin_base_mode"
+                    android:drawablePadding="3dp"
+                    android:text="基础模式1"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:drawableLeft="@drawable/main_insulin_base_rate"
+                    android:drawablePadding="3dp"
+                    android:text="当前基础率0.40"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_injction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:drawableLeft="@drawable/main_insulin_injction"
+                    android:drawablePadding="3dp"
+                    android:text="已输注0.10"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
 
 
+            </LinearLayout>
         </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/ll_main_insulin_mst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_electricity_mst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/electricity_full"
+                    android:drawablePadding="3dp"
+                    android:text="90%"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_injction_mst"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/main_insulin_injction"
+                    android:drawablePadding="3dp"
+                    android:text="已输注0.10"
+                    android:textColor="@color/black_text"
+                    android:textSize="11sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_main_insulin_record_mst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_bg_main_green_90"
+                    android:paddingLeft="9dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="9dp"
+                    android:paddingBottom="8dp"
+                    android:text="输注记录"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

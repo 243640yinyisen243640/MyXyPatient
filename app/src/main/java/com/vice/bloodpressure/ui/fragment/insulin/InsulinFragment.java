@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
@@ -61,8 +62,15 @@ public class InsulinFragment extends BaseEventBusFragment {
     TextView tvTime;
 
 
+    @BindView(R.id.ll_main_insulin_kl)
+    LinearLayout llKl;
+    @BindView(R.id.ll_main_insulin_mst)
+    LinearLayout llMst;
     @BindView(R.id.tv_main_insulin_electricity)
     TextView tvElectricity;
+    @BindView(R.id.tv_main_insulin_electricity_mst)
+    TextView tvMstElectricity;
+
     @BindView(R.id.tv_main_insulin_medicine)
     TextView tvMedicine;
     @BindView(R.id.tv_main_insulin_switch)
@@ -76,8 +84,12 @@ public class InsulinFragment extends BaseEventBusFragment {
     TextView tvRate;
     @BindView(R.id.tv_main_insulin_injction)
     TextView tvInjction;
+    @BindView(R.id.tv_main_insulin_injction_mst)
+    TextView tvMstInjction;
     @BindView(R.id.tv_main_insulin_record)
     TextView tvRecord;
+    @BindView(R.id.tv_main_insulin_record_mst)
+    TextView tvMstRecord;
 
     private InsulinDeviceInfo data;
 
@@ -125,12 +137,14 @@ public class InsulinFragment extends BaseEventBusFragment {
     private void setData() {
         tvDeviceNum.setText(data.getEq_code());
         tvElectricity.setText(data.getPower());
+        tvMstElectricity.setText(data.getPower());
         tvMedicine.setText(data.getDosage());
         tvSwitch.setText(data.getStatus());
         tvWarning.setText(data.getWorning());
         tvMode.setText("基础模式" + data.getModel());
         tvRate.setText("当前基础率" + data.getBase_rate());
         tvInjction.setText("已输注" + data.getValue());
+        tvMstInjction.setText("已输注" + data.getValue());
         tvTime.setText("最近同步时间：" + data.getUpdatetime());
 
 
@@ -203,7 +217,15 @@ public class InsulinFragment extends BaseEventBusFragment {
     @Override
     protected void init(View view) {
         getData();
-
+        //1凯联  2迈士通
+        String deviceType = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_TYPE);
+        if ("1".equals(deviceType)) {
+           llKl.setVisibility(View.VISIBLE);
+           llMst.setVisibility(View.GONE);
+        } else {
+            llKl.setVisibility(View.GONE);
+            llMst.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getData() {
@@ -279,21 +301,22 @@ public class InsulinFragment extends BaseEventBusFragment {
 
     private boolean isRefult = false;
 
-    @OnClick({R.id.tv_main_insulin_record, R.id.iv_main_insulin_refresh, R.id.tv_main_insulin_num})
+    @OnClick({R.id.tv_main_insulin_record,R.id.tv_main_insulin_record_mst, R.id.iv_main_insulin_refresh, R.id.tv_main_insulin_num})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
 
             case R.id.tv_main_insulin_record:
-//                String type = "1";
-//                if ("1".equals(type)) {
-//                    intent = new Intent(getActivity(), InsulinInfusionRecordListActivity.class);
-//                    intent.putExtra("eq_plan", data.getEq_plan());
-//                    startActivity(intent);
-//                } else {
-//                    intent = new Intent(getActivity(), InsulinDeviceListActivity.class);
-//                    startActivity(intent);
-//                }
+            case R.id.tv_main_insulin_record_mst:
+                //                String type = "1";
+                //                if ("1".equals(type)) {
+                //                    intent = new Intent(getActivity(), InsulinInfusionRecordListActivity.class);
+                //                    intent.putExtra("eq_plan", data.getEq_plan());
+                //                    startActivity(intent);
+                //                } else {
+                //                    intent = new Intent(getActivity(), InsulinDeviceListActivity.class);
+                //                    startActivity(intent);
+                //                }
                 intent = new Intent(getActivity(), InsulinInfusionRecordListActivity.class);
                 intent.putExtra("eq_plan", data.getEq_plan());
                 startActivity(intent);

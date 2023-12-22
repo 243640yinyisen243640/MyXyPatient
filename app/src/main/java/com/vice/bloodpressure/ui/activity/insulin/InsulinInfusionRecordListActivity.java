@@ -162,6 +162,13 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
         lvDataInfo = view.findViewById(R.id.lv_insulin_base_info_list);
         llLast = view.findViewById(R.id.ll_insulin_infusion_last);
         tvNoData = view.findViewById(R.id.tv_insulin_base_info_no_data);
+        //1凯联  2迈士通
+        String deviceType = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_TYPE);
+        if ("1".equals(deviceType)) {
+            tvBaseMode.setVisibility(View.VISIBLE);
+        } else {
+            tvBaseMode.setVisibility(View.GONE);
+        }
         return view;
     }
 
