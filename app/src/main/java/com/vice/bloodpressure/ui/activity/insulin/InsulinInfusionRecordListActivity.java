@@ -360,13 +360,18 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                     BleMSTUtils.getInstance().connect(getPageContext(), mac);
                     return;
                 }
-                BleMSTUtils.getInstance().setRead();
-                try {
-                    Thread.sleep(2_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 06 AA "));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BleMSTUtils.getInstance().setRead();
+                        try {
+                            Thread.sleep(2_000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 06 AA "));
+                    }
+                }).start();
                 break;
             case "2":
                 //回传大剂量记录
@@ -419,13 +424,18 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                     BleMSTUtils.getInstance().connect(getPageContext(), mac);
                     return;
                 }
-                BleMSTUtils.getInstance().setRead();
-                try {
-                    Thread.sleep(2_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 01 AA "));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BleMSTUtils.getInstance().setRead();
+                        try {
+                            Thread.sleep(2_000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 01 AA "));
+                    }
+                }).start();
                 break;
             case "3":
                 //基础量记录
@@ -476,14 +486,19 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                     BleMSTUtils.getInstance().connect(getPageContext(), mac);
                     return;
                 }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BleMSTUtils.getInstance().setRead();
+                        try {
+                            Thread.sleep(2_000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 02 AA "));
+                    }
+                }).start();
 
-                BleMSTUtils.getInstance().setRead();
-                try {
-                    Thread.sleep(2_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 02 AA "));
                 break;
             case "4":
                 //回传报警记录
@@ -535,13 +550,19 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                     BleMSTUtils.getInstance().connect(getPageContext(), mac);
                     return;
                 }
-                BleMSTUtils.getInstance().setRead();
-                try {
-                    Thread.sleep(2_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 03 AA "));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BleMSTUtils.getInstance().setRead();
+                        try {
+                            Thread.sleep(2_000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 03 AA "));
+                    }
+                }).start();
+
                 break;
             default:
                 break;

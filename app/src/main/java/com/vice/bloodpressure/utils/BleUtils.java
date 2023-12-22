@@ -472,19 +472,24 @@ public class BleUtils {
             return false;
         } else {
             //有权限  这里注释了
-            bluetoothLeScanner = mAdapter.getBluetoothLeScanner();
-            scanCallback = new ScanCallback() {
+            new Thread(new Runnable() {
                 @Override
-                public void onScanResult(int callbackType, ScanResult result) {
-                    super.onScanResult(callbackType, result);
-                    if (result != null) {
-                        if (TextUtils.equals(result.getDevice().getAddress(), MySPUtils.getString(context, MySPUtils.BLUE_MAC))) {
-                            bluetoothLeScanner.stopScan(scanCallback);
+                public void run() {
+                    bluetoothLeScanner = mAdapter.getBluetoothLeScanner();
+                    scanCallback = new ScanCallback() {
+                        @Override
+                        public void onScanResult(int callbackType, ScanResult result) {
+                            super.onScanResult(callbackType, result);
+                            if (result != null) {
+                                if (TextUtils.equals(result.getDevice().getAddress(), MySPUtils.getString(context, MySPUtils.BLUE_MAC))) {
+                                    bluetoothLeScanner.stopScan(scanCallback);
+                                }
+                            }
                         }
-                    }
+                    };
+                    bluetoothLeScanner.startScan(scanCallback);
                 }
-            };
-            bluetoothLeScanner.startScan(scanCallback);
+            }).start();
             new Handler().postDelayed(() -> stopScan(),30_000);
         }
         return true;

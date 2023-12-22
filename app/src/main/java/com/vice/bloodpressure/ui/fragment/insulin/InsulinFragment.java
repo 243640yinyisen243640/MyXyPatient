@@ -27,6 +27,7 @@ import com.vice.bloodpressure.bean.insulin.InsulinDeviceInfo;
 import com.vice.bloodpressure.event.MSTBlueEventBus;
 import com.vice.bloodpressure.net.OkHttpCallBack;
 import com.vice.bloodpressure.net.XyUrl;
+import com.vice.bloodpressure.ui.activity.insulin.InsulinInfusionPlanListActivity;
 import com.vice.bloodpressure.ui.activity.insulin.InsulinInfusionRecordListActivity;
 import com.vice.bloodpressure.ui.activity.insulin.ScanBlueActivity;
 import com.vice.bloodpressure.utils.BleMSTUtils;
@@ -54,6 +55,8 @@ public class InsulinFragment extends BaseEventBusFragment {
     ImageView ivRefresh;
     @BindView(R.id.iv_main_insulin_refresh_trends)
     LoadingImageView ivLoadRefresh;
+    @BindView(R.id.tv_insulin_main_message_tips)
+    TextView tvMessage;
     @BindView(R.id.tv_insulin_main_ble_tips)
     TextView mainBleTips;
     @BindView(R.id.tv_main_insulin_num)
@@ -135,6 +138,13 @@ public class InsulinFragment extends BaseEventBusFragment {
     }
 
     private void setData() {
+        if (Integer.parseInt(data.getEq_plan()) > 0) {
+            tvMessage.setVisibility(View.VISIBLE);
+        } else {
+            tvMessage.setVisibility(View.GONE);
+        }
+
+
         tvDeviceNum.setText(data.getEq_code());
         tvElectricity.setText(data.getPower());
         tvMstElectricity.setText(data.getPower());
@@ -220,8 +230,8 @@ public class InsulinFragment extends BaseEventBusFragment {
         //1凯联  2迈士通
         String deviceType = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_TYPE);
         if ("1".equals(deviceType)) {
-           llKl.setVisibility(View.VISIBLE);
-           llMst.setVisibility(View.GONE);
+            llKl.setVisibility(View.VISIBLE);
+            llMst.setVisibility(View.GONE);
         } else {
             llKl.setVisibility(View.GONE);
             llMst.setVisibility(View.VISIBLE);
@@ -301,7 +311,7 @@ public class InsulinFragment extends BaseEventBusFragment {
 
     private boolean isRefult = false;
 
-    @OnClick({R.id.tv_main_insulin_record,R.id.tv_main_insulin_record_mst, R.id.iv_main_insulin_refresh, R.id.tv_main_insulin_num})
+    @OnClick({R.id.tv_main_insulin_record, R.id.tv_main_insulin_record_mst, R.id.iv_main_insulin_refresh, R.id.tv_main_insulin_num, R.id.tv_insulin_main_message_tips})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -377,6 +387,7 @@ public class InsulinFragment extends BaseEventBusFragment {
                     }
 
                 } else {
+                    Log.i("yys", "time=="+System.currentTimeMillis());
                     if (!BleUtils.getInstance().initBlueBooth(getActivity())) {
                         mainBleTips.setVisibility(View.VISIBLE);
                         mainBleTips.setText("请开启蓝牙和扫描设备权限");
@@ -405,6 +416,7 @@ public class InsulinFragment extends BaseEventBusFragment {
                     mainBleTips.setVisibility(View.VISIBLE);
                     mainBleTips.setText("同步数据,请稍后");
                     time = 60;
+                    Log.i("yys", "time=="+System.currentTimeMillis());
                     getHandler().sendEmptyMessage(10);
                     getBaseData1(mac);
                     //迈士通
@@ -413,6 +425,11 @@ public class InsulinFragment extends BaseEventBusFragment {
                 break;
             case R.id.tv_main_insulin_num:
                 startActivity(new Intent(getPageContext(), ScanBlueActivity.class));
+                break;
+            case R.id.tv_insulin_main_message_tips:
+                Intent intent1 = new Intent(getPageContext(), InsulinInfusionPlanListActivity.class);
+                intent1.putExtra("type", "1");
+                startActivity(intent1);
                 break;
             default:
                 break;
@@ -429,13 +446,18 @@ public class InsulinFragment extends BaseEventBusFragment {
             BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
             return;
         }
-        BleMSTUtils.getInstance().setRead();
-        try {
-            Thread.sleep(2_000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 00 AA "));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BleMSTUtils.getInstance().setRead();
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                BleMSTUtils.getInstance().sendData(BleMSTUtils.getInstance().comlpeteInstruct("55 14 00 A3 00 AA "));
+            }
+        }).start();
     }
 
     private int time = 60;
