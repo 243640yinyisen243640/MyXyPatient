@@ -414,11 +414,12 @@ public class BleMSTUtils {
 
                     BigDecimal doubles = new BigDecimal(0);
                     for (int i = 0; i < doubleList.size(); i++) {
-                        doubles = doubles .add(BigDecimal.valueOf(doubleList.get(i)));
+                        Log.i("yys", "doubleList" + i + "==" + doubleList.get(i));
+                        doubles = doubles.add(BigDecimal.valueOf(doubleList.get(i)));
                     }
-                    //                    double dataDouble = doubles / 48.0;
-                    //                    String dataValue = new DecimalFormat("0.00").format(dataDouble);
-                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, doubles + "");
+                    BigDecimal dataDouble = doubles.divide(new BigDecimal(2));
+                    dataDouble.setScale(2, BigDecimal.ROUND_HALF_UP);
+                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, dataDouble + "");
 
                     //一条记录
                     recordBaseInfos.add(recordInfo);
@@ -515,11 +516,12 @@ public class BleMSTUtils {
 
                     BigDecimal doubles = new BigDecimal(0);
                     for (int i = 0; i < doubleList.size(); i++) {
-                        doubles = doubles .add(BigDecimal.valueOf(doubleList.get(i)));
+                        Log.i("yys", "doubleList" + i + "==" + doubleList.get(i));
+                        doubles = doubles.add(BigDecimal.valueOf(doubleList.get(i)));
                     }
-//                    double dataDouble = doubles / 48.0;
-//                    String dataValue = new DecimalFormat("0.00").format(dataDouble);
-                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, doubles+"");
+                    BigDecimal dataDouble = doubles.divide(new BigDecimal(2));
+                    dataDouble.setScale(2, BigDecimal.ROUND_HALF_UP);
+                    MSTRecordDataInfo recordInfo = new MSTRecordDataInfo(num, datetime, dataDouble + "");
 
                     //一条记录
                     recordBaseInfos.add(recordInfo);
