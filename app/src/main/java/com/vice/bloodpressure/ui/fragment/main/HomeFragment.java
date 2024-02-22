@@ -1521,7 +1521,6 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                     //设置进度
                     pbHomeSport.setProgress(reduceProgress);
                     //步行判断显示隐藏
-                    reduceProgress = 95;
                     if ("步行".equals(sportName)) {
                         rlHomeSportToDo.setVisibility(View.GONE);
                     } else if (reduceProgress == 100) {
