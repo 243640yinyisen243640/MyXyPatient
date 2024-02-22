@@ -2,6 +2,7 @@ package com.vice.bloodpressure.ui.activity.sport;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -37,7 +38,7 @@ public class SportTypeVideoActivity extends BaseHandlerActivity {
     @BindView(R.id.vp_content)
     NoScrollViewPager vpContent;
     private List<Fragment> fragmentList;
-    private String[] typeArray;
+    private String[] typeArray=new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +48,19 @@ public class SportTypeVideoActivity extends BaseHandlerActivity {
     }
 
     private void initTabLayout() {
-        int sportType = getIntent().getExtras().getInt("sportType");
-        if (5 == sportType) {
-            typeArray = getResources().getStringArray(R.array.sport_type_video_title_skip);
-        } else {
-            typeArray = getResources().getStringArray(R.array.sport_type_video_title_taiji);
-        }
+        String sportName = getIntent().getExtras().getString("sportName");
+        Log.i("yys","sportName==="+sportName);
+        typeArray[0] =sportName;
+        typeArray[1] ="手动添加";
+
+//        if (5 == sportType) {
+//            typeArray = getResources().getStringArray(R.array.sport_type_video_title_skip);
+//        } else {
+//            typeArray = getResources().getStringArray(R.array.sport_type_video_title_taiji);
+//        }
         fragmentList = new ArrayList<>();
         SportTypeVideoLeftFragment leftFragment = new SportTypeVideoLeftFragment();
         SportTypeMapRightFragment rightFragment = new SportTypeMapRightFragment();
-      
         leftFragment.setArguments(getIntent().getExtras());
         rightFragment.setArguments(getIntent().getExtras());
         fragmentList.add(leftFragment);

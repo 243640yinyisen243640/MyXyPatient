@@ -11,6 +11,24 @@ public class HomeSportTypeVideoSuccessBean {
     private int kcaling;
     private String sportTime;
     private String sportName;
+    private String sportPicUrl;
+    private String sportContent;
+
+    public String getSportPicUrl() {
+        return sportPicUrl;
+    }
+
+    public void setSportPicUrl(String sportPicUrl) {
+        this.sportPicUrl = sportPicUrl;
+    }
+
+    public String getSportContent() {
+        return sportContent;
+    }
+
+    public void setSportContent(String sportContent) {
+        this.sportContent = sportContent;
+    }
 
     public int getKcaling() {
         return kcaling;

@@ -404,6 +404,7 @@ public class XyUrl {
     //商城标题
     public final
     static String GET_SHOP_TITLE = HOST_URL + "/index/index/gettitlecs";
+//    static String GET_SHOP_TITLE = HOST_URL + "/index/index/gettitlesz";
     //检验数据开始
     //返回各监测信息最新更新时间
     public final static String GET_EXAMINE_TIME = HOST_URL + "/port/record/getExamineTime";

@@ -59,7 +59,6 @@
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="22dp"
                 android:lineSpacingMultiplier="1.2"
-                android:text="太极拳运动的特点，是静中之动，虽动犹静。动所以活气血，静所以养脑力。动静结合，身心皆练，内外一体，刚柔相济，所以同时能充分发挥医疗体育的作用。现代医学研究表明，太极拳和一般的健身体操不同，除去全身各个肌肉群、关节需要活动外，还要配合均匀的深呼吸与横膈运动，而更重要的是需要精神的专注，心静、用意，这样就对中枢神经系统起了良好的影响，从而给其他系统与器官的活动和改善打下了良好的基础。"
                 android:textColor="#343434" />
 
             <TextView
@@ -68,7 +67,7 @@
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="22dp"
                 android:lineSpacingMultiplier="1.2"
-                android:text="标准深蹲是非常好是练大腿肌肉的王牌动作，坚持做还会起到减肥的作用。深蹲被认为是增强腿部和臀部力量和围度，以及发展核心力量必不可少的练习。"
+                android:visibility="gone"
                 android:textColor="#343434" />
 
         </LinearLayout>

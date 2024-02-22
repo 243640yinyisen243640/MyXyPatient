@@ -27,10 +27,56 @@ public class HomeSportBean {
     private int totalKcal;
     private int stepKcal;
     private String sportType;
+    private String sportName;
     private String sportTime;
+    private String sportCoeffic;
+    private String sportPicUrl;
+    private String sportVideoUrl;
+    private String sportContent;
     private int remainingKcal;
     private int progress;
-    private List<List<String>> sportArr;
+//    private List<List<String>> sportArr;
+    private List<HomeSportChildBean> sportArr;
+
+    public String getSportPicUrl() {
+        return sportPicUrl;
+    }
+
+    public void setSportPicUrl(String sportPicUrl) {
+        this.sportPicUrl = sportPicUrl;
+    }
+
+    public String getSportVideoUrl() {
+        return sportVideoUrl;
+    }
+
+    public void setSportVideoUrl(String sportVideoUrl) {
+        this.sportVideoUrl = sportVideoUrl;
+    }
+
+    public String getSportContent() {
+        return sportContent;
+    }
+
+    public void setSportContent(String sportContent) {
+        this.sportContent = sportContent;
+    }
+
+    public String getSportCoeffic() {
+        return sportCoeffic;
+    }
+
+    public void setSportCoeffic(String sportCoeffic) {
+        this.sportCoeffic = sportCoeffic;
+    }
+
+    public String getSportName() {
+        return sportName;
+    }
+
+    public void setSportName(String sportName) {
+        this.sportName = sportName;
+    }
 
     public int getIssport() {
         return issport;
@@ -120,11 +166,11 @@ public class HomeSportBean {
         this.progress = progress;
     }
 
-    public List<List<String>> getSportArr() {
+    public List<HomeSportChildBean> getSportArr() {
         return sportArr;
     }
 
-    public void setSportArr(List<List<String>> sportArr) {
+    public void setSportArr(List<HomeSportChildBean> sportArr) {
         this.sportArr = sportArr;
     }
 }

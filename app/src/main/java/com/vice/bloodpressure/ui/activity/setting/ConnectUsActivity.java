@@ -30,6 +30,6 @@ public class ConnectUsActivity extends BaseActivity {
 
     @OnClick(R.id.img_call)
     public void onViewClicked() {
-        PhoneUtils.dial("0371-86555680");
+        PhoneUtils.dial("0371-65010500");
     }
 }

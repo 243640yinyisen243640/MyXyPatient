@@ -60,7 +60,7 @@ public class SportTypeVideoPlayingActivity extends BaseHandlerActivity {
     @SuppressLint("HandlerLeak")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String sportTypeStr = getIntent().getExtras().getString("sportTypeStr");
+        String sportTypeStr = getIntent().getExtras().getString("sportName");
         setTitle(sportTypeStr);
         tvSportName.setText(sportTypeStr);
         handler.postDelayed(runnable, 0);
@@ -81,7 +81,7 @@ public class SportTypeVideoPlayingActivity extends BaseHandlerActivity {
             //全屏显示
             Jzvd.setVideoImageDisplayType(Jzvd.VIDEO_IMAGE_DISPLAY_TYPE_ADAPTER);
             //循环播放
-            JZDataSource jzDataSource = new JZDataSource("http://video.xiyuns.cn/1602756485000.mp4");
+            JZDataSource jzDataSource = new JZDataSource(getIntent().getExtras().getString("sportVideoUrl"));
             jzDataSource.looping = true;
             //设置播放内核ExoPlayer
             jzvdStd.setUp(jzDataSource, JzvdStd.SCREEN_FULLSCREEN, JZMediaExo.class);
@@ -217,6 +217,9 @@ public class SportTypeVideoPlayingActivity extends BaseHandlerActivity {
                 Bundle bundle = getIntent().getExtras();
                 bundle.putInt("successKcal", kcaling);
                 bundle.putString("successSportTime", sportTime);
+                bundle.putString("sportPicUrl", successBean.getSportPicUrl());
+                bundle.putString("sportContent", successBean.getSportContent());
+                bundle.putString("sportName", successBean.getSportName());
                 Intent intent = new Intent(getPageContext(), SportTypeVideoOverActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

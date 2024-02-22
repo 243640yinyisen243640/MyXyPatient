@@ -110,7 +110,6 @@ import com.vice.bloodpressure.utils.LoadingDialogUtils;
 import com.vice.bloodpressure.utils.MyFragmentStatePagerAdapter;
 import com.vice.bloodpressure.utils.PickerUtils;
 import com.vice.bloodpressure.utils.RvUtils;
-import com.vice.bloodpressure.utils.TurnsUtils;
 import com.vice.bloodpressure.view.ObservableScrollView;
 import com.vice.bloodpressure.view.TextProgressBar;
 import com.wei.android.lib.colorview.view.ColorTextView;
@@ -295,16 +294,42 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
     private List<BannerBean> bannerList;
 
     private IndexEducationBean indexEducationBean;
-    private List<String> listSportType;
-    private ArrayList<String> listSportStr;
-    private ArrayList<String> listSportCoefficient;
+    //    private List<String> listSportType;
+    //    private ArrayList<String> listSportStr;
+    //    private ArrayList<String> listSportCoefficient;
+
+    private HomeSportBean homeSportBean;
     private int indexRefreshId;
     //运动
-    private String sportTypeStr;
+
     private String sportTime;
     private int remainingKcal;
     private double weight;
     private int reduceProgress;
+    /**
+     * 运动系数
+     */
+    private String coefficient;
+    /**
+     * 运动图片
+     */
+    private String sportPicUrl;
+    /**
+     * 运动视频
+     */
+    private String sportVideoUrl;
+    /**
+     * 运动内容
+     */
+    private String sportContent;
+    /**
+     * 运动类型id
+     */
+    private String sportType;
+    /**
+     * 运动类型名称
+     */
+    private String sportName;
 
     private HomeBloodSugarAdapter bloodSugarAdapter;
 
@@ -731,11 +756,11 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
             @Override
             public void onPageSelected(int i) {
                 currentPosition = i;
-                setIndicator(i%5);
+                setIndicator(i % 5);
             }
 
             @Override
-           public void onPageScrollStateChanged(int i) {
+            public void onPageScrollStateChanged(int i) {
                 //ViewPager.SCROLL_STATE_IDLE 标识的状态是当前页面完全展现，并且没有动画正在进行中，如果不
                 //是此状态下执行setCurrentItem方法回在首位替换的时候会出现跳动！
                 if (i != ViewPager.SCROLL_STATE_IDLE)
@@ -764,10 +789,10 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
             View view = new View(getPageContext());
             llIndicator.addView(view);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-            if (pos==j){
+            if (pos == j) {
                 layoutParams.width = SizeUtils.dp2px(17);
                 view.setBackground(getPageContext().getDrawable(R.drawable.shape_white_90));
-            }else {
+            } else {
                 layoutParams.width = SizeUtils.dp2px(7);
                 view.setBackground(getPageContext().getDrawable(R.drawable.shape_white_90_50));
             }
@@ -953,39 +978,61 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 break;
             //推荐运动
             case R.id.ll_home_sport_recommend_type:
-                if (listSportStr != null && listSportStr.size() > 0) {
-                    PickerUtils.showOptionPosition(getPageContext(), new PickerUtils.PositionCallBack() {
-                        @Override
-                        public void execEvent(String content, int position) {
-                            //运动修改
-                            toChangeRecommendType(content, position + 1);
-                        }
-                    }, listSportStr);
+                List<String> nameString = new ArrayList<>();
+                if (homeSportBean.getSportArr() != null && homeSportBean.getSportArr().size() > 0) {
+                    for (int i = 0; i < homeSportBean.getSportArr().size(); i++) {
+                        nameString.add(homeSportBean.getSportArr().get(i).getTypeName());
+                    }
+
+                }
+
+                if (homeSportBean.getSportArr() != null && homeSportBean.getSportArr().size() > 0) {
+                    PickerUtils.showOptionPosition(getPageContext(), (content, position) ->
+                    {
+                        Log.i("yys", "position===" + homeSportBean.getSportArr().get(position).getType());
+                        coefficient = homeSportBean.getSportArr().get(position).getCoefficient();
+                        sportPicUrl = homeSportBean.getSportArr().get(position).getPicUrl();
+                        sportVideoUrl = homeSportBean.getSportArr().get(position).getVideoUrl();
+                        sportContent = homeSportBean.getSportArr().get(position).getContent();
+                        sportType = homeSportBean.getSportArr().get(position).getType();
+                        sportName = homeSportBean.getSportArr().get(position).getTypeName();
+                        //运动修改
+                        toChangeRecommendType(content, homeSportBean.getSportArr().get(position).getType());
+                    }, nameString);
                 }
                 break;
             //去完成
             case R.id.rl_home_sport_to_do:
-                int sportType = 0;
-                double sportCoefficient = 0;
-                for (int i = 0; i < listSportStr.size(); i++) {
-                    if (listSportStr.get(i).equals(sportTypeStr)) {
-                        sportType = TurnsUtils.getInt(listSportType.get(i), 0);
-                        sportCoefficient = TurnsUtils.getDouble(listSportCoefficient.get(i), 0);
-                    }
-                }
+                int sportTypeInt = Integer.parseInt(sportType);
                 Intent intentToDo;
                 Bundle bundleToDo = new Bundle();
-                if (sportType == 5 || sportType == 7) {
-                    intentToDo = new Intent(getPageContext(), SportTypeVideoActivity.class);
-                    bundleToDo.putString("sportTime", sportTime);
-                    bundleToDo.putString("sportTypeStr", sportTypeStr);
-                    bundleToDo.putInt("kcal", remainingKcal);
-                } else {
+                if (sportTypeInt != 5 && sportTypeInt < 7) {
                     intentToDo = new Intent(getPageContext(), SportTypeManualAddActivity.class);
+                } else {
+                    if (sportTypeInt == 8 || sportTypeInt == 9) {
+                        intentToDo = new Intent(getPageContext(), SportTypeManualAddActivity.class);
+                    } else {
+                        intentToDo = new Intent(getPageContext(), SportTypeVideoActivity.class);
+                        bundleToDo.putString("sportTime", sportTime);
+                        bundleToDo.putString("sportName", sportName);
+                        bundleToDo.putInt("kcal", remainingKcal);
+                    }
                 }
-                bundleToDo.putInt("sportType", sportType);
+
+                //                if (sportTypeInt == 5 || sportTypeInt == 7) {
+                //                    intentToDo = new Intent(getPageContext(), SportTypeVideoActivity.class);
+                //                    bundleToDo.putString("sportTime", sportTime);
+                //                    bundleToDo.putString("sportTypeStr", sportTypeStr);
+                //                    bundleToDo.putInt("kcal", remainingKcal);
+                //                } else {
+                //                    intentToDo = new Intent(getPageContext(), SportTypeManualAddActivity.class);
+                //                }
+                bundleToDo.putInt("sportType", sportTypeInt);
                 bundleToDo.putDouble("weight", weight);
-                bundleToDo.putDouble("sportCoefficient", sportCoefficient);
+                bundleToDo.putString("sportCoefficient", coefficient);
+                bundleToDo.putString("sportPicUrl", sportPicUrl);
+                bundleToDo.putString("sportVideoUrl", sportVideoUrl);
+                bundleToDo.putString("sportContent", sportContent);
                 intentToDo.putExtras(bundleToDo);
                 startActivity(intentToDo);
                 break;
@@ -1008,7 +1055,6 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1022,7 +1068,6 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
             }
         }
     }
-
 
 
     /**
@@ -1054,7 +1099,7 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
      *
      * @param content
      */
-    private void toChangeRecommendType(String content, int sportType) {
+    private void toChangeRecommendType(String content, String sportType) {
         int todayStep = StepUtil.getTodayStep(getPageContext());
         HashMap map = new HashMap<>();
         map.put("sportType", sportType);
@@ -1407,10 +1452,10 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 }
                 break;
             case GET_SPORT_SUCCESS:
-                listSportType = new ArrayList<>();
-                listSportStr = new ArrayList<>();
-                listSportCoefficient = new ArrayList<>();
-                HomeSportBean homeSportBean = (HomeSportBean) msg.obj;
+                //                listSportType = new ArrayList<>();
+                //                listSportStr = new ArrayList<>();
+                //                listSportCoefficient = new ArrayList<>();
+                homeSportBean = (HomeSportBean) msg.obj;
                 int isSport = homeSportBean.getIssport();
                 int profession = homeSportBean.getActivity();
                 if (2 == isSport || 4 == profession) {
@@ -1438,29 +1483,37 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                     tvHomeSportTodaySteps.setText("今日一共走了" + todayStep + "步");
                     int stepKcal = homeSportBean.getStepKcal();
                     tvHomeSportTodayStepsKcal.setText(stepKcal + "千卡");
+
                     //推荐运动
-                    sportTypeStr = homeSportBean.getSportType();
+                    sportName = homeSportBean.getSportName();
                     sportTime = homeSportBean.getSportTime();
                     remainingKcal = homeSportBean.getRemainingKcal();
+
+                    coefficient = homeSportBean.getSportCoeffic();
+                    sportPicUrl = homeSportBean.getSportPicUrl();
+                    sportVideoUrl = homeSportBean.getSportVideoUrl();
+                    sportContent = homeSportBean.getSportContent();
+                    sportType = homeSportBean.getSportType();
+
                     //获取三大数组
-                    List<List<String>> listSportArr = homeSportBean.getSportArr();
-                    for (int i = 0; i < listSportArr.size(); i++) {
-                        List<String> listArr = listSportArr.get(i);
-                        for (int j = 0; j < listArr.size(); j++) {
-                            if (0 == j) {
-                                String s = listArr.get(0);
-                                listSportType.add(s);
-                            } else if (1 == j) {
-                                String s = listArr.get(1);
-                                listSportStr.add(s);
-                            } else {
-                                String s = listArr.get(2);
-                                listSportCoefficient.add(s);
-                            }
-                        }
-                    }
+                    //                    List<List<String>> listSportArr = homeSportBean.getSportArr();
+                    //                    for (int i = 0; i < listSportArr.size(); i++) {
+                    //                        List<String> listArr = listSportArr.get(i);
+                    //                        for (int j = 0; j < listArr.size(); j++) {
+                    //                            if (0 == j) {
+                    //                                String s = listArr.get(0);
+                    //                                listSportType.add(s);
+                    //                            } else if (1 == j) {
+                    //                                String s = listArr.get(1);
+                    //                                listSportStr.add(s);
+                    //                            } else {
+                    //                                String s = listArr.get(2);
+                    //                                listSportCoefficient.add(s);
+                    //                            }
+                    //                        }
+                    //                    }
                     weight = homeSportBean.getWeight();
-                    tvHomeSportRecommendType.setText(sportTypeStr);
+                    tvHomeSportRecommendType.setText(sportName);
                     tvHomeSportRecommendTime.setText(sportTime);
                     tvHomeSportRecommendTypeKcal.setText(remainingKcal + "千卡");
                     //消耗进度
@@ -1468,7 +1521,8 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                     //设置进度
                     pbHomeSport.setProgress(reduceProgress);
                     //步行判断显示隐藏
-                    if ("步行".equals(sportTypeStr)) {
+                    reduceProgress = 95;
+                    if ("步行".equals(sportName)) {
                         rlHomeSportToDo.setVisibility(View.GONE);
                     } else if (reduceProgress == 100) {
                         rlHomeSportToDo.setVisibility(View.GONE);
@@ -1483,13 +1537,13 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                 break;
             case CHANGE_SPORT_SUCCESS:
                 HomeSportChangeBean sportChangeBean = (HomeSportChangeBean) msg.obj;
-                sportTypeStr = sportChangeBean.getSportType();
+                sportName = sportChangeBean.getSportType();
                 sportTime = sportChangeBean.getMinutes();
                 remainingKcal = sportChangeBean.getRekcal();
-                tvHomeSportRecommendType.setText(sportTypeStr);
+                tvHomeSportRecommendType.setText(sportName);
                 tvHomeSportRecommendTime.setText(sportTime);
                 tvHomeSportRecommendTypeKcal.setText(remainingKcal + "千卡");
-                if ("步行".equals(sportTypeStr)) {
+                if ("步行".equals(sportName)) {
                     rlHomeSportToDo.setVisibility(View.GONE);
                 } else if (reduceProgress == 100) {
                     rlHomeSportToDo.setVisibility(View.GONE);

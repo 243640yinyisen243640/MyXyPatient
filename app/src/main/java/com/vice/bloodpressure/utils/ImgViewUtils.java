@@ -31,4 +31,19 @@ public class ImgViewUtils {
                 .into(imageView);
 
     }
+
+    public static void loadImage(Context context, int defaultImageResourceId, String imagePath, ImageView imageView) {
+        //设置图片圆角角度
+        RoundedCorners roundedCorners = new RoundedCorners(ScreenUtils.dip2px(context, 1));
+        //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
+        RequestOptions options = new RequestOptions().transform(new CenterCrop(), roundedCorners);
+        Glide.with(context)
+                .asBitmap()
+                .load(imagePath)
+                .placeholder(defaultImageResourceId)
+                .error(defaultImageResourceId)
+                .apply(options)
+                .into(imageView);
+
+    }
 }

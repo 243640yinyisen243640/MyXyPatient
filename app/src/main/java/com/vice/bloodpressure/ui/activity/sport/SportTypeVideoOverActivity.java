@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.BaseHandlerActivity;
 import com.vice.bloodpressure.ui.activity.MainActivity;
+import com.vice.bloodpressure.utils.ImgViewUtils;
 
 import butterknife.BindView;
 
@@ -33,6 +34,8 @@ public class SportTypeVideoOverActivity extends BaseHandlerActivity {
     TextView tvSportTime;
     @BindView(R.id.tv_sport_kcal)
     TextView tvSportKcal;
+    @BindView(R.id.tv_sport_content)
+    TextView tvContent;
 
 
     @Override
@@ -53,17 +56,25 @@ public class SportTypeVideoOverActivity extends BaseHandlerActivity {
         int successKcal = getIntent().getExtras().getInt("successKcal");
         String sportTypeStr = getIntent().getExtras().getString("sportTypeStr");
         String successSportTime = getIntent().getExtras().getString("successSportTime");
+        String sportPicUrl = getIntent().getExtras().getString("sportPicUrl");
+        String sportContent = getIntent().getExtras().getString("sportContent");
+        String sportName = getIntent().getExtras().getString("sportName");
         tvCurrentTime.setText(TimeUtils.getNowString());
         tvSportType.setText(sportTypeStr);
         tvSportTime.setText("时长:" + successSportTime);
         tvSportKcal.setText("消耗:" + successKcal + "千卡");
-        if (5 == sportType) {
-            imgTypeBg.setImageResource(R.drawable.sport_over_bg_skip);
-            tvTypeOver.setText("完成跳绳");
-        } else {
-            imgTypeBg.setImageResource(R.drawable.sport_over_bg_taiji);
-            tvTypeOver.setText("完成太极");
-        }
+        //        imgTypeBg.setImageResource(R.drawable.sport_over_bg_skip);
+        ImgViewUtils.loadImage(getPageContext(), R.drawable.shape_grey_5, sportPicUrl, imgTypeBg);
+
+        tvTypeOver.setText("完成" + sportName);
+        tvContent.setText(sportContent);
+        //        if (5 == sportType) {
+        //            imgTypeBg.setImageResource(R.drawable.sport_over_bg_skip);
+        //            tvTypeOver.setText("完成跳绳");
+        //        } else {
+        //            imgTypeBg.setImageResource(R.drawable.sport_over_bg_taiji);
+        //            tvTypeOver.setText("完成太极");
+        //        }
     }
 
     @Override

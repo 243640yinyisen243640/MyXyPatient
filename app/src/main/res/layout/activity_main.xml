@@ -115,7 +115,7 @@
                 android:layout_below="@+id/img_main_mall"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="商城"
+                android:text="服务中心"
                 android:textSize="12sp" />
 
         </RelativeLayout>
