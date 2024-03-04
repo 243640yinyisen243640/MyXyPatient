@@ -731,14 +731,14 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
         List<Fragment> list = new ArrayList<>();
         list.add(new XueTangFragment());
         list.add(new XueYaFragment());
-        list.add(new InjectionFragment());
         list.add(new BmiFragment());
+        list.add(new InjectionFragment());
         list.add(InsulinFragment.getInstance(1));
 
         list.add(new XueTangFragment());
         list.add(new XueYaFragment());
-        list.add(new InjectionFragment());
         list.add(new BmiFragment());
+        list.add(new InjectionFragment());
         list.add(InsulinFragment.getInstance(2));
 
         list.add(new XueTangFragment());
@@ -1528,7 +1528,7 @@ public class HomeFragment extends BaseEventBusFragment implements SimpleImmersio
                     } else {
                         rlHomeSportToDo.setVisibility(View.VISIBLE);
                     }
-                }
+                }    
                 break;
             case GET_SPORT_ERROR:
                 llHomeSportHave.setVisibility(View.GONE);

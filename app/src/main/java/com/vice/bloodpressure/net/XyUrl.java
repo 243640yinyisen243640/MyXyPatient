@@ -91,6 +91,8 @@ public class XyUrl {
     public final static String ADD_BLOOD = HOST_URL + "/port/record/addbloodpressure";
     //获取血压数据
     public final static String QUERY_BLOOD = HOST_URL + "/port/record/getbloodpressure";
+    //z获取身高体重
+    public final static String GET_LAST_BMI = HOST_URL + "/port/record/getLastBmi";
     //添加血糖
     public final static String ADD_SUGAR = HOST_URL + "/port/record/addbloodglucose";
     //添加BMI

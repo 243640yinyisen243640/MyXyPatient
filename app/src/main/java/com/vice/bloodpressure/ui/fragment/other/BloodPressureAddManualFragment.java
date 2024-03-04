@@ -8,18 +8,25 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.TimeUtils;
 import com.lsp.RulerView;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.baselib.utils.eventbus.EventBusUtils;
 import com.lyd.baselib.utils.eventbus.EventMessage;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.fragment.BaseFragment;
+import com.vice.bloodpressure.bean.BmiBean;
 import com.vice.bloodpressure.constant.ConstantParam;
 import com.vice.bloodpressure.constant.DataFormatManager;
+import com.vice.bloodpressure.net.OkHttpCallBack;
+import com.vice.bloodpressure.net.XyUrl;
 import com.vice.bloodpressure.ui.activity.healthrecordlist.BmiDetailActivity;
 import com.vice.bloodpressure.utils.PickerUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -32,6 +39,8 @@ import butterknife.OnClick;
  * 创建日期: 2019/7/8 16:12
  */
 public class BloodPressureAddManualFragment extends BaseFragment {
+    private static final int GET_DATA_SUCCESS = 0x001213;
+    private static final int GET_DATA_ERROR = 0x001314;
     @BindView(R.id.tv_high)
     TextView tvHigh;
     @BindView(R.id.ruler_view_high)
@@ -107,6 +116,32 @@ public class BloodPressureAddManualFragment extends BaseFragment {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         String nowString = TimeUtils.millis2String(System.currentTimeMillis(), simpleDateFormat);
         tvTime.setText(nowString);
+        getData();
+    }
+
+    private void getData() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+
+        HashMap map = new HashMap<>();
+
+        map.put("access_token", loginBean.getToken());
+        XyUrl.okPost(XyUrl.GET_LAST_BMI, map, new OkHttpCallBack<String>() {
+            @Override
+            public void onSuccess(String value) {
+                BmiBean data = JSONObject.parseObject(value, BmiBean.class);
+                Message msg = Message.obtain();
+                msg.what = GET_DATA_SUCCESS;
+                msg.obj = data;
+                sendHandlerMessage(msg);
+            }
+
+            @Override
+            public void onError(int errorCode, final String errorMsg) {
+                Message message = Message.obtain();
+                message.what = GET_DATA_ERROR;
+                sendHandlerMessage(message);
+            }
+        });
     }
 
 
@@ -182,6 +217,23 @@ public class BloodPressureAddManualFragment extends BaseFragment {
 
     @Override
     public void processHandlerMsg(Message msg) {
+        switch (msg.what) {
+            case GET_DATA_SUCCESS:
+                BmiBean obj = (BmiBean) msg.obj;
+                tvHigh.setText(obj.getHeight());
+                tvLow.setText(obj.getWeight());
+                rulerViewHigh.setFirstScale(Float.parseFloat((obj.getHeight()))/10);
+                rulerViewLow.setFirstScale(Float.parseFloat(obj.getWeight())/10);
+                break;
+            case GET_DATA_ERROR:
+                rulerViewHigh.setFirstScale(17);
+                rulerViewLow.setFirstScale(6);
+                tvHigh.setText("170");
+                tvLow.setText("60");
+                break;
+            default:
+                break;
+        }
 
     }
 
