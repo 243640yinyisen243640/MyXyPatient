@@ -180,6 +180,27 @@ public class PickerUtils {
 
 
 
+    public static void showTimeWindowSetTime(Context context, boolean[] booleans, String dataManager,
+                                      final PickerUtils.TimePickerCallBack callBack) {
+        Calendar currentDate = Calendar.getInstance();
+
+
+        TimePickerView timePickerView = new TimePickerBuilder(context, (date, v) -> {
+            String content = DataUtils.convertDateToString(date, dataManager);
+            callBack.execEvent(content);
+        })
+                .setDate(currentDate)
+                .setType(booleans)
+                .setItemVisibleCount(9)
+                .setContentTextSize(15)
+                .setLineSpacingMultiplier(2.0f)
+                .setSubmitColor(ContextCompat.getColor(context, R.color.main_green))
+                .setCancelColor(ContextCompat.getColor(context, R.color.black_text))
+                .build();
+        timePickerView.show();
+    }
+
+
     public static void showTimeWindow(Context context, boolean[] booleans, String dataManager,String currentTime,
                                       final PickerUtils.TimePickerCallBack callBack) {
         Calendar calendar = Calendar.getInstance();

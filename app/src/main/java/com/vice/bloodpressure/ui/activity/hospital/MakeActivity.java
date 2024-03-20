@@ -214,12 +214,7 @@ public class MakeActivity extends BaseHandlerActivity implements AdapterView.OnI
                 sendHandlerMessage(msg);
                 break;
             case R.id.tv_make_hos_time:
-                PickerUtils.showTimeWindow(MakeActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, new PickerUtils.TimePickerCallBack() {
-                    @Override
-                    public void execEvent(String content) {
-                        tvTime.setText(content);
-                    }
-                });
+                PickerUtils.showTimeWindowSetTime(MakeActivity.this, new boolean[]{true, true, true, false, false, false}, DataFormatManager.TIME_FORMAT_Y_M_D, content -> tvTime.setText(content));
 //                PickerUtils.showTime(this, new PickerUtils.TimePickerCallBack() {
 //                    @Override
 //                    public void execEvent(String content) {
