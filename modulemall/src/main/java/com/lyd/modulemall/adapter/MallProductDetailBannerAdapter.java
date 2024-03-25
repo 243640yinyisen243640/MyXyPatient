@@ -13,7 +13,9 @@ public class MallProductDetailBannerAdapter extends BaseBannerAdapter<String> {
         //示例使用ViewBinding
         ItemMallBannerBinding viewBinding = ItemMallBannerBinding.bind(holder.itemView);
         //viewBinding.imgBanner.setImageResource(data.getSlideshow_img());
-        Glide.with(Utils.getApp()).load(data).into(viewBinding.imgBanner);
+        Glide.with(Utils.getApp()).load(data).centerInside().into(viewBinding.imgBanner);
+
+//        Glide.with(Utils.getApp()).load(data).into(viewBinding.imgBanner);
     }
 
     @Override
