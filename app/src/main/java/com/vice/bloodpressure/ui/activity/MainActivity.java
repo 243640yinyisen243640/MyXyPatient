@@ -480,16 +480,17 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             RongUserBean doctorBean = new RongUserBean(mainDocId, mainDocName, mainDocImgUrl);
             rongList.add(doctorBean);
         }
-        boolean isAdd = true;
-        for (int i = 0; i < rongList.size(); i++) {
-            if (TextUtils.equals(rongList.get(i).getId(), "644395")) {
-                isAdd = false;
-            }
-        }
-        if (isAdd) {
-            RongUserBean userBean1 = new RongUserBean("644395", "客服小慧", "http://doctor.xiyuns.cn/Public/images/navimg/doctorimg.png");
-            rongList.add(userBean1);
-        }
+
+//        boolean isAdd = true;
+//        for (int i = 0; i < rongList.size(); i++) {
+//            if (TextUtils.equals(rongList.get(i).getId(), "644395")) {
+//                isAdd = false;
+//            }
+//        }
+//        if (isAdd) {
+//            RongUserBean userBean1 = new RongUserBean("644395", "客服小慧", "http://doctor.xiyuns.cn//public//images//kefu.jpg");
+//            rongList.add(userBean1);
+//        }
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
             @Override
             public UserInfo getUserInfo(String imUserId) {
