@@ -152,6 +152,8 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     RelativeLayout rlMainOutside;
     @BindView(R.id.tv_red_point)
     ColorTextView tvRedPoint;
+    @BindView(R.id.tv_red_point_im)
+    ColorTextView tvRedImPoint;
 
     private boolean isHaveUpdate;
     private HomeGuidePopup homeGuideEducationPopup;
@@ -225,10 +227,10 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BlueUtils.init(this,getHandler());
+        BlueUtils.init(this, getHandler());
         //迈士通蓝牙回调
         initMSTBlue();
-        BlueUtils.callBackListener(this,getHandler());
+        BlueUtils.callBackListener(this, getHandler());
         regToWx();
         //添加第一个Fragment
         addFirstFragment();
@@ -248,12 +250,13 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         toSubmitScan();
         //设置用户信息代理
         setRongImUserInfo();
+        getImMessageType();
         ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.main_home).init();
     }
 
     private void initMSTBlue() {
-        String mac = MySPUtils.getString(getPageContext(),MySPUtils.BLUE_MAC);
-        if (!TextUtils.isEmpty(mac)){
+        String mac = MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+        if (!TextUtils.isEmpty(mac)) {
             BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
         }
 
@@ -363,6 +366,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
     protected void onResume() {
         super.onResume();
         checkNotifySettings();
+        getImMessageType();
     }
 
     @Override
@@ -475,6 +479,16 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             String mainDocImgUrl = SPStaticUtils.getString("mainDocImgUrl");
             RongUserBean doctorBean = new RongUserBean(mainDocId, mainDocName, mainDocImgUrl);
             rongList.add(doctorBean);
+        }
+        boolean isAdd = true;
+        for (int i = 0; i < rongList.size(); i++) {
+            if (TextUtils.equals(rongList.get(i).getId(), "644395")) {
+                isAdd = false;
+            }
+        }
+        if (isAdd) {
+            RongUserBean userBean1 = new RongUserBean("644395", "客服小慧", "http://doctor.xiyuns.cn/Public/images/navimg/doctorimg.png");
+            rongList.add(userBean1);
         }
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
             @Override
@@ -721,6 +735,31 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
 
         });
 
+    }
+
+    /**
+     * 获取融云消息类型
+     */
+    private void getImMessageType() {
+        LoginBean userLogin = (LoginBean) SharedPreferencesUtils.getBean(this, SharedPreferencesUtils.USER_INFO);
+        Call<String> requestCall = DataManager.getImMessageType(userLogin.getToken(), (call, response) -> {
+            if (response.code == 200) {
+                AdverInfo adverInfo = (AdverInfo) response.object;
+                Log.i("yys", "adverInfo.getDocMsg()=" + adverInfo.getDocMsg() + "adverInfo.getKfMsg()=" + adverInfo.getKfMsg());
+                if ("1".equals(adverInfo.getDocMsg())) {
+                    tvRedPoint.setVisibility(View.VISIBLE);
+                } else {
+                    tvRedPoint.setVisibility(View.GONE);
+                }
+                if ("1".equals(adverInfo.getKfMsg())) {
+                    tvRedImPoint.setVisibility(View.VISIBLE);
+                } else {
+                    tvRedImPoint.setVisibility(View.GONE);
+                }
+            }
+        }, (call, t) -> {
+
+        });
     }
 
     /**
@@ -1163,11 +1202,11 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
      */
     @Override
     public void onCountChanged(int count) {
-        if (count > 0) {
-            tvRedPoint.setVisibility(View.VISIBLE);
-        } else {
-            tvRedPoint.setVisibility(View.GONE);
-        }
+        //        if (count > 0) {
+        //            tvRedPoint.setVisibility(View.VISIBLE);
+        //        } else {
+        //            tvRedPoint.setVisibility(View.GONE);
+        //        }
     }
 
 

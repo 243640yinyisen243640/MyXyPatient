@@ -34,12 +34,10 @@ import com.lyd.modulemall.bean.ProductBean;
 import com.lyd.modulemall.bean.ProductCollectBean;
 import com.lyd.modulemall.bean.ProductDetailBean;
 import com.lyd.modulemall.bean.ProductSkuBean;
-import com.lyd.modulemall.constant.MallConstantParam;
 import com.lyd.modulemall.databinding.ActivityProductDetailBinding;
 import com.lyd.modulemall.net.ErrorInfo;
 import com.lyd.modulemall.net.MallUrl;
 import com.lyd.modulemall.net.OnError;
-import com.lyd.modulemall.ui.BaseWebViewActivity;
 import com.lyd.modulemall.ui.activity.pay.ConfirmOrderActivity;
 import com.lyd.modulemall.ui.activity.shoppingcart.ShoppingCartActivity;
 import com.lyd.modulemall.ui.activity.supplier.SupplierQualificationActivity;
@@ -58,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.rxjava3.functions.Consumer;
+import io.rong.imkit.RongIM;
 import liys.click.AClickStr;
 import liys.click.OnClickUtils;
 import rxhttp.wrapper.param.RxHttp;
@@ -404,10 +403,12 @@ public class ProductDetailActivity extends AppCompatActivity implements BannerVi
                 toFavo();
                 break;
             case "tv_chat":
-                intent = new Intent(this, BaseWebViewActivity.class);
-                intent.putExtra("title", "客服");
-                intent.putExtra("url", MallConstantParam.SERVICE_URL);
-                startActivity(intent);
+                Log.i("yys", "tv_chat");
+                RongIM.getInstance().startPrivateChat(this, "644395", "客服小慧");
+//                intent = new Intent(this, BaseWebViewActivity.class);
+//                intent.putExtra("title", "客服");
+//                intent.putExtra("url", MallConstantParam.SERVICE_URL);
+//                startActivity(intent);
                 break;
             case "ll_supplier_qualification":
                 intent = new Intent(this, SupplierQualificationActivity.class);

@@ -39,6 +39,22 @@ public class DataManager {
     }
 
     /**
+     * 融云消息类型获取
+     *
+     * @param accessToken
+     * @param successCallBack
+     * @param failureCallBack
+     * @return
+     */
+
+    public static Call<String> getImMessageType(String accessToken, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("access_token", accessToken);
+        map.put("version", ConstantParam.SERVER_VERSION);
+        return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.JSON_OBJECT, AdverInfo.class, "port/message/getIm", map, successCallBack, failureCallBack);
+    }
+
+    /**
      * 上传温度数据
      *
      * @param accessToken

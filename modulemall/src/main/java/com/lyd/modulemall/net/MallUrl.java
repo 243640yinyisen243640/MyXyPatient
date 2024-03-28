@@ -28,6 +28,10 @@ public class MallUrl {
     public final static String MALL_HOME_INDEX = HOST_URL + "/nsindex";
     //商品列表（首页精品，分类，全部，活动商品列表）
     public final static String GET_GOODS_LIST = HOST_URL + "/nsgoodslist";
+    /**
+     * 获取融云消息类型
+     */
+    public final static String GET_IM_MESSAGE_TYPE = HOST_URL + "/port/message/getIm";
     //商品所有标签（用于查询）
     public final static String GET_GOODS_LABEL_LIST = HOST_URL + "/nsgoodslabel";
     //首页结束

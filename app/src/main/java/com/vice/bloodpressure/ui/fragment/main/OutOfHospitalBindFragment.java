@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -161,6 +162,8 @@ public class OutOfHospitalBindFragment extends BaseFragment implements View.OnCl
                 startActivity(intent);
                 break;
             case R.id.ll_ask_doctor://问医生
+                Log.i("yys", "doctorid == " + doctor.getDocid());
+                Log.i("yys", "doctorname == " + doctor.getDocname());
                 RongIM.getInstance().startPrivateChat(getActivity(), doctor.getDocid() + "", doctor.getDocname());
                 break;
             case R.id.ll_doctor_advice://医生建议

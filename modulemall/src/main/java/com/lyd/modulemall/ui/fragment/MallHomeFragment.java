@@ -1,6 +1,7 @@
 package com.lyd.modulemall.ui.fragment;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -15,19 +16,20 @@ import com.blankj.utilcode.util.ColorUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.imuxuan.floatingview.FloatingView;
 import com.lyd.baselib.base.fragment.BaseViewBindingFragment;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.lyd.modulemall.R;
 import com.lyd.modulemall.adapter.MallHomeBannerAdapter;
 import com.lyd.modulemall.adapter.MallHomeClassifyAdapter;
 import com.lyd.modulemall.adapter.MallHomeCouponAndActivityAdapter;
 import com.lyd.modulemall.adapter.MallHomeProductAdapter;
+import com.lyd.modulemall.bean.AdverInfo;
 import com.lyd.modulemall.bean.MallHomeIndexBean;
 import com.lyd.modulemall.bean.MallHomeProductBean;
-import com.lyd.modulemall.constant.MallConstantParam;
 import com.lyd.modulemall.databinding.FragmentMallHomeBinding;
 import com.lyd.modulemall.net.ErrorInfo;
 import com.lyd.modulemall.net.MallUrl;
 import com.lyd.modulemall.net.OnError;
-import com.lyd.modulemall.ui.BaseWebViewActivity;
 import com.lyd.modulemall.ui.activity.ProductDetailActivity;
 import com.lyd.modulemall.ui.activity.productlist.MallProductListActivity;
 import com.lyd.modulemall.ui.activity.productlist.MallSearchActivity;
@@ -48,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.rxjava3.functions.Consumer;
+import io.rong.imkit.RongIM;
 import rxhttp.wrapper.param.RxHttp;
 
 
@@ -89,6 +92,7 @@ public class MallHomeFragment extends BaseViewBindingFragment<FragmentMallHomeBi
         initRv();
         initRefresh();
         getHomeProductList();
+        getImMessageType();
     }
 
     @Override
@@ -138,6 +142,35 @@ public class MallHomeFragment extends BaseViewBindingFragment<FragmentMallHomeBi
         //刷新结束
     }
 
+    /***
+     * 获取首页商品数据
+     */
+    private void getImMessageType() {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("access_token", loginBean.getToken());
+        RxHttp.postForm(MallUrl.GET_IM_MESSAGE_TYPE)
+                .addAll(map)
+                .asResponse(AdverInfo.class)
+                .to(RxLife.toMain(this))
+                .subscribe(new Consumer<AdverInfo>() {
+                    @Override
+                    public void accept(AdverInfo data) throws Exception {
+                        Log.i("yys","adverInfo.getDocMsg()="+data.getDocMsg()+"data.getKfMsg()="+data.getKfMsg());
+
+                        if ("1".equals(data.getKfMsg())) {
+                            tvRedPoint.setVisibility(View.VISIBLE);
+                        } else {
+                            tvRedPoint.setVisibility(View.GONE);
+                        }
+                    }
+                }, new OnError() {
+                    @Override
+                    public void onError(ErrorInfo error) throws Exception {
+
+                    }
+                });
+    }
 
     /***
      * 获取首页商品数据
@@ -163,6 +196,12 @@ public class MallHomeFragment extends BaseViewBindingFragment<FragmentMallHomeBi
 
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getImMessageType();
     }
 
     /**
@@ -314,10 +353,14 @@ public class MallHomeFragment extends BaseViewBindingFragment<FragmentMallHomeBi
         if (id == R.id.ll_search) {
             startActivity(new Intent(getPageContext(), MallSearchActivity.class));
         } else if (id == R.id.fl_shoping_chat) {
-            Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
-            intent.putExtra("title", "客服");
-            intent.putExtra("url", MallConstantParam.SERVICE_URL);
-            startActivity(intent);
+            Log.i("yys", "fl_shoping_chat");
+            RongIM.getInstance().startPrivateChat(getActivity(), "644395", "客服小慧");
+
+
+//            Intent intent = new Intent(getPageContext(), BaseWebViewActivity.class);
+//            intent.putExtra("title", "客服");
+//            intent.putExtra("url", MallConstantParam.SERVICE_URL);
+//            startActivity(intent);
         } else if (id == R.id.img_cart) {
             startActivity(new Intent(getPageContext(), ShoppingCartActivity.class));
         } else if (id == R.id.tv_all_goods) {

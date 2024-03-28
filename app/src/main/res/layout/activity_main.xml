@@ -94,31 +94,48 @@
 
         </RelativeLayout>
         <!--商城-->
-        <RelativeLayout
-            android:id="@+id/rl_main_mall"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/img_main_mall"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_centerInParent="true"
-                android:src="@drawable/home_mall_default" />
+            <RelativeLayout
+                android:id="@+id/rl_main_mall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
-            <TextView
-                android:id="@+id/tv_main_mall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_main_mall"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="服务中心"
-                android:textSize="12sp" />
+                <ImageView
+                    android:id="@+id/img_main_mall"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/home_mall_default" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_main_mall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_main_mall"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="服务中心"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+            <com.wei.android.lib.colorview.view.ColorTextView
+                android:id="@+id/tv_red_point_im"
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="@dimen/dp_10"
+                android:layout_gravity="right"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:visibility="gone"
+                app:backgroundColorNormal="@color/main_red"
+                app:cornerRadiusNormal="@dimen/dp_10" />
+        </FrameLayout>
         <!--我的-->
         <RelativeLayout
             android:id="@+id/rl_main_me"

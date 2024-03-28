@@ -56,4 +56,11 @@ dependencies {
     api project(':ColorViewLib')
 //    implementation 'com.wuhenzhizao:titlebar:1.0.4'
     //Sku End
+
+    //融云IM开始
+    def rongImVersion = "4.0.3.14"
+    implementation "cn.rongcloud.sdk:im_kit:$rongImVersion"
+    //im_kit必须依赖im_lib，所以需要加入对应依赖
+    implementation "cn.rongcloud.sdk:im_lib:$rongImVersion"
+    //融云IM结束
 }
