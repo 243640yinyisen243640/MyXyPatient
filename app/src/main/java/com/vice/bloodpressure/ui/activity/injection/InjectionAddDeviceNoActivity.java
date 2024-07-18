@@ -62,5 +62,6 @@ public class InjectionAddDeviceNoActivity extends XYSoftUIBaseActivity {
 
         });
         return view;
+
     }
 }
