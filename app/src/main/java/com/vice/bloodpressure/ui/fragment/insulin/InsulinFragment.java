@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSONObject;
 import com.allen.library.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
@@ -138,14 +139,14 @@ public class InsulinFragment extends BaseEventBusFragment {
     }
 
     private void setData() {
+        String eqCode = data.getEq_code();
         if (Integer.parseInt(data.getEq_plan()) > 0) {
             tvMessage.setVisibility(View.VISIBLE);
         } else {
             tvMessage.setVisibility(View.GONE);
         }
 
-
-        tvDeviceNum.setText(data.getEq_code());
+        tvDeviceNum.setText(eqCode);
         tvElectricity.setText(data.getPower());
         tvMstElectricity.setText(data.getPower());
         tvMedicine.setText(data.getDosage());
@@ -157,6 +158,19 @@ public class InsulinFragment extends BaseEventBusFragment {
         tvMstInjction.setText("已输注" + data.getValue());
         tvTime.setText("最近同步时间：" + data.getUpdatetime());
 
+        if (data.getSn_code() != null){
+            if (!data.getSn_code().contains("--")){
+                MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NUM, data.getSn_code());
+            }
+        }
+
+        if (!eqCode.equals("暂无")){
+            MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, eqCode);
+        }else {
+            MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, "");
+            MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, "");
+            MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, "");
+        }
 
         if (!"--".equals(data.getPower())) {
             tvElectricity.setText(data.getPower() + "%");
@@ -424,7 +438,7 @@ public class InsulinFragment extends BaseEventBusFragment {
                 }
                 break;
             case R.id.tv_main_insulin_num:
-                startActivity(new Intent(getPageContext(), ScanBlueActivity.class));
+//                startActivity(new Intent(getPageContext(), ScanBlueActivity.class));
                 break;
             case R.id.tv_insulin_main_message_tips:
                 Intent intent1 = new Intent(getPageContext(), InsulinInfusionPlanListActivity.class);

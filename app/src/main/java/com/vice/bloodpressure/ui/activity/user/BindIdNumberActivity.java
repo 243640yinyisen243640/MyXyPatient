@@ -47,7 +47,7 @@ public class BindIdNumberActivity extends BaseHandlerActivity {
         super.onCreate(savedInstanceState);
         setTitle("绑定身份证");
         setTextChangeListener();
-        etIdNumber.setKeyListener(new IdNumberKeyListener());
+//        etIdNumber.setKeyListener(new IdNumberKeyListener());
     }
 
     @Override

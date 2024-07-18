@@ -1,6 +1,8 @@
 package com.vice.bloodpressure.ui.activity.insulin;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
+import com.vice.bloodpressure.utils.BleMSTUtils;
 import com.vice.bloodpressure.utils.MySPUtils;
 import com.vice.bloodpressure.view.popu.InsulinBreakDeviceWindow;
 
@@ -47,6 +50,31 @@ public class InsulinDeviceListActivity extends XYSoftUIBaseActivity {
         View view = View.inflate(getPageContext(), R.layout.activity_insulin_device_list, null);
         tvBreak = view.findViewById(R.id.tv_insulin_break_device);
         tvDeviceNum = view.findViewById(R.id.tv_insulin_device_list_num);
+
+        tvDeviceNum.setOnClickListener(v -> {
+            //这里跳页面吧
+            String mac =  MySPUtils.getString(getPageContext(), MySPUtils.BLUE_MAC);
+            String eqcode = MySPUtils.getString(getPageContext(), MySPUtils.DEVICE_NAME);
+            String cncode = MySPUtils.getString(getPageContext(), MySPUtils.DEVICE_NUM);
+
+            if (TextUtils.isEmpty(cncode) || cncode.contains("--")){
+                Intent intent = new Intent(getPageContext(), InsulinInputNumActivity.class);
+                intent.putExtra(MySPUtils.BLUE_MAC, mac);
+                intent.putExtra(MySPUtils.DEVICE_NAME, eqcode);
+                startActivity(intent);
+            }else {
+                if (!BleMSTUtils.getInstance().isConnect()){
+                    MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, mac);
+                    MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, eqcode);
+                    MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, "2");
+                    MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NUM, cncode);
+                    if (!TextUtils.isEmpty(mac)) {
+                        BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
+                    }
+                }
+                ToastUtils.showShort("设备已绑定");
+            }
+        });
         tvBreak.setOnClickListener(v -> {
 //            if (breakDeviceWindow == null) {
 //                breakDeviceWindow = new InsulinBreakDeviceWindow(getPageContext(),

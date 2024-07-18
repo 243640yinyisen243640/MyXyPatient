@@ -309,7 +309,7 @@ public class BleUtils {
                             }
                         }
                         break;
-                    case "AA":
+                    case "AA"://报警
                         byte04 = buf.get();
                         byte05 = buf.get();
                         byte06 = buf.get();
@@ -434,11 +434,11 @@ public class BleUtils {
 
         void onBaseRate(List<String> baseRateList);
 
-        void onRecordInfoList(List<RecordInfo> recordInfoList);
+        void onRecordInfoList(List<RecordInfo> recordInfoList);//日总量/基础率
 
-        void onRecordBigInfoList(List<RecordBigInfo> recordInfoList);
+        void onRecordBigInfoList(List<RecordBigInfo> recordInfoList);//大剂量
 
-        void onRecordErrorList(List<RecordErrorInfo> recordInfoList);
+        void onRecordErrorList(List<RecordErrorInfo> recordInfoList);//报警
 
     }
 

@@ -389,7 +389,7 @@ public class InsulinAddDeviceActivity extends XYSoftUIBaseActivity {
         String mac = list.get(pos).getDevice().getAddress();
         String deviceName = list.get(pos).getDevice().getName();
 
-        bindDevice(mac, deviceName);
+        bindDevice(mac, deviceName,"");
 
         //        BleUtils.getInstance().connect(getPageContext(), mac, new BleUtils.OnDataCallBackImpl() {
         //            @Override
@@ -411,27 +411,28 @@ public class InsulinAddDeviceActivity extends XYSoftUIBaseActivity {
         //        });
     }
 
-    private void bindDevice(String mac, String eqcode) {
-        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
-        String token = loginBean.getToken();
-        Call<String> requestCall = DataManager.bindeqinsulin(eqcode, token, (call, response) -> {
-            ToastUtils.showShort(response.msg);
-            if (response.code == 200) {
-                if (TextUtils.equals(keywords, "2")) {
-                    //这里跳页面吧
-                    Intent intent = new Intent(getPageContext(), InsulinInputNumActivity.class);
-                    intent.putExtra(MySPUtils.BLUE_MAC, mac);
-                    intent.putExtra(MySPUtils.DEVICE_NAME, eqcode);
-                    startActivity(intent);
-                } else {
+    private void bindDevice(String mac, String eqcode, String sncode) {
+        if (!keywords.equals("2")){
+            LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+            String token = loginBean.getToken();
+            Call<String> requestCall = DataManager.bindeqinsulin(eqcode,sncode,token, (call, response) -> {
+                ToastUtils.showShort(response.msg);
+                if (response.code == 200) {
                     MySPUtils.putString(getPageContext(), MySPUtils.BLUE_MAC, mac);
                     MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, eqcode);
                     MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, keywords);
+                    finish();
                 }
-                finish();
-            }
-        }, (call, t) -> {
-            ToastUtils.showShort("网络连接异常");
-        });
+            }, (call, t) -> {
+                ToastUtils.showShort("网络连接异常");
+            });
+        }else {
+            //这里跳页面吧
+            Intent intent = new Intent(getPageContext(), InsulinInputNumActivity.class);
+            intent.putExtra(MySPUtils.BLUE_MAC, mac);
+            intent.putExtra(MySPUtils.DEVICE_NAME, eqcode);
+            startActivity(intent);
+        }
+
     }
 }

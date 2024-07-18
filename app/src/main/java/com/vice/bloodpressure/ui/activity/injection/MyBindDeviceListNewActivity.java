@@ -3,6 +3,7 @@ package com.vice.bloodpressure.ui.activity.injection;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.allen.library.utils.ToastUtils;
 import com.blankj.utilcode.util.SPStaticUtils;
+import com.google.gson.Gson;
 import com.lyd.baselib.bean.LoginBean;
 import com.lyd.baselib.utils.SharedPreferencesUtils;
 import com.vice.bloodpressure.DataManager;
@@ -173,7 +175,7 @@ public class MyBindDeviceListNewActivity extends BaseActivity {
                                 }
                                 break;
                             case 3:
-                                if (TextUtils.isEmpty(deviceBean.getEqinsulinnum())) {
+                                if (deviceBean.getEqinsulinnum().equals("暂无")) {
                                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
                                     intent.putExtra("type", "2");
                                     startActivity(intent);

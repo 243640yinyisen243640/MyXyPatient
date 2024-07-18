@@ -18,6 +18,7 @@ import com.vice.bloodpressure.bean.insulin.MSTRecordDataInfo;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,7 +111,7 @@ public class BleMSTUtils {
         initData();
         writeCharacteristic.setValue(hex2byte(param.replaceAll(" ", "")));
         writeCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-        bluetoothGatt.writeCharacteristic(writeCharacteristic);
+        boolean writeFlag = bluetoothGatt.writeCharacteristic(writeCharacteristic);
 
     }
 
@@ -175,6 +176,7 @@ public class BleMSTUtils {
             }
         }
 
+        //胰岛素泵回应数据
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
@@ -182,7 +184,7 @@ public class BleMSTUtils {
 
             Log.i("xjh", "读取成功==onCharacteristicChanged==" + value);
             Log.i("xjh", "receiveData.length==" + value.length);
-            String hexString = bytesToHex(value);
+            String hexString = bytesToHex(value );
             Log.d("xjh", "读取成功==onCharacteristicChanged==" + hexString);
 
 
@@ -627,10 +629,10 @@ public class BleMSTUtils {
         recordSunInfos.clear();
     }
 
-    private final List<MSTRecordDataInfo> recordBigInfos = new ArrayList<>();
+    private final List<MSTRecordDataInfo> recordBigInfos = new ArrayList<>();//大剂量
     private final List<MSTRecordDataInfo> recordErrorInfos = new ArrayList<>();
-    private final List<MSTRecordDataInfo> recordSunInfos = new ArrayList<>();
-    public final List<MSTRecordDataInfo> recordBaseInfos = new ArrayList<>();
+    private final List<MSTRecordDataInfo> recordSunInfos = new ArrayList<>();//日总量
+    public final List<MSTRecordDataInfo> recordBaseInfos = new ArrayList<>();//基础率
 
     private final List<String> stringList = new ArrayList<>();
 

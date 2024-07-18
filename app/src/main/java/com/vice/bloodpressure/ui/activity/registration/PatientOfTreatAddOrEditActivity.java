@@ -51,7 +51,7 @@ public class PatientOfTreatAddOrEditActivity extends BaseHandlerActivity impleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //添加身份证号监听
-        etIdNumber.setKeyListener(new IdNumberKeyListener());
+//        etIdNumber.setKeyListener(new IdNumberKeyListener());
         getLlMore().setOnClickListener(this);
         //默认就诊人 1有  2无
         int isHaveDefault = getIntent().getIntExtra("isHaveDefault", 0);

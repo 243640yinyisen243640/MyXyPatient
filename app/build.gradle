@@ -164,7 +164,7 @@ dependencies {
     //音频播放
     implementation 'com.google.android.exoplayer:extension-rtmp:2.14.1'
 
-    implementation 'com.github.EspoirX:StarrySky:v2.6.5'
+//    implementation 'com.github.EspoirX:StarrySky:v2.6.5'
     //Banner
 //    implementation 'com.youth.banner:banner:2.1.0'
     //Kotlin

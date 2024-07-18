@@ -38,6 +38,8 @@
         android:id="@+id/et_input_id_card"
         style="@style/et_base_style_no_bg"
         android:layout_marginTop="@dimen/dp_20"
+        android:inputType="textVisiblePassword|textNoSuggestions"
+        android:digits="X0123456789"
         android:hint="请输入身份证号"
         android:maxLength="18" />
 

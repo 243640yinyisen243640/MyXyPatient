@@ -42,6 +42,7 @@ import com.vice.bloodpressure.view.popu.LoginAgreementPop;
 import com.wei.android.lib.colorview.view.ColorTextView;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -124,7 +125,7 @@ public class LoginFragment extends BaseFragment {
         }, startPrivacy, endPrivacy, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         agreeTextView.setMovementMethod(LinkMovementMethod.getInstance());
         agreeTextView.setText(stringBuilder);
-        etInputPhoneOrIdCard.setKeyListener(new IdNumberKeyListener());
+//        etInputPhoneOrIdCard.setKeyListener(new IdNumberKeyListener());
         //        TextWatcherUtils.addTextChangedListener(new TextWatcherUtils.OnTextChangedListener() {
         //            @Override
         //            public void onTextChanged(String etString) {
@@ -187,6 +188,8 @@ public class LoginFragment extends BaseFragment {
             ToastUtils.showShort("请输入手机号或身份证");
             return;
         }
+
+
         pwd = etPwd.getText().toString().trim();
         if (TextUtils.isEmpty(pwd)) {
             ToastUtils.showShort("请输入密码");

@@ -57,7 +57,7 @@ public class PatientInfoInjectionFragment extends XYBaseFragment implements TabF
     protected void onCreate() {
         topViewManager().topView().removeAllViews();
         initView();
-        beginTime = DataUtils.convertDateToString(new Date(System.currentTimeMillis()), "YYYY-MM");
+        beginTime = DataUtils.convertDateToString(new Date(System.currentTimeMillis()), "yyyy-MM");
         adapter = new InjectionAdapter(getPageContext(), listInfos);
         rvInjection.setLayoutManager(new LinearLayoutManager(getPageContext()));
         rvInjection.setAdapter(adapter);

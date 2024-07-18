@@ -11,6 +11,8 @@ public class InsulinDeviceInfo {
     private String eqcode;
     //设备号
     private String eq_code;
+    //出厂编号
+    private String sn_code;
     //电量
     private String power;
     //药量
@@ -138,5 +140,13 @@ public class InsulinDeviceInfo {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getSn_code() {
+        return sn_code;
+    }
+
+    public void setSn_code(String sn_code) {
+        this.sn_code = sn_code;
     }
 }

@@ -62,7 +62,7 @@
                     android:drawablePadding="8dp"
                     android:text="AI220312123"
                     android:textColor="@color/black_text"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
 
@@ -78,7 +78,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
                     android:textColor="#D08D3F"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:visibility="gone" />
             </LinearLayout>
 

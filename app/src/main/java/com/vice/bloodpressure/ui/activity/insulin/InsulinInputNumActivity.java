@@ -8,12 +8,17 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
+import com.lyd.baselib.bean.LoginBean;
+import com.lyd.baselib.utils.SharedPreferencesUtils;
+import com.vice.bloodpressure.DataManager;
 import com.vice.bloodpressure.R;
 import com.vice.bloodpressure.base.activity.XYSoftUIBaseActivity;
 import com.vice.bloodpressure.utils.BleMSTUtils;
 import com.vice.bloodpressure.utils.MySPUtils;
 import com.wei.android.lib.colorview.view.ColorButton;
 import com.wei.android.lib.colorview.view.ColorEditText;
+
+import retrofit2.Call;
 
 /**
  * 作者: beauty
@@ -42,8 +47,29 @@ public class InsulinInputNumActivity extends XYSoftUIBaseActivity {
             MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NAME, eqcode);
             MySPUtils.putString(getPageContext(), MySPUtils.BLUE_TYPE, "2");
             MySPUtils.putString(getPageContext(), MySPUtils.DEVICE_NUM, num);
-            BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
-            finish();
+            bindDevice(mac,eqcode,num);
+        });
+    }
+
+    /**
+     * 绑定迈世通设备
+     * @param mac
+     * @param eqcode
+     * @param sncode
+     */
+    private void bindDevice(String mac, String eqcode, String sncode) {
+        LoginBean loginBean = (LoginBean) SharedPreferencesUtils.getBean(getPageContext(), SharedPreferencesUtils.USER_INFO);
+        String token = loginBean.getToken();
+        Call<String> requestCall = DataManager.bindeqinsulin(eqcode, sncode, token, (call, response) -> {
+            com.blankj.utilcode.util.ToastUtils.showShort(response.msg);
+            if (response.code == 200) {
+                if (!TextUtils.isEmpty(mac)) {
+                    BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
+                }
+                finish();
+            }
+        }, (call, t) -> {
+            com.blankj.utilcode.util.ToastUtils.showShort("网络连接异常");
         });
     }
 

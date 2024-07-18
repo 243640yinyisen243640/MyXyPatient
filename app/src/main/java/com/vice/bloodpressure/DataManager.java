@@ -486,9 +486,10 @@ public class DataManager {
      * @param failureCallBack
      * @return
      */
-    public static Call<String> bindeqinsulin(String eqcode, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
+    public static Call<String> bindeqinsulin(String eqcode, String sncode, String token, BiConsumer<Call<String>, HHSoftBaseResponse> successCallBack, BiConsumer<Call<String>, Throwable> failureCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("eqcode", eqcode);
+        map.put("sncode", sncode);
         map.put("access_token", token);
         return BaseNetworkUtils.postRequest(false, BaseNetworkUtils.NONE, null, "/bindeqinsulin", map, successCallBack, failureCallBack);
     }

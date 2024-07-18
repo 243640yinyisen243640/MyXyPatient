@@ -59,7 +59,7 @@ public class LoginBindIdCardFragment extends BaseEventBusFragment {
      * 设置监听
      */
     private void setTextChangeListener() {
-        etInputIdCard.setKeyListener(new IdNumberKeyListener());
+//        etInputIdCard.setKeyListener(new IdNumberKeyListener());
         TextWatcherUtils.addTextChangedListener(new TextWatcherUtils.OnTextChangedListener() {
             @Override
             public void onTextChanged(String etString) {

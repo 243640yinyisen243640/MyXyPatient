@@ -1,5 +1,6 @@
 package com.vice.bloodpressure.ui.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -47,6 +49,7 @@ import com.lyd.modulemall.ui.activity.ProductDetailActivity;
 import com.lyd.modulemall.ui.activity.user.MyCouponListActivity;
 import com.lyd.modulemall.ui.fragment.MallHomeFragment;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.analytics.MobclickAgent;
@@ -252,6 +255,15 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
         setRongImUserInfo();
         getImMessageType();
         ImmersionBar.with(this).fitsSystemWindows(true).statusBarDarkFont(true).statusBarColor(R.color.main_home).init();
+
+        //打开微信小程序
+       /* IWXAPI api = WXAPIFactory.createWXAPI(this, APP_ID);
+
+        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
+        req.userName = "gh_3e5968f8baaa";
+        req.path = "pages/home/index";
+        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;// 可选打开 开发版，体验版和正式版
+        api.sendReq(req);*/
     }
 
     private void initMSTBlue() {
@@ -272,7 +284,9 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
+                        if (!TextUtils.isEmpty(mac)) {
+                            BleMSTUtils.getInstance().connect(getPageContext().getApplicationContext(), mac);
+                        }
                     }
                 });
             }
@@ -306,7 +320,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             public void onSunRecord(List<MSTRecordDataInfo> sunRecordInfos) {
                 //日总量
                 for (int i = 0; i < sunRecordInfos.size(); i++) {
-                    Log.i("xjh", "bigRecordInfo==" + sunRecordInfos.get(i).toString());
+                    Log.i("xjh", "dailyAmountInfo==" + sunRecordInfos.get(i).toString());
                 }
                 MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
                 mstBlueEventBus.setType(3);
@@ -318,7 +332,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             public void onErrorRecord(List<MSTRecordDataInfo> errorRecordInfos) {
                 //警示数据
                 for (int i = 0; i < errorRecordInfos.size(); i++) {
-                    Log.i("xjh", "bigRecordInfo==" + errorRecordInfos.get(i).toString());
+                    Log.i("xjh", "cautionInfo==" + errorRecordInfos.get(i).toString());
                 }
                 MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
                 mstBlueEventBus.setType(4);
@@ -330,7 +344,7 @@ public class MainActivity extends BaseHandlerEventBusActivity implements View.On
             public void onBaseRecord(List<MSTRecordDataInfo> baseRecordInfo) {
                 //基础率数据
                 for (int i = 0; i < baseRecordInfo.size(); i++) {
-                    Log.i("xjh", "bigRecordInfo==" + baseRecordInfo.get(i).toString());
+                    Log.i("xjh", "baseRateInfo==" + baseRecordInfo.get(i).toString());
                 }
                 MSTBlueEventBus mstBlueEventBus = new MSTBlueEventBus();
                 mstBlueEventBus.setType(5);

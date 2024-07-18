@@ -32,7 +32,8 @@
         <EditText
             android:id="@+id/et_input_phone_or_id_card"
             style="@style/et_base_style_no_bg"
-            android:digits="0123456789Xx"
+            android:inputType="textVisiblePassword|textNoSuggestions"
+            android:digits="X0123456789"
             android:hint="请输入手机号或身份证号"
             android:maxLength="18" />
 

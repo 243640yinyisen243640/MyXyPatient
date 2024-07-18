@@ -79,6 +79,8 @@
             style="@style/et_base_style_no_bg"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
+            android:inputType="textVisiblePassword|textNoSuggestions"
+            android:digits="X0123456789"
             android:hint="请输入身份证号"
             android:maxLength="18">
 

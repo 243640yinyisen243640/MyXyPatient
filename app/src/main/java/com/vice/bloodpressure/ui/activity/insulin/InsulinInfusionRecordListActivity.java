@@ -187,6 +187,7 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                 Intent intent;
                 if (TextUtils.isEmpty(deviceName)) {
                     intent = new Intent(getPageContext(), InjectionAddDeviceNoActivity.class);
+                    intent.putExtra("type", "2");
                     startActivity(intent);
                 } else {
                     intent = new Intent(getPageContext(), InsulinDeviceListActivity.class);
@@ -258,22 +259,22 @@ public class InsulinInfusionRecordListActivity extends XYSoftUIBaseActivity impl
                     refreshDeviceInfo();
                 }
                 break;
-            case R.id.tv_infusion_info_day_all:
+            case R.id.tv_infusion_info_day_all://日总量
                 setBg(tvDayAll, tvInfoBig, tvBaseRate, tvWarning);
                 type = "1";
                 getData();
                 break;
-            case R.id.tv_infusion_info_big:
+            case R.id.tv_infusion_info_big://大剂量
                 setBg(tvInfoBig, tvDayAll, tvBaseRate, tvWarning);
                 type = "2";
                 getData();
                 break;
-            case R.id.tv_infusion_info_base_rate:
+            case R.id.tv_infusion_info_base_rate://基础率
                 setBg(tvBaseRate, tvInfoBig, tvDayAll, tvWarning);
                 type = "3";
                 getData();
                 break;
-            case R.id.tv_infusion_info_warning:
+            case R.id.tv_infusion_info_warning://报警
                 setBg(tvWarning, tvInfoBig, tvBaseRate, tvDayAll);
                 type = "4";
                 getData();
